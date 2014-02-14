@@ -1,4 +1,4 @@
-apinatomy
-=========
+ApiNATOMY
+=====
 
-Interactive visualization of multiscale anatomy and biomedical knowledge
+interactive visualization of multiscale anatomy and biomedical knowledge

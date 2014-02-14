@@ -1,0 +1,48 @@
+@import "compass";
+
+@import "bootstrap";
+@import "base";
+
+@import "partial/top-nav/view";
+@import "partial/side-nav/view";
+@import "partial/treemap/view";
+@import "partial/tile/view";
+@import "partial/details/view";
+
+// // // // // // // // // // // // // // // // // // // // // // // // // // //
+
+html, body {
+	position   : absolute;
+	min-height : 100% !important;
+	min-width  : 100% !important;
+	padding    : 0 !important;
+	margin     : 0 !important;
+	border     : 0 !important;
+
+	#apinatomy-top-nav {
+		position : absolute;
+
+		top      : 0;
+		left     : 0;
+		height   : $apinatomy-top-nav-height;
+		right    : 0;
+	}
+
+	#apinatomy-side-nav {
+		position : absolute;
+
+		top      : $apinatomy-top-nav-height;
+		left     : 0;
+		bottom   : 0;
+		width    : $apinatomy-side-nav-width;
+	}
+
+	#apinatomy-treemap {
+		position : absolute;
+
+		top      : $apinatomy-top-nav-height;
+		left     : $apinatomy-side-nav-width;
+		bottom   : 0;
+		right    : 0;
+	}
+}

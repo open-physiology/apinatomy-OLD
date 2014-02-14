@@ -1,0 +1,36 @@
+@import "base";
+
+.apinatomy-entity-details {
+	display : block;
+	border  : solid 1px;
+	padding : 0;
+
+	// rounded corners
+
+	@include border-radius(5px);
+
+	// no user selections when hidden or animating
+
+	&.ng-hide, &.ng-animate {
+		@include user-select(none);
+	}
+
+	// entity title
+
+	& > header > h2 {
+		font-size     : 16px;
+		font-weight   : bold;
+		border-bottom : solid 1px;
+		margin        : 0;
+		padding       : 4px;
+	}
+
+	// entity details
+
+	& > ul {
+		margin          : 4px;
+		padding-left    : 20px;
+		list-style-type : square;
+	}
+
+}

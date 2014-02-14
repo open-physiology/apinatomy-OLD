@@ -1,0 +1,45 @@
+@import "base";
+
+#apinatomy-side-nav {
+	display : block;
+	padding : 0;
+
+	& > header {
+		margin-top    : $apinatomy-spacing;
+		margin-bottom : $apinatomy-spacing;
+		padding       : 0px;
+		border-style  : none none solid none;
+		border-width  : 2px;
+		border-color  : lightgray;
+
+		& > h2 {
+			text-align    : right;
+			padding-right : $apinatomy-spacing;
+			font-size     : 18pt;
+			font-family   : serif;
+			font-weight   : bold;
+			margin-top    : 0;
+			margin-bottom : -4px;
+		}
+
+	}
+
+	& > .apinatomy-entity-details {
+		// show -> hide animation
+
+		&.ng-hide-add, &.ng-hide-remove {
+			@include single-transition(opacity, linear, .6s);
+			display : block !important;
+		}
+		&.ng-hide-add.ng-hide-add-active {
+			opacity : 0;
+		}
+		&.ng-hide-add {
+			opacity : 1;
+		}
+
+		margin-left   : $apinatomy-spacing;
+		margin-bottom : $apinatomy-spacing;
+	}
+
+}
