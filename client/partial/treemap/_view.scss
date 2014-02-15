@@ -1,11 +1,13 @@
 @import "base";
 
-#apinatomy-treemap {
-	margin: $apinatomy-spacing;
+main {
 
-
-	// 3D rotation
-	&.three-d {
-		 // TODO
+	#apinatomy-treemap, #apinatomy-treemap-bottom-layer {
+		position : absolute;
+		top      : 0;
+		left     : 0;
+		bottom   : 0;
+		right    : 0;
 	}
+
 }

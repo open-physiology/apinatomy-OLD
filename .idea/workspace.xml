@@ -2,62 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb443da2-c5b7-4919-9dda-26632e987897" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.bowerrc" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Gruntfile.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Node_js_Dependencies_for_apinatomy.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/_base.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/_bootstrap.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/details/_view.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/side-nav/_view.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/tile/_view.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/top-nav/_view.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/treemap/_view.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/api.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/apinatomy.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bower.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/tile/controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/details/directive.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/side-nav/directive.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/tile/directive.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/top-nav/directive.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/treemap/directive.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/example-data.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/index.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/index.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/main.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/spec/js/matchers.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/mhelvens.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/app/module.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/utility/newFromPrototype.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/server.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/focus/service.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/tile/layout/service.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/resource/service.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/utility/sum.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/vars.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/details/view.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/side-nav/view.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/tile/view.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/top-nav/view.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/treemap/view.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/webResources.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LICENSE" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/settings/service.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/treemap/_view.scss" afterPath="$PROJECT_DIR$/client/partial/treemap/_view.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/tile/directive.js" afterPath="$PROJECT_DIR$/client/partial/tile/directive.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/top-nav/directive.js" afterPath="$PROJECT_DIR$/client/partial/top-nav/directive.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/treemap/directive.js" afterPath="$PROJECT_DIR$/client/partial/treemap/directive.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/index.html" afterPath="$PROJECT_DIR$/client/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/index.scss" afterPath="$PROJECT_DIR$/client/index.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/top-nav/view.html" afterPath="$PROJECT_DIR$/client/partial/top-nav/view.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/treemap/view.html" afterPath="$PROJECT_DIR$/client/partial/treemap/view.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="apinatomy.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -79,44 +34,42 @@
     <favorites_list name="apinatomy" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.48563612">
+    <splitter split-orientation="horizontal" split-proportion="0.41632468">
       <split-first>
-        <splitter split-orientation="vertical" split-proportion="0.30284554">
+        <splitter split-orientation="vertical" split-proportion="0.41751528">
           <split-first>
             <leaf>
-              <file leaf-file-name="view.html" pinned="false" current="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/client/partial/side-nav/view.html">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state line="11" column="0" selection-start="279" selection-end="279" vertical-scroll-proportion="-6.5" vertical-offset="0" max-vertical-offset="221">
-                      <folding>
-                        <marker date="1392312111695" expanded="true" signature="114:269" placeholder="..." />
-                      </folding>
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-              <file leaf-file-name="view.html" pinned="false" current="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/client/partial/details/view.html">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state line="0" column="55" selection-start="55" selection-end="55" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="208">
-                      <folding />
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-              <file leaf-file-name="view.html" pinned="false" current="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/client/partial/tile/view.html">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state line="10" column="0" selection-start="415" selection-end="415" vertical-scroll-proportion="-5.909091" vertical-offset="0" max-vertical-offset="260">
-                      <folding />
-                    </state>
-                  </provider>
-                </entry>
-              </file>
               <file leaf-file-name="view.html" pinned="false" current="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/client/partial/treemap/view.html">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state line="0" column="27" selection-start="27" selection-end="27" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="246">
+                    <state line="12" column="0" selection-start="433" selection-end="433" vertical-scroll-proportion="0.3277311" vertical-offset="0" max-vertical-offset="476">
+                      <folding />
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+              <file leaf-file-name="view.html" pinned="false" current="false" current-in-tab="false">
+                <entry file="file://$PROJECT_DIR$/client/partial/top-nav/view.html">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state line="28" column="100" selection-start="1142" selection-end="1158" vertical-scroll-proportion="0.0" vertical-offset="364" max-vertical-offset="689">
+                      <folding />
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+              <file leaf-file-name="directive.js" pinned="false" current="false" current-in-tab="false">
+                <entry file="file://$PROJECT_DIR$/client/partial/top-nav/directive.js">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state line="17" column="60" selection-start="730" selection-end="730" vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="468">
+                      <folding />
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+              <file leaf-file-name="service.js" pinned="false" current="false" current-in-tab="false">
+                <entry file="file://$PROJECT_DIR$/client/settings/service.js">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state line="15" column="0" selection-start="506" selection-end="506" vertical-scroll-proportion="0.0" vertical-offset="195" max-vertical-offset="429">
                       <folding />
                     </state>
                   </provider>
@@ -125,7 +78,7 @@
               <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
                 <entry file="file://$PROJECT_DIR$/client/index.html">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state line="50" column="21" selection-start="1091" selection-end="1091" vertical-scroll-proportion="-24.227272" vertical-offset="117" max-vertical-offset="923">
+                    <state line="57" column="24" selection-start="1184" selection-end="1184" vertical-scroll-proportion="0.0" vertical-offset="379" max-vertical-offset="884">
                       <folding />
                     </state>
                   </provider>
@@ -135,64 +88,19 @@
           </split-first>
           <split-second>
             <leaf>
-              <file leaf-file-name="_view.scss" pinned="false" current="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/client/partial/side-nav/_view.scss">
+              <file leaf-file-name="index.scss" pinned="false" current="false" current-in-tab="false">
+                <entry file="file://$PROJECT_DIR$/client/index.scss">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state line="28" column="0" selection-start="547" selection-end="766" vertical-scroll-proportion="-14.318182" vertical-offset="49" max-vertical-offset="663">
+                    <state line="2" column="0" selection-start="51" selection-end="51" vertical-scroll-proportion="0.0" vertical-offset="26" max-vertical-offset="741">
                       <folding />
                     </state>
                   </provider>
                 </entry>
               </file>
-              <file leaf-file-name="_view.scss" pinned="false" current="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/client/partial/details/_view.scss">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state line="14" column="35" selection-start="257" selection-end="257" vertical-scroll-proportion="-8.272727" vertical-offset="0" max-vertical-offset="546">
-                      <folding />
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-              <file leaf-file-name="main.js" pinned="false" current="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/client/main.js">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state line="5" column="0" selection-start="89" selection-end="89" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="988">
-                      <folding />
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-              <file leaf-file-name="Gruntfile.js" pinned="false" current="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/Gruntfile.js">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state line="35" column="17" selection-start="920" selection-end="920" vertical-scroll-proportion="0.0" vertical-offset="227" max-vertical-offset="1313">
-                      <folding />
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-              <file leaf-file-name="_view.scss" pinned="false" current="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/client/partial/tile/_view.scss">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state line="41" column="21" selection-start="1061" selection-end="1061" vertical-scroll-proportion="-4.3636365" vertical-offset="437" max-vertical-offset="1053">
-                      <folding />
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-              <file leaf-file-name="_view.scss" pinned="false" current="false" current-in-tab="false">
+              <file leaf-file-name="_view.scss" pinned="false" current="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/client/partial/treemap/_view.scss">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state line="11" column="0" selection-start="114" selection-end="114" vertical-scroll-proportion="-6.5" vertical-offset="0" max-vertical-offset="221">
-                      <folding />
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-              <file leaf-file-name="README.md" pinned="false" current="true" current-in-tab="true">
-                <entry file="file://$PROJECT_DIR$/README.md">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state line="1" column="5" selection-start="15" selection-end="15" vertical-scroll-proportion="0.02" vertical-offset="0" max-vertical-offset="650">
+                    <state line="10" column="5" selection-start="169" selection-end="169" vertical-scroll-proportion="0.19145803" vertical-offset="0" max-vertical-offset="679">
                       <folding />
                     </state>
                   </provider>
@@ -204,76 +112,22 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="service.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/client/partial/tile/layout/service.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="29" column="25" selection-start="988" selection-end="988" vertical-scroll-proportion="0.0" vertical-offset="19" max-vertical-offset="1287">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="directive.js" pinned="false" current="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/client/partial/tile/directive.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="127" column="46" selection-start="3926" selection-end="3926" vertical-scroll-proportion="1.0913922" vertical-offset="624" max-vertical-offset="3003">
-                  <folding>
-                    <marker date="1392378237638" expanded="true" signature="6465:6478" placeholder="..." />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="server.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/server/server.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="923">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="vars.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/server/vars.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="4" column="20" selection-start="64" selection-end="64" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="182">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="service.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/client/resource/service.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="11" column="65" selection-start="471" selection-end="471" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="312">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="controller.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/client/partial/tile/controller.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="3" column="173" selection-start="286" selection-end="309" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="325">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="directive.js" pinned="false" current="false" current-in-tab="false">
+          <file leaf-file-name="directive.js" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/client/partial/treemap/directive.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="71" column="0" selection-start="2055" selection-end="2055" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1183">
+                <state line="86" column="0" selection-start="2244" selection-end="2244" vertical-scroll-proportion="0.45226538" vertical-offset="559" max-vertical-offset="2548">
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
           <file leaf-file-name="directive.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/client/partial/details/directive.js">
+            <entry file="file://$PROJECT_DIR$/client/partial/tile/directive.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="39" column="0" selection-start="1308" selection-end="1308" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="689">
-                  <folding />
+                <state line="107" column="31" selection-start="3546" selection-end="3546" vertical-scroll-proportion="0.0" vertical-offset="572" max-vertical-offset="3055">
+                  <folding>
+                    <marker date="1392417495099" expanded="false" signature="6652:6665" placeholder="..." />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -298,22 +152,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/client/focus/service.js" />
-        <option value="$PROJECT_DIR$/client/partial/side-nav/directive.js" />
-        <option value="$PROJECT_DIR$/client/partial/top-nav/directive.js" />
-        <option value="$PROJECT_DIR$/client/utility/newFromPrototype.js" />
-        <option value="$PROJECT_DIR$/client/utility/sum.js" />
         <option value="$PROJECT_DIR$/client/partial/tile/controller.js" />
         <option value="$PROJECT_DIR$/client/resource/service.js" />
         <option value="$PROJECT_DIR$/client/partial/details/directive.js" />
         <option value="$PROJECT_DIR$/server/vars.js" />
-        <option value="$PROJECT_DIR$/client/partial/treemap/directive.js" />
         <option value="$PROJECT_DIR$/client/partial/tile/layout/service.js" />
-        <option value="$PROJECT_DIR$/client/partial/tile/directive.js" />
         <option value="$PROJECT_DIR$/client/partial/tile/_view.scss" />
         <option value="$PROJECT_DIR$/client/partial/tile/view.html" />
-        <option value="$PROJECT_DIR$/client/partial/treemap/_view.scss" />
+        <option value="$PROJECT_DIR$/client/index.html" />
+        <option value="$PROJECT_DIR$/client/partial/top-nav/view.html" />
+        <option value="$PROJECT_DIR$/client/partial/top-nav/directive.js" />
+        <option value="$PROJECT_DIR$/client/settings/service.js" />
+        <option value="$PROJECT_DIR$/client/index.scss" />
+        <option value="$PROJECT_DIR$/client/partial/tile/directive.js" />
         <option value="$PROJECT_DIR$/client/partial/treemap/view.html" />
+        <option value="$PROJECT_DIR$/client/partial/treemap/_view.scss" />
+        <option value="$PROJECT_DIR$/client/partial/treemap/directive.js" />
       </list>
     </option>
   </component>
@@ -352,7 +206,7 @@
     <OptionsSetting value="true" id="Update" />
     <OptionsSetting value="true" id="Status" />
     <OptionsSetting value="true" id="Edit" />
-    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="2" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectReloadState">
@@ -371,7 +225,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -432,6 +285,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="settings" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apinatomy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apinatomy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="partial" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -457,6 +328,10 @@
               <option name="myItemId" value="partial" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="top-nav" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -480,19 +355,38 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apinatomy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apinatomy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="partial" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="options.lastSelected" value="JavaScript.Libraries" />
     <property name="recentsLimit" value="5" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../scire" />
+    <property name="options.lastSelected" value="JavaScript.Libraries" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../scire" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PublishConfig">
     <servers>
@@ -527,15 +421,15 @@
     </key>
   </component>
   <component name="RunManager" selected="Node.js.Node Server + Angular Client">
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" singleton="true" config-file="">
+      <envs />
+      <method />
+    </configuration>
     <configuration default="true" type="JSTestDriver:ConfigurationType" factoryName="JsTestDriver">
       <setting name="configLocationType" value="CONFIG_FILE" />
       <setting name="settingsFile" value="" />
       <setting name="serverType" value="INTERNAL" />
       <setting name="preferredDebugBrowser" value="CHROME" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" singleton="true" config-file="">
-      <envs />
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
@@ -568,6 +462,11 @@
       <created>1392041250232</created>
       <updated>1392041250232</updated>
     </task>
+    <task id="LOCAL-00001" summary="Initial commit of working code.">
+      <created>1392384521700</created>
+      <updated>1392384521700</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -576,21 +475,22 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32911393" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22187005" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Mongo Runner" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296355" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12768497" sideWeight="0.77812994" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12768497" sideWeight="0.77812994" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21722265" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296355" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Mongo Runner" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32911393" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32911393" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -600,9 +500,13 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
+    <MESSAGE value="Initial commit of working code." />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial commit of working code." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -613,116 +517,102 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/client/resource/service.js">
+    <entry file="file://$PROJECT_DIR$/.bowerrc">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="65" selection-start="471" selection-end="471" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="312">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="650" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="0" selection-start="90" selection-end="90" vertical-scroll-proportion="0.08" vertical-offset="0" max-vertical-offset="650" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/partial/details/directive.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="0" selection-start="1308" selection-end="1308" vertical-scroll-proportion="0.5314465" vertical-offset="0" max-vertical-offset="954" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/partial/tile/_view.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="21" selection-start="1061" selection-end="1061" vertical-scroll-proportion="0.44206008" vertical-offset="121" max-vertical-offset="1053" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/partial/side-nav/view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="0" selection-start="279" selection-end="279" vertical-scroll-proportion="-6.5" vertical-offset="0" max-vertical-offset="221" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/partial/details/view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="55" selection-start="55" selection-end="55" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="208" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Gruntfile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="17" selection-start="920" selection-end="920" vertical-scroll-proportion="0.0" vertical-offset="227" max-vertical-offset="1313" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="57" column="24" selection-start="1184" selection-end="1184" vertical-scroll-proportion="0.0" vertical-offset="379" max-vertical-offset="884">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/tile/controller.js">
+    <entry file="file://$PROJECT_DIR$/client/partial/top-nav/view.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="173" selection-start="286" selection-end="309" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="325">
+        <state line="28" column="100" selection-start="1142" selection-end="1158" vertical-scroll-proportion="0.0" vertical-offset="364" max-vertical-offset="689">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/server.js">
+    <entry file="file://$PROJECT_DIR$/client/partial/top-nav/directive.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="923">
+        <state line="17" column="60" selection-start="730" selection-end="730" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="468">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/vars.js">
+    <entry file="file://$PROJECT_DIR$/client/index.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="20" selection-start="64" selection-end="64" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="182">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="89" selection-end="89" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="988">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/details/_view.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="35" selection-start="257" selection-end="257" vertical-scroll-proportion="-8.272727" vertical-offset="0" max-vertical-offset="546">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/side-nav/_view.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="0" selection-start="547" selection-end="766" vertical-scroll-proportion="-14.318182" vertical-offset="49" max-vertical-offset="663">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/treemap/directive.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="0" selection-start="2055" selection-end="2055" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1183">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/tile/layout/service.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="25" selection-start="988" selection-end="988" vertical-scroll-proportion="0.0" vertical-offset="19" max-vertical-offset="1287">
+        <state line="2" column="0" selection-start="51" selection-end="51" vertical-scroll-proportion="0.0" vertical-offset="26" max-vertical-offset="741">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/partial/tile/directive.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="127" column="46" selection-start="3926" selection-end="3926" vertical-scroll-proportion="1.0913922" vertical-offset="624" max-vertical-offset="3003">
+        <state line="107" column="31" selection-start="3546" selection-end="3546" vertical-scroll-proportion="0.0" vertical-offset="572" max-vertical-offset="3055">
           <folding>
-            <marker date="1392378237638" expanded="true" signature="6465:6478" placeholder="..." />
+            <marker date="1392417495099" expanded="false" signature="6652:6665" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/tile/_view.scss">
+    <entry file="file://$PROJECT_DIR$/client/settings/service.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="21" selection-start="1061" selection-end="1061" vertical-scroll-proportion="-4.3636365" vertical-offset="437" max-vertical-offset="1053">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/tile/view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="415" selection-end="415" vertical-scroll-proportion="-5.909091" vertical-offset="0" max-vertical-offset="260">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/treemap/view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="27" selection-start="27" selection-end="27" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="247">
+        <state line="15" column="0" selection-start="506" selection-end="506" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="429">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/partial/treemap/_view.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="0" selection-start="114" selection-end="114" vertical-scroll-proportion="-6.5" vertical-offset="0" max-vertical-offset="221">
+        <state line="10" column="5" selection-start="169" selection-end="169" vertical-scroll-proportion="0.19145803" vertical-offset="0" max-vertical-offset="679">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.bowerrc">
+    <entry file="file://$PROJECT_DIR$/client/partial/treemap/view.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="650">
+        <state line="12" column="0" selection-start="433" selection-end="433" vertical-scroll-proportion="0.3277311" vertical-offset="0" max-vertical-offset="476">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
+    <entry file="file://$PROJECT_DIR$/client/partial/treemap/directive.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="5" selection-start="15" selection-end="15" vertical-scroll-proportion="0.02" vertical-offset="0" max-vertical-offset="650">
+        <state line="86" column="0" selection-start="2244" selection-end="2244" vertical-scroll-proportion="0.45226538" vertical-offset="559" max-vertical-offset="2548">
           <folding />
         </state>
       </provider>

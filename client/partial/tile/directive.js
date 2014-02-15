@@ -1,7 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'chroma', 'utility/newFromPrototype', 'resource/service', 'focus/service', 'partial/tile/layout/service'], function (ApiNATOMY, color, newFromPrototype) {
+define(['app/module', 'chroma', 'utility/newFromPrototype', 'underscore', 'resource/service', 'focus/service', 'partial/tile/layout/service'], function (ApiNATOMY, color, newFromPrototype, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -22,7 +22,7 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'resource/service', 
 				open   : '@'
 			},
 
-			controller: ['$scope', 'FocusService', 'TileLayoutService', 'ResourceService', '$timeout', function ($scope, FocusService, TileLayoutService, qResources, $timeout) {
+			controller: ['$scope', 'FocusService', 'TileLayoutService', 'ResourceService', '$timeout', '$q', function ($scope, FocusService, TileLayoutService, qResources, $timeout, $q) {
 				var qController = qResources.then(function (resources) {
 
 					// interface for inter-tile communication
@@ -97,11 +97,15 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'resource/service', 
 						};
 
 						controller.registerMouseLeave = function () {
-							if ($scope.focus) {
-								FocusService.popEid($scope.eid);
-								parentController.registerMouseEnter();
-								$scope.focus = false;
-							}
+							$q.all(qChildControllers).then(function (childControllers) {
+								if ($scope.focus) {
+									_.each(childControllers, function (childController) {
+										childController.registerMouseLeave();
+									});
+									$scope.focus = false;
+									FocusService.popEid($scope.eid);
+								}
+							});
 						};
 
 

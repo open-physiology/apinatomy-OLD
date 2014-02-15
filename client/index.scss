@@ -1,3 +1,4 @@
+//noinspection CssUnknownTarget
 @import "compass";
 
 @import "bootstrap";
@@ -12,6 +13,7 @@
 // // // // // // // // // // // // // // // // // // // // // // // // // // //
 
 html, body {
+	@include user-select(none);
 	position   : absolute;
 	min-height : 100% !important;
 	min-width  : 100% !important;
@@ -37,12 +39,13 @@ html, body {
 		width    : $apinatomy-side-nav-width;
 	}
 
-	#apinatomy-treemap {
+	main {
 		position : absolute;
 
 		top      : $apinatomy-top-nav-height;
 		left     : $apinatomy-side-nav-width;
 		bottom   : 0;
 		right    : 0;
+		margin   : $apinatomy-spacing;
 	}
 }

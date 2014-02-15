@@ -15,12 +15,12 @@ define(['angular', 'app/module'], function (ng, ApiNATOMY) {
 			transclude : true,
 			templateUrl: 'partial/treemap/view.html',
 
-			scope      : {
+			scope: {
 				layout : '@',
 				spacing: '@'
 			},
 
-			controller : function ($scope) {
+			controller: function ($rootScope, $scope) {
 				var deferred = $q.defer();
 
 				var controller = {
@@ -46,17 +46,122 @@ define(['angular', 'app/module'], function (ng, ApiNATOMY) {
 
 				$scope.pChildren = [];
 
-				$scope.style = {};
-				$scope.style.top = 0;
-				$scope.style.left = 0;
-				$scope.style.height = 0;
-				$scope.style.width = 0;
+
+
+
+				/////////////////////////////////////////////////////////////////////////////////////////
+				$scope.xRotation = 0;
+				$scope.yRotation = 0;
+				$scope.style = { '-webkit-transform': '' };
+
+				$rootScope.$watch('threeDRotate', function (newValue) {
+					$scope.threeDRotate = newValue;
+				});
+
+				$scope.onMouseMove = function () {};
+				$scope.xRotation = $scope.yRotation = 0;
+
+				var startingX, startingY, startingTransform;
+				$scope.onMouseDown = function (event) {
+					startingX = event.clientX;
+					startingY = event.clientY;
+					startingTransform = $scope.style['-webkit-transform'];
+					$scope.onMouseMove = adjustRotation;
+				};
+
+				function getTransformation(event) {
+					//          ,
+					//           ',
+					//             '
+					//         '''''O   (origin)
+					//             /|
+					//            / |
+					//           /__|
+					//          / a |
+					//         /    |
+					// Drag  FROM   |
+					//              TO
+
+
+					// TODO
+
+
+					return 'rotate3d(0, 0, 0, deg)';
+				}
+
+				$scope.onMouseUp = function (event) {
+					$scope.onMouseMove = function () {};
+					$scope.xRotation += .5 * (startingX - event.clientX);
+					$scope.yRotation += .5 * (event.clientY - startingY);
+					startingX = startingY = null;
+				};
+
+				function adjustRotation(event) {
+					$scope.style['-webkit-transform']
+							= 'rotate3d(0, 0, 0, 0deg)';
+
+//					-webkit-transform: rotate3d(1, 0, .5, 60deg);
+//					-moz-transform: rotate3d(0.6, 1, 0.5, 55deg);
+//					-ms-transform: rotate3d(0.6, 1, 0.5, 55deg);
+//					-o-transform: rotate3d(0.6, 1, 0.5, 55deg);
+//					transform: rotate3d(0.6, 1, 0.5, 55deg);
+				}
+				/////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+//				/////////////////////////////////////////////////////////////////////////////////////////
+//				$scope.style = {
+//					'-webkit-transform': 'rotateX(0) rotateY(0)'
+//				};
+//				$scope.xRotation = 0;
+//				$scope.yRotation = 0;
+//
+//				$rootScope.$watch('threeDRotate', function (newValue) {
+//					$scope.threeDRotate = newValue;
+//				});
+//
+//				$scope.onMouseMove = function () {};
+//				$scope.xRotation = $scope.yRotation = 0;
+//
+//				var startingX, startingY;
+//				$scope.onMouseDown = function (event) {
+//					startingX = event.clientX;
+//					startingY = event.clientY;
+//					$scope.onMouseMove = adjustRotation;
+//				};
+//
+//				$scope.onMouseUp = function (event) {
+//					$scope.onMouseMove = function () {};
+//					$scope.xRotation += .5 * (startingX - event.clientX);
+//					$scope.yRotation += .5 * (event.clientY - startingY);
+//					startingX = startingY = null;
+//				};
+//
+////				ng.element('main').bind('mousemove', $scope.onMouseMove);
+////				ng.element('main').bind('mouseup', $scope.onMouseUp);
+//
+//				function adjustRotation(event) {
+//					$scope.style['-webkit-transform']
+//							= 'rotateX(' + ($scope.yRotation + .5 * (event.clientY - startingY)) + 'deg) ' +
+//							  'rotateY(' + ($scope.xRotation + .5 * (startingX - event.clientX)) + 'deg) perspective(600px)';
+//
+////					-webkit-transform: rotate3d(1, 0, .5, 60deg);
+////					-moz-transform: rotate3d(0.6, 1, 0.5, 55deg);
+////					-ms-transform: rotate3d(0.6, 1, 0.5, 55deg);
+////					-o-transform: rotate3d(0.6, 1, 0.5, 55deg);
+////					transform: rotate3d(0.6, 1, 0.5, 55deg);
+//				}
+//				/////////////////////////////////////////////////////////////////////////////////////////
 
 				deferred.resolve(controller);
 
 				return deferred.promise;
 			},
-			link       : function ($scope, iElement) {
+			link      : function ($scope, iElement) {
 				// how to redraw the treemap
 				function redraw() {
 					if ($scope.tileLayout !== 'twentyFourTile' || $scope.pChildren.length === 24) {

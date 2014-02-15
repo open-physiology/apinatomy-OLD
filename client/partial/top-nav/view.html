@@ -11,9 +11,9 @@
 	</div>
 
 	<div class="collapse navbar-collapse" id="navbar-collapse">
-		<ul class="nav navbar-nav navbar-right">
+		<ul class="nav navbar-nav navbar-left">
 			<li>
-				<form class="navbar-form navbar-right">
+				<form class="navbar-form">
 					<div class="input-group" style="width: 200px;">
 						<input type="text" class="form-control" placeholder="Search">
 				<span class="input-group-btn">
@@ -24,6 +24,22 @@
 					</div>
 				</form>
 			</li>
+			<li>
+				<!--<label for="toggle3dRotationButton" class="sr-only"></label>-->
+				<button type="button" class="btn navbar-btn" btn-checkbox ng-model="toggle3dRotation">
+					<span class="glyphicon glyphicon-repeat"></span>
+					<span>3D Rotation</span>
+				</button>
+				<!--<a id="toggle3dRotationButton"-->
+				       <!--btn-checkbox-->
+				       <!--class="apinatomy-brand"-->
+				       <!--ng-model="toggle3dRotation">-->
+					<!--<span class="glyphicon glyphicon-repeat"></span>-->
+					<!--<span>3D Rotation</span>-->
+				<!--</a>-->
+			</li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
 			<li><a class="apinatomy-account-button" href="#"><span class="glyphicon glyphicon-cog"></span><span>Account</span></a></li>
 		</ul>
 	</div>
