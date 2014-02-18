@@ -1,9 +1,7 @@
 //noinspection CssUnknownTarget
 @import "compass";
-
 @import "bootstrap";
 @import "base";
-
 @import "partial/top-nav/view";
 @import "partial/side-nav/view";
 @import "partial/treemap/view";
@@ -22,30 +20,28 @@ html, body {
 	border     : 0 !important;
 
 	#apinatomy-top-nav {
-		position : absolute;
-
-		top      : 0;
-		left     : 0;
-		height   : $apinatomy-top-nav-height;
-		right    : 0;
+		@extend .edge-to-edge;
+		height : $apinatomy-top-nav-height;
+		z-index: 999;
 	}
 
 	#apinatomy-side-nav {
-		position : absolute;
-
-		top      : $apinatomy-top-nav-height;
-		left     : 0;
-		bottom   : 0;
-		width    : $apinatomy-side-nav-width;
+		@extend .edge-to-edge;
+		top   : $apinatomy-top-nav-height;
+		width : $apinatomy-side-nav-width;
 	}
 
 	main {
-		position : absolute;
-
-		top      : $apinatomy-top-nav-height;
-		left     : $apinatomy-side-nav-width;
-		bottom   : 0;
-		right    : 0;
-		margin   : $apinatomy-spacing;
+		@extend .edge-to-edge;
+		& > .amy-3d-rotation {
+			@extend .edge-to-edge;
+			& > .apinatomy-treemap {
+				@extend .edge-to-edge;
+				left   : $apinatomy-spacing + $apinatomy-side-nav-width;
+				top    : $apinatomy-spacing + $apinatomy-top-nav-height;
+				right  : $apinatomy-spacing;
+				bottom : $apinatomy-spacing;
+			}
+		}
 	}
 }

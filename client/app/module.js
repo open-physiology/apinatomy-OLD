@@ -1,20 +1,25 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['angular', 'angular-resource', 'angular-route', 'angular-animate', 'angular-bootstrap'], function (ng) {
+define(['angular', 'angular-resource', 'angular-route', 'angular-animate', 'angular-bootstrap'], function
+		(ng, ngResource, ngRoute, ngAnimate, uiBootstrap) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	console.log("Loading 'app/module'");
 
 
-	var ApiNATOMY = ng.module('ApiNATOMY', ['ngResource', 'ngRoute', 'ngAnimate', 'ui.bootstrap']);
+	var ApiNATOMY = ng.module('ApiNATOMY', [ngResource, ngRoute, ngAnimate, uiBootstrap]);
 
 
 	ApiNATOMY.config(function ($locationProvider) {
 
 		$locationProvider.html5Mode(true).hashPrefix('!');
 
+	});
+
+	ApiNATOMY.run(function ($rootScope) {
+		$rootScope.threeDRotateEnabled = false;
 	});
 
 

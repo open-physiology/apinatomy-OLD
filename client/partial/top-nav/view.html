@@ -7,40 +7,36 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand apinatomy-brand" href="/"><span class="glyphicon glyphicon-eye-open"></span><span>BioMaps</span></a>
+		<a class="navbar-brand apinatomy-brand" href="/"><span
+				class="glyphicon glyphicon-eye-open"></span><span>BioMaps</span></a>
 	</div>
 
 	<div class="collapse navbar-collapse" id="navbar-collapse">
 		<ul class="nav navbar-nav navbar-left">
+			<li class="navbar-form">
+					<div class="form-control">
+						<label>
+							<input type="checkbox" ng-model="threeDRotateEnabled" class="checkbox">
+							3D Rotation
+						</label>
+					</div>
+			</li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
 			<li>
 				<form class="navbar-form">
 					<div class="input-group" style="width: 200px;">
 						<input type="text" class="form-control" placeholder="Search">
-				<span class="input-group-btn">
-			        <button class="btn btn-default" type="button">
-				        <span class="glyphicon glyphicon-search"></span>
-			        </button>
-				</span>
+						<span class="input-group-btn">
+					        <button class="btn btn-default" type="button">
+						        <span class="glyphicon glyphicon-search"></span>
+					        </button>
+						</span>
 					</div>
 				</form>
 			</li>
-			<li>
-				<!--<label for="toggle3dRotationButton" class="sr-only"></label>-->
-				<button type="button" class="btn navbar-btn" btn-checkbox ng-model="toggle3dRotation">
-					<span class="glyphicon glyphicon-repeat"></span>
-					<span>3D Rotation</span>
-				</button>
-				<!--<a id="toggle3dRotationButton"-->
-				       <!--btn-checkbox-->
-				       <!--class="apinatomy-brand"-->
-				       <!--ng-model="toggle3dRotation">-->
-					<!--<span class="glyphicon glyphicon-repeat"></span>-->
-					<!--<span>3D Rotation</span>-->
-				<!--</a>-->
-			</li>
-		</ul>
-		<ul class="nav navbar-nav navbar-right">
-			<li><a class="apinatomy-account-button" href="#"><span class="glyphicon glyphicon-cog"></span><span>Account</span></a></li>
+			<li><a class="apinatomy-account-button" href="#"><span
+					class="glyphicon glyphicon-cog"></span><span>Account</span></a></li>
 		</ul>
 	</div>
 

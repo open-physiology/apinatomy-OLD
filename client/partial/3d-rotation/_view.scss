@@ -1,0 +1,6 @@
+@import "base";
+
+.amy-3d-rotation {
+	@include perspective(800px);
+	overflow : hidden;
+}

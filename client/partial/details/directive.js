@@ -1,14 +1,17 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'chroma', 'utility/newFromPrototype', 'resource/service'], function (ApiNATOMY, color, newFromPrototype) {
+define(['app/module', 'chroma', 'utility/newFromPrototype', 'resource/service'], function
+		(ApiNATOMY, color, newFromPrototype, ResourceService) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	console.log("Loading 'partial/details/directive'");
 
 
-	var apinatomyEntityDetails = ApiNATOMY.directive('apinatomyEntityDetails', ['ResourceService', function (qResources) {
+	var apinatomyEntityDetails = 'apinatomyEntityDetails';
+
+	ApiNATOMY.directive(apinatomyEntityDetails, [ResourceService, function (qResources) {
 		return {
 			restrict   : 'E',
 			replace    : true,

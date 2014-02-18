@@ -1,14 +1,18 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'chroma', 'utility/newFromPrototype', 'underscore', 'resource/service', 'focus/service', 'partial/tile/layout/service'], function (ApiNATOMY, color, newFromPrototype, _) {
+define(['app/module', 'chroma', 'utility/newFromPrototype', 'underscore', 'resource/service', 'focus/service', 'partial/tile/layout/service'], function
+		(ApiNATOMY, color, newFromPrototype, _, ResourceService, FocusService, TileLayoutService) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	console.log("Loading 'partial/tile/directive'");
 
 
-	var tile = ApiNATOMY.directive('tile', function () {
+	var tile = 'tile';
+
+
+	ApiNATOMY.directive(tile, function () {
 		return {
 			restrict   : 'E',
 			replace    : true,
@@ -22,7 +26,8 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'underscore', 'resou
 				open   : '@'
 			},
 
-			controller: ['$scope', 'FocusService', 'TileLayoutService', 'ResourceService', '$timeout', '$q', function ($scope, FocusService, TileLayoutService, qResources, $timeout, $q) {
+			controller: ['$scope', '$timeout', '$q', ResourceService, FocusService, TileLayoutService, function
+					($scope, $timeout, $q, qResources, FocusService, TileLayoutService) {
 				var qController = qResources.then(function (resources) {
 
 					// interface for inter-tile communication
@@ -130,6 +135,7 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'underscore', 'resou
 					$scope.focus = false;
 					$scope.hidden = true;
 					$scope.hasChildren = false;
+					$scope.interactionEnabled = true;
 
 
 					// initializing other scope fields
@@ -193,6 +199,12 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'underscore', 'resou
 					};
 
 
+					// pause interaction during 3d manipulation
+
+					$scope.$on('3d-manipulation-start', function () { $scope.interactionEnabled = false; });
+					$scope.$on('3d-manipulation-end', function () { $scope.interactionEnabled = true; });
+
+
 					return controller;
 
 				});
@@ -205,7 +217,7 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'underscore', 'resou
 				// link to parent controller
 
 				qController.then(function (controller) {
-					controller.registerParent(iElement.parent().controller('tile') ||
+					controller.registerParent(iElement.parent().controller(tile) ||
 					                          iElement.parent().controller('apinatomyTreemap'));
 				});
 

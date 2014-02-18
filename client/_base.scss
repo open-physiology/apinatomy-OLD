@@ -1,7 +1,19 @@
 // variables
 
-$apinatomy-spacing: 15px;
+$apinatomy-spacing : 15px;
 $apinatomy-top-nav-height : $navbar-height;
 $apinatomy-side-nav-width : 200px;
 $apinatomy-tile-header-height : 26px;
-$apinatomy-tile-border-width: 1px; // important for position calculation in javascript; don't change
+$apinatomy-tile-border-width : 1px;
+// important for position calculation in javascript; don't change
+
+.edge-to-edge {
+	display  : block;
+	position : absolute;
+	top      : 0;
+	left     : 0;
+	bottom   : 0;
+	right    : 0;
+	margin   : 0;
+	padding  : 0;
+}

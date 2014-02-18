@@ -1,7 +1,7 @@
 <div class="tile"
-     ng-mouseenter="onMouseEnter()"
+     ng-mouseenter="interactionEnabled && onMouseEnter()"
      ng-mouseleave="onMouseLeave()"
-     ng-click="onClick($event)"
+     ng-click="interactionEnabled && onClick($event)"
      ng-style="(open && hasChildren) && style['normal'] || style[state]">
 
 	<header ng-class="{ opaque: open }" class="top-header">{{ title }}</header>

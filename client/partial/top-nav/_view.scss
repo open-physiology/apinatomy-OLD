@@ -17,6 +17,16 @@
 		}
 	}
 
+	button {
+		input[type="checkbox"] {
+			margin: 0px;
+			margin-right: 3px;
+		}
+		label {
+			margin: 0px;
+		}
+	}
+
 	.apinatomy-account-button {
 		span:first-child {
 			vertical-align: -1pt;

@@ -8,9 +8,15 @@ define(['app/module'], function (ApiNATOMY) {
 	console.log("Loading 'resource/service'");
 
 
-	ApiNATOMY.factory('ResourceService', function ($resource) {
+	var RESOURCE_SERVICE = 'ResourceService';
+
+
+	ApiNATOMY.factory(RESOURCE_SERVICE, function ($resource) {
 		return $resource('/resources/ExampleData').get().$promise;
 	});
+
+
+	return RESOURCE_SERVICE;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -5,21 +5,30 @@ define(['app/module'], function (ApiNATOMY) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	ApiNATOMY.factory('SettingsService', ['$rootScope', function ($rootScope) {
-		$rootScope.threeDRotate = false;
+	console.log("Loading 'settings/service'");
+
+
+	var SETTINGS_SERVICE = 'SettingsService';
+
+
+	ApiNATOMY.factory(SETTINGS_SERVICE, ['$rootScope', function ($rootScope) {
+		$rootScope.threeDRotateEnabled = false;
 
 		return {
 
 			set3dRotation: function (val) {
-				$rootScope.threeDRotate = val;
+				$rootScope.threeDRotateEnabled = val;
 			},
 
 			get3dRotation: function () {
-				return $rootScope.threeDRotate;
+				return $rootScope.threeDRotateEnabled;
 			}
 
 		};
 	}]);
+
+
+	return SETTINGS_SERVICE;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

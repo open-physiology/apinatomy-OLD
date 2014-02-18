@@ -8,7 +8,10 @@ define(['app/module', 'underscore', 'utility/sum'], function (ApiNATOMY, _, sum)
 	console.log("Loading 'partial/tile/layout/service'");
 
 
-	ApiNATOMY.factory('TileLayoutService', ['$q', function ($q) {
+	var TILE_LAYOUT_SERVICE = 'TileLayoutService';
+
+
+	ApiNATOMY.factory(TILE_LAYOUT_SERVICE, ['$q', function ($q) {
 
 		function gridLayout(tilePromises, size1, size2, spacing, repositionFn, nrOfDim2Tiles) {
 			$q.all(tilePromises).then(function (tiles) {
@@ -86,6 +89,9 @@ define(['app/module', 'underscore', 'utility/sum'], function (ApiNATOMY, _, sum)
 			}
 		}
 	}]);
+
+
+	return TILE_LAYOUT_SERVICE;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,12 +1,3 @@
-<main ng-mousedown="threeDRotate && onMouseDown($event)"
-      ng-mouseup="threeDRotate && onMouseUp($event)"
-      ng-mousemove="threeDRotate && onMouseMove($event)">
-	<div id="apinatomy-treemap-bottom-layer"
-	     style="-webkit-perspective: 100px; background-color: red"
-	     ng-style="style"></div>
-	<div id="apinatomy-treemap"
-	     style="-webkit-perspective: 0px;"
-	     ng-style="style"
-	     ng-transclude>
-	</div>
-</main>
+<div class="apinatomy-treemap"
+     ng-transclude>
+</div>
