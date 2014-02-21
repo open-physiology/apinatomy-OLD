@@ -2,6 +2,7 @@
   <profile version="1.0" is_locked="false">
     <option name="myName" value="Project Default" />
     <option name="myLocal" value="false" />
+    <inspection_tool class="CssInvalidHtmlTagReference" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="CssUnknownProperty" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myCustomPropertiesEnabled" value="true" />
       <option name="myIgnoreVendorSpecificProperties" value="false" />
@@ -27,7 +28,7 @@
     <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="14">
+          <list size="17">
             <item index="0" class="java.lang.String" itemvalue="nobr" />
             <item index="1" class="java.lang.String" itemvalue="noembed" />
             <item index="2" class="java.lang.String" itemvalue="comment" />
@@ -40,8 +41,11 @@
             <item index="9" class="java.lang.String" itemvalue="apinatomy-treemap" />
             <item index="10" class="java.lang.String" itemvalue="tile" />
             <item index="11" class="java.lang.String" itemvalue="apinatomy-entity-details" />
-            <item index="12" class="java.lang.String" itemvalue="apinatomy-3d-rotation" />
-            <item index="13" class="java.lang.String" itemvalue="amy-3d-rotation" />
+            <item index="12" class="java.lang.String" itemvalue="amy-rotation" />
+            <item index="13" class="java.lang.String" itemvalue="amy-treemap" />
+            <item index="14" class="java.lang.String" itemvalue="amy-top-nav" />
+            <item index="15" class="java.lang.String" itemvalue="amy-side-nav" />
+            <item index="16" class="java.lang.String" itemvalue="amy-entity-details" />
           </list>
         </value>
       </option>

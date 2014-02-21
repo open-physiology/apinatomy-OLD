@@ -1,32 +1,29 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['angular', 'app/module', 'partial/tile/layout/service'], function
-		(ng, ApiNATOMY, TileLayoutService) {
+define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/service', 'element-directive/service'], function (_, ng, ApiNATOMY, TileLayoutServiceName, ElementDirectiveServiceName) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	console.log("Loading 'partial/treemap/directive'");
 
 
-	var apinatomyTreemap = 'apinatomyTreemap';
+	var DEFAULT_TILE_SPACING = '1px';
+	var DEFAULT_TILE_LAYOUT = 'twentyFourTile';
 
 
-	ApiNATOMY.directive(apinatomyTreemap, [TileLayoutService, '$q', '$window', function
-			(TileLayoutService, $q, $window) {
-		return {
-			restrict   : 'E',
-			replace    : true,
-			transclude : true,
-			templateUrl: 'partial/treemap/view.html',
-
+	ApiNATOMY.directive('amyTreemap', [TileLayoutServiceName, ElementDirectiveServiceName, '$q', '$window', function (TileLayoutService, elementDirective, $q, $window) {
+		return elementDirective({
 			scope: {
-				layout : '@',
+				layout:  '@',
 				spacing: '@'
 			},
+			controller: function ($scope) {
+				var tileSpacing = parseInt($scope.spacing || DEFAULT_TILE_SPACING);
+				var tileLayout = $scope.layout || DEFAULT_TILE_LAYOUT;
 
-			controller: function ($rootScope, $scope) {
-				var deferred = $q.defer();
+				var element;
+				var children = [];
 
 				var controller = {
 					registerMouseEnter: function () {
@@ -41,49 +38,46 @@ define(['angular', 'app/module', 'partial/tile/layout/service'], function
 						}
 					},
 
-					registerChild: function (qChildController) {
-						$scope.pChildren.push(qChildController);
-					}
+					registerElement: function (newElement) {
+						element = newElement;
+						controller.requestRedraw();
+					},
+
+					registerChild: function (child) {
+						children.push(child);
+						controller.requestRedraw();
+					},
+
+					requestRedraw: _.debounce(_.bindKey($scope, '$apply', function () {
+						if (element) {
+							TileLayoutService[tileLayout](
+									children,
+									element.height(),
+									element.width(),
+									tileSpacing
+							);
+						}
+					}), 10)
 				};
 
-				$scope.tileSpacing = parseInt($scope.spacing || '1px');
-				$scope.tileLayout = $scope.layout || 'slice';
-				$scope.style = {};
-				$scope.pChildren = [];
-
-
-				/////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-				/////////////////////////////////////////////////////////////////////////////////////////
-
-
-				deferred.resolve(controller);
-				return deferred.promise;
+				return controller;
 			},
-			link      : function ($scope, iElement) {
-				// how to redraw the treemap
-				function redraw() {
-					if ($scope.tileLayout !== 'twentyFourTile' || $scope.pChildren.length === 24) {
-						$scope.height = parseFloat(getComputedStyle(iElement[0]).height);
-						$scope.width = parseFloat(getComputedStyle(iElement[0]).width);
+			link:       function ($scope, iElement, iAttrs, controller) {
 
-						TileLayoutService[$scope.tileLayout]($scope.pChildren, $scope.height, $scope.width, $scope.tileSpacing);
-					}
-				}
+				//// register the treemap DOM element with the controller
 
-				// we must redraw when the window changes size
-				ng.element($window).bind('resize', $scope.$apply.bind($scope, redraw));
+				controller.registerElement(iElement);
 
-				// we must redraw when any tile-size has changed
-				$scope.$parent.$on('tile-size-changed', redraw);
+				//// redraw when the window changes size
+
+				ng.element($window).bind('resize', _.bindKey($scope, '$apply', controller.requestRedraw));
+
 			}
-		};
+		});
 	}]);
 
 
-	return apinatomyTreemap;
+	return 'amyTreemap';
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

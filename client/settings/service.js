@@ -8,10 +8,7 @@ define(['app/module'], function (ApiNATOMY) {
 	console.log("Loading 'settings/service'");
 
 
-	var SETTINGS_SERVICE = 'SettingsService';
-
-
-	ApiNATOMY.factory(SETTINGS_SERVICE, ['$rootScope', function ($rootScope) {
+	ApiNATOMY.factory('SettingsService', ['$rootScope', function ($rootScope) {
 		$rootScope.threeDRotateEnabled = false;
 
 		return {
@@ -28,7 +25,7 @@ define(['app/module'], function (ApiNATOMY) {
 	}]);
 
 
-	return SETTINGS_SERVICE;
+	return 'SettingsService';
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,13 +1,12 @@
 // variables
 
-$apinatomy-spacing : 15px;
-$apinatomy-top-nav-height : $navbar-height;
-$apinatomy-side-nav-width : 200px;
-$apinatomy-tile-header-height : 26px;
-$apinatomy-tile-border-width : 1px;
-// important for position calculation in javascript; don't change
+$amy-spacing : 15px;
+$amy-top-nav-height : $navbar-height;
+$amy-side-nav-width : 200px;
+$amy-tile-header-height : 26px;
+$amy-tile-border-width : 1px; // important for position calculation in javascript; don't change
 
-.edge-to-edge {
+@mixin edge-to-edge {
 	display  : block;
 	position : absolute;
 	top      : 0;
@@ -16,4 +15,40 @@ $apinatomy-tile-border-width : 1px;
 	right    : 0;
 	margin   : 0;
 	padding  : 0;
+}
+
+
+///////////////////////// Fade-in & Fade-out /////////////////////////
+
+@mixin -fade-in-out-transition($duration: 600ms) {
+	&.ng-hide-add, &.ng-hide-remove {
+		@include single-transition(opacity, linear, $duration);
+		display : block !important;
+	}
+}
+
+
+@mixin fade-out($duration: 600ms) {
+	@include -fade-in-out-transition($duration);
+	&.ng-hide-add.ng-hide-add-active {
+		opacity : 0;
+	}
+	&.ng-hide-add {
+		opacity : 1;
+	}
+}
+
+@mixin fade-in($duration: 600ms) {
+	@include -fade-in-out-transition($duration);
+	&.ng-hide-remove.ng-hide-remove-active {
+		opacity : 0;
+	}
+	&.ng-hide-remove {
+		opacity : 1;
+	}
+}
+
+@mixin fade-in-out($duration: 600ms) {
+	@include fade-out($duration);
+	@include fade-in ($duration);
 }

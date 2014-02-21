@@ -1,12 +1,10 @@
 <div class="tile"
-     ng-mouseenter="interactionEnabled && onMouseEnter()"
+     ng-mouseenter="onMouseEnter()"
      ng-mouseleave="onMouseLeave()"
      ng-click="interactionEnabled && onClick($event)"
      ng-style="(open && hasChildren) && style['normal'] || style[state]">
 
-	<header ng-class="{ opaque: open }" class="top-header">{{ title }}</header>
-	<!--ng-style="{ borderColor: style[state].borderColor }"-->
-
+	<header ng-class="{ opaque:  open }" class="top-header ">{{ title }}</header>
 	<header ng-class="{ opaque: !open }" class="full-header">{{ title }}</header>
 
 	<section ng-class="{ opaque: open, hidden: hidden }" ng-transclude></section>

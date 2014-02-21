@@ -2,13 +2,6 @@
 @import "compass";
 @import "bootstrap";
 @import "base";
-@import "partial/top-nav/view";
-@import "partial/side-nav/view";
-@import "partial/treemap/view";
-@import "partial/tile/view";
-@import "partial/details/view";
-
-// // // // // // // // // // // // // // // // // // // // // // // // // // //
 
 html, body {
 	@include user-select(none);
@@ -19,29 +12,36 @@ html, body {
 	margin     : 0 !important;
 	border     : 0 !important;
 
-	#apinatomy-top-nav {
-		@extend .edge-to-edge;
-		height : $apinatomy-top-nav-height;
-		z-index: 999;
+	#top-nav {
+		@include edge-to-edge;
+		height  : $amy-top-nav-height;
+		z-index : 999;
 	}
 
-	#apinatomy-side-nav {
-		@extend .edge-to-edge;
-		top   : $apinatomy-top-nav-height;
-		width : $apinatomy-side-nav-width;
+	#side-nav {
+		@include edge-to-edge;
+		padding-right : $amy-spacing;
+		top           : $amy-top-nav-height;
+		width         : $amy-side-nav-width + $amy-spacing;
+		z-index       : 999;
 	}
 
 	main {
-		@extend .edge-to-edge;
-		& > .amy-3d-rotation {
-			@extend .edge-to-edge;
-			& > .apinatomy-treemap {
-				@extend .edge-to-edge;
-				left   : $apinatomy-spacing + $apinatomy-side-nav-width;
-				top    : $apinatomy-spacing + $apinatomy-top-nav-height;
-				right  : $apinatomy-spacing;
-				bottom : $apinatomy-spacing;
+		@include edge-to-edge;
+		& > amy-rotation {
+			@include edge-to-edge;
+			& > amy-treemap {
+				@include edge-to-edge;
+				left   : $amy-spacing + $amy-side-nav-width;
+				top    : $amy-spacing + $amy-top-nav-height;
+				right  : $amy-spacing;
+				bottom : $amy-spacing;
 			}
 		}
 	}
 }
+
+@import "partial/top-nav/view";
+@import "partial/side-nav/view";
+@import "partial/treemap/view";
+@import "partial/rotation/view";

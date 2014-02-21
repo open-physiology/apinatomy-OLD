@@ -1,33 +1,26 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'underscore', 'focus/service'], function
-		(ApiNATOMY, _, FocusService) {
+define(['app/module', 'lodash', 'focus/service'], function (ApiNATOMY, _, FocusService) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	console.log("Loading 'partial/side-nav/directive'");
 
 
-	var apinatomySideNav = 'apinatomySideNav';
-
-
-	ApiNATOMY.directive(apinatomySideNav, [FocusService, function
-			(FocusService) {
+	ApiNATOMY.directive('amySideNav', [FocusService, function (FocusService) {
 		return {
 			restrict   : 'E',
 			replace    : true,
 			templateUrl: 'partial/side-nav/view.html',
-			controller : function ($rootScope, $scope) {
+			controller : function ($scope) {
 				$scope.FocusService = FocusService;
-				//$scope.eidStack = FocusService.eidStack();
-				//$scope.eidIdRange = FocusService.eidIdRange();
 			}
 		};
 	}]);
 
 
-	return apinatomySideNav;
+	return 'amySideNav';
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,6 @@
 'use strict';
 
+
 // Logging several application phases
 
 console.log('Running main.js...');
@@ -9,25 +10,33 @@ console.log('Running main.js...');
 
 require.config({
 	paths: {
-		'domReady'         : 'lib/requirejs-domready/domReady',
-		'angular'          : 'lib/angular/angular',
-		'angular-resource' : 'lib/angular-resource/angular-resource',
-		'angular-route'    : 'lib/angular-route/angular-route',
-		'angular-animate'  : 'lib/angular-animate/angular-animate',
+		'domReady':          'lib/requirejs-domready/domReady',
+		'jquery':            'lib/jquery/dist/jquery',
+		'angular':           'lib/angular/angular',
+		'angular-resource':  'lib/angular-resource/angular-resource',
+		'angular-route':     'lib/angular-route/angular-route',
+		'angular-animate':   'lib/angular-animate/angular-animate',
 		'angular-bootstrap': 'lib/angular-bootstrap/ui-bootstrap-tpls',
-		'underscore'       : 'lib/underscore/underscore',
-		'es5-shim'         : 'lib/es5-shim/es5-shim',
-		'es6-shim'         : 'lib/es6-shim/es6-shim',
-		'chroma'           : 'lib/chroma-js/chroma'
+		'lodash':            'lib/lodash/dist/lodash',
+		'es5-shim':          'lib/es5-shim/es5-shim',
+		'es6-shim':          'lib/es6-shim/es6-shim',
+		'chroma':            'lib/chroma-js/chroma'
 	},
-	shim : {
-		'underscore'       : { exports: '_' },
-		'angular'          : { exports: 'angular' },
-		'es6-shim'         : { deps: ['es5-shim'] },
-		'angular-resource' : { deps: ['angular'], init: function () { return 'ngResource'; } },
-		'angular-route'    : { deps: ['angular'], init: function () { return 'ngRoute'; } },
-		'angular-animate'  : { deps: ['angular'], init: function () { return 'ngAnimate'; } },
+	shim:  {
+		'angular':           { exports: 'angular' },
+		'es6-shim':          { deps: ['es5-shim'] },
+		'angular-resource':  { deps: ['angular'], init: function () { return 'ngResource'; } },
+		'angular-route':     { deps: ['angular'], init: function () { return 'ngRoute'; } },
+		'angular-animate':   { deps: ['angular'], init: function () { return 'ngAnimate'; } },
 		'angular-bootstrap': { deps: ['angular'], init: function () { return 'ui.bootstrap'; } }
+	},
+	map:   {
+		'*':                  {
+			'jquery':          'patched-lib/jquery',
+			'lodash':          'patched-lib/lodash'
+		},
+		'patched-lib/jquery': { 'jquery': 'jquery' },
+		'patched-lib/lodash': { "lodash": 'lodash' }
 	}
 });
 
@@ -37,16 +46,18 @@ require.config({
 var APINATOMY_ANGULAR_DIRECTIVES = [
 	'partial/top-nav/directive',
 	'partial/side-nav/directive',
+	'partial/side-nav/details/directive',
 	'partial/treemap/directive',
-	'partial/tile/directive',
-	'partial/details/directive',
-	'partial/3d-rotation/directive'
+	'partial/treemap/tile/directive',
+	'partial/rotation/directive'
 ];
 
 
-// First, load ES6 shims (and, implicitly, ES5 shims)
+//// First, load ES6 shims (and, implicitly, ES5 shims).
+//// Also load lodash and jquery to make sure no module
+//// can see their global variables.
 
-require(['es6-shim'], function () {
+require(['es6-shim', 'lodash', 'jquery'], function () {
 
 	// Then bootstrap Angular when the DOM is ready and the ApiNATOMY modules are loaded
 

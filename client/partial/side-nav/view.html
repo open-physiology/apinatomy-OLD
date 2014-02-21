@@ -1,11 +1,10 @@
-<nav id="apinatomy-side-nav" role="navigation">
-
+<nav class="amy-side-nav" role="navigation">
 
 	<header><h2>ApiNATOMY</h2></header>
 
-	<apinatomy-entity-details
+	<amy-entity-details
 			ng-repeat="eidId in FocusService.eidIdRange()"
 			ng-show="eidId < FocusService.eidCount()"
-			eid="FocusService.eid(eidId)"></apinatomy-entity-details>
+			eid="FocusService.eid(eidId)"></amy-entity-details>
 
 </nav>

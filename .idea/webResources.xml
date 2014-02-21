@@ -6,7 +6,6 @@
         <entryData>
           <resourceRoots>
             <path value="file://$PROJECT_DIR$/client" />
-            <path value="file://$PROJECT_DIR$/client/lib/requirejs" />
             <path value="file://$PROJECT_DIR$/client/lib/bootstrap-sass-official/vendor/assets/stylesheets" />
           </resourceRoots>
         </entryData>

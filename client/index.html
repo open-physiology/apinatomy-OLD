@@ -3,7 +3,7 @@
 <head>
 	<title>ApiNATOMY</title>
 
-	<script data-main="/main.js" src="/require.js"></script>
+	<script data-main="/main.js" src="/lib/requirejs/require.js"></script>
 
 	<link rel="stylesheet" href="/index.css">
 
@@ -14,15 +14,16 @@
 <body>
 
 
-	<apinatomy-top-nav></apinatomy-top-nav>
+	<amy-top-nav id="top-nav"></amy-top-nav>
 
 
-	<apinatomy-side-nav></apinatomy-side-nav>
+	<amy-side-nav id="side-nav"></amy-side-nav>
 
 
 	<main>
+
 		<amy-rotation amy-model="treemapStyle" enabled="threeDRotateEnabled">
-			<apinatomy-treemap layout="twentyFourTile" ng-style="treemapStyle">
+			<amy-treemap layout="twentyFourTile" ng-style="treemapStyle">
 
 				<tile eid="1"></tile>
 				<tile eid="2"></tile>
@@ -57,9 +58,11 @@
 					<tile eid="6"></tile>
 				</tile>
 
-			</apinatomy-treemap>
+			</amy-treemap>
 		</amy-rotation>
+
 	</main>
+
 
 </body>
 </html>

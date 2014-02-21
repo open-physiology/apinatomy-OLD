@@ -1,12 +1,3 @@
 @import "base";
 
-//.amy-3d-rotation {
-//	@extend .edge-to-edge;
-//
-//	.apinatomy-treemap {
-//		@extend .edge-to-edge;
-//	}
-//
-//}
-
-@import "partial/3d-rotation/view";
+@import "partial/treemap/tile/view";

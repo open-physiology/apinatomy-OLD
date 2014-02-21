@@ -25,17 +25,22 @@ app.get('/resources/ExampleData', api.getExampleData);
 
 // TODO: API
 
+//
+// part
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-///////////////////////// Static /////////////////////////
 
-// require.js gets special treatment, so we don't need to
-// specify the full paths in the main html file
+///////////////////////// Special Exceptions /////////////////////////
 
-app.get('/require.js', function (req, res) {
-	res.redirect('/lib/requirejs/require.js');
-});
-
-// the bootstrap glyphicons need special treatment too
+//// The bootstrap glyphicons need special treatment:
 
 app.get('/bootstrap/glyphicons-halflings-regular.*', function (req, res) {
 	res.redirect('/lib/bootstrap-sass-official/vendor/assets/fonts/' + req.path);
@@ -45,19 +50,20 @@ app.get('/require.js', function (req, res) {
 	res.redirect('/lib/requirejs/require.js');
 });
 
-// Just serve '/' if any client-side route is requested
 
-function serveIndex(req, res, next) {
-	req.url = '/';
-	next();
-}
-// TODO: 'get' directives to route client-side routes to index.html
+///////////////////////// Client-side Routes /////////////////////////
+
+// TODO: Specify 'get' directives to route each to index.html
+
+//function serveIndex(req, res, next) {
+//	req.url = '/';
+//	next();
+//}
 
 
-// Serve static content from the client directory
+///////////////////////// Client-side Static Files /////////////////////////
 
 app.use(express.static(vars.clientDir));
-
 
 
 ///////////////////////// Listen on the port /////////////////////////

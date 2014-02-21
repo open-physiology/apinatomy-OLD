@@ -1,22 +1,20 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'underscore', 'utility/sum'], function (ApiNATOMY, _, sum) {
+define(['app/module', 'lodash', 'utility/sum'], function (ApiNATOMY, _, sum) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	console.log("Loading 'partial/tile/layout/service'");
+	console.log("Loading 'partial/layout/service'");
 
 
-	var TILE_LAYOUT_SERVICE = 'TileLayoutService';
-
-
-	ApiNATOMY.factory(TILE_LAYOUT_SERVICE, ['$q', function ($q) {
+	ApiNATOMY.factory('TileLayoutService', ['$q', function ($q) {
 
 		function gridLayout(tilePromises, size1, size2, spacing, repositionFn, nrOfDim2Tiles) {
 			$q.all(tilePromises).then(function (tiles) {
 
 				// fix nr of rows and columns
+
 				nrOfDim2Tiles = nrOfDim2Tiles || tiles.length;
 				var nrOfDim1Tiles = Math.ceil(tiles.length / nrOfDim2Tiles);
 
@@ -24,11 +22,13 @@ define(['app/module', 'underscore', 'utility/sum'], function (ApiNATOMY, _, sum)
 
 
 				// compensating for the 1px border
+
 				size1 -= 2;
 				size2 -= 2;
 
 
 				// compensating for spacing
+
 				size1 -= nrOfDim1Tiles * spacing;
 				size2 -= nrOfDim2Tiles * spacing;
 
@@ -91,7 +91,7 @@ define(['app/module', 'underscore', 'utility/sum'], function (ApiNATOMY, _, sum)
 	}]);
 
 
-	return TILE_LAYOUT_SERVICE;
+	return 'TileLayoutService';
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

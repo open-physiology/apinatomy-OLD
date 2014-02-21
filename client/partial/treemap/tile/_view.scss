@@ -1,13 +1,14 @@
 @import "base";
 
-.apinatomy-treemap .tile {
+amy-treemap .tile {
 	position   : absolute;
 	margin     : 0;
 	cursor     : crosshair;
 	text-align : center;
 	padding    : 0 8px;
 
-	// growing / shrinking animations
+	//// growing / shrinking animations
+
 	@include transition-property(top, bottom, left, right, width, height, min-width, min-height, font-size, padding, line-height);
 	@include transition-duration(.6s);
 	@include transition-timing-function(ease-in-out);
@@ -23,7 +24,7 @@
 
 		opacity: 0;
 		&.opaque {
-			// delayed reveal of the full header, only on reappearance
+			//// delayed reveal of the full header, only on reappearance
 			@include single-transition(opacity, linear, .6s, .8s);
 			opacity: 1;
 		}
@@ -41,9 +42,9 @@
 		top            : 0;
 		left           : 0;
 		right          : 0;
-		height         : $apinatomy-tile-header-height;
-		line-height    : $apinatomy-tile-header-height;
-		font-size      : .8 * $apinatomy-tile-header-height;
+		height         : $amy-tile-header-height;
+		line-height    : $amy-tile-header-height;
+		font-size      : .8 * $amy-tile-header-height;
 		border-bottom  : dotted 1px;
 
 		@include single-transition(opacity, linear, .6s);
@@ -56,7 +57,7 @@
 		display  : block;
 		margin   : 0;
 		padding  : 0;
-		top      : $apinatomy-tile-header-height;
+		top      : $amy-tile-header-height;
 		left     : 0;
 		bottom   : 0;
 		right    : 0;
@@ -68,7 +69,7 @@
 	}
 
 	// borders
-	border     : solid $apinatomy-tile-border-width;
+	border     : solid $amy-tile-border-width;
 
 	// overflow
 	& > section { overflow : hidden; }

@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="mhelvens">
     <words>
+      <w>&amp;eid</w>
       <w>apinatomy</w>
       <w>clearfix</w>
       <w>contrib</w>
@@ -13,10 +14,14 @@
       <w>jumbotron</w>
       <w>lightblue</w>
       <w>lightgreen</w>
+      <w>lodash</w>
       <w>mixins</w>
+      <w>mousedown</w>
       <w>nasopharynx</w>
       <w>natomy</w>
       <w>nbsp</w>
+      <w>postlink</w>
+      <w>prelink</w>
       <w>scss</w>
       <w>squarify</w>
       <w>transpiling</w>

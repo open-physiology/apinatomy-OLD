@@ -1,12 +1,12 @@
 @import "base";
 
-#apinatomy-side-nav {
-	display : block;
-	padding : 0;
+.amy-side-nav {
+
+	background-color : rgba(255, 255, 255, .5);
 
 	& > header {
-		margin-top    : $apinatomy-spacing;
-		margin-bottom : $apinatomy-spacing;
+		margin-top    : $amy-spacing;
+		margin-bottom : $amy-spacing;
 		padding       : 0px;
 		border-style  : none none solid none;
 		border-width  : 2px;
@@ -14,7 +14,7 @@
 
 		& > h2 {
 			text-align    : right;
-			padding-right : $apinatomy-spacing;
+			padding-right : $amy-spacing;
 			font-size     : 18pt;
 			font-family   : serif;
 			font-weight   : bold;
@@ -24,22 +24,12 @@
 
 	}
 
-	& > .apinatomy-entity-details {
-		// show -> hide animation
-
-		&.ng-hide-add, &.ng-hide-remove {
-			@include single-transition(opacity, linear, .6s);
-			display : block !important;
-		}
-		&.ng-hide-add.ng-hide-add-active {
-			opacity : 0;
-		}
-		&.ng-hide-add {
-			opacity : 1;
-		}
-
-		margin-left   : $apinatomy-spacing;
-		margin-bottom : $apinatomy-spacing;
+	& > .amy-entity-details {
+		@include fade-out;
+		margin-left   : $amy-spacing;
+		margin-bottom : $amy-spacing;
 	}
 
 }
+
+@import "partial/side-nav/details/view";

@@ -1,39 +1,39 @@
 @import "base";
 
-#apinatomy-top-nav {
+.amy-top-nav {
 
 	.form-control + .input-group-btn > button {
 		// to fix 1 pixel height difference
 		height : $input-height-base;
 	}
 
-	.apinatomy-brand {
+	.amy-brand {
 		span:first-child {
-			vertical-align: top;
-			margin-right: 10px;
+			vertical-align : top;
+			margin-right   : 10px;
 		}
 		span:nth-child(2) {
-			vertical-align: top;
+			vertical-align : top;
 		}
 	}
 
 	button {
 		input[type="checkbox"] {
-			margin: 0px;
-			margin-right: 3px;
+			margin       : 0px;
+			margin-right : 3px;
 		}
 		label {
-			margin: 0px;
+			margin : 0px;
 		}
 	}
 
-	.apinatomy-account-button {
+	.amy-account-button {
 		span:first-child {
-			vertical-align: -1pt;
-			margin-right: 5px;
+			vertical-align : -1pt;
+			margin-right   : 5px;
 		}
 		span:nth-child(2) {
-			font-weight: bold;
+			font-weight : bold;
 		}
 	}
 

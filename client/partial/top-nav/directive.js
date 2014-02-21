@@ -1,31 +1,24 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'settings/service'], function
-		(ApiNATOMY, SettingsService) {
+define(['app/module'], function (ApiNATOMY) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	console.log("Loading 'partial/top-nav/directive'");
 
 
-	var apinatomyTopNav = 'apinatomyTopNav';
-
-	ApiNATOMY.directive(apinatomyTopNav, [SettingsService, function (SettingsService) {
+	ApiNATOMY.directive('amyTopNav', [function () {
 		return {
 			restrict   : 'E',
 			replace    : true,
 			templateUrl: 'partial/top-nav/view.html',
-			controller: function ($scope) {
-//				$scope.$watch('toggle3dRotation', function (newValue) {
-//					SettingsService.set3dRotation(newValue);
-//				})
-			}
+			controller: function ($scope) {}
 		};
 	}]);
 
 
-	return apinatomyTopNav;
+	return 'amyTopNav';
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

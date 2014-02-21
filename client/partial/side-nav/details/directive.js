@@ -6,17 +6,15 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'resource/service'],
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	console.log("Loading 'partial/details/directive'");
+	console.log("Loading 'partial/side-nav/details/directive'");
 
 
-	var apinatomyEntityDetails = 'apinatomyEntityDetails';
-
-	ApiNATOMY.directive(apinatomyEntityDetails, [ResourceService, function (qResources) {
+	ApiNATOMY.directive('amyEntityDetails', [ResourceService, function (qResources) {
 		return {
 			restrict   : 'E',
 			replace    : true,
 			transclude : true,
-			templateUrl: 'partial/details/view.html',
+			templateUrl: 'partial/side-nav/details/view.html',
 			scope      : {
 				eidFn: '&eid'
 			},
@@ -42,7 +40,7 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'resource/service'],
 	}]);
 
 
-	return apinatomyEntityDetails;
+	return 'amyEntityDetails';
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
