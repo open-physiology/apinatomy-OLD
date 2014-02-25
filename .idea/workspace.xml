@@ -2,45 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb443da2-c5b7-4919-9dda-26632e987897" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/partial/rotation/directive.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/patched-lib/jquery.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/patched-lib/lodash.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/element-directive/service.js" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/partial/3d-rotation/directive.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/partial/3d-rotation/view.html" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/client/partial/3d-rotation/_view.scss" afterPath="$PROJECT_DIR$/client/partial/rotation/_view.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/client/partial/details/_view.scss" afterPath="$PROJECT_DIR$/client/partial/side-nav/details/_view.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/client/partial/details/directive.js" afterPath="$PROJECT_DIR$/client/partial/side-nav/details/directive.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/client/partial/details/view.html" afterPath="$PROJECT_DIR$/client/partial/side-nav/details/view.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/client/partial/tile/_view.scss" afterPath="$PROJECT_DIR$/client/partial/treemap/tile/_view.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/client/partial/tile/directive.js" afterPath="$PROJECT_DIR$/client/partial/treemap/tile/directive.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/client/partial/tile/layout/service.js" afterPath="$PROJECT_DIR$/client/partial/treemap/layout/service.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/client/partial/tile/view.html" afterPath="$PROJECT_DIR$/client/partial/treemap/tile/view.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/_base.scss" afterPath="$PROJECT_DIR$/client/_base.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/_bootstrap.scss" afterPath="$PROJECT_DIR$/client/_bootstrap.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/side-nav/_view.scss" afterPath="$PROJECT_DIR$/client/partial/side-nav/_view.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/top-nav/_view.scss" afterPath="$PROJECT_DIR$/client/partial/top-nav/_view.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/treemap/_view.scss" afterPath="$PROJECT_DIR$/client/partial/treemap/_view.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/spec/no-spec.js" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/client/patched-lib/jquery.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/client/patched-lib/lodash.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config.rb" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/spec/js/matchers.js" afterPath="$PROJECT_DIR$/spec/general-helper.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gruntfile.js" afterPath="$PROJECT_DIR$/Gruntfile.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/apinatomy.iml" afterPath="$PROJECT_DIR$/.idea/apinatomy.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower.json" afterPath="$PROJECT_DIR$/bower.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/side-nav/directive.js" afterPath="$PROJECT_DIR$/client/partial/side-nav/directive.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/top-nav/directive.js" afterPath="$PROJECT_DIR$/client/partial/top-nav/directive.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/treemap/directive.js" afterPath="$PROJECT_DIR$/client/partial/treemap/directive.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/index.html" afterPath="$PROJECT_DIR$/client/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/index.scss" afterPath="$PROJECT_DIR$/client/index.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/main.js" afterPath="$PROJECT_DIR$/client/main.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/mhelvens.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/mhelvens.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/utility/putStyle.js" afterPath="$PROJECT_DIR$/client/utility/putStyle.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/server.js" afterPath="$PROJECT_DIR$/server/server.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/resource/service.js" afterPath="$PROJECT_DIR$/client/resource/service.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/settings/service.js" afterPath="$PROJECT_DIR$/client/settings/service.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/utility/sum.js" afterPath="$PROJECT_DIR$/client/utility/sum.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/side-nav/view.html" afterPath="$PROJECT_DIR$/client/partial/side-nav/view.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/top-nav/view.html" afterPath="$PROJECT_DIR$/client/partial/top-nav/view.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/treemap/view.html" afterPath="$PROJECT_DIR$/client/partial/treemap/view.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/webResources.xml" afterPath="$PROJECT_DIR$/.idea/webResources.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/vars.js" afterPath="$PROJECT_DIR$/server/vars.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="apinatomy.iws" />
@@ -67,7 +40,25 @@
       <file leaf-file-name="server.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="7" selection-start="546" selection-end="546" vertical-scroll-proportion="0.2949757" vertical-offset="0" max-vertical-offset="1234">
+            <state line="53" column="0" selection-start="1357" selection-end="1357" vertical-scroll-proportion="0.7169615" vertical-offset="0" max-vertical-offset="961">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/main.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="48" column="0" selection-start="1578" selection-end="1578" vertical-scroll-proportion="0.0" vertical-offset="38" max-vertical-offset="1001">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="api.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/api.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="19" column="0" selection-start="422" selection-end="422" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="325">
               <folding />
             </state>
           </provider>
@@ -91,9 +82,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/client/partial/side-nav/directive.js" />
-        <option value="$PROJECT_DIR$/client/_base.scss" />
-        <option value="$PROJECT_DIR$/client/index.css" />
         <option value="$PROJECT_DIR$/client/partial/side-nav/details/_view.scss" />
         <option value="$PROJECT_DIR$/client/partial/side-nav/details/view.html" />
         <option value="$PROJECT_DIR$/client/partial/treemap/tile/_view.scss" />
@@ -106,6 +94,9 @@
         <option value="$PROJECT_DIR$/client/index.scss" />
         <option value="$PROJECT_DIR$/client/partial/top-nav/_view.scss" />
         <option value="$PROJECT_DIR$/client/partial/top-nav/view.html" />
+        <option value="$PROJECT_DIR$/Gruntfile.js" />
+        <option value="$PROJECT_DIR$/client/main.js" />
+        <option value="$PROJECT_DIR$/server/vars.js" />
         <option value="$PROJECT_DIR$/server/server.js" />
       </list>
     </option>
@@ -113,7 +104,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-1" />
     <option name="y" value="27" />
-    <option name="width" value="2562" />
+    <option name="width" value="1282" />
     <option name="height" value="1414" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -197,6 +188,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="apinatomy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apinatomy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apinatomy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="spec" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -296,24 +301,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="patched-lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="apinatomy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="apinatomy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="partial" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -363,80 +350,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="partial" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="top-nav" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="apinatomy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="apinatomy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="partial" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="side-nav" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="apinatomy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="apinatomy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="partial" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="side-nav" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="details" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="apinatomy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="apinatomy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="partial" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rotation" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -502,57 +415,39 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.25211376" />
     <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="options.lastSelected" value="reference.settings.deploy.options" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="Errors" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../scire" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../talescape-cwi" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
-  </component>
-  <component name="PublishConfig">
-    <servers>
-      <server id="08b22da0-07e0-4eff-8b12-24dccfff7b5f">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" />
-          </mappings>
-        </serverdata>
-      </server>
-      <server id="13435394-dcf2-4103-8040-45bd6959ffca">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" />
-          </mappings>
-        </serverdata>
-      </server>
-    </servers>
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/client/patched-lib" />
-      <recent name="$PROJECT_DIR$/client/partial/treemap/3d-rotation" />
-      <recent name="$PROJECT_DIR$/client/focus" />
+      <recent name="$PROJECT_DIR$/spec" />
+      <recent name="$PROJECT_DIR$/../scire/client" />
       <recent name="$PROJECT_DIR$/client" />
-      <recent name="$PROJECT_DIR$/client/partial/details" />
+      <recent name="$PROJECT_DIR$/../scire" />
+      <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/spec" />
       <recent name="$PROJECT_DIR$/client/simple-directive" />
       <recent name="$PROJECT_DIR$/client/partial/side-nav" />
       <recent name="$PROJECT_DIR$/client/partial/treemap" />
       <recent name="$PROJECT_DIR$/client/partial" />
-      <recent name="$PROJECT_DIR$/client/partial/tile/layout" />
     </key>
   </component>
-  <component name="RunManager" selected="Node.js.Node Server + Angular Client">
-    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" singleton="true" config-file="">
-      <envs />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Node.js.Development Run">
     <configuration default="true" type="JSTestDriver:ConfigurationType" factoryName="JsTestDriver">
       <setting name="configLocationType" value="CONFIG_FILE" />
       <setting name="settingsFile" value="" />
       <setting name="serverType" value="INTERNAL" />
       <setting name="preferredDebugBrowser" value="CHROME" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" singleton="true" config-file="">
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
@@ -567,17 +462,23 @@
       <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="Node Server + Angular Client" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="/usr/bin/node" path-to-js-file="server/server.js" working-dir="$PROJECT_DIR$">
-      <browser start="true" name="Chrome" url="http://localhost:8080/" with-js-debugger="true" />
+    <configuration default="false" name="Development Run" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="/usr/bin/node" path-to-js-file="server/server.js" application-parameters="8082" working-dir="$PROJECT_DIR$">
+      <browser start="true" name="Chrome" url="http://localhost:8082/" with-js-debugger="true" />
       <RunnerSettings RunnerId="NodeJS.debug" />
       <RunnerSettings RunnerId="NodeJS.run" />
       <ConfigurationWrapper RunnerId="NodeJS.debug" />
       <ConfigurationWrapper RunnerId="NodeJS.run" />
       <method />
     </configuration>
-    <list size="2">
+    <configuration default="false" name="Development Run JavaScript" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true" uri="http://localhost:8082/">
+      <RunnerSettings RunnerId="JavascriptDebugRunner" />
+      <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
+      <method />
+    </configuration>
+    <list size="3">
       <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.Node Server + Angular Client JavaScript" />
-      <item index="1" class="java.lang.String" itemvalue="Node.js.Node Server + Angular Client" />
+      <item index="1" class="java.lang.String" itemvalue="Node.js.Development Run" />
+      <item index="2" class="java.lang.String" itemvalue="JavaScript Debug.Development Run JavaScript" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
@@ -599,31 +500,35 @@
       <created>1392766081251</created>
       <updated>1392766081251</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="General refactoring.">
+      <created>1392986961579</created>
+      <updated>1392986961579</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="27" width="2562" height="1414" extended-state="6" />
+    <frame x="-1" y="27" width="1282" height="1414" extended-state="4" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32884312" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21677215" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Mongo Runner" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296355" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.11097852" sideWeight="0.6711569" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22690438" sideWeight="0.7836767" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2163233" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296355" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Mongo Runner" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32884312" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32884312" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -641,7 +546,8 @@
     <MESSAGE value="Initial commit of working code." />
     <MESSAGE value="Added some rudimentary 3D rotation to the board." />
     <MESSAGE value="Better 3D + modularization of 3D rotation into its own directive." />
-    <option name="LAST_COMMIT_MESSAGE" value="Better 3D + modularization of 3D rotation into its own directive." />
+    <MESSAGE value="General refactoring." />
+    <option name="LAST_COMMIT_MESSAGE" value="General refactoring." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -652,114 +558,100 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/client/_base.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="1" selection-start="135" selection-end="135" vertical-scroll-proportion="-3.5454545" vertical-offset="0" max-vertical-offset="780">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/index.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5037" column="0" selection-start="153056" selection-end="153056" vertical-scroll-proportion="0.0" vertical-offset="65213" max-vertical-offset="65559">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/side-nav/details/view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="12" selection-start="12" selection-end="12" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="819">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/side-nav/details/directive.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="0" selection-start="1703" selection-end="1703" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="702">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/side-nav/details/_view.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="0" selection-start="16" selection-end="16" vertical-scroll-proportion="-0.59090906" vertical-offset="0" max-vertical-offset="689">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/treemap/tile/_view.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="25" selection-start="1411" selection-end="1411" vertical-scroll-proportion="-20.863636" vertical-offset="269" max-vertical-offset="1066">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/treemap/_view.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="819">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/partial/rotation/_view.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="26" selection-start="92" selection-end="92" vertical-scroll-proportion="-2.9545455" vertical-offset="0" max-vertical-offset="169">
-          <folding />
-        </state>
+        <state line="5" column="26" selection-start="92" selection-end="92" vertical-scroll-proportion="-2.9545455" vertical-offset="0" max-vertical-offset="169" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/partial/rotation/directive.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="0" selection-start="460" selection-end="460" vertical-scroll-proportion="0.08427877" vertical-offset="0" max-vertical-offset="1690">
-          <folding />
-        </state>
+        <state line="8" column="0" selection-start="460" selection-end="460" vertical-scroll-proportion="0.08427877" vertical-offset="0" max-vertical-offset="1690" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/partial/side-nav/view.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="263" selection-end="263" vertical-scroll-proportion="-5.909091" vertical-offset="0" max-vertical-offset="208">
-          <folding />
-        </state>
+        <state line="10" column="0" selection-start="263" selection-end="263" vertical-scroll-proportion="-5.909091" vertical-offset="0" max-vertical-offset="208" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="0" selection-start="325" selection-end="325" vertical-scroll-proportion="-8.272727" vertical-offset="0" max-vertical-offset="962">
-          <folding />
-        </state>
+        <state line="14" column="0" selection-start="325" selection-end="325" vertical-scroll-proportion="-8.272727" vertical-offset="0" max-vertical-offset="962" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/index.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="0" selection-start="1008" selection-end="1008" vertical-scroll-proportion="-27.772728" vertical-offset="0" max-vertical-offset="689">
-          <folding />
-        </state>
+        <state line="47" column="0" selection-start="1008" selection-end="1008" vertical-scroll-proportion="-27.772728" vertical-offset="0" max-vertical-offset="689" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/partial/top-nav/_view.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="0" selection-start="572" selection-end="572" vertical-scroll-proportion="0.4290429" vertical-offset="0" max-vertical-offset="1212">
-          <folding />
-        </state>
+        <state line="40" column="0" selection-start="572" selection-end="572" vertical-scroll-proportion="0.4290429" vertical-offset="0" max-vertical-offset="1212" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/partial/side-nav/_view.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="0" selection-start="33" selection-end="33" vertical-scroll-proportion="0.03217822" vertical-offset="0" max-vertical-offset="1212">
-          <folding />
-        </state>
+        <state line="3" column="0" selection-start="33" selection-end="33" vertical-scroll-proportion="0.03217822" vertical-offset="0" max-vertical-offset="1212" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/partial/top-nav/view.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="0" selection-start="1394" selection-end="1394" vertical-scroll-proportion="0.4719472" vertical-offset="0" max-vertical-offset="1212">
+        <state line="44" column="0" selection-start="1394" selection-end="1394" vertical-scroll-proportion="0.4719472" vertical-offset="0" max-vertical-offset="1212" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Gruntfile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="59" column="0" selection-start="1443" selection-end="1443" vertical-scroll-proportion="0.26132685" vertical-offset="444" max-vertical-offset="1703">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="0" selection-start="697" selection-end="697" vertical-scroll-proportion="0.26771006" vertical-offset="0" max-vertical-offset="1214">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="0" selection-start="811" selection-end="811" vertical-scroll-proportion="0.37479407" vertical-offset="0" max-vertical-offset="1214">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/partial/treemap/tile/directive.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="0" selection-start="14" selection-end="14" vertical-scroll-proportion="0.010517799" vertical-offset="0" max-vertical-offset="3133">
+          <folding>
+            <marker date="1392929378044" expanded="false" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="0" selection-start="1578" selection-end="1578" vertical-scroll-proportion="0.0" vertical-offset="38" max-vertical-offset="1001">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="0" selection-start="422" selection-end="422" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="325">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/vars.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="0" selection-start="213" selection-end="213" vertical-scroll-proportion="0.10822061" vertical-offset="0" max-vertical-offset="961">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="7" selection-start="546" selection-end="546" vertical-scroll-proportion="0.2949757" vertical-offset="0" max-vertical-offset="1234">
+        <state line="53" column="0" selection-start="1357" selection-end="1357" vertical-scroll-proportion="0.7169615" vertical-offset="0" max-vertical-offset="961">
           <folding />
         </state>
       </provider>

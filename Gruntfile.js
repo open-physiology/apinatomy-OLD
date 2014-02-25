@@ -1,95 +1,125 @@
 module.exports = function (grunt) {
 
-	// loading grunt plugins
+	//// loading grunt plugins
 
-	grunt.loadNpmTasks('grunt-contrib-compass');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-jasmine');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-sync-pkg');
-	grunt.loadNpmTasks('grunt-madge');
+	[ 'grunt-contrib-compass',
+	  'grunt-contrib-uglify',
+	  'grunt-contrib-jasmine',
+	  'grunt-contrib-watch',
+	  'grunt-sync-pkg',
+	  'grunt-madge'
+	].map(grunt.loadNpmTasks);
 
-	// constants
 
-	var PROJECT_JS_FILES = ['client/**/*.js', '!client/lib/**/*.js'];
+	//// constants
 
-	// main configuration block
+	var BANNER = '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n';
 
-    grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
+	var PROJECT_JS_FILES = ['client/**/*.js', '!client/lib/**/*.*'];
+	var PROJECT_SPEC_JS_FILES = ['spec/**/*-spec.js', 'node_modules/jasmine-expect/dist/jasmine-matchers.js'];
+	var PROJECT_SPEC_HELPER_JS_FILES = ['spec/**/*-helper.js'];
+	var PROJECT_SCSS_FILES = ['client/**/*.scss', '!client/lib/**/*.*'];
 
-	    // transpiling from .scss to .css
 
-	    compass: {
-		    specify: ['client/index.scss']
-	    },
+	//// main configuration block
 
-	    // minification
+	grunt.initConfig({
+		pkg: grunt.file.readJSON('package.json'),
 
-        uglify: {
-            options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
-            },
-            dist: {
-                files: {
-                    'dist/<%= pkg.name %>.min.js': PROJECT_JS_FILES
-                }
-            }
-        },
+		//// transpiling from .scss to .css
 
-	    // running tests
+		compass: {
+			options: {
+				specify:    ['client/index.scss'],
+				banner:     BANNER,
+				app:        'stand_alone',
+				cssDir:     'client',
+				sassDir:    'client',
+				imagesDir:  'lib/compass-twitter-bootstrap/vendor/assets/images',
+				httpPath:   '/',
+				importPath: [
+					'client/lib/bootstrap-sass-official/vendor/assets/stylesheets',
+					'client/lib/bootstrap-sass-official/vendor/assets/fonts'
+				]
+			},
+			dev:     {
+				options: {
+					environment: 'development',
+					outputStyle: 'nested'
+				}
+			},
+			dist:    {
+				options: {
+					environment: 'production',
+					outputStyle: 'compressed'
+				}
+			}
+		},
 
-        jasmine: {
-            src: 'client/js/*.js',
-            options: {
-                specs: 'spec/js/*-spec.js',
-	            helpers: [
-		            'node_modules/jasmine-expect/dist/jasmine-matchers.js',
-	            	'spec/js/matchers.js'
-	            ],
-                outfile: 'SpecRunner.html',
-	            keepRunner: true,
-                template: require('grunt-template-jasmine-requirejs'),
-                templateOptions: {
-                    requireConfig: {
-                        baseUrl: 'client/js/'
-                    }
-                }
-            }
-        },
+		//// minification
 
-	    // synchronizing the bower.json and package.json files
+		uglify: {
+			dist: {
+				options: {
+					banner: BANNER
+				},
+				files:   {
+					'dist/<%= pkg.name %>.min.js': PROJECT_JS_FILES
+				}
+			}
+		},
 
-	    sync: {
-            include: ['name', 'version', 'main', 'description', 'author', 'license']
-        },
+		//// running tests
 
-	    // checking for circular dependencies between RequireJS modules
+		jasmine: {
+			all: {
+				options: {
+					specs:           PROJECT_SPEC_JS_FILES,
+					helpers:         PROJECT_SPEC_HELPER_JS_FILES,
+					outfile:         'SpecRunner.html',
+					keepRunner:      true,
+					template:        require('grunt-template-jasmine-requirejs'),
+					templateOptions: {
+						requireConfig: {
+							baseUrl: 'client/'
+						}
+					}
+				}
+			}
+		},
 
-	    madge: {
-		    options: { format: 'amd' },
-		    all: PROJECT_JS_FILES
-	    },
+		//// synchronizing the bower.json and package.json files
 
-	    // various automatic actions during development
+		sync: {
+			include: ['name', 'version', 'main', 'description', 'author', 'license']
+		},
 
-        watch: {
-	        js: {
-		        files: PROJECT_JS_FILES,
-		        tasks: ['madge']
-	        },
-	        scss: {
-		        files: ['client/**/*.scss'],
-		        tasks: ['compass']
-	        },
-            config: {
-                files: ['package.json'],
-                tasks: ['sync']
-            }
-        }
-    });
+		//// checking for circular dependencies between RequireJS modules
 
-    grunt.registerTask('default', ['madge', 'jasmine', 'uglify']);
+		madge: {
+			options: { format: 'amd' },
+			all:     PROJECT_JS_FILES
+		},
+
+		//// various automatic actions during development
+
+		watch: {
+			js:     {
+				files: PROJECT_JS_FILES,
+				tasks: ['madge']
+			},
+			scss:   {
+				files: PROJECT_SCSS_FILES,
+				tasks: ['compass:dev']
+			},
+			config: {
+				files: ['package.json'],
+				tasks: ['sync']
+			}
+		}
+	});
+
+	grunt.registerTask('dev', ['sync', 'madge', 'compass:dev', 'jasmine']);
+	grunt.registerTask('dist', ['sync', 'madge', 'compass:dist', 'jasmine', 'uglify:dist']);
 
 };
-

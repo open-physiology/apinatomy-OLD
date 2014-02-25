@@ -6,14 +6,12 @@ var vars = require('./vars');
 var express = require('express');
 var app = express();
 
-
 ///////////////////////// General Middleware /////////////////////////
 
 //app.use(express.logger());
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-
 
 ///////////////////////// API /////////////////////////
 
@@ -24,19 +22,6 @@ var api = require('./api');
 app.get('/resources/ExampleData', api.getExampleData);
 
 // TODO: API
-
-//
-// part
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 
 ///////////////////////// Special Exceptions /////////////////////////
 
@@ -50,7 +35,6 @@ app.get('/require.js', function (req, res) {
 	res.redirect('/lib/requirejs/require.js');
 });
 
-
 ///////////////////////// Client-side Routes /////////////////////////
 
 // TODO: Specify 'get' directives to route each to index.html
@@ -60,12 +44,10 @@ app.get('/require.js', function (req, res) {
 //	next();
 //}
 
-
 ///////////////////////// Client-side Static Files /////////////////////////
 
 app.use(express.static(vars.clientDir));
 
-
 ///////////////////////// Listen on the port /////////////////////////
 
-app.listen(vars.port);
+app.listen(process.argv[2] || vars.port);
