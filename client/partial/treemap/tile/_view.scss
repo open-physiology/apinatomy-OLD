@@ -1,6 +1,11 @@
 @import "base";
 
-amy-treemap .tile {
+[amy-tile] {
+	display : none;
+}
+
+amy-treemap [amy-tile] {
+	display    : block;
 	position   : absolute;
 	margin     : 0;
 	cursor     : crosshair;
@@ -8,7 +13,6 @@ amy-treemap .tile {
 	padding    : 0 8px;
 
 	//// growing / shrinking animations
-
 	@include transition-property(top, bottom, left, right, width, height, min-width, min-height, font-size, padding, line-height);
 	@include transition-duration(.6s);
 	@include transition-timing-function(ease-in-out);
@@ -21,12 +25,11 @@ amy-treemap .tile {
 		vertical-align : middle;
 		border-style   : none;
 		line-height    : normal;
-
-		opacity: 0;
+		opacity        : 0;
 		&.opaque {
 			//// delayed reveal of the full header, only on reappearance
 			@include single-transition(opacity, linear, .6s, .8s);
-			opacity: 1;
+			opacity : 1;
 		}
 	}
 
@@ -46,10 +49,9 @@ amy-treemap .tile {
 		line-height    : $amy-tile-header-height;
 		font-size      : .8 * $amy-tile-header-height;
 		border-bottom  : dotted 1px;
-
 		@include single-transition(opacity, linear, .6s);
-		opacity: 0;
-		&.opaque { opacity: 1; }
+		opacity        : 0;
+		&.opaque { opacity : 1; }
 	}
 
 	& > section {
@@ -61,11 +63,10 @@ amy-treemap .tile {
 		left     : 0;
 		bottom   : 0;
 		right    : 0;
-
-		opacity: 0;
+		opacity  : 0;
 		@include single-transition(opacity, linear, .6s);
-		&.opaque { opacity: 1; }
-		&.hidden { visibility: hidden; }
+		&.opaque { opacity : 1; }
+		&.hidden { visibility : hidden; }
 	}
 
 	// borders

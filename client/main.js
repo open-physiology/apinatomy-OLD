@@ -40,9 +40,7 @@ require.config({
 var APINATOMY_ANGULAR_DIRECTIVES = [
 	'partial/top-nav/directive',
 	'partial/side-nav/directive',
-	'partial/side-nav/details/directive',
 	'partial/treemap/directive',
-	'partial/treemap/tile/directive',
 	'partial/rotation/directive'
 ];
 

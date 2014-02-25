@@ -13,7 +13,7 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 	var DEFAULT_TILE_LAYOUT = 'slice';
 
 
-	ApiNATOMY.directive('tile', ['$timeout', '$q', ResourceServiceName, TileLayoutServiceName, FocusServiceName, function ($timeout, $q, qResources, TileLayoutService, FocusService) {
+	ApiNATOMY.directive('amyTile', ['$timeout', '$q', ResourceServiceName, TileLayoutServiceName, FocusServiceName, function ($timeout, $q, qResources, TileLayoutService, FocusService) {
 		return {
 			restrict:    'E',
 			replace:     true,
@@ -113,7 +113,7 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 				var controller = {
 
 					registerElement: function (newElement) {
-						var parent = newElement.parent().controller('tile') ||
+						var parent = newElement.parent().controller('amyTile') ||
 						             newElement.parent().controller('amyTreemap');
 						dParent.resolve(parent);
 						parent.registerChild(controller);
@@ -145,7 +145,7 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 							$scope.hidden = false;
 
 
-							//// set the fontsize to 'normal'
+							//// set the font size to 'normal'
 
 							$scope.style['normal'].fontSize = 'auto';
 						} else {
@@ -225,9 +225,6 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 			}
 		};
 	}]);
-
-
-	return 'tile';
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

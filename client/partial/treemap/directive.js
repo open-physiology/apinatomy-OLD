@@ -1,7 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/service', 'element-directive/service'], function (_, ng, ApiNATOMY, TileLayoutServiceName, ElementDirectiveServiceName) {
+define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/service', 'element-directive/service', 'partial/treemap/tile/directive'], function (_, ng, ApiNATOMY, TileLayoutServiceName, ElementDirectiveServiceName) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -75,9 +75,6 @@ define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/service', 'el
 			}
 		});
 	}]);
-
-
-	return 'amyTreemap';
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
