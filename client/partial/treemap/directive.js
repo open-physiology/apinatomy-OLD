@@ -42,7 +42,7 @@ define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/service', 'el
 
 					requestRedraw: _($bind(function () {
 						TileLayoutService[_($scope.layout).isString() ? $scope.layout : DEFAULT_TILE_LAYOUT](
-								children, // TODO: pass specific layout-only interface instead
+								_(children).pluck('layoutInterface').value(),
 								controller.height(),
 								controller.width(),
 								parseInt(_($scope.spacing).isUndefined() ? DEFAULT_TILE_SPACING : $scope.spacing)

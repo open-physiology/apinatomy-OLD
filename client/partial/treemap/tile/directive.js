@@ -13,7 +13,8 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 	var DEFAULT_TILE_LAYOUT = 'slice';
 
 
-	ApiNATOMY.directive('amyTile', ['$timeout', '$q', ResourceServiceName, TileLayoutServiceName, FocusServiceName, BindServiceName, function ($timeout, $q, qResources, TileLayoutService, FocusService, $bind) {
+	ApiNATOMY.directive('amyTile', ['$timeout', '$q', ResourceServiceName, TileLayoutServiceName, FocusServiceName, BindServiceName, function
+			($timeout, $q, qResources, TileLayoutService, FocusService, $bind) {
 		return {
 			restrict:    'E',
 			replace:     false,
@@ -28,32 +29,12 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 			},
 
 			controller: ['$scope', function ($scope) {
-				var mouseHovering = false;
-				var parent;
-				var children = [];
-				var controller = {
-
-					connectWithParent: function (p) {
-						parent = p;
-						parent.registerChild(controller);
-					},
-
-					registerChild: function (c) {
-						children.push(c); // TODO: inline; no wrapper function needed (but test first)
-					},
-
-					eid: function () {
-						return $scope.eid;
-					},
-
-					importance: function () {
-						return ($scope.open ? 3 : 1); // TODO: This '3 times larger' thing should be more flexible
-					},
-
+				// TODO: The '3 times larger' thing should be more flexible
+				var layoutInterface = {
+					importance: function () { return ($scope.open ? 3 : 1); },
 					reposition: function (top, left, height, width) {
 
 						//// set the size of this tile
-
 						_($scope.sizeStyle).assign({
 							top: top + 'px',
 							left: left + 'px',
@@ -63,11 +44,10 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 						});
 
 						//// scale the font and padding appropriately
-
 						if ($scope.open) {
 							_($scope.sizeStyle).assign({
-								fontSize: 'auto',
-								paddingLeft: '8px',
+								fontSize:     'auto',
+								paddingLeft:  '8px',
 								paddingRight: '8px'
 							});
 						} else {
@@ -79,23 +59,39 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 						}
 
 						//// animation of showing and hiding tile content
-
 						if ($scope.open) {
 							$scope.contentHidden = false;
-						} else {
+						} else if (!$scope.contentHidden) {
 							$timeout(function () {
 								$scope.contentHidden = true;
 							}, 600);
 						}
 
 						//// lay out the child tiles
-
 						TileLayoutService[_($scope.layout).isString() ? $scope.layout : DEFAULT_TILE_LAYOUT](
-								children, // TODO: pass specific layout-only interface instead
+								_(children).pluck('layoutInterface').value(),
 								height - 26, width, // TODO: remove magic number (height of the tile header)
 								parseInt(_($scope.spacing).isUndefined() ? DEFAULT_TILE_SPACING : $scope.spacing)
 						);
 
+					}
+				};
+
+
+				var mouseHovering = false;
+				var parent;
+				var children = [];
+				var controller = {
+
+					layoutInterface: layoutInterface,
+
+					connectWithParent: function (p) {
+						parent = p;
+						parent.registerChild(controller);
+					},
+
+					registerChild: function (c) {
+						children.push(c);
 					},
 
 					registerMouseEnter: function () {
@@ -222,10 +218,10 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 						//// disable tile-clicks during 3d manipulation
 
 						$scope.$on('3d-manipulation-enabled', function () {
-							iElement.on('click', enabledOnClick);
+							iElement.off('click', enabledOnClick);
 						});
 						$scope.$on('3d-manipulation-disabled', function () {
-							iElement.off('click', enabledOnClick);
+							iElement.on('click', enabledOnClick);
 						});
 
 					}
