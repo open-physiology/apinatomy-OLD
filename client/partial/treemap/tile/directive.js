@@ -1,8 +1,8 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/service', 'focus/service', 'partial/treemap/layout/service'], function
-		(ApiNATOMY, color, newFromPrototype, _, ResourceServiceName, FocusServiceName, TileLayoutServiceName) {
+define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/service', 'focus/service', 'partial/treemap/layout/service', '$bind/service'], function
+		(ApiNATOMY, color, newFromPrototype, _, ResourceServiceName, FocusServiceName, TileLayoutServiceName, BindServiceName) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -13,10 +13,10 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 	var DEFAULT_TILE_LAYOUT = 'slice';
 
 
-	ApiNATOMY.directive('amyTile', ['$timeout', '$q', ResourceServiceName, TileLayoutServiceName, FocusServiceName, function ($timeout, $q, qResources, TileLayoutService, FocusService) {
+	ApiNATOMY.directive('amyTile', ['$timeout', '$q', ResourceServiceName, TileLayoutServiceName, FocusServiceName, BindServiceName, function ($timeout, $q, qResources, TileLayoutService, FocusService, $bind) {
 		return {
 			restrict:    'E',
-			replace:     true,
+			replace:     false,
 			transclude:  true,
 			templateUrl: 'partial/treemap/tile/view.html',
 
@@ -28,150 +28,96 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 			},
 
 			controller: ['$scope', function ($scope) {
-
-				//// setting default attributes
-
-				$scope.tileLayout = $scope.layout || DEFAULT_TILE_LAYOUT;
-				$scope.tileSpacing = parseInt($scope.spacing || DEFAULT_TILE_SPACING);
-				$scope.open = !!$scope.open;
-
-
-				//// initializing scope fields
-
-				$scope.focus = false;
-				$scope.hidden = true;
-				$scope.hasChildren = false;
-				$scope.interactionEnabled = true;
-				$scope.style = {};
-				$scope.style['normal'] = {};
-				$scope.style['focus'] = {};
-				$scope.state = 'normal';
-
-
-				//// receiving entity focus events, to share focus
-				//// across different tiles with the same eid
-
-				$scope.$on('entity-focus', function (event, eid) {
-					if (eid === $scope.eid) {
-						$scope.state = 'focus';
-					} else {
-						$scope.state = 'normal';
-					}
-				});
-
-
-				//// when clicking the tile, open or close it
-
-				$scope.onClick = function ($event) {
-					//// prevent the parent from being 'clicked' too
-					$event.stopPropagation();
-
-					//// open or close this tile
-					$scope.open = !$scope.open;
-
-					//// signal the size-change
-					controller.requestRedraw();
-				};
-
-
-				//// pause interaction during 3d manipulation
-
-				$scope.$on('3d-manipulation-start', function () { $scope.interactionEnabled = false; });
-				$scope.$on('3d-manipulation-end', function () { $scope.interactionEnabled = true; });
-
-
-				//// when the resources are available, populate and style the tile
-
-				qResources.then(function (resources) {
-					//// title
-					$scope.title = resources[$scope.eid].title;
-
-					//// styling for the normal state
-					$scope.style['normal'] = newFromPrototype(resources[$scope.eid].style);
-					$scope.style['normal'].top = '0px';
-					$scope.style['normal'].left = '0px';
-					$scope.style['normal'].height = '0px';
-					$scope.style['normal'].width = '0px';
-					$scope.style['normal'].fontSize = '0px';
-					$scope.style['normal'].lineHeight = '0px';
-					$scope.style['normal'].borderColor = $scope.style['normal'].backgroundColor;
-					$scope.style['normal'].color = color($scope.style['normal'].backgroundColor).luminance() > 0.5 ? 'black' : 'white';
-
-					//// styling for the highlighted state
-					$scope.style['focus'] = newFromPrototype($scope.style['normal']);
-					$scope.style['focus'].backgroundColor = color($scope.style['normal'].backgroundColor).brighten(40);
-					$scope.style['focus'].borderColor = color($scope.style['normal'].borderColor).darken(40);
-					$scope.style['focus'].color = color($scope.style['focus'].backgroundColor).luminance() > 0.5 ? 'black' : 'white';
-				});
-
-
-				//// the controller interface for this tile
-
+				var mouseHovering = false;
+				var parent;
 				var children = [];
-				var dParent = $q.defer();
-
 				var controller = {
 
-					registerElement: function (newElement) {
-						var parent = newElement.parent().controller('amyTile') ||
-						             newElement.parent().controller('amyTreemap');
-						dParent.resolve(parent);
+					connectWithParent: function (p) {
+						parent = p;
 						parent.registerChild(controller);
 					},
 
-					registerChild: function (child) {
-						children.push(child);
-						$scope.hasChildren = true;
+					registerChild: function (c) {
+						children.push(c); // TODO: inline; no wrapper function needed (but test first)
 					},
 
-					qParent: function () { return dParent.promise; },
+					eid: function () {
+						return $scope.eid;
+					},
 
-					children: function () { return children; },
+					importance: function () {
+						return ($scope.open ? 3 : 1); // TODO: This '3 times larger' thing should be more flexible
+					},
 
-					eid: function () { return $scope.eid; },
+					reposition: function (top, left, height, width) {
 
-					importance: function () { return ($scope.open ? 3 : 1); },
+						//// set the size of this tile
 
-					reposition:         function (top, left, height, width) {
-						$scope.style['normal'].top = top + 'px';
-						$scope.style['normal'].left = left + 'px';
-						$scope.style['normal'].height = height + 'px';
-						$scope.style['normal'].lineHeight = height + 'px';
-						$scope.style['normal'].width = width + 'px';
+						_($scope.sizeStyle).assign({
+							top: top + 'px',
+							left: left + 'px',
+							height: height + 'px',
+							width: width + 'px',
+							lineHeight: height + 'px'
+						});
+
+						//// scale the font and padding appropriately
 
 						if ($scope.open) {
-							//// reveal the content
-
-							$scope.hidden = false;
-
-
-							//// set the font size to 'normal'
-
-							$scope.style['normal'].fontSize = 'auto';
+							_($scope.sizeStyle).assign({
+								fontSize: 'auto',
+								paddingLeft: '8px',
+								paddingRight: '8px'
+							});
 						} else {
-							//// hide the content after 600ms to achieve a nice animation
-
-							$timeout(function () { $scope.hidden = true; }, 600);
-
-
-							//// scale the font and padding proportionately with the tile-size
-
-							$scope.style['normal'].fontSize = Math.min(.3 * height, .13 * width) + 'px';
-							$scope.style['normal'].paddingLeft = (.05 * width) + 'px';
-							$scope.style['normal'].paddingRight = (.05 * width) + 'px';
+							_($scope.sizeStyle).assign({
+								fontSize: Math.min(.3 * height, .13 * width) + 'px',
+								paddingLeft: (.05 * width) + 'px',
+								paddingRight: (.05 * width) + 'px'
+							});
 						}
 
-						TileLayoutService[$scope.tileLayout](children, height - 26, width, $scope.tileSpacing);
+						//// animation of showing and hiding tile content
+
+						if ($scope.open) {
+							$scope.contentHidden = false;
+						} else {
+							$timeout(function () {
+								$scope.contentHidden = true;
+							}, 600);
+						}
+
+						//// lay out the child tiles
+
+						TileLayoutService[_($scope.layout).isString() ? $scope.layout : DEFAULT_TILE_LAYOUT](
+								children, // TODO: pass specific layout-only interface instead
+								height - 26, width, // TODO: remove magic number (height of the tile header)
+								parseInt(_($scope.spacing).isUndefined() ? DEFAULT_TILE_SPACING : $scope.spacing)
+						);
+
 					},
 
-					registerMouseEnter: function () {},
+					registerMouseEnter: function () {
+						if (!mouseHovering) {
+							parent.registerMouseEnter();
+							mouseHovering = true;
+							FocusService.pushEid($scope.eid);
+						}
+					},
 
-					registerMouseLeave: function () {},
+					registerMouseLeave: function () {
+						if (mouseHovering) {
+							_(children).each(function (child) {
+								child.registerMouseLeave();
+							});
+							mouseHovering = false;
+							FocusService.popEid($scope.eid);
+						}
+					},
 
 					requestRedraw: function () {
-						controller.qParent().then(function (parent) {
-							parent.requestRedraw();
-						});
+						parent.requestRedraw();
 					}
 
 				};
@@ -179,49 +125,112 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 				return controller;
 			}],
 
-			link: function ($scope, iElement, iAttrs, controller) {
-				//// register the DOM element of this tile with the controller
+			compile: function () {
+				return {
 
-				controller.registerElement(iElement);
+					pre: function preLink($scope, iElement, iAttrs, controller) {
+
+						//// initializing scope fields
+
+						$scope.contentHidden = true;
+						$scope.inFocus = false;
+						$scope.normalStyle = {};
+						$scope.focusStyle = {};
+						$scope.sizeStyle = {};
 
 
-				//// when the parent is known, allow mouse-enter/leave events
+						//// connect with the parent tile
 
-				controller.qParent().then(function (parent) {
+						controller.connectWithParent(iElement.parent().controller('amyTile') ||
+						                             iElement.parent().controller('amyTreemap'));
 
-					controller.registerMouseEnter = function () {
-						if (!$scope.focus) {
-							parent.registerMouseEnter();
-							$scope.focus = true;
-							FocusService.pushEid($scope.eid);
+
+						//// when any of those change (and this is not handled in the template)
+						//// set the proper styling
+
+						function setFocusStyle() {
+							iElement.css($scope.inFocus && !$scope.open ?
+							             $scope.focusStyle :
+							             $scope.normalStyle);
 						}
-					};
 
-					controller.registerMouseLeave = function () {
-						if ($scope.focus) {
-							_.each(controller.children(), function (child) {
-								child.registerMouseLeave();
-							});
-							$scope.focus = false;
-							FocusService.popEid($scope.eid);
+						function setSizeStyle() {
+							iElement.css($scope.sizeStyle);
 						}
-					};
-				});
+
+						$scope.$watch('inFocus', setFocusStyle);
+						$scope.$watchCollection('normalStyle', setFocusStyle);
+						$scope.$watchCollection('focusStyle', setFocusStyle);
+						$scope.$watchCollection('sizeStyle', setSizeStyle);
 
 
-				//// sending entity focus events on mouse-enter/leave
+						//// when the resources are available, populate and style the tile
 
-				$scope.onMouseEnter = function () { controller.registerMouseEnter(); };
-				$scope.onMouseLeave = function () { controller.registerMouseLeave(); };
+						qResources.then(function (resources) {
+
+							//// title
+
+							$scope.title = resources[$scope.eid].title;
+
+							//// styling for the normal state
+
+							$scope.normalStyle = newFromPrototype(resources[$scope.eid].style);
+							$scope.normalStyle.borderColor = $scope.normalStyle.backgroundColor;
+							$scope.normalStyle.color = color($scope.normalStyle.backgroundColor).luminance() > 0.5 ? 'black' : 'white';
+
+							//// styling for the highlighted state
+
+							$scope.focusStyle = newFromPrototype($scope.normalStyle);
+							$scope.focusStyle.backgroundColor = color($scope.normalStyle.backgroundColor).brighten(40);
+							$scope.focusStyle.borderColor = color($scope.normalStyle.borderColor).darken(40);
+							$scope.focusStyle.color = color($scope.focusStyle.backgroundColor).luminance() > 0.5 ? 'black' : 'white';
+
+						});
+
+					},
+
+					post: function postLink($scope, iElement, iAttrs, controller) {
+
+						// In the postLink function, it is guaranteed that all children
+						// of this tile have been processed, at least, with preLink. So
+						// here, we do all the stuff for which the presence of all child-
+						// tiles is required.
+
+						//// sending entity focus events on mouse-enter/leave
+
+						iElement.on('mouseenter', $bind(controller.registerMouseEnter));
+						iElement.on('mouseleave', $bind(controller.registerMouseLeave));
 
 
-				//// hack to make 'overflow: hidden' with 'line-height = height' work
+						//// receiving entity focus events
 
-				if (!iElement.parent().data('nbsp-hack')) {
-					iElement.parent().data('nbsp-hack', true);
-					iElement.parent().append('<span style="font-size: 0;">&nbsp;</span>');
+						$scope.$on('entity-focus', function (event, eid) {
+							$scope.inFocus = (eid === $scope.eid);
+						});
+
+
+						//// open up a tile on mouse-click
+
+						var enabledOnClick = $bind(function enabledOnClick(event) {
+							event.stopPropagation();
+							$scope.open = !$scope.open;
+							controller.requestRedraw();
+						});
+						iElement.on('click', enabledOnClick);
+
+
+						//// disable tile-clicks during 3d manipulation
+
+						$scope.$on('3d-manipulation-enabled', function () {
+							iElement.on('click', enabledOnClick);
+						});
+						$scope.$on('3d-manipulation-disabled', function () {
+							iElement.off('click', enabledOnClick);
+						});
+
+					}
+
 				}
-
 			}
 		};
 	}]);

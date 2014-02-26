@@ -1,10 +1,10 @@
 @import "base";
 
-[amy-tile] {
+amy-tile {
 	display : none;
 }
 
-amy-treemap [amy-tile] {
+amy-treemap amy-tile {
 	display    : block;
 	position   : absolute;
 	margin     : 0;

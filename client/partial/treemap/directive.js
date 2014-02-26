@@ -1,7 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/service', 'element-directive/service', 'partial/treemap/tile/directive'], function (_, ng, ApiNATOMY, TileLayoutServiceName, ElementDirectiveServiceName) {
+define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/service', 'element-directive/service', '$bind/service', 'partial/treemap/tile/directive'], function (_, ng, ApiNATOMY, TileLayoutServiceName, ElementDirectiveServiceName, BindServiceName) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -12,35 +12,27 @@ define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/service', 'el
 	var DEFAULT_TILE_LAYOUT = 'twentyFourTile';
 
 
-	ApiNATOMY.directive('amyTreemap', [TileLayoutServiceName, ElementDirectiveServiceName, '$q', '$window', function (TileLayoutService, elementDirective, $q, $window) {
-		return elementDirective({
-			scope: {
+	ApiNATOMY.directive('amyTreemap', [TileLayoutServiceName, ElementDirectiveServiceName, '$q', '$window', BindServiceName, function (TileLayoutService, elementDirective, $q, $window, $bind) {
+		return {
+			restrict: 'E',
+			scope:    {
 				layout:  '@',
 				spacing: '@'
 			},
-			controller: function ($scope) {
-				var tileSpacing = parseInt($scope.spacing || DEFAULT_TILE_SPACING);
-				var tileLayout = $scope.layout || DEFAULT_TILE_LAYOUT;
 
-				var element;
+			controller: ['$scope', function ($scope) {
 				var children = [];
-
 				var controller = {
+
+					height: undefined,
+					width:  undefined,
+
 					registerMouseEnter: function () {
-						if (!$scope.focus) {
-							$scope.focus = true;
-						}
+						$scope.focus = true;
 					},
 
 					registerMouseLeave: function () {
-						if ($scope.focus) {
-							$scope.focus = false;
-						}
-					},
-
-					registerElement: function (newElement) {
-						element = newElement;
-						controller.requestRedraw();
+						$scope.focus = false;
 					},
 
 					registerChild: function (child) {
@@ -48,32 +40,32 @@ define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/service', 'el
 						controller.requestRedraw();
 					},
 
-					requestRedraw: _.debounce(_.bindKey($scope, '$apply', function () {
-						if (element) {
-							TileLayoutService[tileLayout](
-									children,
-									element.height(),
-									element.width(),
-									tileSpacing
-							);
-						}
-					}), 10)
+					requestRedraw: _($bind(function () {
+						TileLayoutService[_($scope.layout).isString() ? $scope.layout : DEFAULT_TILE_LAYOUT](
+								children, // TODO: pass specific layout-only interface instead
+								controller.height(),
+								controller.width(),
+								parseInt(_($scope.spacing).isUndefined() ? DEFAULT_TILE_SPACING : $scope.spacing)
+						);
+					})).debounce(40).value()
+
 				};
 
 				return controller;
-			},
-			link:       function ($scope, iElement, iAttrs, controller) {
+			}],
 
-				//// register the treemap DOM element with the controller
-
-				controller.registerElement(iElement);
-
-				//// redraw when the window changes size
-
-				ng.element($window).bind('resize', _.bindKey($scope, '$apply', controller.requestRedraw));
-
+			compile: function () {
+				return {
+					pre:  function preLink($scope, iElement, iAttrs, controller) {
+						controller.height = _(iElement).bindKey('height').value();
+						controller.width = _(iElement).bindKey('width').value();
+						$($window).on('resize', $bind(controller.requestRedraw));
+					},
+					post: function postLink($scope, iElement, iAttrs, controller) {}
+				};
 			}
-		});
+
+		};
 	}]);
 
 

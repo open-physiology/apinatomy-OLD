@@ -1,12 +1,3 @@
-<div amy-tile
-     ng-mouseenter="onMouseEnter()"
-     ng-mouseleave="onMouseLeave()"
-     ng-click="interactionEnabled && onClick($event)"
-     ng-style="(open && hasChildren) && style['normal'] || style[state]">
-
-	<header ng-class="{ opaque:  open }" class="top-header ">{{ title }}</header>
-	<header ng-class="{ opaque: !open }" class="full-header">{{ title }}</header>
-
-	<section ng-class="{ opaque: open, hidden: hidden }" ng-transclude></section>
-
-</div>
+<header ng-class="{ opaque:  open }" class="top-header ">{{ title }}</header>
+<header ng-class="{ opaque: !open }" class="full-header">{{ title }}</header>
+<section ng-class="{ opaque: open, hidden: contentHidden }" ng-transclude></section>

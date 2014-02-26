@@ -19,16 +19,56 @@ define(['app/module', 'lodash'], function (ApiNATOMY, _) {
 
 			//// the first parameter is optional
 
-			if (_.isUndefined(directive)) {
+			if (_(directive).isUndefined()) {
 				directive = newAttrs;
 				newAttrs = {};
 			}
 
-			//// preserve the old 'link' function of the directive
+			//// preserve the old 'link' and 'compile' functions of the directive
 
-			var oldPostLink = directive.link || _.noop;
+			var originalCompile = directive.compile;
+			var originalLink = directive.link || _.noop;
 
-			// TODO: preserve old 'compile', including pre and post linker
+			//// define the new post-link function
+
+			function newPreLink(oldPreLink, $scope, iElement, iAttrs, controller, transclude) {
+				if (!iElement.data('element-directive-second-branch')) {
+
+					//// this is the first branch, and we mark the element to indicate that it has started
+
+					iElement.data('element-directive-second-branch', true);
+
+					//// add the custom attributes
+
+					iElement.attr(newAttrs);
+
+					//// compile the new element <--- this invokes the second 'link' branch
+
+					$compile(iElement)($scope);
+
+					//// transclude the content
+
+					transclude(_(iElement).bindKey('append').value());
+
+					//// call the original link function with the new element
+					//// and new controller (but not the transclude function)
+
+					var newController = iElement.data('element-directive-new-controller');
+					oldPreLink.call(directive, $scope, iElement, iAttrs, newController);
+
+				} else {
+
+					//// pass the new controller back to the first branch
+
+					iElement.data('element-directive-new-controller', controller);
+
+					//// but delete the new scope; we're using the old one
+
+					$scope.$destroy();
+
+				}
+			}
+
 
 			//// prepare the directive object to produce a simple transclusion element,
 			//// possibly with dynamically compiled attributes
@@ -37,39 +77,20 @@ define(['app/module', 'lodash'], function (ApiNATOMY, _) {
 				restrict:   'E',
 				replace:    true,
 				transclude: true,
-				link:       function ($scope, iElement, iAttrs, controller, transclude) {
-					if (!iElement.data('element-directive-second-branch')) {
-						iElement.data('element-directive-second-branch', true);
-
-						//// add the custom attributes
-
-						iElement.attr(newAttrs);
-
-						//// compile the new element <--- this invokes the second 'link' branch
-
-						$compile(iElement)($scope);
-
-						//// transclude the content
-
-						transclude(_.bindKey(iElement, 'append'));
-
-						//// call the original link function with the new element
-						//// and new controller (but not the transclude function)
-
-						var newController = iElement.data('element-directive-new-controller');
-						oldPostLink.call(directive, $scope, iElement, iAttrs, newController);
-
+				compile:    function (dElement) {
+					if (originalCompile) {
+						var linkFunctions = originalCompile.apply(arguments);
+						return {
+							pre:  newPreLink.bind(undefined, linkFunctions.pre),
+							post: linkFunctions.post
+						};
 					} else {
-
-						//// pass the new controller back to the first branch
-
-						iElement.data('element-directive-new-controller', controller);
-
-						//// but delete the new scope; we're using the old one
-
-						$scope.$destroy();
-
+						return {
+							pre:  newPreLink.bind(undefined, _.noop),
+							post: originalLink
+						};
 					}
+
 				}
 			});
 
