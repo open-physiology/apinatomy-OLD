@@ -34,8 +34,14 @@ require.config({
 	}
 });
 
+//// Utility modules to load up front
 
-// The Angular ApiNATOMY directives to Load
+var UTILITY_MODULES = [
+	'utility/or',
+	'utility/sum'
+];
+
+//// The Angular ApiNATOMY directives to Load
 
 var APINATOMY_ANGULAR_DIRECTIVES = [
 	'partial/top-nav/directive',
@@ -49,7 +55,7 @@ var APINATOMY_ANGULAR_DIRECTIVES = [
 //// Also load lodash and jquery to make sure no module
 //// can see their global variables.
 
-require(['es6-shim', 'lodash', 'jquery'], function () {
+require(['es6-shim', 'lodash', 'jquery'].concat(UTILITY_MODULES), function () {
 
 	//// Then bootstrap Angular when the DOM is ready and the ApiNATOMY modules are loaded
 

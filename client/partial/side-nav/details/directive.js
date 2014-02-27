@@ -1,8 +1,8 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'chroma', 'utility/newFromPrototype', 'resource/service'], function
-		(ApiNATOMY, color, newFromPrototype, ResourceService) {
+define(['app/module', 'chroma', 'lodash', 'resource/service'], function
+		(ApiNATOMY, color, _, ResourceService) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -11,11 +11,11 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'resource/service'],
 
 	ApiNATOMY.directive('amyEntityDetails', [ResourceService, function (qResources) {
 		return {
-			restrict   : 'E',
-			replace    : true,
-			transclude : true,
+			restrict:    'E',
+			replace:     true,
+			transclude:  true,
 			templateUrl: 'partial/side-nav/details/view.html',
-			scope      : {
+			scope:       {
 				eidFn: '&eid'
 			},
 
@@ -23,15 +23,18 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'resource/service'],
 				qResources.then(function (resources) {
 					$scope.resources = resources;
 
-					$scope.eidFnResult = $scope.eidFn();
+//					$scope.eidFnResult = $scope.eidFn();
 
-					$scope.$watch('eidFn()', function () {
-						$scope.eidFnResult = $scope.eidFn();
-						if ($scope.eidFn() !== null) {
-							$scope.eid = $scope.eidFn();
-							$scope.title = resources[$scope.eid].title;
-							$scope.style = newFromPrototype(resources[$scope.eid].style);
-							$scope.style.backgroundColor = color(resources[$scope.eid].style.backgroundColor).brighten(40);
+					$scope.$watch('eidFn()', function (newEid) {
+//						$scope.eidFnResult = $scope.eidFn();
+						if (newEid !== null) {
+							_($scope).assign({
+								eid:   newEid,
+								title: resources[newEid].title,
+								style: _(resources[newEid].style).create({
+									backgroundColor: color(resources[newEid].style.backgroundColor).brighten(40)
+								}).value()
+							});
 						}
 					});
 				});

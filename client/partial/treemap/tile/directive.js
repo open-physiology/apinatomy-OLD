@@ -1,17 +1,18 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/service', 'focus/service', 'partial/treemap/layout/service', '$bind/service'], function
-		(ApiNATOMY, color, newFromPrototype, _, ResourceServiceName, FocusServiceName, TileLayoutServiceName, BindServiceName) {
+define(['app/module', 'chroma', 'lodash', 'resource/service', 'focus/service', 'partial/treemap/layout/service', '$bind/service'], function
+		(ApiNATOMY, color, _, ResourceServiceName, FocusServiceName, TileLayoutServiceName, BindServiceName) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	console.log("Loading 'partial/treemap/tile/directive'");
 
 
-	var DEFAULT_TILE_SPACING = '5px';
+	var DEFAULT_TILE_SPACING = '10px';
 	var DEFAULT_TILE_LAYOUT = 'slice';
-
+	var DEFAULT_TILE_BORDER_WIDTH = '1px';
+	var TILE_HEADER_HEIGHT = '26px';
 
 	ApiNATOMY.directive('amyTile', ['$timeout', '$q', ResourceServiceName, TileLayoutServiceName, FocusServiceName, BindServiceName, function
 			($timeout, $q, qResources, TileLayoutService, FocusService, $bind) {
@@ -22,61 +23,38 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 			templateUrl: 'partial/treemap/tile/view.html',
 
 			scope: {
-				eid:     '@',
-				layout:  '@',
-				spacing: '@',
-				open:    '@'
+				eid:             '@',
+				attrLayout:      '@layout',
+				attrSpacing:     '@spacing',
+				attrBorderWidth: '@borderWidth'
 			},
 
 			controller: ['$scope', function ($scope) {
-				// TODO: The '3 times larger' thing should be more flexible
+
+				//// normalizing attributes
+
+				$scope.layout = _($scope.attrLayout).or(DEFAULT_TILE_LAYOUT);
+				$scope.spacing = _.parseInt(_($scope.attrSpacing).or(DEFAULT_TILE_SPACING));
+				$scope.borderWidth = _.parseInt(_($scope.attrBorderWidth).or(DEFAULT_TILE_BORDER_WIDTH));
+
+				//// initializing scope fields
+
+				$scope.open = false;
+				$scope.contentHidden = true;
+				$scope.inFocus = false;
+				$scope.normalStyle = {};
+				$scope.focusStyle = {};
+				$scope.sizeStyle = {};
+
+				//// tile interface for the layout engine
+
 				var layoutInterface = {
-					importance: function () { return ($scope.open ? 3 : 1); },
-					reposition: function (top, left, height, width) {
-
-						//// set the size of this tile
-						_($scope.sizeStyle).assign({
-							top: top + 'px',
-							left: left + 'px',
-							height: height + 'px',
-							width: width + 'px',
-							lineHeight: height + 'px'
-						});
-
-						//// scale the font and padding appropriately
-						if ($scope.open) {
-							_($scope.sizeStyle).assign({
-								fontSize:     'auto',
-								paddingLeft:  '8px',
-								paddingRight: '8px'
-							});
-						} else {
-							_($scope.sizeStyle).assign({
-								fontSize: Math.min(.3 * height, .13 * width) + 'px',
-								paddingLeft: (.05 * width) + 'px',
-								paddingRight: (.05 * width) + 'px'
-							});
-						}
-
-						//// animation of showing and hiding tile content
-						if ($scope.open) {
-							$scope.contentHidden = false;
-						} else if (!$scope.contentHidden) {
-							$timeout(function () {
-								$scope.contentHidden = true;
-							}, 600);
-						}
-
-						//// lay out the child tiles
-						TileLayoutService[_($scope.layout).isString() ? $scope.layout : DEFAULT_TILE_LAYOUT](
-								_(children).pluck('layoutInterface').value(),
-								height - 26, width, // TODO: remove magic number (height of the tile header)
-								parseInt(_($scope.spacing).isUndefined() ? DEFAULT_TILE_SPACING : $scope.spacing)
-						);
-
+					importance: function () {
+						return $scope.open ? 3 : 1;
 					}
 				};
 
+				//// controller interface for parent and child tiles
 
 				var mouseHovering = false;
 				var parent;
@@ -114,6 +92,64 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 
 					requestRedraw: function () {
 						parent.requestRedraw();
+					},
+
+					reposition: function (pos) {
+
+						_($scope.sizeStyle).assign(pos).assign({ lineHeight: pos.height + 'px' });
+
+						//// scale the font and padding appropriately
+
+						if ($scope.open) {
+							_($scope.sizeStyle).assign({
+								fontSize:     'auto',
+								paddingLeft:  '8px',
+								paddingRight: '8px'
+							});
+						} else {
+							_($scope.sizeStyle).assign({
+								fontSize:     Math.min(.3 * pos.height, .13 * pos.width),
+								paddingLeft:  (.05 * pos.width),
+								paddingRight: (.05 * pos.width)
+							});
+						}
+
+						//// animation of showing and hiding tile content
+
+						if ($scope.open) {
+							$scope.contentHidden = false;
+						} else if (!$scope.contentHidden) {
+							$timeout(function () {
+								$scope.contentHidden = true;
+							}, 600);
+						}
+
+						//// lay out the child tiles
+
+						var positions = TileLayoutService[_($scope.layout).isString() ? $scope.layout : DEFAULT_TILE_LAYOUT](
+								_(children)
+										.pluck('layoutInterface')
+										.each(function (childIface, i) { childIface.index = i; })
+										.value(),
+								pos.height - $scope.spacing - 2 * $scope.borderWidth - _.parseInt(TILE_HEADER_HEIGHT),
+								pos.width - $scope.spacing - 2 * $scope.borderWidth
+						);
+
+						//// adjust for tile spacing
+
+						_(positions).each(function (pos) {
+							pos.top += $scope.spacing;
+							pos.left += $scope.spacing;
+							pos.height -= $scope.spacing;
+							pos.width -= $scope.spacing;
+						});
+
+						//// apply repositioning to the child tiles
+
+						_(children).each(function (child, i) {
+							child.reposition(positions[i]);
+						});
+
 					}
 
 				};
@@ -126,14 +162,14 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 
 					pre: function preLink($scope, iElement, iAttrs, controller) {
 
-						//// initializing scope fields
+						//// set some non-changing css styling
 
-						$scope.contentHidden = true;
-						$scope.inFocus = false;
-						$scope.normalStyle = {};
-						$scope.focusStyle = {};
-						$scope.sizeStyle = {};
-
+						iElement.css('borderWidth', $scope.borderWidth);
+						iElement.find('.top-header').css({
+							borderWidth: $scope.borderWidth,
+							lineHeight: _.parseInt(TILE_HEADER_HEIGHT) - $scope.borderWidth + 'px',
+							fontSize: .8 * (_.parseInt(TILE_HEADER_HEIGHT) - $scope.borderWidth) + 'px'
+						});
 
 						//// connect with the parent tile
 
@@ -145,7 +181,7 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 						//// set the proper styling
 
 						function setFocusStyle() {
-							iElement.css($scope.inFocus && !$scope.open ?
+							iElement.css(($scope.inFocus && !$scope.open) ?
 							             $scope.focusStyle :
 							             $scope.normalStyle);
 						}
@@ -164,29 +200,23 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 
 						qResources.then(function (resources) {
 
-							//// title
-
 							$scope.title = resources[$scope.eid].title;
 
-							//// styling for the normal state
-
-							$scope.normalStyle = newFromPrototype(resources[$scope.eid].style);
-							$scope.normalStyle.borderColor = $scope.normalStyle.backgroundColor;
-							$scope.normalStyle.color = color($scope.normalStyle.backgroundColor).luminance() > 0.5 ? 'black' : 'white';
-
-							//// styling for the highlighted state
-
-							$scope.focusStyle = newFromPrototype($scope.normalStyle);
-							$scope.focusStyle.backgroundColor = color($scope.normalStyle.backgroundColor).brighten(40);
-							$scope.focusStyle.borderColor = color($scope.normalStyle.borderColor).darken(40);
-							$scope.focusStyle.color = color($scope.focusStyle.backgroundColor).luminance() > 0.5 ? 'black' : 'white';
+							var bgColor = color(resources[$scope.eid].style.backgroundColor);
+							$scope.normalStyle = _.create(resources[$scope.eid].style, {
+								borderColor: bgColor,
+								color: bgColor.luminance() > 0.5 ? 'black' : 'white'
+							});
+							$scope.focusStyle = _.create($scope.normalStyle, {
+								backgroundColor: bgColor.brighten(40),
+								borderColor:     bgColor.darken(40),
+								color: bgColor.brighten(40).luminance() > 0.5 ? 'black' : 'white'
+							});
 
 						});
-
 					},
 
 					post: function postLink($scope, iElement, iAttrs, controller) {
-
 						// In the postLink function, it is guaranteed that all children
 						// of this tile have been processed, at least, with preLink. So
 						// here, we do all the stuff for which the presence of all child-
@@ -223,7 +253,6 @@ define(['app/module', 'chroma', 'utility/newFromPrototype', 'lodash', 'resource/
 						$scope.$on('3d-manipulation-disabled', function () {
 							iElement.on('click', enabledOnClick);
 						});
-
 					}
 
 				}

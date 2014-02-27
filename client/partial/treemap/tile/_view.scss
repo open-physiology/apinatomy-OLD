@@ -5,6 +5,7 @@ amy-tile {
 }
 
 amy-treemap amy-tile {
+	@include box-sizing(border-box);
 	display    : block;
 	position   : absolute;
 	margin     : 0;
@@ -18,6 +19,7 @@ amy-treemap amy-tile {
 	@include transition-timing-function(ease-in-out);
 
 	& > .full-header {
+		@include box-sizing(border-box);
 		@include user-select(none);
 		display        : inline-block;
 		font-weight    : bold;
@@ -34,6 +36,7 @@ amy-treemap amy-tile {
 	}
 
 	& > .top-header {
+		@include box-sizing(border-box);
 		@include user-select(none);
 		display        : inline-block;
 		position       : absolute;
@@ -46,15 +49,16 @@ amy-treemap amy-tile {
 		left           : 0;
 		right          : 0;
 		height         : $amy-tile-header-height;
-		line-height    : $amy-tile-header-height;
-		font-size      : .8 * $amy-tile-header-height;
-		border-bottom  : dotted 1px;
+		// line-height and font-size set in JS
+		border-color   : white;
+		border-style   : none none dotted none;
 		@include single-transition(opacity, linear, .6s);
 		opacity        : 0;
 		&.opaque { opacity : 1; }
 	}
 
 	& > section {
+		@include box-sizing(border-box);
 		position : absolute;
 		display  : block;
 		margin   : 0;
@@ -70,7 +74,7 @@ amy-treemap amy-tile {
 	}
 
 	// borders
-	border     : solid $amy-tile-border-width;
+	border     : solid;
 
 	// overflow
 	& > section { overflow : hidden; }
