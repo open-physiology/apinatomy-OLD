@@ -5,12 +5,9 @@ define(['app/module', 'lodash'], function (ApiNATOMY, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	console.log("Loading 'element-directive/service'");
-
-
 	//// WARNING: When using this service, the controller constructor of
 	////          the directive is called twice, though only one is used.
-	////          Be careful with side-effects. (TODO: fix)
+	////          Be careful with side-effects. TODO: fix
 
 
 	ApiNATOMY.factory('ElementDirectiveService', ['$compile', function ($compile) {
@@ -97,9 +94,6 @@ define(['app/module', 'lodash'], function (ApiNATOMY, _) {
 		};
 
 	}]);
-
-
-	return 'ElementDirectiveService';
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,14 +1,14 @@
 'use strict';
 
 
-// Logging several application phases
+//// Logging several application phases
 
-console.log('Running main.js...');
+console.info('Starting main.js...');
 
 
-// RequireJS Configuration
+//// RequireJS Configuration
 
-require.config({
+requirejs.config({
 	paths: {
 		'es5-shim':          'lib/es5-shim/es5-shim',
 		'es6-shim':          'lib/es6-shim/es6-shim',
@@ -23,31 +23,33 @@ require.config({
 		'chroma':            'lib/chroma-js/chroma'
 	},
 	shim:  {
-		'angular':           { exports: 'angular' },
+		'angular':           { exports: 'angular', deps: ['jquery'] },
 		'jquery':            { exports: '$' },
 		'lodash':            { exports: '_' },
-		'es6-shim':          { deps: ['es5-shim'] },
-		'angular-resource':  { deps: ['angular'], init: function () { return 'ngResource'; } },
-		'angular-route':     { deps: ['angular'], init: function () { return 'ngRoute'; } },
-		'angular-animate':   { deps: ['angular'], init: function () { return 'ngAnimate'; } },
-		'angular-bootstrap': { deps: ['angular'], init: function () { return 'ui.bootstrap'; } }
+		'es6-shim':          ['es5-shim'],
+		'angular-resource':  ['angular'],
+		'angular-route':     ['angular'],
+		'angular-animate':   ['angular'],
+		'angular-bootstrap': ['angular']
 	}
 });
+
+
+//// Monkey patch Require.js to log every module load to the console
+
+var oldReqLoad = requirejs.load;
+function reqLogLoad(context, moduleName, url) {
+	console.log("Loading:", moduleName);
+	return oldReqLoad(context, moduleName, url);
+}
+requirejs.load = reqLogLoad;
+
 
 //// Utility modules to load up front
 
 var UTILITY_MODULES = [
 	'utility/or',
 	'utility/sum'
-];
-
-//// The Angular ApiNATOMY directives to Load
-
-var APINATOMY_ANGULAR_DIRECTIVES = [
-	'partial/top-nav/directive',
-	'partial/side-nav/directive',
-	'partial/treemap/directive',
-	'partial/rotation/directive'
 ];
 
 
@@ -57,19 +59,12 @@ var APINATOMY_ANGULAR_DIRECTIVES = [
 
 require(['es6-shim', 'lodash', 'jquery'].concat(UTILITY_MODULES), function () {
 
-	//// Then bootstrap Angular when the DOM is ready and the ApiNATOMY modules are loaded
+	//// then bootstrap the Angular application
 
-	require(['angular', 'app/module', 'domReady!'].concat(APINATOMY_ANGULAR_DIRECTIVES), function (ng) {
+	console.info('Bootstrapping Angular...');
 
-		console.log('Bootstrapping Angular...');
-
-		ng.bootstrap(document, ['ApiNATOMY']);
-
-		console.log('Angular bootstrapped.');
-
+	require(['app/bootstrap'], function () {
+		console.info('Angular bootstrapped.');
 	});
 
 });
-
-
-console.log('Done with main.js.');

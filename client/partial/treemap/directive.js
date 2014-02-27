@@ -2,18 +2,15 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/service', 'element-directive/service', '$bind/service', 'partial/treemap/tile/directive'], function
-		(_, ng, ApiNATOMY, TileLayoutServiceName, ElementDirectiveServiceName, BindServiceName) {
+		(_, ng, ApiNATOMY) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-	console.log("Loading 'partial/treemap/directive'");
 
 
 	var DEFAULT_TILE_SPACING = '1px';
 	var DEFAULT_TILE_LAYOUT = 'twentyFourTile';
 
 
-	ApiNATOMY.directive('amyTreemap', [TileLayoutServiceName, ElementDirectiveServiceName, '$q', '$window', BindServiceName, function
+	ApiNATOMY.directive('amyTreemap', ['TileLayoutService', 'ElementDirectiveService', '$q', '$window', '$bind', function
 			(TileLayoutService, elementDirective, $q, $window, $bind) {
 		return {
 

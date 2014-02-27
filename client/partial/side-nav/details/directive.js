@@ -2,14 +2,11 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['app/module', 'chroma', 'lodash', 'resource/service'], function
-		(ApiNATOMY, color, _, ResourceService) {
+		(ApiNATOMY, color, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	console.log("Loading 'partial/side-nav/details/directive'");
-
-
-	ApiNATOMY.directive('amyEntityDetails', [ResourceService, function (qResources) {
+	ApiNATOMY.directive('amyEntityDetails', ['ResourceService', function (qResources) {
 		return {
 			restrict:    'E',
 			replace:     true,

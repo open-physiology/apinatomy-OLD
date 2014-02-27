@@ -2,20 +2,15 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['angular', 'angular-resource', 'angular-route', 'angular-animate', 'angular-bootstrap'], function
-		(ng, ngResource, ngRoute, ngAnimate, uiBootstrap) {
+		(ng) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	console.log("Loading 'app/module'");
-
-
-	var ApiNATOMY = ng.module('ApiNATOMY', [ngResource, ngRoute, ngAnimate, uiBootstrap]);
+	var ApiNATOMY = ng.module('ApiNATOMY', ['ngResource', 'ngRoute', 'ngAnimate', 'ui.bootstrap']);
 
 
 	ApiNATOMY.config(function ($locationProvider) {
-
 		$locationProvider.html5Mode(true).hashPrefix('!');
-
 	});
 
 	ApiNATOMY.run(function ($rootScope) {

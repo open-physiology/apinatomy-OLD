@@ -5,9 +5,6 @@ define(['app/module', 'lodash'], function (ApiNATOMY, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	console.log("Loading 'partial/layout/service'");
-
-
 	ApiNATOMY.factory('TileLayoutService', [function () {
 
 		function gridLayout(tiles, size1, size2, repositionFn, nrOfDim2Tiles) {
@@ -88,9 +85,6 @@ define(['app/module', 'lodash'], function (ApiNATOMY, _) {
 			}
 		}
 	}]);
-
-
-	return 'TileLayoutService';
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

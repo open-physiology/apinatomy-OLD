@@ -5,13 +5,7 @@ define(['app/module'], function (ApiNATOMY) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	console.log("Loading 'focus/service'");
-
-
-	var FOCUS_SERVICE = 'FocusService';
-
-
-	ApiNATOMY.factory(FOCUS_SERVICE, function ($rootScope) {
+	ApiNATOMY.factory('FocusService', function ($rootScope) {
 
 		var eidStack = [];
 		var reuseRange = [];
@@ -63,9 +57,6 @@ define(['app/module'], function (ApiNATOMY) {
 
 		return iface;
 	});
-
-
-	return FOCUS_SERVICE;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

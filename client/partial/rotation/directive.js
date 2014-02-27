@@ -1,11 +1,8 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['lodash', 'app/module', 'utility/putStyle', 'element-directive/service', '$bind/service'], function (_, ApiNATOMY, putStyle, ElementDirectiveServiceName, BindServiceName) {
+define(['lodash', 'app/module', 'utility/putStyle', 'element-directive/service', '$bind/service'], function (_, ApiNATOMY, putStyle) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-	console.log("Loading 'partial/rotation/directive'");
 
 
 	var BACK_AWAY_MAX = 1000;
@@ -14,7 +11,7 @@ define(['lodash', 'app/module', 'utility/putStyle', 'element-directive/service',
 	var ROTATION_MAX = 45;
 
 
-	ApiNATOMY.directive('amyRotation', [ElementDirectiveServiceName, BindServiceName, function (elementDirective, $bind) {
+	ApiNATOMY.directive('amyRotation', ['ElementDirectiveService', '$bind', function (elementDirective, $bind) {
 		return {
 			restrict: 'E',
 			scope:    {

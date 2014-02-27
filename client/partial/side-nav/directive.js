@@ -1,14 +1,11 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'lodash', 'focus/service', 'partial/side-nav/details/directive'], function (ApiNATOMY, _, FocusService) {
+define(['app/module', 'lodash', 'focus/service', 'partial/side-nav/details/directive'], function (ApiNATOMY, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	console.log("Loading 'partial/side-nav/directive'");
-
-
-	ApiNATOMY.directive('amySideNav', [FocusService, function (FocusService) {
+	ApiNATOMY.directive('amySideNav', ['FocusService', function (FocusService) {
 		return {
 			restrict   : 'E',
 			replace    : true,

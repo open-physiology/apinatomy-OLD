@@ -1,20 +1,17 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'chroma', 'lodash', 'resource/service', 'focus/service', 'partial/treemap/layout/service', '$bind/service'], function
-		(ApiNATOMY, color, _, ResourceServiceName, FocusServiceName, TileLayoutServiceName, BindServiceName) {
+define(['app/module', 'chroma', 'lodash', 'resource/service', 'focus/service', 'partial/treemap/layout/service', '$bind/service'], function (ApiNATOMY, color, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	console.log("Loading 'partial/treemap/tile/directive'");
-
-
-	var DEFAULT_TILE_SPACING = '10px';
+	var DEFAULT_TILE_SPACING = '5px';
 	var DEFAULT_TILE_LAYOUT = 'slice';
 	var DEFAULT_TILE_BORDER_WIDTH = '1px';
 	var TILE_HEADER_HEIGHT = '26px';
 
-	ApiNATOMY.directive('amyTile', ['$timeout', '$q', ResourceServiceName, TileLayoutServiceName, FocusServiceName, BindServiceName, function
+
+	ApiNATOMY.directive('amyTile', ['$timeout', '$q', 'ResourceService', 'TileLayoutService', 'FocusService', '$bind', function
 			($timeout, $q, qResources, TileLayoutService, FocusService, $bind) {
 		return {
 			restrict:    'E',
@@ -240,6 +237,7 @@ define(['app/module', 'chroma', 'lodash', 'resource/service', 'focus/service', '
 						var enabledOnClick = $bind(function enabledOnClick(event) {
 							event.stopPropagation();
 							$scope.open = !$scope.open;
+
 							controller.requestRedraw();
 						});
 						iElement.on('click', enabledOnClick);

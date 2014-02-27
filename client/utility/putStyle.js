@@ -5,9 +5,6 @@ define(['lodash'], function (_) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	console.log("Loading 'utility/putStyle'");
-
-
 	var PREFIXES = {
 		'transform'  : ['webkit', 'moz', 'ms', 'o', ''],
 		'perspective': ['webkit', 'moz', 'ms', 'o', '']

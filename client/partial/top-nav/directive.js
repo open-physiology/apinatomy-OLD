@@ -5,9 +5,6 @@ define(['app/module'], function (ApiNATOMY) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	console.log("Loading 'partial/top-nav/directive'");
-
-
 	ApiNATOMY.directive('amyTopNav', [function () {
 		return {
 			restrict   : 'E',
