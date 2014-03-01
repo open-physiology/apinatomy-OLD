@@ -20,16 +20,13 @@ define(['app/module', 'chroma', 'lodash', 'resource/service'], function
 				qResources.then(function (resources) {
 					$scope.resources = resources;
 
-//					$scope.eidFnResult = $scope.eidFn();
-
 					$scope.$watch('eidFn()', function (newEid) {
-//						$scope.eidFnResult = $scope.eidFn();
 						if (newEid !== null) {
 							_($scope).assign({
 								eid:   newEid,
 								title: resources[newEid].title,
-								style: _(resources[newEid].style).create({
-									backgroundColor: color(resources[newEid].style.backgroundColor).brighten(40)
+								style: _(resources[newEid].tile.style).create({
+									backgroundColor: color(resources[newEid].tile.style.backgroundColor).brighten(40)
 								}).value()
 							});
 						}

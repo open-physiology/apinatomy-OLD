@@ -5,11 +5,11 @@ define(['lodash', 'utility/or'], function (_) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	_.mixin({ sum: function (collection, nrFn) {
-		return _.reduce(collection, function (a, b) {
-			return a + _(nrFn).or(_.identity)(b);
-		}, 0)
-	}}, {chain: true});
+	_.mixin({
+		approx: function (val1, val2, epsilon) {
+			return (Math.abs(val1 - val2) < _(epsilon).or(1e-5));
+		}
+	}, {chain: false});
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

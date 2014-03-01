@@ -1,8 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/service', 'element-directive/service', '$bind/service', 'partial/treemap/tile/directive'], function
-		(_, ng, ApiNATOMY) {
+define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/manager', 'partial/treemap/layout/predefined', '$bind/service', 'partial/treemap/tile/directive'], function (_, ng, ApiNATOMY, Layout) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -10,14 +9,13 @@ define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/service', 'el
 	var DEFAULT_TILE_LAYOUT = 'twentyFourTile';
 
 
-	ApiNATOMY.directive('amyTreemap', ['TileLayoutService', 'ElementDirectiveService', '$q', '$window', '$bind', function
-			(TileLayoutService, elementDirective, $q, $window, $bind) {
+	ApiNATOMY.directive('amyTreemap', ['$q', '$window', '$bind', function ($q, $window, $bind) {
 		return {
 
 			restrict: 'E',
 			scope:    {
-				attrLayout:  '@',
-				attrSpacing: '@'
+				attrLayout:      '@layout',
+				attrTileSpacing: '@tileSpacing'
 			},
 
 			controller: ['$scope', function ($scope) {
@@ -25,7 +23,7 @@ define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/service', 'el
 				//// normalizing attributes
 
 				$scope.layout = _($scope.attrLayout).or(DEFAULT_TILE_LAYOUT);
-				$scope.spacing = _.parseInt(_($scope.attrSpacing).or(DEFAULT_TILE_SPACING));
+				$scope.tileSpacing = _.parseInt(_($scope.attrTileSpacing).or(DEFAULT_TILE_SPACING));
 
 				//// controller interface for the treemap
 
@@ -49,22 +47,24 @@ define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/service', 'el
 					},
 
 					requestRedraw: _($bind(function () {
-						var positions = TileLayoutService[$scope.layout](
+						var positions = Layout(
 								_(children)
 										.pluck('layoutInterface')
-										.each(function (childIface, i) { childIface.index = i; })
-										.value(),
-								controller.height() - $scope.spacing,
-								controller.width() - $scope.spacing
+										.map(function (childIface, i) {
+											return _.chain(childIface).clone().assign({ index: i }).value();
+										}).value(),
+								$scope.layout,
+								controller.height() - $scope.tileSpacing,
+								controller.width() - $scope.tileSpacing
 						);
 
 						//// adjust for tile spacing
 
 						_(positions).each(function (pos) {
-							pos.top += $scope.spacing;
-							pos.left += $scope.spacing;
-							pos.height -= $scope.spacing;
-							pos.width -= $scope.spacing;
+							pos.top += $scope.tileSpacing;
+							pos.left += $scope.tileSpacing;
+							pos.height -= $scope.tileSpacing;
+							pos.width -= $scope.tileSpacing;
 						});
 
 						//// apply repositioning to the child tiles
@@ -83,10 +83,10 @@ define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/service', 'el
 			compile: function () {
 				return {
 
-					pre:  function preLink($scope) {
+					pre: function preLink($scope) {
 						_($scope).defaults({
-							layout: DEFAULT_TILE_LAYOUT,
-							spacing: DEFAULT_TILE_SPACING
+							layout:      DEFAULT_TILE_LAYOUT,
+							tileSpacing: DEFAULT_TILE_SPACING
 						});
 					},
 

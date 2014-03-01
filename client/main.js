@@ -49,7 +49,11 @@ requirejs.load = reqLogLoad;
 
 var UTILITY_MODULES = [
 	'utility/or',
-	'utility/sum'
+	'utility/sum',
+    'utility/repeat',
+    'utility/approx',
+    'utility/call',
+    'utility/div'
 ];
 
 

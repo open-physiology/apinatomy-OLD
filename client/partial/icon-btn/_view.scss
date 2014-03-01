@@ -1,0 +1,23 @@
+@import "base";
+
+icon-btn {
+	display             : inline-block;
+	padding             : 0;
+	border-color        : white;
+	border-style        : none;
+	text-decoration     : none;
+	cursor              : pointer;
+	background-position : center;
+	background-size     : 100%;
+	background-origin   : border-box;
+
+	&.light-icon {
+		//		@include filter(invert(100%));
+		-webkit-filter : invert(100%);
+		border-color   : white;
+	}
+
+	&:hover { }
+
+	&.icon-btn-active { }
+}

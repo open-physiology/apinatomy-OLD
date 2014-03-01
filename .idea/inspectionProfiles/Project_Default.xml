@@ -2,6 +2,7 @@
   <profile version="1.0" is_locked="false">
     <option name="myName" value="Project Default" />
     <option name="myLocal" value="false" />
+    <inspection_tool class="CommaExpressionJS" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="CssInvalidHtmlTagReference" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="CssUnknownProperty" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myCustomPropertiesEnabled" value="true" />
@@ -29,7 +30,7 @@
     <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="18">
+          <list size="20">
             <item index="0" class="java.lang.String" itemvalue="nobr" />
             <item index="1" class="java.lang.String" itemvalue="noembed" />
             <item index="2" class="java.lang.String" itemvalue="comment" />
@@ -48,6 +49,8 @@
             <item index="15" class="java.lang.String" itemvalue="amy-side-nav" />
             <item index="16" class="java.lang.String" itemvalue="amy-entity-details" />
             <item index="17" class="java.lang.String" itemvalue="amy-tile" />
+            <item index="18" class="java.lang.String" itemvalue="glyph-btn" />
+            <item index="19" class="java.lang.String" itemvalue="icon-btn" />
           </list>
         </value>
       </option>

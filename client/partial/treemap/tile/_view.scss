@@ -38,7 +38,7 @@ amy-treemap amy-tile {
 	& > .top-header {
 		@include box-sizing(border-box);
 		@include user-select(none);
-		display        : inline-block;
+		display        : block;
 		position       : absolute;
 		font-weight    : bold;
 		text-align     : center;
@@ -49,12 +49,26 @@ amy-treemap amy-tile {
 		left           : 0;
 		right          : 0;
 		height         : $amy-tile-header-height;
+		overflow: hidden;
 		// line-height and font-size set in JS
 		border-color   : white;
 		border-style   : none none dotted none;
 		@include single-transition(opacity, linear, .6s);
 		opacity        : 0;
 		&.opaque { opacity : 1; }
+
+		& > icon-btn {
+			float: right;
+			height: $amy-tile-header-height - 5px;
+			width: $amy-tile-header-height - 5px;
+			line-height: $amy-tile-header-height - 9px;
+			margin: 2px;
+			margin-left: -$amy-tile-header-height;
+
+			&:hover {
+				border: dotted 1px;
+			}
+		}
 	}
 
 	& > section {

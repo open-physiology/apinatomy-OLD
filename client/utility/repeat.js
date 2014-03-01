@@ -1,15 +1,22 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['lodash', 'utility/or'], function (_) {
+define(['lodash'], function (_) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	_.mixin({ sum: function (collection, nrFn) {
-		return _.reduce(collection, function (a, b) {
-			return a + _(nrFn).or(_.identity)(b);
-		}, 0)
-	}}, {chain: true});
+	_.mixin({
+		repeat: function (value, count) {
+			return _.times(count, function () { return value; });
+		}
+	}, {chain: true});
+
+
+	_.mixin({
+		repeatStr: function (value, count) {
+			return new Array(count + 1).join(value);
+		}
+	}, {chain: false});
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

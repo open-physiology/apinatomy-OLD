@@ -1,140 +1,298 @@
 {
 	"1": {
-		"style"   : { "backgroundColor": "#686f77" },
-		"title"   : "Large Intestine",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#686f77"
+			}
+		},
+		"title":    "Large Intestine",
 		"children": []
 	},
 	"2": {
-		"style"   : { "backgroundColor": "#686f77" },
-		"title"   : "Jejuno Ileum",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#686f77"
+			}
+		},
+		"title":    "Jejuno Ileum",
 		"children": []
 	},
 	"3": {
-		"style"   : { "backgroundColor": "#686f77" },
-		"title"   : "Liver Pancreas Duodenum",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#686f77"
+			}
+		},
+		"title":    "Liver Pancreas Duodenum",
 		"children": []
 	},
 	"4": {
-		"style"   : { "backgroundColor": "#686f77" },
-		"title"   : "Stomach",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#686f77"
+			}
+		},
+		"title":    "Stomach",
 		"children": []
 	},
 	"5": {
-		"style"   : { "backgroundColor": "#686f77" },
-		"title"   : "Esophagus",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#686f77"
+			}
+		},
+		"title":    "Esophagus",
 		"children": []
 	},
 	"6": {
-		"style"   : { "backgroundColor": "#686f77" },
-		"title"   : "Mouth Throat",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#686f77"
+			}
+		},
+		"title":    "Mouth Throat",
 		"children": []
 	},
 
-	"7" : {
-		"style"   : { "backgroundColor": "#97c062" },
-		"title"   : "Genitals Gonads",
+	"7":  {
+		"tile":     {
+			"style": {
+				"backgroundColor": "#97c062"
+			}
+		},
+		"title":    "Genitals Gonads",
 		"children": []
 	},
-	"8" : {
-		"style"   : { "backgroundColor": "#e44488" },
-		"title"   : "Vascular Caudal",
+	"8":  {
+		"tile":     {
+			"style": {
+				"backgroundColor": "#e44488"
+			}
+		},
+		"title":    "Vascular Caudal",
 		"children": []
 	},
-	"9" : {
-		"style"   : { "backgroundColor": "#e44488" },
-		"title"   : "Vascular Abdominal",
+	"9":  {
+		"tile":     {
+			"style": {
+				"backgroundColor": "#e44488"
+			}
+		},
+		"title":    "Vascular Abdominal",
 		"children": []
 	},
 	"10": {
-		"style"   : { "backgroundColor": "#e44488" },
-		"title"   : "Vascular Cardiac",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#e44488"
+			}
+		},
+		"title":    "Vascular Cardiac",
 		"children": []
 	},
 	"11": {
-		"style"   : { "backgroundColor": "#e44488" },
-		"title"   : "Vascular Cephalic",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#e44488"
+			}
+		},
+		"title":    "Vascular Cephalic",
 		"children": []
 	},
 	"12": {
-		"style"   : { "backgroundColor": "#e4b460" },
-		"title"   : "Lungs",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#e4b460"
+			}
+		},
+		"title":    "Lungs",
 		"children": []
 	},
 
 	"13": {
-		"style"   : { "backgroundColor": "#018754" },
-		"title"   : "Urinary Tract",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#018754"
+			}
+		},
+		"title":    "Urinary Tract",
 		"children": []
 	},
 	"14": {
-		"style"   : { "backgroundColor": "#9c4f97" },
-		"title"   : "Nervous Caudal",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#9c4f97"
+			}
+		},
+		"title":    "Nervous Caudal",
 		"children": []
 	},
 	"15": {
-		"style"   : { "backgroundColor": "#9c4f97" },
-		"title"   : "Nervous Lower Spinal",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#9c4f97"
+			}
+		},
+		"title":    "Nervous Lower Spinal",
 		"children": []
 	},
 	"16": {
-		"style"   : { "backgroundColor": "#9c4f97" },
-		"title"   : "Nervous Upper Spinal",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#9c4f97"
+			}
+		},
+		"title":    "Nervous Upper Spinal",
 		"children": []
 	},
 	"17": {
-		"style"   : { "backgroundColor": "#9c4f97" },
-		"title"   : "Nervous Cephalic",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#9c4f97"
+			}
+		},
+		"title":    "Nervous Cephalic",
 		"children": []
 	},
 	"18": {
-		"style"   : { "backgroundColor": "#78589f" },
-		"title"   : "Nasopharynx Conjunctiva",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#78589f"
+			}
+		},
+		"title":    "Nasopharynx Conjunctiva",
 		"children": []
 	},
 
 	"19": {
-		"style"   : { "backgroundColor": "#9f9490" },
-		"title"   : "Lower Limb",
-		"children": []
+		"tile":     {
+			"style":  {
+				"backgroundColor": "#9f9490"
+			},
+			"layout": [ "slice", ["dice", 0, 1, 2], ["dice", 3, 4] ]
+		},
+		"title":    "Lower Limb",
+		"children": ["28", "29", "30", "31", "32"]
 	},
 	"20": {
-		"style"   : { "backgroundColor": "#9f9490" },
-		"title"   : "Pelvis",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#9f9490"
+			}
+		},
+		"title":    "Pelvis",
 		"children": []
 	},
 	"21": {
-		"style"   : { "backgroundColor": "#9f9490" },
-		"title"   : "Abdomen",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#9f9490"
+			}
+		},
+		"title":    "Abdomen",
 		"children": []
 	},
 	"22": {
-		"style"   : { "backgroundColor": "#9f9490" },
-		"title"   : "Thorax",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#9f9490"
+			}
+		},
+		"title":    "Thorax",
 		"children": []
 	},
 	"23": {
-		"style"   : { "backgroundColor": "#9f9490" },
-		"title"   : "Neck Upper Limb",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#9f9490"
+			}
+		},
+		"title":    "Neck Upper Limb",
 		"children": []
 	},
 	"24": {
-		"style"   : { "backgroundColor": "#9f9490" },
-		"title"   : "Head",
+		"tile":     {
+			"style":  {
+				"backgroundColor": "#9f9490"
+			},
+			"layout": "slice"
+		},
+		"title":    "Head",
 		"children": [ "6", "25", "26", "27" ]
 	},
 	"25": {
-		"style"   : { "backgroundColor": "darkblue" },
-		"title"   : "Left Eye",
+		"tile":     {
+			"style": {
+				"backgroundColor": "darkblue"
+			}
+		},
+		"title":    "Left Eye",
 		"children": []
 	},
 	"26": {
-		"style"   : { "backgroundColor": "darkblue" },
-		"title"   : "Right Eye",
+		"tile":     {
+			"style": {
+				"backgroundColor": "darkblue"
+			}
+		},
+		"title":    "Right Eye",
 		"children": []
 	},
 	"27": {
-		"style"   : { "backgroundColor": "#686f77" },
-		"title"   : "Nose",
+		"tile":     {
+			"style": {
+				"backgroundColor": "#686f77"
+			}
+		},
+		"title":    "Nose",
+		"children": []
+	},
+
+
+	"28": {
+		"tile":     {
+			"style": {
+				"backgroundColor": "darkred"
+			}
+		},
+		"title":    "Upper Leg",
+		"children": []
+	},
+	"29": {
+		"tile":     {
+			"style": {
+				"backgroundColor": "darkred"
+			}
+		},
+		"title":    "Knee",
+		"children": []
+	},
+	"30": {
+		"tile":     {
+			"style": {
+				"backgroundColor": "darkred"
+			}
+		},
+		"title":    "Lower Leg",
+		"children": []
+	},
+	"31": {
+		"tile":     {
+			"style": {
+				"backgroundColor": "darkred"
+			}
+		},
+		"title":    "Ankle",
+		"children": []
+	},
+	"32": {
+		"tile":     {
+			"style": {
+				"backgroundColor": "darkred"
+			}
+		},
+		"title":    "Foot",
 		"children": []
 	}
+
 }

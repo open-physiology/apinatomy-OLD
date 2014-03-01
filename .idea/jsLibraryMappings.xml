@@ -2,9 +2,8 @@
 <project version="4">
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$" libraries="{Node.js Dependencies for apinatomy}" />
-    <file url="PROJECT" libraries="{Node.js v0.10.18 Core Modules, angular, angular-animate, angularjs-DefinitelyTyped, express-DefinitelyTyped, gruntjs-DefinitelyTyped, jasmine-DefinitelyTyped, node-DefinitelyTyped, requirejs-DefinitelyTyped, socket.io-DefinitelyTyped, underscore-DefinitelyTyped}" />
+    <file url="PROJECT" libraries="{Node.js Dependencies for apinatomy, Node.js v0.10.18 Core Modules, angular, angular-animate, angularjs-DefinitelyTyped, express-DefinitelyTyped, gruntjs-DefinitelyTyped, jQuery UI-1.10.2, jQuery-2.0.0, jasmine-DefinitelyTyped, jquery-DefinitelyTyped, lodash-DefinitelyTyped, node-DefinitelyTyped, requirejs-DefinitelyTyped}" />
     <includedPredefinedLibrary name="Node.js Globals" />
-    <includedPredefinedLibrary name="WebGL" />
   </component>
 </project>
 
