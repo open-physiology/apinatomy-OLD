@@ -159,7 +159,7 @@ define(['angular', 'app/module', 'chroma', 'lodash', 'partial/treemap/layout/man
 											.each(function (childIface, i) { childIface.index = i; })
 											.value(),
 									$scope.layout,
-									pos.height - $scope.tileSpacing - 2 * $scope.borderWidth - _.parseInt(TILE_HEADER_HEIGHT),
+									pos.height - $scope.tileSpacing - 3 * $scope.borderWidth - _.parseInt(TILE_HEADER_HEIGHT),
 									pos.width - $scope.tileSpacing - 2 * $scope.borderWidth
 							);
 

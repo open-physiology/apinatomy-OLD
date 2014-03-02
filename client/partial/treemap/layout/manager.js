@@ -8,7 +8,7 @@ define(['lodash'], function (_) {
 	var registeredLayouts = {};
 
 
-	// TODO: detect duplicate indices in the layout template?
+	// TODO: detect and forbid duplicate indices in the layout template
 	function compoundLayout(tiles, layout, height, width) {
 
 		//// dissect the 'layout' parameter
@@ -40,25 +40,25 @@ define(['lodash'], function (_) {
 		_(childBlocks).each(function (childBlock, childBlockIndex) {
 			if (_(childBlock).isArray()) {
 				var map = [];
-				var reIndexedChildBlock = _(childBlock).cloneDeep(function (val) {
-					if (_(val).isNumber()) {
-						var i = _(map).indexOf(val);
-						if (i === -1) { i = map.push(val) - 1; }
-						return i;
-					} else { return undefined; }
-				});
-				var resultFromChildBlock = Layout(
-						_(tiles).at(map).map(function (tile, i) {
-							return _(tile).assign({ index: i }).value();
-						}).value(),
-						reIndexedChildBlock,
-						childBlockPositions[childBlockIndex].height,
-						childBlockPositions[childBlockIndex].width,
-						childBlockPositions[childBlockIndex].top,
-						childBlockPositions[childBlockIndex].left
-				);
-
-
+				var reIndexedChildBlock =
+						_(childBlock).cloneDeep(function (val) {
+							if (_(val).isNumber()) {
+								var i = _(map).indexOf(val);
+								if (i === -1) { i = map.push(val) - 1; }
+								return i;
+							} else { return undefined; }
+						});
+				var resultFromChildBlock =
+						Layout(
+								_(tiles).at(map).map(function (tile, i) {
+									return _(tile).assign({ index: i }).value();
+								}).value(),
+								reIndexedChildBlock,
+								childBlockPositions[childBlockIndex].height,
+								childBlockPositions[childBlockIndex].width,
+								childBlockPositions[childBlockIndex].top,
+								childBlockPositions[childBlockIndex].left
+						);
 				_(map).each(function (resultIndex, subResultIndex) {
 					result[resultIndex] = resultFromChildBlock[subResultIndex];
 				});
