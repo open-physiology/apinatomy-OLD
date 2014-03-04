@@ -1,0 +1,14 @@
+<div>
+	<amy-rotation amy-model="style3D" enabled="threeDRotateEnabled">
+
+		<amy-treemap layout="rowsOfTiles" ng-style="style3D">
+
+			<amy-circuitboard-tile ng-repeat="child in children"
+			                       uri="{{ child.uri }}"
+			                       depth="{{ depth + 1 }}"
+			                       max-depth="{{ maxDepth }}"></amy-circuitboard-tile>
+
+		</amy-treemap>
+
+	</amy-rotation>
+</div>

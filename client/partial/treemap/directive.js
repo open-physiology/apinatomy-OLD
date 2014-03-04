@@ -1,8 +1,15 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/manager', 'partial/treemap/layout/predefined', '$bind/service', 'partial/treemap/tile/directive'], function (_, ng, ApiNATOMY, Layout) {
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+define(['lodash',
+        'angular',
+        'app/module',
+        'partial/treemap/layout/manager',
+        'partial/treemap/layout/predefined',
+        '$bind/service',
+        'partial/treemap/tile/directive'], function
+		(_, ng, ApiNATOMY, Layout) {
+//  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	var DEFAULT_TILE_SPACING = '1px';
@@ -12,18 +19,17 @@ define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/manager', 'pa
 	ApiNATOMY.directive('amyTreemap', ['$q', '$window', '$bind', function ($q, $window, $bind) {
 		return {
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 			restrict: 'E',
 			scope:    {
 				attrLayout:      '@layout',
 				attrTileSpacing: '@tileSpacing'
 			},
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 			controller: ['$scope', function ($scope) {
-
-				//// normalizing attributes
-
-				$scope.layout = _($scope.attrLayout).or(DEFAULT_TILE_LAYOUT);
-				$scope.tileSpacing = _.parseInt(_($scope.attrTileSpacing).or(DEFAULT_TILE_SPACING));
 
 				//// controller interface for the treemap
 
@@ -31,7 +37,8 @@ define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/manager', 'pa
 				var controller = {
 
 					height: undefined,
-					width:  undefined,
+
+					width: undefined,
 
 					registerMouseEnter: function () {
 						$scope.focus = true;
@@ -80,14 +87,20 @@ define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/manager', 'pa
 				return controller;
 			}],
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 			compile: function () {
 				return {
 
 					pre: function preLink($scope) {
-						_($scope).defaults({
-							layout:      DEFAULT_TILE_LAYOUT,
-							tileSpacing: DEFAULT_TILE_SPACING
+
+						//// normalizing attributes
+
+						_($scope).assign({
+							layout:      _($scope.attrLayout).or(DEFAULT_TILE_LAYOUT),
+							tileSpacing: _.parseInt(_($scope.attrTileSpacing).or(DEFAULT_TILE_SPACING))
 						});
+
 					},
 
 					post: function postLink($scope, iElement, iAttrs, controller) {
@@ -99,6 +112,7 @@ define(['lodash', 'angular', 'app/module', 'partial/treemap/layout/manager', 'pa
 				};
 			}
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		};
 	}]);
 

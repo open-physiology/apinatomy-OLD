@@ -86,6 +86,33 @@ define(['lodash', 'partial/treemap/layout/manager'], function (_, Layout) {
 
 		twentyFourTile: function (tiles, height, width) {
 			return gridLayout(tiles, height, width, 4, 6);
+		},
+
+		rowsOfTiles: function (tiles, height, width) {
+			var rowCount = Math.floor(Math.sqrt(tiles.length));
+			var maxColCount = Math.ceil(tiles.length / rowCount);
+
+			var resultingLayout = new Array(rowCount+1);
+			resultingLayout[0] = "slice";
+
+			var index = 0;
+
+			_(rowCount).range().each(function (row) {
+				resultingLayout[row+1] = [];
+
+				resultingLayout[row+1].push("dice");
+
+				for (; index < Math.min((row+1) * maxColCount, tiles.length); ++index) {
+					resultingLayout[row+1].push(index);
+				}
+
+//				resultingLayout[row+1].push.apply(
+//						resultingLayout[row],
+//						_.range(row * maxColCount, Math.max((row+1) * maxColCount, tiles.length))
+//				);
+			});
+
+			return Layout(tiles, resultingLayout, height, width, 0, 0);
 		}
 
 	});

@@ -1,7 +1,7 @@
-<header ng-class="{ opaque:  open }" class="top-header" ng-style="{borderColor: style.color}">
+<header ng-class="{ opaque: open }" class="top-header" ng-style="{ borderColor: css.color }">
 	{{ title }}
-	<icon-btn inactive-icon="partial/treemap/tile/resize-full-{{ style.color }}.png"
-	          active-icon="partial/treemap/tile/resize-small-{{ style.color }}.png"
+	<icon-btn inactive-icon="partial/treemap/tile/resize-full-{{ css.color || 'black' }}.png"
+	          active-icon="partial/treemap/tile/resize-small-{{ css.color || 'black' }}.png"
 	          ng-model="fullSize"></icon-btn>
 </header>
 

@@ -20,6 +20,7 @@ requirejs.config({
 		'angular-route':     'lib/angular-route/angular-route',
 		'angular-animate':   'lib/angular-animate/angular-animate',
 		'angular-bootstrap': 'lib/angular-bootstrap/ui-bootstrap-tpls',
+		'angular-recursion': 'lib/angular-recursion/angular-recursion',
 		'chroma':            'lib/chroma-js/chroma'
 	},
 	shim:  {
@@ -30,7 +31,8 @@ requirejs.config({
 		'angular-resource':  ['angular'],
 		'angular-route':     ['angular'],
 		'angular-animate':   ['angular'],
-		'angular-bootstrap': ['angular']
+		'angular-bootstrap': ['angular'],
+		'angular-recursion': ['angular']
 	}
 });
 
@@ -50,10 +52,11 @@ requirejs.load = reqLogLoad;
 var UTILITY_MODULES = [
 	'utility/or',
 	'utility/sum',
-    'utility/repeat',
-    'utility/approx',
-    'utility/call',
-    'utility/div'
+	'utility/repeat',
+	'utility/approx',
+	'utility/call',
+	'utility/div',
+	'utility/putCSS'
 ];
 
 

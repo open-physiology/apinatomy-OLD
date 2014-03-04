@@ -1,12 +1,12 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['angular', 'angular-resource', 'angular-route', 'angular-animate', 'angular-bootstrap'], function
+define(['angular', 'angular-resource', 'angular-route', 'angular-animate', 'angular-bootstrap', 'angular-recursion'], function
 		(ng) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	var ApiNATOMY = ng.module('ApiNATOMY', ['ngResource', 'ngRoute', 'ngAnimate', 'ui.bootstrap']);
+	var ApiNATOMY = ng.module('ApiNATOMY', ['ngResource', 'ngRoute', 'ngAnimate', 'ui.bootstrap', 'RecursionHelper']);
 
 
 	ApiNATOMY.config(function ($locationProvider) {

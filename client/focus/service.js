@@ -7,49 +7,49 @@ define(['app/module'], function (ApiNATOMY) {
 
 	ApiNATOMY.factory('FocusService', function ($rootScope) {
 
-		var eidStack = [];
+		var uriStack = [];
 		var reuseRange = [];
 
 		var iface = {
 
-			pushEid: function (eid) {
-				eidStack.push(eid);
-				reuseRange[eidStack.length - 1] = eidStack.length - 1;
-				$rootScope.$broadcast('entity-focus', eid);
+			pushUri: function (uri) {
+				uriStack.push(uri);
+				reuseRange[uriStack.length - 1] = uriStack.length - 1;
+				$rootScope.$broadcast('entity-focus', uri);
 			},
 
-			popEid: function (eid) {
-				// a safety check; always need to specify the eid to pop off
-				if (iface.topEid() !== eid) {
-					throw new Error("popped the wrong eid '" + eid + "' " +
+			popUri: function (uri) {
+				// a safety check; always need to specify the uri to pop off
+				if (iface.topUri() !== uri) {
+					throw new Error("popped the wrong uri '" + uri + "' " +
 				                    "from the focus stack; " +
-					                "the top one is '" + iface.topEid() + "'");
+					                "the top one is '" + iface.topUri() + "'");
 				}
-				eidStack.pop();
-				$rootScope.$broadcast('entity-focus', iface.topEid());
+				uriStack.pop();
+				$rootScope.$broadcast('entity-focus', iface.topUri());
 			},
 
-			eidStack: function () {
-				return eidStack;
+			uriStack: function () {
+				return uriStack;
 			},
 
-			eid: function (eidId) {
-				if (eidId < eidStack.length) {
-					return eidStack[eidId];
+			uri: function (uriId) {
+				if (uriId < uriStack.length) {
+					return uriStack[uriId];
 				} else {
 					return null;
 				}
 			},
 
-			topEid: function () {
-				return iface.eid(eidStack.length - 1);
+			topUri: function () {
+				return iface.uri(uriStack.length - 1);
 			},
 
-			eidCount: function () {
-				return eidStack.length;
+			uriCount: function () {
+				return uriStack.length;
 			},
 
-			eidIdRange: function () {
+			uriIdRange: function () {
 				return reuseRange;
 			}
 

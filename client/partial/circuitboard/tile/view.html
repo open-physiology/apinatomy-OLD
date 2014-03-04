@@ -1,0 +1,10 @@
+<amy-tile uri="{{ uri }}" open="open" depth="{{ depth }}">
+
+
+	<div ng-if="hasBeenOpen && structure">
+		<amy-circuitboard-tile ng-repeat="child in structure.children" uri="{{ child.uri }}"
+		                       depth="{{ depth + 1 }}"
+		                       max-depth="{{ maxDepth }}"></amy-circuitboard-tile>
+	</div>
+
+</amy-tile>

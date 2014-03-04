@@ -13,24 +13,32 @@ define(['app/module', 'chroma', 'lodash', 'resource/service'], function
 			transclude:  true,
 			templateUrl: 'partial/side-nav/details/view.html',
 			scope:       {
-				eidFn: '&eid'
+				uriFn: '&uri'
 			},
 
 			controller: function ($scope) {
-				qResources.then(function (resources) {
-					$scope.resources = resources;
-
-					$scope.$watch('eidFn()', function (newEid) {
-						if (newEid !== null) {
-							_($scope).assign({
-								eid:   newEid,
-								title: resources[newEid].title,
-								style: _(resources[newEid].tile.style).create({
-									backgroundColor: color(resources[newEid].tile.style.backgroundColor).brighten(40)
-								}).value()
-							});
-						}
-					});
+				$scope.$watch('uriFn()', function (newUri) {
+					if (newUri !== null) {
+						qResources.structures([newUri]).then(function (structure) {
+							// The database currently has dangling references, which require conditional code;
+							// TODO: The database should not allow dangling references; fix this fundamentally
+							if (structure.length === 0) {
+								_($scope).assign({
+									uri:  newUri,
+									name: '(' + newUri + ')',
+									css: {}
+								});
+							} else {
+								_($scope).assign({
+									uri:  newUri,
+									name: structure[0].name,
+									css: _(structure[0].tile).isUndefined() ? {} : _(structure[0].tile.css['&']).create({
+										backgroundColor: color(structure[0].tile.css['&'].backgroundColor).brighten(40)
+									}).value()
+								});
+							}
+						});
+					}
 				});
 			}
 		};

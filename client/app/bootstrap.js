@@ -5,7 +5,9 @@ define(['angular', 'app/module', 'domReady!',
         'partial/top-nav/directive',
         'partial/side-nav/directive',
         'partial/treemap/directive',
-        'partial/rotation/directive'], function (ng) {
+        'partial/rotation/directive',
+        'partial/circuitboard/directive',
+        'partial/circuitboard/tile/directive'], function (ng) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 

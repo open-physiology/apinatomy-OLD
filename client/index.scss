@@ -28,9 +28,9 @@ html, body {
 
 	main {
 		@include edge-to-edge;
-		& > amy-rotation {
+		amy-rotation {
 			@include edge-to-edge;
-			& > amy-treemap {
+			amy-treemap {
 				@include edge-to-edge;
 				left   : $amy-spacing + $amy-side-nav-width;
 				top    : $amy-spacing + $amy-top-nav-height;

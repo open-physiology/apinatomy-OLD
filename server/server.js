@@ -21,6 +21,11 @@ var api = require('./api');
 
 app.get('/resources/ExampleData', api.getExampleData);
 
+
+//// testing the MongoDB-connected API
+
+app.get('/resources/structures/:uris', api.getStructure);
+
 // TODO: API
 
 ///////////////////////// Special Exceptions /////////////////////////

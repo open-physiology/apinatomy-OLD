@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MongoConfiguration">
+    <option name="serverConfigurations">
+      <list>
+        <ServerConfiguration>
+          <option name="connectOnIdeStartup" value="true" />
+          <option name="label" value="Apinatomy DB" />
+          <option name="serverName" value="localhost" />
+          <option name="serverPort" value="27017" />
+          <option name="shellWorkingDir" value="$PROJECT_DIR$/server/db" />
+          <option name="userDatabase" value="apinatomy" />
+        </ServerConfiguration>
+      </list>
+    </option>
+    <option name="shellPath" value="/usr/local/bin/mongo" />
+  </component>
+</project>
+
