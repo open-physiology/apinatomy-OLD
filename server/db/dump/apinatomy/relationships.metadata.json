@@ -1,0 +1,1 @@
+{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "apinatomy.relationships", "name" : "_id_" }, { "v" : 1, "key" : { "1" : 1, "2" : 1, "type" : 1 }, "unique" : true, "ns" : "apinatomy.relationships", "name" : "1_1_2_1_type_1", "dropDups" : true }, { "v" : 1, "key" : { "1" : 1 }, "ns" : "apinatomy.relationships", "name" : "1_1" } ] }
