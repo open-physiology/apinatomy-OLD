@@ -19,14 +19,14 @@ define(['lodash',
 			restrict:    'E',
 			replace:     true,
 			templateUrl: 'partial/circuitboard/view.html',
-			scope:       {},
+			// TODO: Enable a scope with rotation still working
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			compile: function () {
 				return {
 
-					pre: function preLink($scope, iElement, iAttrs, controller) {
+					pre: function preLink($scope, iElement, iAttrs) {
 						$scope.depth = 0;
 						$scope.maxDepth = _.parseInt(iAttrs.maxDepth);
 

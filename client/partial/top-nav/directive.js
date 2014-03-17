@@ -10,6 +10,7 @@ define(['app/module'], function (ApiNATOMY) {
 			restrict   : 'E',
 			replace    : true,
 			templateUrl: 'partial/top-nav/view.html',
+			scope: false,
 			controller: function ($scope) {}
 		};
 	}]);

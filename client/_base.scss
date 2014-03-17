@@ -1,10 +1,13 @@
-// variables
+///////////////////////// Variables /////////////////////////
 
 $amy-spacing : 15px;
 $amy-top-nav-height : $navbar-height;
 $amy-side-nav-width : 200px;
 $amy-tile-header-height : 26px;
 $amy-tile-border-width : 1px; // important for position calculation in javascript; don't change
+
+
+///////////////////////// Mixins /////////////////////////
 
 @mixin edge-to-edge {
 	display  : block;
