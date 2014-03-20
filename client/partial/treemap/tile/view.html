@@ -1,10 +1,10 @@
-<header ng-class="{ opaque: open }" class="top-header" ng-style="{ borderColor: css.color }">
-	{{ title }}
-	<icon-btn inactive-icon="partial/treemap/tile/resize-full-{{ css.color || 'black' }}.png"
-	          active-icon="partial/treemap/tile/resize-small-{{ css.color || 'black' }}.png"
-	          ng-model="fullSize"></icon-btn>
+<header ng-class="{ opaque: open }" class="top-header">
+	<icon-btn states="sizeButtonStates" classes="sizeButtonClasses" ng-model="sizeButtonModel"></icon-btn>
+	<span once-text="title"></span>
 </header>
 
-<header ng-class="{ opaque: !open }" class="full-header">{{ title }}</header>
+<header ng-class="{ opaque: !open }" class="full-header">
+	<span once-text="title"></span>
+</header>
 
 <section ng-class="{ opaque: open, hidden: contentHidden }" ng-transclude></section>

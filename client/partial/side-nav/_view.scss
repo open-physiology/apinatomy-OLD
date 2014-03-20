@@ -1,7 +1,6 @@
 @import "base";
 
 .amy-side-nav {
-
 	background-color : rgba(255, 255, 255, .5);
 
 	& > header {
@@ -24,10 +23,27 @@
 
 	}
 
-	& > .amy-entity-details {
-		@include fade-out;
+	& .amy-entity-details {
+//		@include fade-out;
 		margin-left   : $amy-spacing;
-		margin-bottom : $amy-spacing;
+		margin-bottom : $amy-spacing / 2;
+	}
+
+	& .amy-relation-types {
+		font-weight   : bold;
+		text-align    : center;
+		border        : dotted gray 1px;
+		margin-bottom : 0.5 * $amy-spacing;
+		margin-left   : 2.0 * $amy-spacing;
+		margin-right  : 1.0 * $amy-spacing;
+
+		& > div {
+			margin : 0;
+			&:not(:last-of-type) {
+				border-bottom : dotted 1px gray;
+			}
+		}
+
 	}
 
 }

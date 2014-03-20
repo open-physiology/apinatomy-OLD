@@ -6,7 +6,8 @@
   "dependencies": {
     "express": "~3.4.8",
     "mongojs": "~0.10.0",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "mongoose": "~3.8.8"
   },
   "devDependencies": {
     "grunt": "~0.4.2",

@@ -1,25 +1,17 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module'], function (ApiNATOMY) {
+define(['lodash'], function (_) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	ApiNATOMY.factory('SettingsService', ['$rootScope', function ($rootScope) {
-		$rootScope.threeDRotateEnabled = false;
-
-		return {
-
-			set3dRotation: function (val) {
-				$rootScope.threeDRotateEnabled = val;
-			},
-
-			get3dRotation: function () {
-				return $rootScope.threeDRotateEnabled;
-			}
-
-		};
-	}]);
+	_.mixin({ prefixOf: function (A, B) {
+		if (A.length > B.length) { return false; }
+		for (var i = 0; i < A.length; ++i) {
+			if (A[i] !== B[i]) { return false; }
+		}
+		return true;
+	}}, {chain: false});
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

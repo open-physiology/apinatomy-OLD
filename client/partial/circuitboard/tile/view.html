@@ -1,10 +1,19 @@
-<amy-tile uri="{{ uri }}" open="open" depth="{{ depth }}">
+<amy-tile amy-open="open"
+          amy-weight="weight"
+          amy-title="entity.name"
+          amy-layout="entity.tile[state].layout"
+          amy-size-button-model=  "condition"
+          amy-size-button-states= "{ 'open': 'maximized', 'maximized': 'open' }"
+          amy-size-button-classes="{ open:      'icon-btn-full-'  + entity.tile[state].css['&'].color,
+	                                 maximized: 'icon-btn-small-' + entity.tile[state].css['&'].color }"
+          ng-mouseenter="mouseOver = true"
+          ng-mouseleave="mouseOver = false"
+          ng-click="onClick($event)"
+		  on-ready="onTileReady()">
 
-
-	<div ng-if="hasBeenOpen && structure">
-		<amy-circuitboard-tile ng-repeat="child in structure.children" uri="{{ child.uri }}"
-		                       depth="{{ depth + 1 }}"
-		                       max-depth="{{ maxDepth }}"></amy-circuitboard-tile>
+	<div amy-once="open">
+		<amy-circuitboard-tile ng-repeat="sub in _.uniq(entity.sub, false, 'entity')"
+		                       amy-entity="sub.entity"></amy-circuitboard-tile>
 	</div>
 
 </amy-tile>

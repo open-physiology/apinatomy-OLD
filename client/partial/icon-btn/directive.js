@@ -1,41 +1,37 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', '$bind/service'], function (ApiNATOMY) {
+define(['lodash', 'app/module', '$bind/service'], function (_, ApiNATOMY) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-	//// expects urls of dark (black) icons for active and inactive state
 
 	ApiNATOMY.directive('iconBtn', ['$bind', function ($bind) {
 		return {
 			restrict: 'E',
 			scope:    {
 				ngModel:      '=',
-				activeIcon:   '@',
-				inactiveIcon: '@'
+				classes:      '=',
+				states:       '='
 			},
 			link:     function ($scope, iElement) {
+				iElement.css('background-size', iElement.height() - 4);
 
-				iElement.css('background-size', iElement.height()-4);
+				var currentClass = '';
 
 				function adjustToStatus() {
-					iElement.toggleClass('iconBtnActive', $scope.ngModel);
-					iElement.css(
-							'backgroundImage',
-							'url(' + ($scope.ngModel ?
-							          $scope.activeIcon :
-							          $scope.inactiveIcon) + ')'
-					);
+					iElement.removeClass(currentClass);
+					if ($scope.classes[$scope.ngModel]) {
+						currentClass = $scope.classes[$scope.ngModel];
+						iElement.addClass(currentClass);
+					}
 				}
 
 				$scope.$watch('ngModel', adjustToStatus);
-				$scope.$watch('activeIcon', adjustToStatus);
-				$scope.$watch('inactiveIcon', adjustToStatus);
+				$scope.$watch('classes', adjustToStatus);
 
 				iElement.click($bind(function (event) {
 					event.stopPropagation();
-					$scope.$eval('ngModel = !ngModel');
+					$scope.ngModel = $scope.states[$scope.ngModel];
 				}));
 			}
 		};

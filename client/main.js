@@ -21,6 +21,7 @@ requirejs.config({
 		'angular-animate':   'lib/angular-animate/angular-animate',
 		'angular-bootstrap': 'lib/angular-bootstrap/ui-bootstrap-tpls',
 		'angular-recursion': 'lib/angular-recursion/angular-recursion',
+		'angular-once':      'lib/angular-once/once',
 		'chroma':            'lib/chroma-js/chroma'
 	},
 	shim:  {
@@ -32,19 +33,20 @@ requirejs.config({
 		'angular-route':     ['angular'],
 		'angular-animate':   ['angular'],
 		'angular-bootstrap': ['angular'],
-		'angular-recursion': ['angular']
+		'angular-recursion': ['angular'],
+		'angular-once':      ['angular']
 	}
 });
 
 
 //// Monkey patch Require.js to log every module load to the console
-
-var oldReqLoad = requirejs.load;
-function reqLogLoad(context, moduleName, url) {
-	console.log("Loading:", moduleName);
-	return oldReqLoad(context, moduleName, url);
-}
-requirejs.load = reqLogLoad;
+//
+//var oldReqLoad = requirejs.load;
+//function reqLogLoad(context, moduleName, url) {
+//	console.log("Loading:", moduleName);
+//	return oldReqLoad(context, moduleName, url);
+//}
+//requirejs.load = reqLogLoad;
 
 
 //// Utility modules to load up front
@@ -56,7 +58,8 @@ var UTILITY_MODULES = [
 	'utility/approx',
 	'utility/call',
 	'utility/div',
-	'utility/putCSS'
+	'utility/putCSS',
+    'utility/prefixOf'
 ];
 
 

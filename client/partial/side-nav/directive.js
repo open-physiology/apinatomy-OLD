@@ -1,17 +1,34 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'lodash', 'focus/service', 'partial/side-nav/details/directive'], function (ApiNATOMY, _) {
+define(['app/module', 'lodash', 'partial/side-nav/details/directive'], function (ApiNATOMY, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	ApiNATOMY.directive('amySideNav', ['FocusService', function (FocusService) {
+	ApiNATOMY.directive('amySideNav', [function () {
 		return {
-			restrict   : 'E',
-			replace    : true,
+			restrict:    'E',
+			replace:     true,
 			templateUrl: 'partial/side-nav/view.html',
-			controller : function ($scope) {
-				$scope.FocusService = FocusService;
+			controller:  function ($scope) {
+
+				$scope._ = _;
+
+				$scope.entities = [];
+
+				$scope.$on('entity-focus', function (event, entities) {
+					$scope.entities = entities;
+				});
+
+				$scope.relationType = function (ent) {
+					var index = $scope.entities.indexOf(ent);
+					if (index === -1) {
+						return undefined;
+					}
+					var pred = $scope.entities[index-1];
+					return _(pred.sub).where({ entity: ent }).pluck('type').value();
+				};
+
 			}
 		};
 	}]);

@@ -6,7 +6,8 @@ define(['lodash',
         'app/module',
         'partial/treemap/layout/manager',
         'partial/treemap/layout/predefined',
-        '$bind/service'], function
+        '$bind/service',
+        'defaults/service'], function
 		(_, ng, ApiNATOMY) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -19,24 +20,32 @@ define(['lodash',
 			restrict:    'E',
 			replace:     true,
 			templateUrl: 'partial/circuitboard/view.html',
-			// TODO: Enable a scope with rotation still working
+
+			controller: ['$scope', '$rootScope', function ($scope, $rootScope) {
+
+				$scope.rootTile = $scope;
+				$scope.childTiles = [];
+
+				$scope.buildFocusChain = function () {
+					var focusChain = [];
+					_($scope.childTiles).forEach(function (childTile) {
+						focusChain = childTile.recursivelyBuiltFocusChain();
+						if (!_(focusChain).isEmpty()) { return false; }
+					});
+					$rootScope.setFocus(focusChain);
+				};
+
+			}],
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			compile: function () {
 				return {
 
-					pre: function preLink($scope, iElement, iAttrs) {
-						$scope.depth = 0;
-						$scope.maxDepth = _.parseInt(iAttrs.maxDepth);
-
-						$scope.children = [];
-
-						if ($scope.depth < $scope.maxDepth) {
-							ResourceService.structures(_.range(60000001, 60000024+1)).then(function (structures) {
-								$scope.children = structures;
-							});
-						}
+					pre: function preLink($scope/*, iElement, iAttrs, controller*/) {
+						$scope.children = ResourceService.entities(
+								_.chain(_.range(60000001, 60000024 + 1)).map(function (nr) { return '24tile:' + nr }).value()
+						);
 					},
 
 					post: function postLink($scope, iElement, iAttrs, controller) {}

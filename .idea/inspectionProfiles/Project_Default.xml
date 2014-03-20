@@ -15,13 +15,21 @@
         </value>
       </option>
     </inspection_tool>
+    <inspection_tool class="FunctionWithInconsistentReturnsJS" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="3">
+          <list size="10">
             <item index="0" class="java.lang.String" itemvalue="role" />
             <item index="1" class="java.lang.String" itemvalue="btn-checkbox" />
             <item index="2" class="java.lang.String" itemvalue="amy-tile" />
+            <item index="3" class="java.lang.String" itemvalue="bindonce" />
+            <item index="4" class="java.lang.String" itemvalue="bo-text" />
+            <item index="5" class="java.lang.String" itemvalue="once-text" />
+            <item index="6" class="java.lang.String" itemvalue="once-if" />
+            <item index="7" class="java.lang.String" itemvalue="amy-once" />
+            <item index="8" class="java.lang.String" itemvalue="ng-repeat-end" />
+            <item index="9" class="java.lang.String" itemvalue="ng-repeat-start" />
           </list>
         </value>
       </option>

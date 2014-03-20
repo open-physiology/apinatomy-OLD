@@ -86,7 +86,7 @@ define(['lodash'], function (_) {
 //         ┊     │ ║ section                                 ║ │
 //         ┊     │ ║                                         ║ │
 //         ┊     │ ║     ┌─────────────┐     ┌─────────┐     ║ │  ┄┄┄┄╮
-//         ┊     │ ║     │ child       │     │         │     ║ │      ┊
+//         ┊     │ ║     │ child       │     │ child   │     ║ │      ┊
 //         ┊     │ ║     │             │     │         │     ║ │      ┊ child
 //         ┊     │ ║     │             │     │         │     ║ │      ┊ height
 //         ┊     │ ║     │             │     │         │     ║ │      ┊
@@ -94,7 +94,7 @@ define(['lodash'], function (_) {
 //  height ┊     │ ║                                         ║ │
 //         ┊     │ ║                                         ║ │
 //         ┊     │ ║     ┌───────┐     ┌───────────────┐     ║ │
-//         ┊     │ ║     │       │     │               │     ║ │
+//         ┊     │ ║     │ child │     │ child         │     ║ │
 //         ┊     │ ║     │       │     │               │     ║ │
 //         ┊     │ ║     │       │     │               │     ║ │
 //         ┊     │ ║     │       │     │               │     ║ │
@@ -122,6 +122,7 @@ define(['lodash'], function (_) {
 		} else {
 			throw new ReferenceError("No layout called '" + layout + "' is registered.");
 		}
+
 		return _(result).map(function (pos) {
 			return _(pos).assign({
 				top: pos.top + top,

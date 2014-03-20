@@ -1,12 +1,23 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['angular', 'angular-resource', 'angular-route', 'angular-animate', 'angular-bootstrap', 'angular-recursion'], function
-		(ng) {
+define(['angular',
+        'angular-resource',
+        'angular-route',
+        'angular-animate',
+        'angular-bootstrap',
+        'angular-recursion',
+        'angular-once'], function (ng) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	var ApiNATOMY = ng.module('ApiNATOMY', ['ngResource', 'ngRoute', 'ngAnimate', 'ui.bootstrap', 'RecursionHelper']);
+	var ApiNATOMY = ng.module('ApiNATOMY', [
+		'ngResource',
+		'ngRoute',
+		'ngAnimate',
+		'ui.bootstrap',
+		'RecursionHelper',
+		'once']);
 
 
 	ApiNATOMY.config(function ($locationProvider) {
@@ -14,7 +25,18 @@ define(['angular', 'angular-resource', 'angular-route', 'angular-animate', 'angu
 	});
 
 	ApiNATOMY.run(function ($rootScope) {
+
+		//// 3D rotation is initially disabled
+
 		$rootScope.threeDRotateEnabled = false;
+
+
+		//// management of entity focus
+
+		$rootScope.setFocus = function (entityChain) {
+			$rootScope.$broadcast('entity-focus', entityChain);
+		};
+
 	});
 
 

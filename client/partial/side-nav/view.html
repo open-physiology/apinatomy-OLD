@@ -2,9 +2,16 @@
 
 	<header><h2>ApiNATOMY</h2></header>
 
-	<amy-entity-details
-			ng-repeat="uriId in FocusService.uriIdRange()"
-			ng-show="uriId < FocusService.uriCount()"
-			uri="FocusService.uri(uriId)"></amy-entity-details>
+	<div ng-repeat="entity in entities">
+
+		<!-- the relation-type indicator inbetween two entities -->
+		<div ng-if="!$first" class="amy-relation-types">
+			<div ng-repeat="relType in relationType(entity)">{{ relType }}</div>
+		</div>
+
+		<!-- the panel with the entity details -->
+		<amy-entity-details ng-repeat-end entity="entity"></amy-entity-details>
+
+	</div>
 
 </nav>

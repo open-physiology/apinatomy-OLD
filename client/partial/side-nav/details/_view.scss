@@ -1,20 +1,14 @@
 @import "base";
 
 .amy-entity-details {
+	@include border-radius(5px);
+
 	display : block;
 	border  : solid 1px;
 	padding : 0;
 
-
-	//// rounded corners
-
-	@include border-radius(5px);
-
-
-	//// no user selections when hidden or animating
-
-	&.ng-hide, &.ng-animate {
-		@include user-select(none);
+	&.fixed {
+		border-width: 2px;
 	}
 
 

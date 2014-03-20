@@ -1,10 +1,10 @@
 <div class="amy-entity-details" ng-style="css">
 
-	<header><h2>{{ name }}</h2></header>
+	<header><h2 once-text="entity.name"></h2></header>
 
 	<dl>
-		<dt>ID:</dt> <dd>{{ uri }}</dd>
-		<dt>Other:</dt> <dd>Other {{ name }} details...</dd>
+		<dt>URI:</dt> <dd once-text="entity._id"></dd>
+		<dt>Other:</dt> <dd>Other details about "{{ entity.name }}" can go here...</dd>
 	</dl>
 
 </div>

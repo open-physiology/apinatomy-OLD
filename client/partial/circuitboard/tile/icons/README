@@ -1,0 +1,2 @@
+These icons are no longer used, strictly speaking, as data-urls are given in the .scss file.
+However, I'm keeping them around, because not all of them are translated to data-urls yet.

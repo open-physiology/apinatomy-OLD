@@ -7,8 +7,9 @@ define(['angular', 'app/module', 'domReady!',
         'partial/treemap/directive',
         'partial/rotation/directive',
         'partial/circuitboard/directive',
-        'partial/circuitboard/tile/directive'], function (ng) {
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        'partial/circuitboard/tile/directive',
+        'amy-once/directive'], function (ng, ApiNATOMY) {
+//  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	ng.bootstrap(document, ['ApiNATOMY']);
