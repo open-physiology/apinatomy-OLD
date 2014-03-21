@@ -1,0 +1,25 @@
+@import "base";
+
+amy-graph {
+
+  pointer-events: none;
+
+  & > svg {
+
+	.link {
+	  stroke: #000;
+	  stroke-width: 1.5px;
+	  pointer-events: visiblePainted;
+	}
+
+	.node {
+	  cursor: move;
+	  fill: #ccc;
+	  stroke: #000;
+	  stroke-width: 1.5px;
+	  pointer-events: visiblePainted;
+	}
+
+  }
+}
+

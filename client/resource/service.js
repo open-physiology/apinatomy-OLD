@@ -77,18 +77,9 @@ define(['app/module', 'lodash', 'defaults/service'], function (ApiNATOMY, _) {
 				if (!_(request).isEmpty()) {
 					$http.get('/resources/entities/' + request.join(',')).then(function (data) {
 						_(data.data).forEach(function (newEntity) {
-
-//							console.debug('[[[before]]]', JSON.stringify(newEntity.tile, undefined, '  '));
-
 							newEntity.tile = generateTileDefaults(newEntity.tile);
 							_(entityCache[newEntity._id]).assign(newEntity);
 							entityDeferredCache[newEntity._id].resolve(entityCache[newEntity._id]);
-
-
-
-//							console.debug('[[[after]]]', JSON.stringify(newEntity.tile, undefined, '  '));
-
-
 
 							//// register the possible sub-entities (but don't load yet)
 
@@ -108,6 +99,20 @@ define(['app/module', 'lodash', 'defaults/service'], function (ApiNATOMY, _) {
 				}
 
 				return result;
+			},
+
+			connections: function (ids) {
+
+				// TEST: ids = ['24tile:60000001', '24tile:60000002', '24tile:60000007', '24tile:60000008']
+				// TODO: return REAL data
+
+				return [
+					{ source: 0, target: 1 },
+					{ source: 1, target: 2 },
+					{ source: 2, target: 3 },
+					{ source: 3, target: 0 }
+				];
+
 			}
 
 		};

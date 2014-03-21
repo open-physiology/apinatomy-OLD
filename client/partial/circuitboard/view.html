@@ -1,13 +1,10 @@
-<div>
+<!-- the treemap -->
+<amy-treemap layout="rowsOfTiles" ng-mouseleave="onMouseLeave()">
 
-	<amy-rotation amy-model="style3D" enabled="threeDRotateEnabled">
+    <!-- one tile for each 'child element' (of the 24 tiles) -->
+    <amy-circuitboard-tile ng-repeat="child in children" amy-entity="child"></amy-circuitboard-tile>
 
-		<amy-treemap layout="rowsOfTiles" ng-style="style3D" ng-mouseleave="onMouseLeave()">
+</amy-treemap>
 
-			<amy-circuitboard-tile ng-repeat="child in children" amy-entity="child"></amy-circuitboard-tile>
-
-		</amy-treemap>
-
-	</amy-rotation>
-
-</div>
+<!-- the connection-graph hovering over the treemap -->
+<amy-graph></amy-graph>

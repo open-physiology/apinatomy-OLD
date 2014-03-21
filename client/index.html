@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>ApiNATOMY</title>
+    <title>ApiNATOMY</title>
 
-	<script data-main="/main.js" src="/lib/requirejs/require.js"></script>
+    <script data-main="/main.js" src="/lib/requirejs/require.js"></script>
 
-	<link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="/index.css">
 
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!--maximum-scale=1, user-scalable=no-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--maximum-scale=1, user-scalable=no-->
 </head>
 <body>
 
 
-	<amy-top-nav id="top-nav"></amy-top-nav>
+<amy-top-nav id="top-nav"></amy-top-nav>
 
 
-	<amy-side-nav id="side-nav"></amy-side-nav>
+<amy-side-nav id="side-nav"></amy-side-nav>
 
 
-	<main>
+<main>
 
-		<amy-circuitboard max-depth="2"></amy-circuitboard>
+    <amy-rotation amy-model="style3D" enabled="threeDRotateEnabled">
 
-	</main>
+        <amy-circuitboard max-depth="2" ng-style="style3D"></amy-circuitboard>
+
+    </amy-rotation>
+
+</main>
 
 
 </body>

@@ -10,31 +10,32 @@ console.info('Starting main.js...');
 
 requirejs.config({
 	paths: {
-		'es5-shim':          'lib/es5-shim/es5-shim',
-		'es6-shim':          'lib/es6-shim/es6-shim',
-		'domReady':          'lib/requirejs-domready/domReady',
-		'jquery':            'lib/jquery/dist/jquery',
-		'lodash':            'lib/lodash/dist/lodash',
-		'angular':           'lib/angular/angular',
-		'angular-resource':  'lib/angular-resource/angular-resource',
-		'angular-route':     'lib/angular-route/angular-route',
-		'angular-animate':   'lib/angular-animate/angular-animate',
+		'es5-shim'         : 'lib/es5-shim/es5-shim',
+		'es6-shim'         : 'lib/es6-shim/es6-shim',
+		'domReady'         : 'lib/requirejs-domready/domReady',
+		'jquery'           : 'lib/jquery/dist/jquery',
+		'lodash'           : 'lib/lodash/dist/lodash',
+		'angular'          : 'lib/angular/angular',
+		'angular-resource' : 'lib/angular-resource/angular-resource',
+		'angular-route'    : 'lib/angular-route/angular-route',
+		'angular-animate'  : 'lib/angular-animate/angular-animate',
 		'angular-bootstrap': 'lib/angular-bootstrap/ui-bootstrap-tpls',
 		'angular-recursion': 'lib/angular-recursion/angular-recursion',
-		'angular-once':      'lib/angular-once/once',
-		'chroma':            'lib/chroma-js/chroma'
+		'angular-once'     : 'lib/angular-once/once',
+		'chroma'           : 'lib/chroma-js/chroma',
+		'd3'               : 'lib/d3/d3'
 	},
-	shim:  {
-		'angular':           { exports: 'angular', deps: ['jquery'] },
-		'jquery':            { exports: '$' },
-		'lodash':            { exports: '_' },
-		'es6-shim':          ['es5-shim'],
-		'angular-resource':  ['angular'],
-		'angular-route':     ['angular'],
-		'angular-animate':   ['angular'],
+	shim : {
+		'angular'          : { exports: 'angular', deps: ['jquery'] },
+		'jquery'           : { exports: '$' },
+		'lodash'           : { exports: '_' },
+		'es6-shim'         : ['es5-shim'],
+		'angular-resource' : ['angular'],
+		'angular-route'    : ['angular'],
+		'angular-animate'  : ['angular'],
 		'angular-bootstrap': ['angular'],
 		'angular-recursion': ['angular'],
-		'angular-once':      ['angular']
+		'angular-once'     : ['angular']
 	}
 });
 
@@ -59,7 +60,7 @@ var UTILITY_MODULES = [
 	'utility/call',
 	'utility/div',
 	'utility/putCSS',
-    'utility/prefixOf'
+	'utility/prefixOf'
 ];
 
 

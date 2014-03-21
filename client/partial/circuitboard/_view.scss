@@ -1,3 +1,22 @@
 @import "base";
 
+amy-circuitboard {
+  @include edge-to-edge;
+  & > amy-treemap {
+	@include edge-to-edge;
+	left   : $amy-spacing + $amy-side-nav-width;
+	top    : $amy-spacing + $amy-top-nav-height;
+	right  : $amy-spacing;
+	bottom : $amy-spacing;
+  }
+  & > amy-graph {
+	@include edge-to-edge;
+	left   : $amy-spacing + $amy-side-nav-width;
+	top    : $amy-spacing + $amy-top-nav-height;
+	right  : $amy-spacing;
+	bottom : $amy-spacing;
+  }
+}
+
 @import "partial/circuitboard/tile/view";
+@import "partial/circuitboard/graph/view";

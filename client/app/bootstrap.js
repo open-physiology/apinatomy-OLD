@@ -4,10 +4,8 @@
 define(['angular', 'app/module', 'domReady!',
         'partial/top-nav/directive',
         'partial/side-nav/directive',
-        'partial/treemap/directive',
         'partial/rotation/directive',
         'partial/circuitboard/directive',
-        'partial/circuitboard/tile/directive',
         'amy-once/directive'], function (ng, ApiNATOMY) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
