@@ -5,48 +5,7 @@ define(['app/module', 'lodash', 'defaults/service'], function (ApiNATOMY, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	ApiNATOMY.factory('ResourceService', ['$resource',
-	                                      '$http',
-	                                      '$q',
-	                                      'defaults',
-	                                      function ($resource, $http, $q, defaults) {
-
-		var generateTileDefaults = defaults({
-			normal: {
-				css: {
-					'&':           {
-						backgroundColor: " '#eeeeee'                                                                         ",
-						borderColor:     " color(`.normal.css['&'].backgroundColor`).brighten(20).css()                      ",
-						color:           " color(`.normal.css['&'].backgroundColor`).luminance() > 0.5 && 'black' || 'white' ",
-					    borderWidth:     " '1px' "
-					},
-					'& > header':  {
-						borderColor: " `.normal.css['&'].borderColor` ",
-						borderWidth: " `.normal.css['&'].borderWidth` "
-					},
-					'& > section': " {} "
-				},
-			    layout: " 'rowsOfTiles' ",
-			    spacing: " '2' "
-			},
-			focus:  {
-				css: {
-					'&':           {
-						backgroundColor: " color(`.normal.css['&'].backgroundColor`).brighten(40).css()                      ",
-						borderColor:     " color(`.normal.css['&'].borderColor`).darken(40).css()                            ",
-						color:           " color(`.focus .css['&'].backgroundColor`).luminance() > 0.5 && 'black' || 'white' ",
-						borderWidth:     " `.normal.css['&'].borderWidth` "
-					},
-					'& > header':  {
-						borderColor: " `.focus.css['&'].borderColor` ",
-						borderWidth: " `.focus.css['&'].borderWidth` "
-					},
-					'& > section': " `.normal.css['& > section']` "
-				},
-				layout: "`.normal.layout`",
-				spacing: "`.normal.spacing`"
-			}
-		});
+	ApiNATOMY.factory('ResourceService', ['$http', '$q', function ($http, $q) {
 
 		var entityCache = {};
 		var entityDeferredCache = {};
@@ -60,7 +19,7 @@ define(['app/module', 'lodash', 'defaults/service'], function (ApiNATOMY, _) {
 
 		return {
 
-			entities: function (ids) {
+			bundles: function (ids) {
 
 				var request = [];
 
@@ -77,7 +36,6 @@ define(['app/module', 'lodash', 'defaults/service'], function (ApiNATOMY, _) {
 				if (!_(request).isEmpty()) {
 					$http.get('/resources/entities/' + request.join(',')).then(function (data) {
 						_(data.data).forEach(function (newEntity) {
-							newEntity.tile = generateTileDefaults(newEntity.tile);
 							_(entityCache[newEntity._id]).assign(newEntity);
 							entityDeferredCache[newEntity._id].resolve(entityCache[newEntity._id]);
 

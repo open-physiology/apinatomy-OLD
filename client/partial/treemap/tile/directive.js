@@ -36,6 +36,8 @@ define(['angular',
 				sizeButtonModel:   '=amySizeButtonModel',
 				sizeButtonStates:  '=amySizeButtonStates',
 				sizeButtonClasses: '=amySizeButtonClasses',
+				frontIcon:         '=amyFrontIcon',
+				frontIconTitle:    '=amyFrontIconTitle',
 				onReady:           '&'
 			},
 
@@ -102,20 +104,19 @@ define(['angular',
 								//// update position
 
 								if (!_.approx(pos.top, sizing.top) || !_.approx(pos.left, sizing.left)) {
-									_(sizing).assign({
-										top:  pos.top,
-										left: pos.left
-									});
+									sizing.top = pos.top;
+									sizing.left = pos.left;
 								}
 
 								//// update size
 
 								if (!_.approx(pos.height, sizing.height) || !_.approx(pos.width, sizing.width)) {
-									_(sizing).assign({
-										height: pos.height,
-										width:  pos.width,
-										lineHeight: pos.height + 'px'
-									});
+
+									//// set the tile
+
+									sizing.height = pos.height;
+									sizing.width = pos.width;
+									sizing.lineHeight = pos.height + 'px';
 
 									//// scale the font and padding appropriately
 
@@ -131,14 +132,6 @@ define(['angular',
 											}));
 
 
-									//// apply sizing
-
-									iElement.css(sizing);
-									iElement.find('> .full-header').css({
-										'max-height': sizing.height - 2 * $scope.borderWidth
-									});
-
-
 									//// animation of showing and hiding tile content
 
 									if ($scope.open) {
@@ -152,7 +145,15 @@ define(['angular',
 								}
 
 
-								//// reposition any child tiles
+								//// apply sizing
+
+								iElement.css(sizing);
+								iElement.find('> .full-header').css({
+									'max-height': sizing.height - 2 * $scope.borderWidth
+								});
+
+
+								//// reposition any child tiles - TODO: move to layout directive
 
 								if (!_(children).isEmpty()) {
 									var positions = Layout(

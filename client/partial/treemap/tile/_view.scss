@@ -1,6 +1,7 @@
 @import "base";
 
 amy-tile {
+	@include user-select(none);
 	@include box-sizing(border-box);
 	display    : block;
 	position   : absolute;
@@ -29,32 +30,46 @@ amy-tile {
 			@include single-transition(opacity, linear, .6s, .8s);
 			opacity : 1;
 		}
+		& > .amy-tile-status-icon {
+			position    : absolute;
+			display     : block;
+			text-align  : center;
+			top         : 5px;
+			right       : 5px;
+			z-index     : 2;
+			width       : $amy-tile-status-icon-size;
+			height      : $amy-tile-status-icon-size;
+			font-size   : $amy-tile-status-icon-size;
+			line-height : $amy-tile-status-icon-size;
+		}
 	}
 
 	& > .top-header {
+		//// position & size
+		@include edge-to-edge;
 		@include box-sizing(content-box);
-		@include user-select(none);
-		display        : block;
-		position       : absolute;
+		height         : $amy-tile-header-height;
+		padding        : 0 $amy-tile-header-height;
+
+		//// title text
 		font-weight    : bold;
 		text-align     : center;
 		vertical-align : middle;
-		margin         : 0;
-		padding        : 0;
-		top            : 0;
-		left           : 0;
-		right          : 0;
-		height         : $amy-tile-header-height;
-		// setting line-height and font-size in directive.js
-		border-width   : 1px;
+		// line-height and font-size are
+		// dynamically defined in directive.js
+
+		//// bottom border
 		border-color   : white;
 		border-style   : none none dotted none;
+		// border-width is dynamically
+		// defined in directive.js
+
+		//// transparency
 		@include single-transition(opacity, linear, .6s);
 		opacity        : 0;
 		&.opaque { opacity : 1; }
 
-		padding-left   : $amy-tile-header-height;
-		padding-right  : $amy-tile-header-height;
+		//// the icon button to the right
 		& > icon-btn {
 			position : absolute;
 			top      : 2px;
@@ -65,6 +80,7 @@ amy-tile {
 	}
 
 	& > section {
+		@include user-select(auto);
 		@include box-sizing(border-box);
 		position : absolute;
 		display  : block;

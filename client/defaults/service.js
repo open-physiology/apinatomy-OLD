@@ -23,22 +23,22 @@ define(['app/module', 'lodash', 'chroma'], function (ApiNATOMY, _, color) {
 
 
 			//// recursive auxiliary function; returns true if a change to obj was made
-			function withDefaultsAux(defSpec, obj, refs) {
+			function withDefaultsAux(defSpec, obj, refs, params) {
 				var change = false;
 				_(defSpec).keys().forEach(function (key) {
 
 					if (_(obj).has(key)) {
 						if (_(defSpec[key]).isPlainObject() && _(obj[key]).isPlainObject()) {
-							change = withDefaultsAux(defSpec[key], obj[key], refs) || change;
+							change = withDefaultsAux(defSpec[key], obj[key], refs, params) || change;
 						}
 					} else if (_(defSpec[key]).isPlainObject()) {
 						obj[key] = {};
-						change = withDefaultsAux(defSpec[key], obj[key], refs) || change;
+						change = withDefaultsAux(defSpec[key], obj[key], refs, params) || change;
 					} else if (_(defSpec[key]).isFunction()) {
 						if (_(defSpec[key].refs).every(function (ref) {
-							return !_(ref(CONTEXT, { me: refs })).isUndefined();
+							return !_(ref({}, _.extend({ me: refs }, CONTEXT, params))).isUndefined();
 						})) { // if none of the references are undefined, assign this default
-							obj[key] = defSpec[key](CONTEXT, { me: refs });
+							obj[key] = defSpec[key]({}, _.extend({ me: refs }, CONTEXT, params));
 						}
 					}
 
@@ -46,11 +46,14 @@ define(['app/module', 'lodash', 'chroma'], function (ApiNATOMY, _, color) {
 				return change;
 			}
 
-			return function withDefaults(obj) {
-				var result = _(obj).cloneDeep();
-				if (_(result).isUndefined()) { result = {}; }
-				var change = true;
-				while (change) { change = withDefaultsAux(spec, result, result); }
+
+			return function withDefaults(obj, params) {
+				var result = (_(obj).isUndefined() ? {} : _(obj).cloneDeep());
+
+				do {
+					var change = withDefaultsAux(spec, result, result, params || {});
+				} while (change);
+
 				return result;
 			};
 		};

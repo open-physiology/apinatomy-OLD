@@ -5,6 +5,8 @@
 
 <header ng-class="{ opaque: !open }" class="full-header">
 	<span once-text="title"></span>
+	<span ng-show="frontIcon" title="{{ frontIconTitle }}"
+	      class="amy-tile-status-icon glyphicon glyphicon-{{ frontIcon }}"></span>
 </header>
 
 <section ng-class="{ opaque: open, hidden: contentHidden }" ng-transclude></section>

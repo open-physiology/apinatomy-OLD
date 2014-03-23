@@ -14,19 +14,19 @@ define(['app/module', 'lodash', 'partial/side-nav/details/directive'], function 
 
 				$scope._ = _;
 
-				$scope.entities = [];
+				$scope.bundles = [];
 
-				$scope.$on('entity-focus', function (event, entities) {
-					$scope.entities = entities;
+				$scope.$on('entity-focus', function (event, focusChain) {
+					$scope.bundles = focusChain;
 				});
 
-				$scope.relationType = function (ent) {
-					var index = $scope.entities.indexOf(ent);
+				$scope.relationType = function (bundle) {
+					var index = $scope.bundles.indexOf(bundle);
 					if (index === -1) {
 						return undefined;
 					}
-					var pred = $scope.entities[index-1];
-					return _(pred.sub).where({ entity: ent }).pluck('type').value();
+					var prev = $scope.bundles[index-1];
+					return _(prev.entity.sub).where({ entity: bundle.entity }).pluck('type').value();
 				};
 
 			}

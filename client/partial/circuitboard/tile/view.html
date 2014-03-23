@@ -1,15 +1,17 @@
 <amy-tile amy-open="open"
           amy-weight="weight"
           amy-title="entity.name"
-          amy-layout="entity.tile[state].layout"
-          amy-size-button-model=  "condition"
-          amy-size-button-states= "{ 'open': 'maximized', 'maximized': 'open' }"
-          amy-size-button-classes="{ open:      'icon-btn-full-'  + entity.tile[state].css['&'].color,
-	                                 maximized: 'icon-btn-small-' + entity.tile[state].css['&'].color }"
+          amy-layout="styling[state].layout"
+          amy-size-button-model="condition"
+          amy-size-button-states="{ 'open': 'maximized', 'maximized': 'open' }"
+          amy-size-button-classes="{ open:      'icon-btn-full-'  + styling[state].css['&'].color,
+	                                 maximized: 'icon-btn-small-' + styling[state].css['&'].color }"
+          amy-front-icon="visible && !active && 'asterisk'"
+          amy-front-icon-title="'The \'' + entity.name + '\' is active in another tile.'"
           ng-mouseenter="mouseOver = true"
           ng-mouseleave="mouseOver = false"
           ng-click="onClick($event)"
-		  on-ready="onTileReady()">
+          on-ready="onTileReady()">
 
 	<div amy-once="open">
 		<amy-circuitboard-tile ng-repeat="sub in _.uniq(entity.sub, false, 'entity')"

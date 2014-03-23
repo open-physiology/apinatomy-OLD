@@ -11,13 +11,12 @@ define(['angular',
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	var ApiNATOMY = ng.module('ApiNATOMY', [
-		'ngResource',
-		'ngRoute',
-		'ngAnimate',
-		'ui.bootstrap',
-		'RecursionHelper',
-		'once']);
+	var ApiNATOMY = ng.module('ApiNATOMY', ['ngResource',
+	                                        'ngRoute',
+	                                        'ngAnimate',
+	                                        'ui.bootstrap',
+	                                        'RecursionHelper',
+	                                        'once']);
 
 
 	ApiNATOMY.config(function ($locationProvider) {
@@ -29,13 +28,6 @@ define(['angular',
 		//// 3D rotation is initially disabled
 
 		$rootScope.threeDRotateEnabled = false;
-
-
-		//// management of entity focus
-
-		$rootScope.setFocus = function (entityChain) {
-			$rootScope.$broadcast('entity-focus', entityChain);
-		};
 
 	});
 

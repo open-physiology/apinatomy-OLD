@@ -23,7 +23,7 @@ define(['jquery', 'lodash'], function ($, _) {
 				if (selector.trim() === '&') {
 					context = this;
 				} else if (selector.trim().charAt(0) === '&') {
-					context = this.find(selector.trim().substr(1));
+					context = this.find(selector.trim().substr(1).trim());
 				} else {
 					context = this.find(selector);
 				}

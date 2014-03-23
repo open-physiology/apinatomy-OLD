@@ -1,7 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module'], function (ApiNATOMY) {
+define(['app/module', 'chroma'], function (ApiNATOMY, color) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -12,17 +12,18 @@ define(['app/module'], function (ApiNATOMY) {
 			transclude:  true,
 			templateUrl: 'partial/side-nav/details/view.html',
 			scope:       {
-				entity: '='
+				bundle: '='
 			},
 
-			controller: function (/*$scope*/) {},
+			controller: function ($scope) {},
 
 			compile: function () {
 				return {
 
 					pre: function preLink($scope, iElement/*, iAttrs, controller*/) {
-						$scope.entity._promise.then(function () {
-							iElement.css($scope.entity.tile.focus.css['&']);
+						iElement.putCSS($scope.bundle.styling.focus.css);
+						iElement.css({
+							backgroundColor: color($scope.bundle.styling.normal.css['&'].backgroundColor).brighten(30).css()
 						});
 					},
 

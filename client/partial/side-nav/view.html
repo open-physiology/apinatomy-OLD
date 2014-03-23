@@ -2,15 +2,15 @@
 
 	<header><h2>ApiNATOMY</h2></header>
 
-	<div ng-repeat="entity in entities">
+	<div ng-repeat="bundle in bundles">
 
 		<!-- the relation-type indicator inbetween two entities -->
 		<div ng-if="!$first" class="amy-relation-types">
-			<div ng-repeat="relType in relationType(entity)">{{ relType }}</div>
+			<div ng-repeat="relType in relationType(bundle)">{{ relType }}</div>
 		</div>
 
 		<!-- the panel with the entity details -->
-		<amy-entity-details ng-repeat-end entity="entity"></amy-entity-details>
+		<amy-entity-details ng-repeat-end bundle="bundle"></amy-entity-details>
 
 	</div>
 

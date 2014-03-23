@@ -4,31 +4,32 @@
 @import "base";
 
 html, body {
-  @include user-select(none);
-  position: absolute;
-  min-height: 100% !important;
-  min-width: 100% !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border: 0 !important;
+	@include user-select(none);
+	position   : absolute;
+	min-height : 100% !important;
+	min-width  : 100% !important;
+	padding    : 0 !important;
+	margin     : 0 !important;
+	border     : 0 !important;
 
-  #top-nav {
-	@include edge-to-edge;
-	height: $amy-top-nav-height;
-	z-index: 999;
-  }
+	#top-nav {
+		@include edge-to-edge;
+		height  : $amy-top-nav-height;
+		z-index : 999;
+	}
 
-  #side-nav {
-	@include edge-to-edge;
-	padding-right: $amy-spacing;
-	top: $amy-top-nav-height;
-	width: $amy-side-nav-width + $amy-spacing;
-	z-index: 999;
-  }
+	#side-nav {
+		@include edge-to-edge;
+		padding-right : $amy-spacing;
+		top           : $amy-top-nav-height;
+		width         : $amy-side-nav-width + $amy-spacing;
+		overflow      : hidden;
+		z-index       : 999;
+	}
 
-  main, amy-rotation, amy-circuitboard {
-	@include edge-to-edge;
-  }
+	main, amy-rotation, amy-circuitboard {
+		@include edge-to-edge;
+	}
 }
 
 @import "partial/top-nav/view";
