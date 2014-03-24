@@ -19,7 +19,7 @@ define(['app/module', 'lodash', 'defaults/service'], function (ApiNATOMY, _) {
 
 		return {
 
-			bundles: function (ids) {
+			entities: function (ids) {
 
 				var request = [];
 

@@ -42,7 +42,7 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 //		]
 //	};
 
-	ApiNATOMY.directive('amyGraph', ['$window', '$bind', 'Resources', function ($window, $bind, Resources) {
+	ApiNATOMY.directive('amyGraph', ['$window', '$bind', 'ResourceService', '$timeout', function ($window, $bind, Resources, $timeout) {
 		return {
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,18 +50,24 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 			restrict: 'E',
 			template: '<svg></svg>',
 			replace : false,
-			scope   : {},
-
-			controller: ['$scope', '$rootScope', function ($scope, $rootScope) {
-
-			}],
+			scope   : {
+				activeTiles: '=amyActiveTiles'
+			},
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			compile: function () {
 				return {
 
-					pre: function preLink($scope, iElement, iAttrs, controller) {
+					pre: function preLink($scope, iElement/*, iAttrs, controller*/) {
+						var nodeIds = ['24tile:60000001', '24tile:60000002', '24tile:60000007', '24tile:60000008'];
+
+						$scope.entities = Resources.entities(nodeIds);
+						$scope.connections = Resources.connections(nodeIds);
+
+						//////////////////// creating the graph ////////////////////////////////////////////////////////
+
+						//// creating the sticky force layout
 
 						var force = d3.layout.force()
 								.size([iElement.width(), iElement.height()])
@@ -69,37 +75,73 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 								.linkDistance(40)
 								.on("tick", tick);
 
+
+						//// keep the layout the right size when the window resizes
+
 						$($window).resize($bind(function (event) {
-							console.debug(event);
 							force.size([iElement.width(), iElement.height()]).start();
 						}));
 
-						var link = d3.select(iElement.find('svg')[0]).selectAll('.link');
-						var node = d3.select(iElement.find('svg')[0]).selectAll('.node');
+
+						//// creating corresponding svg elements
+
+						var lines = d3.select(iElement.find('svg')[0]).selectAll('.link');
+						var circles = d3.select(iElement.find('svg')[0]).selectAll('.node');
 
 
-						// populating the graph
+						//////////////////// populating the graph //////////////////////////////////////////////////////
 
-						// TEST DATA
-						var nodes = ['24tile:60000001', '24tile:60000002', '24tile:60000007', '24tile:60000008']
+						$scope.$watch('activeTiles', function (activeTiles) {
+							var nodes = _(activeTiles).map(function (tile) {
+								return _.extend({
+									entity: tile.entity,
+									fixed : true
+								}, $scope.$parent.globalTilePosition(tile));
+							}).value();
+							var links = _($scope.connections).cloneDeep();
 
-						force.nodes(graph.nodes).links(graph.links).start();
-						link = link.data(graph.links).enter().append("line").attr("class", "link");
-						node = node.data(graph.nodes).enter().append("circle").attr("class", "node").attr("r", 5);
+							console.debug(nodes);
+							console.debug(links);
+
+							if (nodes.length >= 4) {
+								lines.remove();
+								circles.remove();
+								lines = lines.data(links).enter().append("line").attr("class", "link");
+								circles = circles.data(nodes).enter().append("circle").attr("class", "node").attr("r", 5);
+								force.start();
+							}
+
+							// TODO: This is where I give up for today.
+
+
+						});
+
+
 						// END of populating the graph
 
 						function tick() {
-							link
-									.attr("x1", function (d) { return d.source.x; })
-									.attr("y1", function (d) { return d.source.y; })
-									.attr("x2", function (d) { return d.target.x; })
-									.attr("y2", function (d) { return d.target.y; });
+							lines
+									.attr("x1", function (d) {
+										return d.source.x;
+									})
+									.attr("y1", function (d) {
+										return d.source.y;
+									})
+									.attr("x2", function (d) {
+										return d.target.x;
+									})
+									.attr("y2", function (d) {
+										return d.target.y;
+									});
 
-							node
-									.attr("cx", function (d) { return d.x; })
-									.attr("cy", function (d) { return d.y; });
+							circles
+									.attr("cx", function (d) {
+										return d.x;
+									})
+									.attr("cy", function (d) {
+										return d.y;
+									});
 						}
-
 
 
 					},

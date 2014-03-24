@@ -2,60 +2,67 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['angular',
-        'app/module',
-        'chroma',
-        'lodash',
-        'partial/treemap/layout/manager',
-        'resource/service',
-        '$bind/service'], function (ng, ApiNATOMY, color, _) {
+	'app/module',
+	'chroma',
+	'lodash',
+	'partial/treemap/layout/manager',
+	'resource/service',
+	'$bind/service'], function (ng, ApiNATOMY, color, _) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	ApiNATOMY.directive('amyCircuitboardTile', ['$bind', 'ResourceService', 'RecursionHelper', 'defaults', function ($bind, Resources, RecursionHelper, defaults) {
+	var WEIGHTS = {
+		hidden   : 0,
+		closed   : 1,
+		open     : 8,
+		maximized: Infinity
+	};
+
+	ApiNATOMY.directive('amyCircuitboardTile', ['$bind', 'ResourceService', 'RecursionHelper', 'defaults', '$timeout', function ($bind, Resources, RecursionHelper, defaults, $timeout) {
 
 		var generateStylingDefaults = defaults({
 			normal: {
-				css:     {
-					'&':           {
+				css    : {
+					'&'          : {
 						backgroundColor: " bgColor                                                                           ",
-						borderColor:     " color(`.normal.css['&'].backgroundColor`).brighten(20).css()                      ",
-						color:           " color(`.normal.css['&'].backgroundColor`).luminance() > 0.5 && 'black' || 'white' ",
-						borderWidth:     " '1px' "
+						borderColor    : " color(`.normal.css['&'].backgroundColor`).brighten(20).css()                      ",
+						color          : " color(`.normal.css['&'].backgroundColor`).luminance() > 0.5 && 'black' || 'white' ",
+						borderWidth    : " '1px' "
 					},
-					'& > header':  {
+					'& > header' : {
 						borderColor: " `.normal.css['&'].borderColor` ",
 						borderWidth: " `.normal.css['&'].borderWidth` "
 					},
 					'& > section': " {} "
 				},
-				layout:  " 'rowsOfTiles' ",
+				layout : " 'rowsOfTiles' ",
 				spacing: " '2' "
 			},
-			focus:  {
-				css:     {
-					'&':           {
+			focus : {
+				css    : {
+					'&'          : {
 						backgroundColor: " color(`.normal.css['&'].backgroundColor`).brighten(40).css()                      ",
-						borderColor:     " color(`.normal.css['&'].borderColor`).darken(40).css()                            ",
-						color:           " color(`.focus .css['&'].backgroundColor`).luminance() > 0.5 && 'black' || 'white' ",
-						borderWidth:     " `.normal.css['&'].borderWidth` "
+						borderColor    : " color(`.normal.css['&'].borderColor`).darken(40).css()                            ",
+						color          : " color(`.focus .css['&'].backgroundColor`).luminance() > 0.5 && 'black' || 'white' ",
+						borderWidth    : " `.normal.css['&'].borderWidth` "
 					},
-					'& > header':  {
+					'& > header' : {
 						borderColor: " `.focus.css['&'].borderColor` ",
 						borderWidth: " `.focus.css['&'].borderWidth` "
 					},
 					'& > section': " `.normal.css['& > section']` "
 				},
-				layout:  "`.normal.layout`",
+				layout : "`.normal.layout`",
 				spacing: "`.normal.spacing`"
 			}
 		});
 
 
 		return {
-			restrict:    'E',
-			replace:     false,
+			restrict   : 'E',
+			replace    : false,
 			templateUrl: 'partial/circuitboard/tile/view.html',
-			scope:       {
+			scope      : {
 				entity: '=amyEntity'
 			},
 
@@ -91,18 +98,13 @@ define(['angular',
 				//////////////////// Tile Weight ///////////////////////////////////////////////////////////////////////
 
 				_($scope).derivedProperty('weight', function () {
-					if ($scope.condition === 'hidden') { return 0; }
-					if ($scope.condition === 'closed') { return 1; }
-					if ($scope.condition === 'open') { return 8; }
-					if ($scope.condition === 'maximized') { return Infinity; }
-					console.error("An unknown condition was set: $scope.condition =", $scope.condition);
+					return WEIGHTS[$scope.condition];
 				});
 
 
 				//////////////////// Focused Tiles /////////////////////////////////////////////////////////////////////
 
 				$scope.mouseOver = false;
-
 
 				//// The 'focus chain' is the root tile up to the deepest tile with focus.
 				//// A tile has focus if the mouse is hovering over it (perhaps indirectly),
@@ -112,7 +114,7 @@ define(['angular',
 					if ($scope.mouseOver || $scope.condition === 'maximized') {
 
 						var bundle = {
-							entity:  $scope.entity,
+							entity : $scope.entity,
 							styling: $scope.styling
 						};
 
@@ -120,7 +122,9 @@ define(['angular',
 							var subChain = [];
 							_($scope.childTiles).forEach(function (childTile) {
 								subChain = childTile.recursivelyBuiltFocusChain();
-								if (!_(subChain).isEmpty()) { return false; }
+								if (!_(subChain).isEmpty()) {
+									return false;
+								}
 							});
 							return [bundle].concat(subChain);
 						} else {
@@ -190,7 +194,9 @@ define(['angular',
 				$scope.onClick = function ($event) {
 					$event.stopPropagation();
 					$scope.entity._promise.then(function () {
-						Resources.bundles(_.map($scope.entity.sub, function (sub) { return sub.entity._id; }));
+						Resources.entities(_.map($scope.entity.sub, function (sub) {
+							return sub.entity._id;
+						}));
 					});
 					$scope.open = !$scope.open;
 				};
@@ -228,13 +234,17 @@ define(['angular',
 				//// A tile can only be explicitly activated by being opened.
 
 				$scope.$watch('open', function (isOpen, wasOpen) {
-					if (!wasOpen && isOpen) { $scope.active = true; }
+					if (!wasOpen && isOpen) {
+						$scope.active = true;
+					}
 				});
 
 				//// When a tile is deactivated, it is closed.
 
 				$scope.$watch('active', function (active) {
-					if (!active) { $scope.open = false; }
+					if (!active) {
+						$scope.open = false;
+					}
 				});
 
 				//// A tile is activatable when its parent is open.
@@ -252,20 +262,6 @@ define(['angular',
 					return $scope.parentTile.open;
 				});
 
-				//
-
-
-				//// gathering all entities that have actively open, visible tiles
-				// TODO
-//				$scope.findVisibleEntities = function () {
-//					var result = {};
-//					_($scope.childTiles).forEach(function (childTile) {
-//						result.assign(childTile.findVisibleEntities());
-//					});
-//					return result;
-//				};
-
-
 			}],
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -276,20 +272,50 @@ define(['angular',
 				return RecursionHelper.compile(dElement, {
 					pre: function preLink($scope, iElement/*, iAttrs, controller*/) {
 
+
+//						$scope.findActiveTiles = function () {
+//							var result = {};
+//							if ($scope.active) {
+//								result[$scope.entity._id] = { element: iElement, entity: $scope.entity };
+//								if ($scope.open) {
+//									_($scope.childTiles).forEach(function (childTile) {
+//										result.assign(childTile.findActiveTiles());
+//									});
+//								}
+//							}
+//							return result;
+//						};
+
+						$scope.elementOffset = function () { return { top: 0, left: 0 }; };
+
 						$scope.onTileReady = function () {
 
 							//// identify the element of the tile itself
 
 							var tile = iElement.find('amy-tile');
 
+							//// gather all entities that have active, visible tiles
+
+							$scope.elementOffset = function () {
+								return tile.offset();
+							};
+
+
+//							$timeout(function () {
+//								console.debug('timeout:', $scope.elementOffset());
+//							}, 3000);
+
+
+							//// styling
+
 							$scope.entity._promise.then(function () {
 
 								$scope.styling = generateStylingDefaults($scope.entity.tile, {
 									bgColor: ($scope.parentTile.entity) ?
-									         (color($scope.parentTile.styling.normal.css['&'].backgroundColor).luminance() < .5 ?
-									          color($scope.parentTile.styling.normal.css['&'].backgroundColor).brighten(30).css() :
-									          color($scope.parentTile.styling.normal.css['&'].backgroundColor).darken(30).css() ) :
-									         ('#eeeeee')
+											(color($scope.parentTile.styling.normal.css['&'].backgroundColor).luminance() < .5 ?
+													color($scope.parentTile.styling.normal.css['&'].backgroundColor).brighten(30).css() :
+													color($scope.parentTile.styling.normal.css['&'].backgroundColor).darken(30).css() ) :
+											('#eeeeee')
 								});
 
 								//// put the 'normal' style on the tile now
@@ -308,13 +334,16 @@ define(['angular',
 
 					},
 
-					post: function postLink($scope, iElement, iAttrs, controller) {}
+					post: function postLink($scope, iElement, iAttrs, controller) {
+					}
 				});
 			}
 		};
-	}]);
+	}])
+	;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-});/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+})
+;/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
