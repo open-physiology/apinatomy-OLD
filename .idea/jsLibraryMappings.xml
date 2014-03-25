@@ -2,7 +2,7 @@
 <project version="4">
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$" libraries="{Node.js Dependencies for apinatomy}" />
-    <file url="PROJECT" libraries="{Node.js Dependencies for apinatomy, angularjs-DefinitelyTyped, express-DefinitelyTyped, jQuery UI-1.10.2, jQuery-2.0.0, lodash-DefinitelyTyped, requirejs-DefinitelyTyped}" />
+    <file url="PROJECT" libraries="{D3, Node.js Dependencies for apinatomy, angularjs-DefinitelyTyped, express-DefinitelyTyped, jQuery UI-1.10.2, jQuery-2.0.0, lodash-DefinitelyTyped, requirejs-DefinitelyTyped}" />
     <includedPredefinedLibrary name="Node.js Globals" />
   </component>
 </project>

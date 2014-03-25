@@ -1,7 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (_, ng, ApiNATOMY, d3) {
+define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (_, ng, ApiNATOMY, D3) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //	var EXAMPLE_GRAPH = {
@@ -69,7 +69,7 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 
 						//// creating the sticky force layout
 
-						var force = d3.layout.force()
+						var force = D3.layout.force()
 								.size([iElement.width(), iElement.height()])
 								.charge(-400)
 								.linkDistance(40)
@@ -79,14 +79,14 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 						//// keep the layout the right size when the window resizes
 
 						$($window).resize($bind(function (event) {
-							force.size([iElement.width(), iElement.height()]).start();
+							force.size([iElement.width(), iElement.height()]).resume();
 						}));
 
 
 						//// creating corresponding svg elements
 
-						var lines = d3.select(iElement.find('svg')[0]).selectAll('.link');
-						var circles = d3.select(iElement.find('svg')[0]).selectAll('.node');
+						var lines = D3.select(iElement.find('svg')[0]).selectAll('.link');
+						var circles = D3.select(iElement.find('svg')[0]).selectAll('.node');
 
 
 						//////////////////// populating the graph //////////////////////////////////////////////////////

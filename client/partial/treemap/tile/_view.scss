@@ -31,11 +31,11 @@ amy-tile {
 			opacity : 1;
 		}
 		& > .amy-tile-status-icon {
-			position    : absolute;
+			position    : absolute !important;
 			display     : block;
 			text-align  : center;
-			top         : 5px;
-			right       : 5px;
+			top         : 3px !important;
+			right       : 3px !important;
 			z-index     : 2;
 			width       : $amy-tile-status-icon-size;
 			height      : $amy-tile-status-icon-size;
