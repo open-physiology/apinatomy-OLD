@@ -167,7 +167,7 @@ app.get('/resources/connections/count', function (req, res) {
 
 //// GET specific set of connections
 
-// TODO: inner vs outer set
+// TODO: inner vs outer set (this is inner)
 app.get('/resources/connections/:ids', function (req, res) {
 	var ids = req.params.ids.split(',');
 	var skip = req.query.skip || 0;
@@ -203,6 +203,53 @@ app.get('/resources/connections', function (req, res) {
 					return;
 				}
 				res.status(HTTP_OK).json(conns);
+			});
+});
+
+
+/////////////////  //  //  /  /  /
+///// Paths ////  //  //  /  /  /
+///////////////  //  //  /  /  /
+
+// paths are sequences of connections that start and end at fma entities
+
+//// GET all paths
+
+app.get('/resources/paths', function (req, res) {
+	var skip = req.query.skip || 0;
+	var limit = req.query.limit || Infinity;
+	db.Path.find()
+			.skip(skip)
+			.limit(limit)
+			.exec(function (err, paths) {
+				if (err) {
+					console.log(err);
+					res.status(HTTP_INTERNAL_SERVER_ERROR).send(null);
+					return;
+				}
+				res.status(HTTP_OK).json(paths);
+			});
+});
+
+//// GET specific set of paths
+
+// TODO: inner vs outer set (this is inner)
+app.get('/resources/paths/:ids', function (req, res) {
+	var ids = req.params.ids.split(',');
+	var skip = req.query.skip || 0;
+	var limit = req.query.limit || Infinity;
+	db.Path.find()
+			.where('from').in(ids)
+			.where('to').in(ids)
+			.skip(skip)
+			.limit(limit)
+			.exec(function (err, paths) {
+				if (err) {
+					console.log(err);
+					res.status(HTTP_INTERNAL_SERVER_ERROR).send(null);
+					return;
+				}
+				res.status(HTTP_OK).json(paths);
 			});
 });
 

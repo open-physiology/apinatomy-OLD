@@ -173,7 +173,6 @@ define(['angular',
 					}
 				});
 
-
 				//// when a tile is closed, close all sub-tiles
 
 				$scope.recursivelyCloseTile = function () {
@@ -188,7 +187,6 @@ define(['angular',
 					}
 				});
 
-
 				//// open a tile when clicked
 
 				$scope.onClick = function ($event) {
@@ -201,37 +199,22 @@ define(['angular',
 					$scope.open = !$scope.open;
 				};
 
+				//// a tile is visible when its parent is open
+
+				_($scope).derivedProperty('visible', function () {
+					return $scope.parentTile.open && $scope.position.height > 0 && $scope.position.width > 0;
+				});
 
 				//////////////////// Active Tiles //////////////////////////////////////////////////////////////////////
 
-				//// If there are any tiles present representing an entity, exactly one of them is 'active'.
-				//// To keep track of this, we register all activatable to the root tile by their entity id.
+				//// Given an entity, if there are tiles present that represent it, exactly one of them is active.
+				//// To keep track of this, we communicate with the root tile, which gives it the
+				//// 'active' and 'activatable' properties.
 
-				if (!_($scope.rootTile.activeQueueByEntity[$scope.entity._id]).isArray()) {
-					$scope.rootTile.activeQueueByEntity[$scope.entity._id] = [];
-				}
+				$scope.rootTile.registerTile($scope);
 
-				_($scope).derivedProperty('activatable', function () {
-					return _($scope.rootTile.activeQueueByEntity[$scope.entity._id]).contains($scope);
-				}, function (activatable) {
-					if (activatable) {
-						$scope.rootTile.activeQueueByEntity[$scope.entity._id].push($scope);
-					} else {
-						_($scope.rootTile.activeQueueByEntity[$scope.entity._id]).pull($scope);
-					}
-				});
 
-				_($scope).derivedProperty('active', function () {
-					return $scope.rootTile.activeQueueByEntity[$scope.entity._id][0] === $scope;
-				}, function (active) {
-					if (active) {
-						$scope.rootTile.activeQueueByEntity[$scope.entity._id].unshift($scope);
-					} else {
-						console.error('$scope.active should not be explicitly set to false.');
-					}
-				});
-
-				//// A tile can only be explicitly activated by being opened.
+				//// A tile can be explicitly activated by being opened:
 
 				$scope.$watch('open', function (isOpen, wasOpen) {
 					if (!wasOpen && isOpen) {
@@ -247,20 +230,29 @@ define(['angular',
 					}
 				});
 
-				//// A tile is activatable when its parent is open.
+				//// A tile is activatable whenever it is visible.
 
-				if ($scope.parentTile !== $scope.rootTile) {
-					$scope.$watch('parentTile.open', function (parentIsOpen) {
-						$scope.activatable = parentIsOpen;
-					});
-				} else { // upper level tiles are always visible, thus always activatable
-					$scope.activatable = true;
-				}
-
-
-				_($scope).derivedProperty('visible', function () {
-					return $scope.parentTile.open;
+				$scope.$watch('visible', function (visible) {
+					$scope.activatable = visible;
 				});
+
+
+				//////////////////// Tile Position /////////////////////////////////////////////////////////////////////
+
+				//// initialize tile position info
+
+				$scope.position = {
+					top: 0,
+					left: 0,
+					height: 0,
+					width: 0
+				};
+
+				//// after it redraws, record its coordinates
+
+				$scope.afterTileReposition = function (position) {
+					_($scope.position).assign(position);
+				};
 
 			}],
 
@@ -273,38 +265,16 @@ define(['angular',
 					pre: function preLink($scope, iElement/*, iAttrs, controller*/) {
 
 
-//						$scope.findActiveTiles = function () {
-//							var result = {};
-//							if ($scope.active) {
-//								result[$scope.entity._id] = { element: iElement, entity: $scope.entity };
-//								if ($scope.open) {
-//									_($scope.childTiles).forEach(function (childTile) {
-//										result.assign(childTile.findActiveTiles());
-//									});
-//								}
-//							}
-//							return result;
-//						};
 
-						$scope.elementOffset = function () { return { top: 0, left: 0 }; };
+						$scope.element = function () {
+							return iElement.find('> amy-tile');
+						};
 
 						$scope.onTileReady = function () {
 
 							//// identify the element of the tile itself
 
-							var tile = iElement.find('amy-tile');
-
-							//// gather all entities that have active, visible tiles
-
-							$scope.elementOffset = function () {
-								return tile.offset();
-							};
-
-
-//							$timeout(function () {
-//								console.debug('timeout:', $scope.elementOffset());
-//							}, 3000);
-
+							var tile = $scope.element();
 
 							//// styling
 
@@ -334,8 +304,7 @@ define(['angular',
 
 					},
 
-					post: function postLink($scope, iElement, iAttrs, controller) {
-					}
+					post: function postLink($scope, iElement, iAttrs, controller) {}
 				});
 			}
 		};

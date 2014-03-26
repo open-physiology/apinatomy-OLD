@@ -2,14 +2,14 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['angular',
-        'app/module',
-        'chroma',
-        'lodash',
-        'partial/treemap/layout/manager',
-        'resource/service',
-        '$bind/service',
-        'partial/icon-btn/directive',
-        'utility/attrchange'], function (ng, ApiNATOMY, color, _, Layout) {
+	'app/module',
+	'chroma',
+	'lodash',
+	'partial/treemap/layout/manager',
+	'resource/service',
+	'$bind/service',
+	'partial/icon-btn/directive',
+	'utility/attrchange'], function (ng, ApiNATOMY, color, _, Layout) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -24,21 +24,22 @@ define(['angular',
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-			restrict:    'E',
-			replace:     false,
-			transclude:  true,
+			restrict   : 'E',
+			replace    : false,
+			transclude : true,
 			templateUrl: 'partial/treemap/tile/view.html',
-			scope:       {
-				open:              '=amyOpen',
-				weight:            '=amyWeight',
-				title:             '=amyTitle',
-				layout:            '=amyLayout',
-				sizeButtonModel:   '=amySizeButtonModel',
-				sizeButtonStates:  '=amySizeButtonStates',
+			scope      : {
+				open             : '=amyOpen',
+				weight           : '=amyWeight',
+				title            : '=amyTitle',
+				layout           : '=amyLayout',
+				sizeButtonModel  : '=amySizeButtonModel',
+				sizeButtonStates : '=amySizeButtonStates',
 				sizeButtonClasses: '=amySizeButtonClasses',
-				frontIcon:         '=amyFrontIcon',
-				frontIconTitle:    '=amyFrontIconTitle',
-				onReady:           '&'
+				frontIcon        : '=amyFrontIcon',
+				frontIconTitle   : '=amyFrontIconTitle',
+				onReadyFn        : '&onReady',
+				afterRepositionFn: '&afterReposition'
 			},
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,8 +58,8 @@ define(['angular',
 						//// initializing scope
 
 						_($scope).assign({
-							tileSpacing:   _.parseInt(_($scope.attrTileSpacing).or(DEFAULT_TILE_SPACING)),
-							borderWidth:   _.parseInt(DEFAULT_BORDER_WIDTH),
+							tileSpacing  : _.parseInt(_($scope.attrTileSpacing).or(DEFAULT_TILE_SPACING)),
+							borderWidth  : _.parseInt(DEFAULT_BORDER_WIDTH),
 							contentHidden: true
 						});
 
@@ -76,10 +77,10 @@ define(['angular',
 
 						var parent;
 						var children = [];
-						var sizing = {
-							top:    '50%',
-							left:   '50%',
-							width:  0,
+						var position = {
+							top   : 0,
+							left  : 0,
+							width : 0,
 							height: 0
 						};
 						_(controller).assign({
@@ -99,35 +100,47 @@ define(['angular',
 								parent.requestRedraw();
 							},
 
+							positionInTreemap: function () {
+								var parentPos = parent.positionInTreemap();
+								return {
+									top            : parentPos.top + parentPos.childTopOffset + position.top,
+									left           : parentPos.left + parentPos.childLeftOffset + position.left,
+									height         : position.height,
+									width          : position.width,
+									childTopOffset : 2 * $scope.borderWidth + _.parseInt(TILE_HEADER_HEIGHT),
+									childLeftOffset: $scope.borderWidth
+								};
+							},
+
 							reposition: function (pos) {
 
 								//// update position
 
-								if (!_.approx(pos.top, sizing.top) || !_.approx(pos.left, sizing.left)) {
-									sizing.top = pos.top;
-									sizing.left = pos.left;
+								if (!_.approx(pos.top, position.top) || !_.approx(pos.left, position.left)) {
+									position.top = pos.top;
+									position.left = pos.left;
 								}
 
 								//// update size
 
-								if (!_.approx(pos.height, sizing.height) || !_.approx(pos.width, sizing.width)) {
+								if (!_.approx(pos.height, position.height) || !_.approx(pos.width, position.width)) {
 
 									//// set the tile
 
-									sizing.height = pos.height;
-									sizing.width = pos.width;
-									sizing.lineHeight = pos.height + 'px';
+									position.height = pos.height;
+									position.width = pos.width;
+									position.lineHeight = pos.height + 'px';
 
 									//// scale the font and padding appropriately
 
-									_(sizing).assign(
+									_(position).assign(
 											$scope.open ? ({
-												fontSize:     'auto',
-												paddingLeft:  '8px',
+												fontSize    : 'auto',
+												paddingLeft : '8px',
 												paddingRight: '8px'
 											}) : ({
-												fontSize:     Math.min(.3 * pos.height, .13 * pos.width),
-												paddingLeft:  (.05 * pos.width),
+												fontSize    : Math.min(.3 * pos.height, .13 * pos.width),
+												paddingLeft : (.05 * pos.width),
 												paddingRight: (.05 * pos.width)
 											}));
 
@@ -145,11 +158,11 @@ define(['angular',
 								}
 
 
-								//// apply sizing
+								//// apply position
 
-								iElement.css(sizing);
+								iElement.css(position);
 								iElement.find('> .full-header').css({
-									'max-height': sizing.height - 2 * $scope.borderWidth
+									'max-height': position.height - 2 * $scope.borderWidth
 								});
 
 
@@ -159,7 +172,9 @@ define(['angular',
 									var positions = Layout(
 											_(children)
 													.pluck('layoutInterface')
-													.each(function (childIface, i) { childIface.index = i; })
+													.each(function (childIface, i) {
+														childIface.index = i;
+													})
 													.value(),
 											$scope.layout || DEFAULT_LAYOUT,
 											pos.height - $scope.tileSpacing - 3 * $scope.borderWidth - _.parseInt(TILE_HEADER_HEIGHT),
@@ -182,6 +197,8 @@ define(['angular',
 									});
 								}
 
+								$scope.afterRepositionFn({ newPosition: controller.positionInTreemap() });
+
 							}// reposition
 
 						});// controller
@@ -190,14 +207,14 @@ define(['angular',
 						//// connect with the parent tile controller
 
 						controller.connectWithParent(iElement.parent().controller('amyTile') ||
-						                             iElement.parent().controller('amyTreemap'));
+								iElement.parent().controller('amyTreemap'));
 
 
 						//// set some non-changing css styling for the header
 
 						iElement.find('.top-header').css({
-							lineHeight:    (_.parseInt(TILE_HEADER_HEIGHT) - 1) + 'px',
-							fontSize: .8 * (_.parseInt(TILE_HEADER_HEIGHT) - 1) + 'px'
+							lineHeight: (_.parseInt(TILE_HEADER_HEIGHT) - 1) + 'px',
+							fontSize  : .8 * (_.parseInt(TILE_HEADER_HEIGHT) - 1) + 'px'
 						});
 
 
@@ -210,7 +227,7 @@ define(['angular',
 					},
 
 					post: function postLink($scope/*, iElement, iAttrs, controller*/) {
-						$scope.onReady();
+						$scope.onReadyFn();
 					}
 
 				}

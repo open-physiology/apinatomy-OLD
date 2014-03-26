@@ -2,6 +2,9 @@
 @import "compass";
 @import "bootstrap";
 @import "base";
+@import "partial/top-nav/view";
+@import "partial/side-nav/view";
+@import "partial/circuitboard/view";
 
 html, body {
 	@include user-select(none);
@@ -27,14 +30,7 @@ html, body {
 		z-index       : 999;
 	}
 
-	main, amy-rotation, amy-circuitboard {
+	main, amy-circuitboard {
 		@include edge-to-edge;
 	}
 }
-
-@import "partial/top-nav/view";
-@import "partial/side-nav/view";
-@import "partial/treemap/view";
-@import "partial/circuitboard/view";
-@import "partial/rotation/view";
-@import "partial/icon-btn/view";

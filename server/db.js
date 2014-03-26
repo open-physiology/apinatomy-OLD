@@ -71,6 +71,15 @@ var connectionSchema = new mongoose.Schema({
 connectionSchema.index({ from: 1, to: 1 }, { unique: true });
 connectionSchema.index({ type: 1 });
 
+var pathSchema = new mongoose.Schema({
+	from: EntityReference(),
+	to:   EntityReference(),
+	path: [EntityReference()],
+	type: StringType()
+});
+pathSchema.index({ from: 1, to: 1 }, { unique: true });
+pathSchema.index({ type: 1 });
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////// Models ///////////////////////////////////////////////
@@ -78,3 +87,4 @@ connectionSchema.index({ type: 1 });
 
 exports.Entity = mongoose.model('Entity', entitySchema);
 exports.Connection = mongoose.model('Connection', connectionSchema);
+exports.Path = mongoose.model('Path', pathSchema);

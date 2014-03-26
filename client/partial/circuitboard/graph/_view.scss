@@ -2,24 +2,29 @@
 
 amy-graph {
 
-  pointer-events: none;
+	pointer-events: none;
 
-  & > svg {
+	& > svg {
 
-	.link {
-	  stroke: #000;
-	  stroke-width: 1.5px;
-	  pointer-events: visiblePainted;
+		background-color: rgba(255,255,255,.5);
+
+		line.vessel {
+//			pointer-events: visiblePainted;
+			cursor: pointer;
+			stroke: red;
+			stroke-width: 1.5px;
+			stroke-linecap: round;
+			&:hover {
+				stroke: darken(red, 30);
+			}
+		}
+
+		circle.join {
+			fill: red;
+			stroke: red;
+			stroke-width: 1.5px;
+		}
+
 	}
-
-	.node {
-	  cursor: move;
-	  fill: #ccc;
-	  stroke: #000;
-	  stroke-width: 1.5px;
-	  pointer-events: visiblePainted;
-	}
-
-  }
 }
 

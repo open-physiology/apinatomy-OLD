@@ -11,7 +11,8 @@
           ng-mouseenter="mouseOver = true"
           ng-mouseleave="mouseOver = false"
           ng-click="onClick($event)"
-          on-ready="onTileReady()">
+          on-ready="onTileReady()"
+          after-reposition="afterTileReposition(newPosition)">
 
 	<div amy-once="open">
 		<amy-circuitboard-tile ng-repeat="sub in _.uniq(entity.sub, false, 'entity')"

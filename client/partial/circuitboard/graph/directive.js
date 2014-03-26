@@ -4,45 +4,7 @@
 define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (_, ng, ApiNATOMY, D3) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//	var EXAMPLE_GRAPH = {
-//		"nodes": [
-//			{"x": 469, "y": 410},
-//			{"x": 493, "y": 364},
-//			{"x": 442, "y": 365},
-//			{"x": 467, "y": 314},
-//			{"x": 477, "y": 248},
-//			{"x": 425, "y": 207},
-//			{"x": 402, "y": 155},
-//			{"x": 369, "y": 196},
-//			{"x": 350, "y": 148},
-//			{"x": 539, "y": 222},
-//			{"x": 594, "y": 235},
-//			{"x": 582, "y": 185},
-//			{"x": 633, "y": 200}
-//		],
-//		"links": [
-//			{"source": 0, "target": 1},
-//			{"source": 1, "target": 2},
-//			{"source": 2, "target": 0},
-//			{"source": 1, "target": 3},
-//			{"source": 3, "target": 2},
-//			{"source": 3, "target": 4},
-//			{"source": 4, "target": 5},
-//			{"source": 5, "target": 6},
-//			{"source": 5, "target": 7},
-//			{"source": 6, "target": 7},
-//			{"source": 6, "target": 8},
-//			{"source": 7, "target": 8},
-//			{"source": 9, "target": 4},
-//			{"source": 9, "target": 11},
-//			{"source": 9, "target": 10},
-//			{"source": 10, "target": 11},
-//			{"source": 11, "target": 12},
-//			{"source": 12, "target": 10}
-//		]
-//	};
-
-	ApiNATOMY.directive('amyGraph', ['$window', '$bind', 'ResourceService', '$timeout', function ($window, $bind, Resources, $timeout) {
+	ApiNATOMY.directive('amyGraph', ['$window', '$bind', 'ResourceService', function ($window, $bind, Resources) {
 		return {
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,95 +22,166 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 				return {
 
 					pre: function preLink($scope, iElement/*, iAttrs, controller*/) {
-						var nodeIds = ['24tile:60000001', '24tile:60000002', '24tile:60000007', '24tile:60000008'];
-
-						$scope.entities = Resources.entities(nodeIds);
-						$scope.connections = Resources.connections(nodeIds);
 
 						//////////////////// creating the graph ////////////////////////////////////////////////////////
 
-						//// creating the sticky force layout
+						//// initialize the data
+
+						var connections = [];
+						var connectedTiles = [];
+						var connectedTileMap = {};
+
+						//// create the force layout
 
 						var force = D3.layout.force()
+								.nodes(connectedTiles)
+								.links(connections)
 								.size([iElement.width(), iElement.height()])
-								.charge(-400)
-								.linkDistance(40)
-								.on("tick", tick);
+								.gravity(0)       // (no gravity pulling nodes to the center)
+								.charge(-400)     // (400 mutual attraction)
+								.linkDistance(0); // (no mutual repulsion)
 
 
-						//// keep the layout the right size when the window resizes
+						//// create corresponding svg elements
 
-						$($window).resize($bind(function (event) {
-							force.size([iElement.width(), iElement.height()]).resume();
-						}));
-
-
-						//// creating corresponding svg elements
-
-						var lines = D3.select(iElement.find('svg')[0]).selectAll('.link');
-						var circles = D3.select(iElement.find('svg')[0]).selectAll('.node');
+						var svg = D3.select(iElement.find('svg')[0]);
+						var vessels = svg.selectAll('.vessel');
+						var joins = svg.selectAll('.join');
 
 
-						//////////////////// populating the graph //////////////////////////////////////////////////////
+						//////////////////// updating the graph ////////////////////////////////////////////////////////
 
-						$scope.$watch('activeTiles', function (activeTiles) {
-							var nodes = _(activeTiles).map(function (tile) {
-								return _.extend({
-									entity: tile.entity,
-									fixed : true
-								}, $scope.$parent.globalTilePosition(tile));
-							}).value();
-							var links = _($scope.connections).cloneDeep();
+						function updateGraph() {
+							// using the D3 general update pattern:
+							// http://bl.ocks.org/mbostock/3808218
 
-							console.debug(nodes);
-							console.debug(links);
+							//// vessels
 
-							if (nodes.length >= 4) {
-								lines.remove();
-								circles.remove();
-								lines = lines.data(links).enter().append("line").attr("class", "link");
-								circles = circles.data(nodes).enter().append("circle").attr("class", "node").attr("r", 5);
-								force.start();
-							}
-
-							// TODO: This is where I give up for today.
-
-
-						});
-
-
-						// END of populating the graph
-
-						function tick() {
-							lines
+							vessels = svg.selectAll('line').data(connections, function (d) {
+								return d.source + ' - ' + d.target;
+							});
+							vessels.enter().append("line").attr('class', 'vessel');
+							vessels.transition().duration(600)
 									.attr("x1", function (d) {
-										return d.source.x;
+										return connectedTileMap[d.source].position.left + 15;
 									})
 									.attr("y1", function (d) {
-										return d.source.y;
+										return connectedTileMap[d.source].position.top + 15;
 									})
 									.attr("x2", function (d) {
-										return d.target.x;
+										return connectedTileMap[d.target].position.left + 15;
 									})
 									.attr("y2", function (d) {
-										return d.target.y;
+										return connectedTileMap[d.target].position.top + 15;
 									});
+							vessels.exit().remove();
 
-							circles
-									.attr("cx", function (d) {
-										return d.x;
+							//// joins
+
+							joins = svg.selectAll('circle').data(connectedTiles, function (d) {
+								return d.entity._id;
+							});
+							joins.enter().append("circle").attr('class', 'join').attr("r", 2);
+							joins.transition().duration(600)
+									.attr("cx", function (tile) {
+										return tile.position.left + 15;
 									})
-									.attr("cy", function (d) {
-										return d.y;
+									.attr("cy", function (tile) {
+										return tile.position.top + 15;
 									});
+							joins.exit().remove();
+
+							//// restart the force
+
+							force.start();
 						}
 
+						//////////////////// reacting to changes ///////////////////////////////////////////////////////
+
+						$scope.$on('treemap-redraw', function () {
+							force.size([iElement.width(), iElement.height()]);
+							updateGraph();
+						});
+
+						$scope.$watchCollection('activeTiles', function () {
+
+							_($scope.activeTiles).forEach(function (activeTile) {
+								activeTile.fixed = true; // TODO: this is not ideal, since we're chaning a $scope; fix later
+								activeTile.x = activeTile.position.left;
+								activeTile.y = activeTile.position.top;
+							});
+
+							Resources.paths(_($scope.activeTiles).pluck('entity').pluck('_id').value()).then(function (paths) {
+
+								connectedTileMap = {};
+								connections = [];
+
+								//// first, get all junctions involved in these paths
+
+								var junctionIds = [];
+								var segments = [];
+								_(paths).forEach(function (path) {
+									path = path.path;
+
+									console.debug(path);
+
+									var x1fma = $scope.activeTiles[path[0]].position.left;
+									var x2fma = $scope.activeTiles[path[path.length-1]].position.left;
+									var y1fma = $scope.activeTiles[path[0]].position.top;
+									var y2fma = $scope.activeTiles[path[path.length-1]].position.top;
+									var segmentCount = path.length-1;
+									var dx = (x2fma - x1fma) / segmentCount;
+									var dy = (y2fma - y1fma) / segmentCount;
+
+									console.debug('(' + x1fma + ', ' + y1fma + ')', '(' + x2fma + ', ' + y2fma + ')', '---', segmentCount + ' * (' + dx + ', ' + dy + ')');
+
+									for (var i = 1; i < path.length-1; ++i) {
+										if (!_(junctionIds).contains(path[i])) {
+											connectedTileMap[path[i]] = {
+												fixed: false,
+												entity: {
+													_id: path[i]
+												},
+												position: {
+													left: x1fma + i * dx,
+													top: y1fma + i * dy
+												},
+												x: x1fma + i * dx,
+												y: y1fma + i * dy
+											};
+										}
+										segments.push({
+											source: path[i-1],
+											target: path[i]
+										});
+									}
+									segments.push({
+										source: path[path.length-2],
+										target: path[path.length-1]
+									});
+								});
+
+								//// then, set all connections and connectedTiles
+								//
+								// all segments are connections
+								connections = segments;
+								// the connectedTiles are filtered out with the paths
+								_(paths).forEach(function (path) {
+									connectedTileMap[path.source] = $scope.activeTiles[path.source];
+									connectedTileMap[path.target] = $scope.activeTiles[path.target];
+								});
+								// and they include all junctions
+								connectedTiles = _.values(connectedTileMap);
+
+								// OK; update the graph
+
+								updateGraph();
+							});
+						});
 
 					},
 
-					post: function postLink($scope, iElement, iAttrs, controller) {
-
-					}
+					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {}
 
 				};
 			}

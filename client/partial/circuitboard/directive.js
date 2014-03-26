@@ -26,18 +26,14 @@ define(['lodash',
 
 			controller: ['$scope', '$rootScope', function ($scope, $rootScope) {
 
+				//////////////////// Tile hierarchy ////////////////////////////////////////////////////////////////////
+
 				$scope.thisTile = $scope;
 				$scope.rootTile = $scope;
 				$scope.childTiles = [];
-				$scope.activeQueueByEntity = {};
 
-				$scope.open = true;
 
-				$scope.children = ResourceService.entities(
-						_.chain(_.range(60000001, 60000024 + 1)).map(function (nr) {
-							return '24tile:' + nr
-						}).value()
-				);
+				//////////////////// Tile focus ////////////////////////////////////////////////////////////////////
 
 				$scope.buildFocusChain = function () {
 					var focusChain = [];
@@ -50,13 +46,75 @@ define(['lodash',
 					$rootScope.$broadcast('entity-focus', focusChain);
 				};
 
-				$scope.$watchCollection(function (scope) {
-					return _(scope.activeQueueByEntity).mapValues(function (entityTiles) {
-						return entityTiles[0];
-					}).filter().value();
-				}, function (activeTiles) {
-					$scope.activeTiles = activeTiles;
-				});
+
+				//////////////////// Tile activation ///////////////////////////////////////////////////////////////////
+
+				$scope.activeQueueByEntity = {};
+				$scope.activeTiles = {};
+
+				$scope.registerTile = function (tile) {
+					if (!_($scope.activeQueueByEntity[tile.entity._id]).isArray()) {
+						$scope.activeQueueByEntity[tile.entity._id] = [];
+					}
+
+					_(tile).derivedProperty('activatable', function () {
+						return _($scope.activeQueueByEntity[tile.entity._id]).contains(tile);
+					}, function (activatable) {
+						if (!!tile.activatable !== !!activatable) {
+							if (activatable) {
+								$scope.activeQueueByEntity[tile.entity._id].push(tile);
+								if (tile.active) {
+									$scope.activeTiles[tile.entity._id] = tile;
+									$scope.$broadcast('tile-activated', tile);
+								}
+							} else {
+								var wasActive = tile.active;
+								_($scope.activeQueueByEntity[tile.entity._id]).pull(tile);
+								if (wasActive) {
+									delete $scope.activeTiles[tile.entity._id];
+									$scope.$broadcast('tile-deactivated', tile);
+								}
+							}
+						}
+					});
+
+					_(tile).derivedProperty('active', function () {
+						return $scope.activeQueueByEntity[tile.entity._id][0] === tile;
+					}, function (active) {
+						if (active) {
+							if (!tile.active) {
+								var previouslyActiveTile = $scope.activeQueueByEntity[tile.entity._id][0];
+								$scope.activeQueueByEntity[tile.entity._id].unshift(tile);
+								$scope.activeTiles[tile.entity._id] = tile;
+								$scope.$broadcast('tile-activated', tile);
+								if (previouslyActiveTile) {
+									delete $scope.activeTiles[previouslyActiveTile.entity._id];
+									$scope.$broadcast('tile-deactivated', previouslyActiveTile);
+								}
+							}
+						} else {
+							console.error('$scope.active should not be explicitly set to false.');
+						}
+					});
+				};
+
+
+				//////////////////// Initialization ////////////////////////////////////////////////////////////////////
+
+				$scope.open = true;
+
+				$scope.children = ResourceService.entities(
+						_.chain(_.range(60000001, 60000024 + 1)).map(function (nr) {
+							return '24tile:' + nr
+						}).value()
+				);
+
+				//////////////////// Broadcasting a redraw event ///////////////////////////////////////////////////////
+
+				$scope.onTreemapRedraw = function () {
+					$scope.$broadcast('treemap-redraw');
+				};
+
 
 			}],
 
@@ -65,15 +123,8 @@ define(['lodash',
 			compile: function () {
 				return {
 
-					pre: function preLink($scope, iElement/*, iAttrs, controller*/) {
-						var circuitBoardPosition = iElement.offset();
-						$scope.globalTilePosition = function (tileScope) {
-							console.debug(circuitBoardPosition, tileScope.elementOffset());
-							return {
-								x: tileScope.elementOffset().left - circuitBoardPosition.left,
-								y: tileScope.elementOffset().top - circuitBoardPosition.top
-							};
-						}
+					pre: function preLink($scope, iElement, iAttrs/*, controller*/) {
+
 					},
 
 					post: function postLink($scope, iElement, iAttrs, controller) {

@@ -2,12 +2,12 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['lodash',
-        'angular',
-        'app/module',
-        'partial/treemap/layout/manager',
-        'partial/treemap/layout/predefined',
-        '$bind/service',
-        'partial/treemap/tile/directive'], function
+	'angular',
+	'app/module',
+	'partial/treemap/layout/manager',
+	'partial/treemap/layout/predefined',
+	'$bind/service',
+	'partial/treemap/tile/directive'], function
 		(_, ng, ApiNATOMY, Layout) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -22,9 +22,10 @@ define(['lodash',
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			restrict: 'E',
-			scope:    {
-				attrLayout:      '@layout',
-				attrTileSpacing: '@tileSpacing'
+			scope   : {
+				attrLayout     : '@layout',
+				attrTileSpacing: '@tileSpacing',
+				onRedrawFn     : '&onRedraw'
 			},
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +52,17 @@ define(['lodash',
 					registerChild: function (child) {
 						children.push(child);
 						controller.requestRedraw();
+					},
+
+					positionInTreemap: function () {
+						return {
+							top            : 0,
+							left           : 0,
+							height         : controller.height(),
+							width          : controller.width(),
+							childTopOffset : $scope.tileSpacing,
+							childLeftOffset: $scope.tileSpacing
+						};
 					},
 
 					requestRedraw: _($bind(function () {
@@ -80,6 +92,8 @@ define(['lodash',
 							child.reposition(positions[i]);
 						});
 
+						$scope.onRedrawFn();
+
 					})).debounce(40).value()
 
 				};
@@ -97,7 +111,7 @@ define(['lodash',
 						//// normalizing attributes
 
 						_($scope).assign({
-							layout:      _($scope.attrLayout).or(DEFAULT_TILE_LAYOUT),
+							layout     : _($scope.attrLayout).or(DEFAULT_TILE_LAYOUT),
 							tileSpacing: _.parseInt(_($scope.attrTileSpacing).or(DEFAULT_TILE_SPACING))
 						});
 
