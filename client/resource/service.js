@@ -68,28 +68,12 @@ define(['app/module', 'lodash', 'defaults/service'], function (ApiNATOMY, _) {
 			var deferred = $q.defer();
 
 			$http.get('/resources/connections/' + ids.join(',')).then(function (data) {
-				_(data.data).forEach(function (path) {
-					// these are added for the benefit of D3
-					path.source = path.from;
-					path.target = path.to;
-				});
 				deferred.resolve(data.data);
 			}, function (err) {
 				deferred.reject(err);
 			});
 
 			return deferred.promise;
-
-//				var testConnections = [
-//					{ from: '24tile:60000001', to: '24tile:60000002' },
-//					{ from: '24tile:60000002', to: '24tile:60000008' },
-//					{ from: '24tile:60000008', to: '24tile:60000007' }
-//				];
-//
-//				return _(testConnections).filter(function (connection) {
-//					return _(ids).contains(connection.from) &&
-//					       _(ids).contains(connection.to);
-//				}).value();
 		};
 
 		//////////////////// Paths /////////////////////////////////////////////////////////////////////////////////////
@@ -101,11 +85,6 @@ define(['app/module', 'lodash', 'defaults/service'], function (ApiNATOMY, _) {
 				deferred.resolve([]);
 			} else {
 				$http.get('/resources/paths/' + ids.join(',')).then(function (data) {
-					_(data.data).forEach(function (path) {
-						// these are added for the benefit of D3
-						path.source = path.from;
-						path.target = path.to;
-					});
 					deferred.resolve(data.data);
 				}, function (err) {
 					deferred.reject(err);
@@ -113,20 +92,6 @@ define(['app/module', 'lodash', 'defaults/service'], function (ApiNATOMY, _) {
 			}
 
 			return deferred.promise;
-
-
-
-//				var testConnections = [
-//					{ from: '24tile:60000001', to: '24tile:60000002' },
-//					{ from: '24tile:60000002', to: '24tile:60000008' },
-//					{ from: '24tile:60000008', to: '24tile:60000007' }
-//				];
-//
-//				return _(testConnections).filter(function (path) {
-//					return _(ids).contains(path.from) &&
-//					       _(ids).contains(path.to);
-//				}).value();
-
 		};
 
 		return iface;

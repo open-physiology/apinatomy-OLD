@@ -157,6 +157,10 @@ define(['angular',
 
 								}
 
+								//// notify new position
+
+								$scope.afterRepositionFn({ newPosition: controller.positionInTreemap() });
+
 
 								//// apply position
 
@@ -196,8 +200,6 @@ define(['angular',
 										child.reposition(positions[i]);
 									});
 								}
-
-								$scope.afterRepositionFn({ newPosition: controller.positionInTreemap() });
 
 							}// reposition
 

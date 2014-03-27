@@ -11,9 +11,9 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 
 			restrict: 'E',
 			template: '<svg></svg>',
-			replace : false,
-			scope   : {
-				activeTiles: '=amyActiveTiles'
+			replace:  false,
+			scope:    {
+				activeTileJunctions: '=amyActiveTileJunctions'
 			},
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,25 +28,25 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 						//// initialize the data
 
 						var connections = [];
-						var connectedTiles = [];
-						var connectedTileMap = {};
+						var junctions = [];
 
 						//// create the force layout
 
 						var force = D3.layout.force()
-								.nodes(connectedTiles)
+								.nodes(junctions)
 								.links(connections)
 								.size([iElement.width(), iElement.height()])
-								.gravity(0)       // (no gravity pulling nodes to the center)
-								.charge(-400)     // (400 mutual attraction)
-								.linkDistance(0); // (no mutual repulsion)
+								.gravity(0)
+								.charge(-400)
+								.linkDistance(10)
+								.on("tick", tick);
 
 
 						//// create corresponding svg elements
 
 						var svg = D3.select(iElement.find('svg')[0]);
-						var vessels = svg.selectAll('.vessel');
-						var joins = svg.selectAll('.join');
+						var connectionLines = svg.selectAll('line');
+						var junctionPoints = svg.selectAll('circle');
 
 
 						//////////////////// updating the graph ////////////////////////////////////////////////////////
@@ -55,129 +55,145 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 							// using the D3 general update pattern:
 							// http://bl.ocks.org/mbostock/3808218
 
-							//// vessels
-
-							vessels = svg.selectAll('line').data(connections, function (d) {
-								return d.source + ' - ' + d.target;
-							});
-							vessels.enter().append("line").attr('class', 'vessel');
-							vessels.transition().duration(600)
-									.attr("x1", function (d) {
-										return connectedTileMap[d.source].position.left + 15;
-									})
-									.attr("y1", function (d) {
-										return connectedTileMap[d.source].position.top + 15;
-									})
-									.attr("x2", function (d) {
-										return connectedTileMap[d.target].position.left + 15;
-									})
-									.attr("y2", function (d) {
-										return connectedTileMap[d.target].position.top + 15;
-									});
-							vessels.exit().remove();
-
-							//// joins
-
-							joins = svg.selectAll('circle').data(connectedTiles, function (d) {
-								return d.entity._id;
-							});
-							joins.enter().append("circle").attr('class', 'join').attr("r", 2);
-							joins.transition().duration(600)
-									.attr("cx", function (tile) {
-										return tile.position.left + 15;
-									})
-									.attr("cy", function (tile) {
-										return tile.position.top + 15;
-									});
-							joins.exit().remove();
 
 							//// restart the force
 
-							force.start();
+							force.nodes(junctions).links(connections).start();
+
+
+							//// connectionLines
+
+							connectionLines = svg.selectAll('line').data(connections,
+									function (d) { return d.source.id + ' - ' + d.target.id; });
+							connectionLines.enter().append("line").attr('class', 'vesselLine');
+							connectionLines
+									.attr("x1", function (d) { return d.source.x; })
+									.attr("y1", function (d) { return d.source.y; })
+									.attr("x2", function (d) { return d.target.x; })
+									.attr("y2", function (d) { return d.target.y; });
+							connectionLines.exit().remove();
+
+
+							//// junctionPoints
+
+							junctionPoints = svg.selectAll('circle').data(junctions,
+									function (d) { return d.id; });
+							junctionPoints.enter().append("circle")
+									.attr('class', function (d) { return (d.fixed ? 'tilePoint' : 'junctionPoint'); })
+									.attr("r", function (d) { return (d.fixed ? 3 : 2); });
+							junctionPoints
+									.attr("cx", function (junction) { return junction.x; })
+									.attr("cy", function (junction) { return junction.y; });
+							junctionPoints.exit().remove();
 						}
 
 						//////////////////// reacting to changes ///////////////////////////////////////////////////////
 
+						function tick() {
+
+
+
+							connectionLines
+									.attr("x1", function (d) { return d.source.x; })
+									.attr("y1", function (d) { return d.source.y; })
+									.attr("x2", function (d) { return d.target.x; })
+									.attr("y2", function (d) { return d.target.y; });
+
+							junctionPoints
+									.attr("cx", function (junction) { return junction.x; })
+									.attr("cy", function (junction) { return junction.y; });
+						}
+
 						$scope.$on('treemap-redraw', function () {
+
+							//// resize canvas
+
 							force.size([iElement.width(), iElement.height()]);
+
+							//// OK; update the graph
+
 							updateGraph();
 						});
 
-						$scope.$watchCollection('activeTiles', function () {
+						$scope.$watch('activeTileJunctions', function (activeTileJunctions) {
+							Resources.paths(_(activeTileJunctions).pluck('id').value()).then(function (paths) {
 
-							_($scope.activeTiles).forEach(function (activeTile) {
-								activeTile.fixed = true; // TODO: this is not ideal, since we're chaning a $scope; fix later
-								activeTile.x = activeTile.position.left;
-								activeTile.y = activeTile.position.top;
-							});
+								// find the connections of all inner junctions (so we can eliminate linear ones)
 
-							Resources.paths(_($scope.activeTiles).pluck('entity').pluck('_id').value()).then(function (paths) {
+								var junctionDirectConnections = {};
 
-								connectedTileMap = {};
-								connections = [];
-
-								//// first, get all junctions involved in these paths
-
-								var junctionIds = [];
-								var segments = [];
 								_(paths).forEach(function (path) {
-									path = path.path;
-
-									console.debug(path);
-
-									var x1fma = $scope.activeTiles[path[0]].position.left;
-									var x2fma = $scope.activeTiles[path[path.length-1]].position.left;
-									var y1fma = $scope.activeTiles[path[0]].position.top;
-									var y2fma = $scope.activeTiles[path[path.length-1]].position.top;
-									var segmentCount = path.length-1;
-									var dx = (x2fma - x1fma) / segmentCount;
-									var dy = (y2fma - y1fma) / segmentCount;
-
-									console.debug('(' + x1fma + ', ' + y1fma + ')', '(' + x2fma + ', ' + y2fma + ')', '---', segmentCount + ' * (' + dx + ', ' + dy + ')');
-
-									for (var i = 1; i < path.length-1; ++i) {
-										if (!_(junctionIds).contains(path[i])) {
-											connectedTileMap[path[i]] = {
-												fixed: false,
-												entity: {
-													_id: path[i]
-												},
-												position: {
-													left: x1fma + i * dx,
-													top: y1fma + i * dy
-												},
-												x: x1fma + i * dx,
-												y: y1fma + i * dy
-											};
+									var pathArray = path.path;
+									for (var i = 1; i < pathArray.length - 1; ++i) {
+										if (!_(junctionDirectConnections[pathArray[i]]).isObject()) {
+											junctionDirectConnections[pathArray[i]] = {};
 										}
-										segments.push({
-											source: path[i-1],
-											target: path[i]
-										});
+										junctionDirectConnections[pathArray[i]][pathArray[i-1]] = true;
+										junctionDirectConnections[pathArray[i]][pathArray[i+1]] = true;
 									}
-									segments.push({
-										source: path[path.length-2],
-										target: path[path.length-1]
+								});
+
+								//// reset connections and junctions
+
+								_(connections).remove();
+								_(junctions).remove();
+
+								//// recording relevant tile junctions
+
+								var tileJunctionMap = {};
+
+								function addTileJunction(id) {
+									if (_(tileJunctionMap[id]).isUndefined()) {
+										tileJunctionMap[id] = _(activeTileJunctions[id]).cloneDeep();
+										junctions.push(tileJunctionMap[id]);
+									}
+								}
+								_(paths).forEach(function (path) {
+									addTileJunction(path.from);
+									addTileJunction(path.to);
+								});
+
+								//// recording inner junctions and connections
+
+								var innerJunctionMap = {};
+
+								_(paths).forEach(function (path) {
+									var pathArray = path.path;
+
+									var tile1 = tileJunctionMap[path.from];
+									var tile2 = tileJunctionMap[path.to];
+
+									var sourceJunction = tileJunctionMap[path.from];
+									for (var i = 1; i < pathArray.length - 1; ++i) {
+										if (_(junctionDirectConnections[pathArray[i]]).size() > 2) {
+
+											if (_(innerJunctionMap[pathArray[i]]).isUndefined()) {
+												innerJunctionMap[pathArray[i]] = {
+													id: pathArray[i],
+													x: (tile1.x + tile2.x) / 2, // right in between; good enough
+													y: (tile1.y + tile2.y) / 2
+												};
+												junctions.push(innerJunctionMap[pathArray[i]]);
+											}
+
+											connections.push({
+												source: sourceJunction,
+												target: innerJunctionMap[pathArray[i]]
+											});
+											sourceJunction = innerJunctionMap[pathArray[i]];
+										}
+									}
+									connections.push({
+										source: sourceJunction,
+										target: tileJunctionMap[path.to]
 									});
 								});
 
-								//// then, set all connections and connectedTiles
-								//
-								// all segments are connections
-								connections = segments;
-								// the connectedTiles are filtered out with the paths
-								_(paths).forEach(function (path) {
-									connectedTileMap[path.source] = $scope.activeTiles[path.source];
-									connectedTileMap[path.target] = $scope.activeTiles[path.target];
-								});
-								// and they include all junctions
-								connectedTiles = _.values(connectedTileMap);
-
-								// OK; update the graph
+								//// OK; update the graph
 
 								updateGraph();
 							});
-						});
+						}, true);
 
 					},
 

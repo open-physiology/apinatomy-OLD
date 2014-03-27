@@ -76,7 +76,6 @@ define(['angular',
 
 				$scope._ = _; // TODO: find a way to do this once for all $scope's
 
-
 				//////////////////// Tile Hierarchy ////////////////////////////////////////////////////////////////////
 
 				//// The treemap of the tiles is reflected by linking their $scope's as follows:
@@ -248,10 +247,19 @@ define(['angular',
 					width: 0
 				};
 
+				$scope.junction = {
+					id: $scope.entity._id,
+					fixed: true,
+					x: 0,
+					y: 0
+				};
+
 				//// after it redraws, record its coordinates
 
 				$scope.afterTileReposition = function (position) {
 					_($scope.position).assign(position);
+					$scope.junction.x = position.left + Math.min(15, position.width / 2);
+					$scope.junction.y = position.top + Math.min(15, position.height / 2);
 				};
 
 			}],
@@ -263,8 +271,6 @@ define(['angular',
 			compile: function (dElement) {
 				return RecursionHelper.compile(dElement, {
 					pre: function preLink($scope, iElement/*, iAttrs, controller*/) {
-
-
 
 						$scope.element = function () {
 							return iElement.find('> amy-tile');

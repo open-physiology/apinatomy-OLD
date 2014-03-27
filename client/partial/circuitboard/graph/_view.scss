@@ -8,21 +8,26 @@ amy-graph {
 
 		background-color: rgba(255,255,255,.5);
 
-		line.vessel {
+		line.vesselLine {
 //			pointer-events: visiblePainted;
-			cursor: pointer;
+//			cursor: pointer;
 			stroke: red;
 			stroke-width: 1.5px;
 			stroke-linecap: round;
-			&:hover {
-				stroke: darken(red, 30);
-			}
 		}
 
-		circle.join {
-			fill: red;
-			stroke: red;
+		circle {
 			stroke-width: 1.5px;
+
+			&.tilePoint {
+				fill: darkred;
+				stroke: darkred;
+			}
+
+			&.junctionPoint {
+				fill: red;
+				stroke: red;
+			}
 		}
 
 	}

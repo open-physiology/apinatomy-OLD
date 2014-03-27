@@ -50,7 +50,7 @@ define(['lodash',
 				//////////////////// Tile activation ///////////////////////////////////////////////////////////////////
 
 				$scope.activeQueueByEntity = {};
-				$scope.activeTiles = {};
+				$scope.activeTileJunctions = {};
 
 				$scope.registerTile = function (tile) {
 					if (!_($scope.activeQueueByEntity[tile.entity._id]).isArray()) {
@@ -64,15 +64,13 @@ define(['lodash',
 							if (activatable) {
 								$scope.activeQueueByEntity[tile.entity._id].push(tile);
 								if (tile.active) {
-									$scope.activeTiles[tile.entity._id] = tile;
-									$scope.$broadcast('tile-activated', tile);
+									$scope.activeTileJunctions[tile.entity._id] = tile.junction;
 								}
 							} else {
 								var wasActive = tile.active;
 								_($scope.activeQueueByEntity[tile.entity._id]).pull(tile);
 								if (wasActive) {
-									delete $scope.activeTiles[tile.entity._id];
-									$scope.$broadcast('tile-deactivated', tile);
+									delete $scope.activeTileJunctions[tile.entity._id];
 								}
 							}
 						}
@@ -85,11 +83,9 @@ define(['lodash',
 							if (!tile.active) {
 								var previouslyActiveTile = $scope.activeQueueByEntity[tile.entity._id][0];
 								$scope.activeQueueByEntity[tile.entity._id].unshift(tile);
-								$scope.activeTiles[tile.entity._id] = tile;
-								$scope.$broadcast('tile-activated', tile);
+								$scope.activeTileJunctions[tile.entity._id] = tile.junction;
 								if (previouslyActiveTile) {
-									delete $scope.activeTiles[previouslyActiveTile.entity._id];
-									$scope.$broadcast('tile-deactivated', previouslyActiveTile);
+									delete $scope.activeTileJunctions[previouslyActiveTile.entity._id];
 								}
 							}
 						} else {
@@ -115,7 +111,6 @@ define(['lodash',
 					$scope.$broadcast('treemap-redraw');
 				};
 
-
 			}],
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -123,12 +118,9 @@ define(['lodash',
 			compile: function () {
 				return {
 
-					pre: function preLink($scope, iElement, iAttrs/*, controller*/) {
+					pre: function preLink(/*$scope, iElement, iAttrs, controller*/) {},
 
-					},
-
-					post: function postLink($scope, iElement, iAttrs, controller) {
-					}
+					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {}
 
 				};
 			}
