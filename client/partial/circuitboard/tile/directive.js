@@ -11,6 +11,8 @@ define(['angular',
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+	var TILE_HEADER_HEIGHT = 26;
+
 	var WEIGHTS = {
 		hidden   : 0,
 		closed   : 1,
@@ -141,7 +143,9 @@ define(['angular',
 				//// the focus chain of the entire circuitboard.
 
 				$scope.$watch('mouseOver', function () {
-					$scope.rootTile.buildFocusChain();
+					if (!$scope.rootTile.tileHighlightingDisabled) {
+						$scope.rootTile.buildFocusChain();
+					}
 				});
 
 				//// The state of a tile can be 'normal' or 'focus'. It starts 'normal'.
@@ -153,7 +157,9 @@ define(['angular',
 				//// adjust its styling to whether it is the main tile in focus.
 
 				$scope.$on('entity-focus', function localFocus(event, focusChain) {
-					$scope.state = (!_(focusChain).isEmpty() && $scope.condition !== 'maximized' && $scope.entity === focusChain[focusChain.length - 1].entity)
+					$scope.state = (!_(focusChain).isEmpty() &&
+					                $scope.condition !== 'maximized' &&
+					                $scope.entity === focusChain[focusChain.length - 1].entity)
 							? 'focus'
 							: 'normal';
 				});
@@ -249,18 +255,41 @@ define(['angular',
 				};
 
 				$scope.junction = {
+					isTileJunction: true,
 					id: $scope.entity._id,
-					fixed: true,
 					x: 0,
 					y: 0
+				};
+
+
+				$scope.junction.bindX = function (newX) {
+					return this.x = Math.max(this.x1, Math.min(this.x2, this.x));
+				};
+
+				$scope.junction.bindY = function (newX) {
+					return this.y = Math.max(this.y1, Math.min(this.y2, this.y));
 				};
 
 				//// after it redraws, record its coordinates
 
 				$scope.afterTileReposition = function (position) {
-					_($scope.position).assign(position);
-					$scope.junction.x = position.left + Math.min(15, position.width / 2);
-					$scope.junction.y = position.top + Math.min(15, position.height / 2);
+					_($scope.position).assign(position); // TODO: get rid of $scope.position?
+
+					var widthPadding = Math.min(TILE_HEADER_HEIGHT, position.width) / 2;
+					var heightPadding = Math.min(TILE_HEADER_HEIGHT, position.height) / 2;
+
+					$scope.junction.x1 = position.left + widthPadding;
+					$scope.junction.x2 = position.left + position.width - widthPadding;
+					$scope.junction.y1 = position.top + heightPadding;
+
+					if ($scope.open) {
+						$scope.junction.y2 = position.top + heightPadding;
+					} else {
+						$scope.junction.y2 = position.top + position.height - heightPadding;
+					}
+
+					$scope.junction.x = ($scope.junction.x1 + $scope.junction.x2) / 2;
+					$scope.junction.y = ($scope.junction.y1 + $scope.junction.y2) / 2;
 				};
 
 			}],

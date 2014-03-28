@@ -17,6 +17,9 @@ amy-graph {
 		}
 
 		circle {
+			pointer-events: visiblePainted;
+			cursor: move;
+
 			stroke-width: 1.5px;
 
 			&.tilePoint {

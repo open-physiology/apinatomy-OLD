@@ -26,6 +26,8 @@ define(['lodash',
 
 			controller: ['$scope', '$rootScope', function ($scope, $rootScope) {
 
+				$scope._ = _;
+
 				//////////////////// Tile hierarchy ////////////////////////////////////////////////////////////////////
 
 				$scope.thisTile = $scope;
@@ -104,6 +106,7 @@ define(['lodash',
 							return '24tile:' + nr
 						}).value()
 				);
+
 
 				//////////////////// Broadcasting a redraw event ///////////////////////////////////////////////////////
 

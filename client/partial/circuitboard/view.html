@@ -2,7 +2,9 @@
 <amy-rotation amy-model="style3D" enabled="$root.threeDRotateEnabled">
 
     <!-- the treemap -->
-    <amy-treemap ng-style="style3D" layout="rowsOfTiles" on-redraw="onTreemapRedraw()">
+    <amy-treemap ng-style="style3D"
+                 layout="rowsOfTiles"
+                 on-redraw="onTreemapRedraw()">
 
         <!-- one tile for each 'child element' (of the 24 tiles) -->
         <amy-circuitboard-tile ng-repeat="child in children" amy-entity="child"></amy-circuitboard-tile>
@@ -10,6 +12,8 @@
     </amy-treemap>
 
     <!-- the connection-graph hovering over the treemap -->
-    <amy-graph ng-if="$root.connectionsEnabled" ng-style="style3D" amy-active-tile-junctions="activeTileJunctions"></amy-graph>
+    <amy-graph ng-if="$root.connectionsEnabled" ng-style="style3D"
+               amy-active-tile-junctions="activeTileJunctions"
+		       dragging="thisTile.tileHighlightingDisabled"></amy-graph>
 
 </amy-rotation>

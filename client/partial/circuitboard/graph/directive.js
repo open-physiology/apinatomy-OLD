@@ -1,7 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (_, ng, ApiNATOMY, D3) {
+define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (_, ng, ApiNATOMY, d3) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	ApiNATOMY.directive('amyGraph', ['$window', '$bind', 'ResourceService', function ($window, $bind, Resources) {
@@ -13,7 +13,8 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 			template: '<svg></svg>',
 			replace:  false,
 			scope:    {
-				activeTileJunctions: '=amyActiveTileJunctions'
+				activeTileJunctions: '=amyActiveTileJunctions',
+				dragging:            '='
 			},
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -32,34 +33,42 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 
 						//// create the force layout
 
-						var force = D3.layout.force()
+						var force = d3.layout.force()
 								.nodes(junctions)
 								.links(connections)
 								.size([iElement.width(), iElement.height()])
 								.gravity(0)
-								.charge(-500)
-								.linkDistance(10)
-								.on("tick", tick);
-
+								.charge(-400)
+								.linkDistance(10);
 
 						//// create corresponding svg elements
 
-						var svg = D3.select(iElement.find('svg')[0]);
+						var svg = d3.select(iElement.find('svg')[0]);
 						var connectionLines = svg.selectAll('line');
 						var junctionPoints = svg.selectAll('circle');
-
 
 						//////////////////// updating the graph ////////////////////////////////////////////////////////
 
 						function updateGraph() {
-							// using the D3 general update pattern:
+							// using the d3 general update pattern:
 							// http://bl.ocks.org/mbostock/3808218
-
 
 							//// restart the force
 
 							force.nodes(junctions).links(connections).start();
 
+							//// junctionPoints
+
+							junctionPoints = svg.selectAll('circle').data(junctions,
+									function (d) { return d.id; });
+							junctionPoints.enter().append("circle")
+									.attr('class', function (d) { return (d.isTileJunction ? 'tilePoint' : 'junctionPoint'); })
+									.attr("r", function (d) { return (d.isTileJunction ? 4 : 2); })
+									.call(force.drag);
+							junctionPoints
+									.attr("cx", function (junction) { return junction.bindX ? junction.bindX() : junction.x; })
+									.attr("cy", function (junction) { return junction.bindY ? junction.bindY() : junction.y; });
+							junctionPoints.exit().remove();
 
 							//// connectionLines
 
@@ -73,45 +82,49 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 									.attr("y2", function (d) { return d.target.y; });
 							connectionLines.exit().remove();
 
+							//// define a nice visual z-order for the svg elements
 
-							//// junctionPoints
+							svg.selectAll('*').sort(function (a, b) {
+								var aCategory, bCategory; // tileJunctionEdge < tileJunction < otherEdge < otherJunction
 
-							junctionPoints = svg.selectAll('circle').data(junctions,
-									function (d) { return d.id; });
-							junctionPoints.enter().append("circle")
-									.attr('class', function (d) { return (d.fixed ? 'tilePoint' : 'junctionPoint'); })
-									.attr("r", function (d) { return (d.fixed ? 3 : 2); });
-							junctionPoints
-									.attr("cx", function (junction) { return junction.x; })
-									.attr("cy", function (junction) { return junction.y; });
-							junctionPoints.exit().remove();
+								if (!a.id && (a.source.isTileJunction || a.target.isTileJunction)) { aCategory = 0; }
+								else if (a.isTileJunction) { aCategory = 1; }
+								else if (!a.id) { aCategory = 2; }
+								else { aCategory = 3; }
+
+								if (!b.id && (b.source.isTileJunction || b.target.isTileJunction)) { bCategory = 0; }
+								else if (b.isTileJunction) { bCategory = 1; }
+								else if (!b.id) { bCategory = 2; }
+								else { bCategory = 3; }
+
+								return (aCategory < bCategory ? -1 : (aCategory === bCategory ? 0 : 1) );
+							});
 						}
 
 						//////////////////// reacting to changes ///////////////////////////////////////////////////////
 
-						function tick() {
-
-
+						force.on("tick", function tick() {
+							junctionPoints
+									.attr("cx", function (junction) { return junction.bindX ? junction.bindX() : junction.x; })
+									.attr("cy", function (junction) { return junction.bindY ? junction.bindY() : junction.y; });
 
 							connectionLines
 									.attr("x1", function (d) { return d.source.x; })
 									.attr("y1", function (d) { return d.source.y; })
 									.attr("x2", function (d) { return d.target.x; })
 									.attr("y2", function (d) { return d.target.y; });
+						});
 
-							junctionPoints
-									.attr("cx", function (junction) { return junction.x; })
-									.attr("cy", function (junction) { return junction.y; });
-						}
+						force.drag().on("dragstart", function () {
+							d3.event.sourceEvent.stopPropagation();
+							$scope.dragging = true;
+						}).on("dragend", function () {
+							d3.event.sourceEvent.stopPropagation();
+							$scope.dragging = false;
+						});
 
 						$scope.$on('treemap-redraw', function () {
-
-							//// resize canvas
-
 							force.size([iElement.width(), iElement.height()]);
-
-							//// OK; update the graph
-
 							updateGraph();
 						});
 
@@ -119,6 +132,9 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 							Resources.paths(_(activeTileJunctions).pluck('id').value()).then(function (paths) {
 
 								// find the connections of all inner junctions (so we can eliminate linear ones)
+
+								// TODO: there is at least one looping path from an fma tile back to the same
+								// TODO  fma tile (fma:7096 - Right atrium); this is not yet properly visualized
 
 								var junctionDirectConnections = {};
 
@@ -128,8 +144,8 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 										if (!_(junctionDirectConnections[pathArray[i]]).isObject()) {
 											junctionDirectConnections[pathArray[i]] = {};
 										}
-										junctionDirectConnections[pathArray[i]][pathArray[i-1]] = true;
-										junctionDirectConnections[pathArray[i]][pathArray[i+1]] = true;
+										junctionDirectConnections[pathArray[i]][pathArray[i - 1]] = true;
+										junctionDirectConnections[pathArray[i]][pathArray[i + 1]] = true;
 									}
 								});
 
@@ -148,6 +164,7 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 										junctions.push(tileJunctionMap[id]);
 									}
 								}
+
 								_(paths).forEach(function (path) {
 									addTileJunction(path.from);
 									addTileJunction(path.to);
