@@ -2,8 +2,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['angular',
-        'angular-resource',
-        'angular-route',
         'angular-animate',
         'angular-bootstrap',
         'angular-recursion',
@@ -11,9 +9,7 @@ define(['angular',
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	var ApiNATOMY = ng.module('ApiNATOMY', ['ngResource',
-	                                        'ngRoute',
-	                                        'ngAnimate',
+	var ApiNATOMY = ng.module('ApiNATOMY', ['ngAnimate',
 	                                        'ui.bootstrap',
 	                                        'RecursionHelper',
 	                                        'once']);

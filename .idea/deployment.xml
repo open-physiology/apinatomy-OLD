@@ -2,7 +2,7 @@
 <project version="4">
   <component name="PublishConfigData" serverName="DigitalOcean (ApiNATOMY)">
     <serverData>
-      <paths name="DigitalOcean (ApiNATOMY)">
+      <paths name="DigitalCloud (apinatomy)">
         <serverdata>
           <mappings>
             <mapping deploy="/apinatomy" local="$PROJECT_DIR$" web="/" />

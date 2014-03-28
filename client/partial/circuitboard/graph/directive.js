@@ -37,7 +37,7 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 								.links(connections)
 								.size([iElement.width(), iElement.height()])
 								.gravity(0)
-								.charge(-400)
+								.charge(-500)
 								.linkDistance(10)
 								.on("tick", tick);
 
