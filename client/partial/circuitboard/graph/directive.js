@@ -1,7 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (_, ng, ApiNATOMY, d3) {
+define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], function (_, $, ng, ApiNATOMY, d3) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	ApiNATOMY.directive('amyGraph', ['$window', '$bind', 'ResourceService', function ($window, $bind, Resources) {
@@ -45,7 +45,8 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 
 						var svg = d3.select(iElement.find('svg')[0]);
 						var connectionLines = svg.selectAll('line');
-						var junctionPoints = svg.selectAll('circle');
+						var junctionPoints = svg.selectAll('.tilePoint, .junctionPoint');
+						var junctionAreas = svg.selectAll('.junctionArea');
 
 						//////////////////// updating the graph ////////////////////////////////////////////////////////
 
@@ -59,16 +60,26 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 
 							//// junctionPoints
 
-							junctionPoints = svg.selectAll('circle').data(junctions,
-									function (d) { return d.id; });
+							junctionPoints = svg.selectAll('.tilePoint, .junctionPoint').data(junctions, function (d) { return d.id; });
 							junctionPoints.enter().append("circle")
 									.attr('class', function (d) { return (d.isTileJunction ? 'tilePoint' : 'junctionPoint'); })
-									.attr("r", function (d) { return (d.isTileJunction ? 4 : 2); })
-									.call(force.drag);
+									.attr("r", function (d) { return (d.isTileJunction ? 4 : 2); });
 							junctionPoints
 									.attr("cx", function (junction) { return junction.bindX ? junction.bindX() : junction.x; })
 									.attr("cy", function (junction) { return junction.bindY ? junction.bindY() : junction.y; });
 							junctionPoints.exit().remove();
+
+							//// junctionAreas (a larger area by which to grab / drag junction points)
+
+							junctionAreas = svg.selectAll('.junctionArea').data(junctions, function (d) { return d.id; });
+							junctionAreas.enter().append("circle")
+									.attr('class', 'junctionArea')
+									.attr("r", function (d) { return (d.isTileJunction ? 12 : 10); })
+									.call(force.drag);
+							junctionAreas
+									.attr("cx", function (junction) { return junction.bindX ? junction.bindX() : junction.x; })
+									.attr("cy", function (junction) { return junction.bindY ? junction.bindY() : junction.y; });
+							junctionAreas.exit().remove();
 
 							//// connectionLines
 
@@ -108,6 +119,10 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 									.attr("cx", function (junction) { return junction.bindX ? junction.bindX() : junction.x; })
 									.attr("cy", function (junction) { return junction.bindY ? junction.bindY() : junction.y; });
 
+							junctionAreas
+									.attr("cx", function (junction) { return junction.x; })
+									.attr("cy", function (junction) { return junction.y; });
+
 							connectionLines
 									.attr("x1", function (d) { return d.source.x; })
 									.attr("y1", function (d) { return d.source.y; })
@@ -115,11 +130,16 @@ define(['lodash', 'angular', 'app/module', 'd3', 'resource/service'], function (
 									.attr("y2", function (d) { return d.target.y; });
 						});
 
+						var draggedJunction;
 						force.drag().on("dragstart", function () {
 							d3.event.sourceEvent.stopPropagation();
+							draggedJunction = $(d3.event.sourceEvent.srcElement);
+							draggedJunction.attr('class', draggedJunction.attr('class') + ' dragged');
 							$scope.dragging = true;
 						}).on("dragend", function () {
 							d3.event.sourceEvent.stopPropagation();
+							draggedJunction.attr('class', draggedJunction.attr('class').replace('dragged', ''));
+							draggedJunction = undefined;
 							$scope.dragging = false;
 						});
 
