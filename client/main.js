@@ -56,6 +56,7 @@ var UTILITY_MODULES = [
 	'utility/call',
 	'utility/div',
 	'utility/putCSS',
+	'utility/svgClass',
 	'utility/prefixOf',
 	'utility/derivedProperty'
 ];

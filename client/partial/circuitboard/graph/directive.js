@@ -134,11 +134,11 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 						force.drag().on("dragstart", function () {
 							d3.event.sourceEvent.stopPropagation();
 							draggedJunction = $(d3.event.sourceEvent.srcElement);
-							draggedJunction.attr('class', draggedJunction.attr('class') + ' dragged');
+							draggedJunction.addSvgClass('dragged');
 							$scope.dragging = true;
 						}).on("dragend", function () {
 							d3.event.sourceEvent.stopPropagation();
-							draggedJunction.attr('class', draggedJunction.attr('class').replace('dragged', ''));
+							draggedJunction.removeSvgClass('dragged');
 							draggedJunction = undefined;
 							$scope.dragging = false;
 						});

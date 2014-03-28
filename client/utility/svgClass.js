@@ -6,18 +6,21 @@ define(['jquery', 'lodash'], function ($, _) {
 
 
 	$.fn.extend({
-		putCSS: function (rules) {
-			_(rules).each(function (css, selector) {
-				var context;
-				if (selector.trim() === '&') {
-					context = this;
-				} else if (selector.trim().charAt(0) === '&') {
-					context = this.find(selector.trim().substr(1).trim());
-				} else {
-					context = this.find(selector);
-				}
-				context.css(css);
-			}, this);
+		addSvgClass: function (cls) {
+			this.each(function () {
+				$(this).attr('class', _($(this).attr('class').split(/\s+/)).union(cls.split(/\s+/)).join(" "));
+			});
+		},
+		removeSvgClass: function (cls) {
+			this.each(function () {
+				$(this).attr('class', _($(this).attr('class').split(/\s+/)).difference(cls.split(/\s+/)).join(" "));
+
+			});
+		},
+		toggleSvgClass: function (cls) {
+			this.each(function () {
+				$(this).attr('class', _($(this).attr('class').split(/\s+/)).xor(cls.split(/\s+/)).join(" "));
+			});
 		}
 	});
 
