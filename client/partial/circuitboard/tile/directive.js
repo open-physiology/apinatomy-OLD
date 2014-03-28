@@ -97,6 +97,9 @@ define(['angular',
 				//////////////////// Tile Weight ///////////////////////////////////////////////////////////////////////
 
 				_($scope).derivedProperty('weight', function () {
+					if (_(WEIGHTS[$scope.condition]).isUndefined()) {
+						throw new ReferenceError("No condition called '" + $scope.condition + "' is known.");
+					}
 					return WEIGHTS[$scope.condition];
 				});
 
@@ -111,12 +114,10 @@ define(['angular',
 
 				$scope.recursivelyBuiltFocusChain = function () {
 					if ($scope.mouseOver || $scope.condition === 'maximized') {
-
 						var bundle = {
 							entity : $scope.entity,
 							styling: $scope.styling
 						};
-
 						if ($scope.open) {
 							var subChain = [];
 							_($scope.childTiles).forEach(function (childTile) {

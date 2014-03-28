@@ -4,10 +4,6 @@
 define(['lodash'], function (_) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-	var registeredLayouts = {};
-
-
 	// TODO: detect and forbid duplicate indices in the layout template
 	function compoundLayout(tiles, layout, height, width) {
 
@@ -20,7 +16,7 @@ define(['lodash'], function (_) {
 		//// create fake children to invoke the layout of this level
 
 		var childBlockLayouts = _(childBlocks).map(function (childBlock, i) {
-			var weight = 1;
+			var weight;
 			if (_(childBlock).isNumber()) {
 				weight = tiles[childBlock].weight;
 			} else {
@@ -66,6 +62,7 @@ define(['lodash'], function (_) {
 				result[tiles[childBlock].index] = childBlockPositions[childBlockIndex];
 			}
 		});
+
 		return result;
 	}
 	
@@ -109,12 +106,17 @@ define(['lodash'], function (_) {
 //                  tile                  child width       border
 //                 spacing                                  width
 // 	
-	
+
+
+
+	var registeredLayouts = {};
 
 	function Layout(tiles, layout, height, width, top, left) {
 		top = _(top).or(0);
 		left = _(left).or(0);
+
 		var result;
+
 		if (_(layout).isArray(layout)) {
 			result = compoundLayout(tiles, layout, height, width);
 		} else if (_(registeredLayouts).has(layout)) {

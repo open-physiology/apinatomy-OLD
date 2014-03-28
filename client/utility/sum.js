@@ -9,7 +9,7 @@ define(['lodash', 'utility/or'], function (_) {
 		return _.reduce(collection, function (a, b) {
 			return a + _(nrFn).or(_.identity)(b);
 		}, 0)
-	}}, {chain: true});
+	}}, {chain: false});
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

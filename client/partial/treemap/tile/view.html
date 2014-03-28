@@ -1,11 +1,11 @@
 <header ng-class="{ opaque: open }" class="top-header">
-	<icon-btn states="sizeButtonStates" classes="sizeButtonClasses" ng-model="sizeButtonModel"></icon-btn>
+	<icon-btn ng-show="open" states="sizeButtonStates" classes="sizeButtonClasses" ng-model="sizeButtonModel"></icon-btn>
 	<span once-text="title"></span>
 </header>
 
 <header ng-class="{ opaque: !open }" class="full-header">
 	<span once-text="title"></span>
-	<span ng-show="frontIcon" title="{{ frontIconTitle }}"
+	<span ng-if="frontIcon" title="{{ frontIconTitle }}"
 	      class="amy-tile-status-icon glyphicon glyphicon-{{ frontIcon }}"></span>
 </header>
 

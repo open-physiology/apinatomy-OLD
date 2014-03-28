@@ -9,9 +9,9 @@ define(['lodash', 'app/module', '$bind/service'], function (_, ApiNATOMY) {
 		return {
 			restrict: 'E',
 			scope:    {
-				ngModel:      '=',
-				classes:      '=',
-				states:       '='
+				ngModel: '=',
+				classes: '=',
+				states:  '='
 			},
 			link:     function ($scope, iElement) {
 				iElement.css('background-size', iElement.height() - 4);
@@ -31,7 +31,9 @@ define(['lodash', 'app/module', '$bind/service'], function (_, ApiNATOMY) {
 
 				iElement.click($bind(function (event) {
 					event.stopPropagation();
-					$scope.ngModel = $scope.states[$scope.ngModel];
+					if (!_($scope.states[$scope.ngModel]).isUndefined()) {
+						$scope.ngModel = $scope.states[$scope.ngModel];
+					}
 				}));
 			}
 		};

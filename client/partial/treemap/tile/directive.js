@@ -45,7 +45,7 @@ define(['angular',
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			controller: function () {
-				return {}; // the controller is actually defined in the pre-link function
+				return {}; // the controller is really defined in the pre-link function
 			},
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -176,10 +176,9 @@ define(['angular',
 									var positions = Layout(
 											_(children)
 													.pluck('layoutInterface')
-													.each(function (childIface, i) {
+													.forEach(function (childIface, i) {
 														childIface.index = i;
-													})
-													.value(),
+													}).value(),
 											$scope.layout || DEFAULT_LAYOUT,
 											pos.height - $scope.tileSpacing - 3 * $scope.borderWidth - _.parseInt(TILE_HEADER_HEIGHT),
 											pos.width - $scope.tileSpacing - 2 * $scope.borderWidth
@@ -187,7 +186,7 @@ define(['angular',
 
 									//// adjust for tile spacing
 
-									_(positions).each(function (pos) {
+									_(positions).forEach(function (pos) {
 										pos.top += $scope.tileSpacing;
 										pos.left += $scope.tileSpacing;
 										pos.height -= $scope.tileSpacing;
@@ -196,7 +195,7 @@ define(['angular',
 
 									//// apply repositioning to the child tiles
 
-									_(children).each(function (child, i) {
+									_(children).forEach(function (child, i) {
 										child.reposition(positions[i]);
 									});
 								}

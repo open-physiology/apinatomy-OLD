@@ -105,11 +105,6 @@ define(['lodash', 'partial/treemap/layout/manager'], function (_, Layout) {
 				for (; index < Math.min((row+1) * maxColCount, tiles.length); ++index) {
 					resultingLayout[row+1].push(index);
 				}
-
-//				resultingLayout[row+1].push.apply(
-//						resultingLayout[row],
-//						_.range(row * maxColCount, Math.max((row+1) * maxColCount, tiles.length))
-//				);
 			});
 
 			return Layout(tiles, resultingLayout, height, width, 0, 0);
