@@ -11,10 +11,10 @@ amy-tile {
 	text-align : center;
 	padding    : 0 8px;
 
-//	//// growing / shrinking animations
-//	@include transition-property(top, bottom, left, right, width, height, min-width, min-height, font-size, padding, line-height);
-//	@include transition-duration(.6s);
-//	@include transition-timing-function(ease-in-out);
+	//// growing / shrinking animations
+	@include transition-property(top, bottom, left, right, width, height, min-width, min-height, font-size, padding, line-height);
+	@include transition-duration(.6s);
+	@include transition-timing-function(ease-in-out);
 
 	& > .full-header {
 		@include box-sizing(border-box);
@@ -27,8 +27,8 @@ amy-tile {
 		line-height    : normal;
 		opacity        : 0;
 		&.opaque {
-//			//// delayed reveal of the full header, only on reappearance
-//			@include single-transition(opacity, linear, .6s, .8s);
+			//// delayed reveal of the full header, only on reappearance
+			@include single-transition(opacity, linear, .6s, .8s);
 			opacity : 1;
 		}
 		& > .amy-tile-status-icon {
@@ -66,7 +66,7 @@ amy-tile {
 		// defined in directive.js
 
 		//// transparency
-//		@include single-transition(opacity, linear, .6s);
+		@include single-transition(opacity, linear, .6s);
 		opacity        : 0;
 		&.opaque { opacity : 1; }
 
@@ -92,7 +92,7 @@ amy-tile {
 		bottom   : 0;
 		right    : 0;
 		opacity  : 0;
-//		@include single-transition(opacity, linear, .6s);
+		@include single-transition(opacity, linear, .6s);
 		&.opaque { opacity : 1; }
 		&.hidden { visibility : hidden; }
 	}
