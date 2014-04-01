@@ -20,7 +20,7 @@ define(['lodash', 'app/module', '$bind/service'], function (_, ApiNATOMY) {
 
 				function adjustToStatus() {
 					iElement.removeClass(currentClass);
-					if ($scope.classes[$scope.ngModel]) {
+					if ($scope.classes && $scope.classes[$scope.ngModel]) {
 						currentClass = $scope.classes[$scope.ngModel];
 						iElement.addClass(currentClass);
 					}

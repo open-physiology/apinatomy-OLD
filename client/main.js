@@ -16,10 +16,12 @@ requirejs.config({
 		'jquery':            'lib/jquery/dist/jquery',
 		'lodash':            'lib/lodash/dist/lodash',
 		'angular':           'lib/angular/angular',
+		'angular-touch':     'lib/angular-touch/angular-touch',
 		'angular-animate':   'lib/angular-animate/angular-animate',
 		'angular-bootstrap': 'lib/angular-bootstrap/ui-bootstrap-tpls',
 		'angular-recursion': 'lib/angular-recursion/angular-recursion',
 		'angular-once':      'lib/angular-once/once',
+		'angular-slider':    'lib/venturocket-angular-slider/build/angular-slider',
 		'chroma':            'lib/chroma-js/chroma',
 		'd3':                'lib/d3/d3'
 	},
@@ -31,7 +33,12 @@ requirejs.config({
 		'angular-animate':   ['angular'],
 		'angular-bootstrap': ['angular'],
 		'angular-recursion': ['angular'],
-		'angular-once':      ['angular']
+		'angular-once':      ['angular'],
+		'angular-touch':     ['angular'],
+		'angular-slider':    ['angular', 'angular-touch']
+	},
+	map:   {
+		'*': { 'css': 'lib/require-css/css' }
 	}
 });
 
@@ -58,7 +65,9 @@ var UTILITY_MODULES = [
 	'utility/putCSS',
 	'utility/svgClass',
 	'utility/prefixOf',
-	'utility/derivedProperty'
+	'utility/derivedProperty',
+	'utility/concatenated',
+	'utility/extent'
 ];
 
 

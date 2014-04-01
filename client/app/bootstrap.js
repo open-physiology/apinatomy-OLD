@@ -6,7 +6,8 @@ define(['angular', 'app/module', 'domReady!',
         'partial/side-nav/directive',
         'partial/rotation/directive',
         'partial/circuitboard/directive',
-        'amy-once/directive'], function (ng, ApiNATOMY) {
+        'partial/simulation-panel/directive',
+        'amy-once/directive'], function (ng/*, app*/) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 

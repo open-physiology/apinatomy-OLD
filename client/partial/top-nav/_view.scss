@@ -37,4 +37,15 @@
 		}
 	}
 
+	.amy-timer-controls {
+		padding: 3px !important;
+
+		.amy-time-display {
+			display: inline-block;
+			font-weight: bold;
+			height: 100%;
+			vertical-align: middle;
+		}
+	}
+
 }

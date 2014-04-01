@@ -8,8 +8,7 @@ define(['angular',
         'partial/treemap/layout/manager',
         'resource/service',
         '$bind/service',
-        'partial/icon-btn/directive',
-        'utility/attrchange'], function (ng, ApiNATOMY, color, _, Layout) {
+        'partial/icon-btn/directive'], function (ng, ApiNATOMY, color, _, Layout) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 

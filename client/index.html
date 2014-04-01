@@ -13,11 +13,13 @@
 </head>
 <body>
 
-<amy-top-nav id="top-nav"></amy-top-nav>
+	<amy-top-nav id="top-nav"></amy-top-nav>
 
-<amy-side-nav id="side-nav"></amy-side-nav>
+	<amy-side-nav id="side-nav"></amy-side-nav>
 
-<main><amy-circuitboard></amy-circuitboard></main>
+	<main><amy-circuitboard></amy-circuitboard></main>
+
+	<amy-simulation-panel ng-if="$root.simulationEnabled" amy-traces="traces"></amy-simulation-panel>
 
 </body>
 </html>

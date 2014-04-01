@@ -1,19 +1,13 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'minutes/filter'], function (ApiNATOMY) {
+define(['lodash'], function (_) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	ApiNATOMY.directive('amyTopNav', [function () {
-		return {
-			restrict   : 'E',
-			replace    : true,
-			templateUrl: 'partial/top-nav/view.html',
-			scope: false,
-			controller: function ($scope) {}
-		};
-	}]);
+	_.mixin({ extent: function (collection, callback, thisArg) {
+		return [_.min(collection, callback, thisArg), _.max(collection, callback, thisArg)];
+	}}, {chain: false});
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

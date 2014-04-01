@@ -1,0 +1,41 @@
+@import "base";
+
+amy-time-trace {
+
+	display: inline-block;
+
+	& > svg {
+
+		& > g {
+
+			.border {
+				fill: none;
+				stroke: black;
+				stroke-width: 1px;
+				shape-rendering: crispEdges;
+			}
+
+			.trace {
+				fill: none;
+				stroke: steelblue;
+				stroke-width: 1.5px;
+				stroke-linejoin: round;
+			}
+
+			& > .axis {
+				path, line {
+					fill: none;
+					stroke: black;
+					shape-rendering: crispEdges;
+				}
+
+				&.x {}
+
+				&.y {}
+			}
+
+		}
+
+	}
+
+}

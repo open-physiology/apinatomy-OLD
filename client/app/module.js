@@ -5,14 +5,16 @@ define(['angular',
         'angular-animate',
         'angular-bootstrap',
         'angular-recursion',
-        'angular-once'], function (ng) {
+        'angular-once',
+        'angular-slider'], function (ng) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	var ApiNATOMY = ng.module('ApiNATOMY', ['ngAnimate',
 	                                        'ui.bootstrap',
 	                                        'RecursionHelper',
-	                                        'once']);
+	                                        'once',
+	                                        'vr.directives.slider']);
 
 
 	ApiNATOMY.config(function ($locationProvider) {

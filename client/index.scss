@@ -2,9 +2,6 @@
 @import "compass";
 @import "bootstrap";
 @import "base";
-@import "partial/top-nav/view";
-@import "partial/side-nav/view";
-@import "partial/circuitboard/view";
 
 html, body {
 	@include user-select(none);
@@ -33,4 +30,19 @@ html, body {
 	main, amy-circuitboard {
 		@include edge-to-edge;
 	}
+
+	amy-simulation-panel {
+		position         : absolute;
+		left             : $amy-spacing + $amy-side-nav-width;
+		right            : $amy-spacing;
+		bottom           : $amy-spacing;
+		height           : 250px;
+		z-index          : 99;
+		background-color : white;
+	}
 }
+
+@import "partial/top-nav/view";
+@import "partial/side-nav/view";
+@import "partial/circuitboard/view";
+@import "partial/simulation-panel/view";
