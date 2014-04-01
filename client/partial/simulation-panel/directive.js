@@ -26,7 +26,9 @@ define(['app/module',
 				//// format the time-strings
 
 				$scope.timeFormat = function (ms) {
-					return (ms / 1000) + 's';
+					var minutes = Math.floor(ms / 1000 / 60);
+					var seconds = ms / 1000 - minutes * 60;
+					return (minutes ? minutes + 'm ' : '') + seconds + 's';
 				};
 
 
@@ -52,6 +54,8 @@ define(['app/module',
 					} else if (newState === 'paused') {
 						TimerService.pause();
 					} else if (newState === 'running' && oldState === 'stopped') {
+						// TODO: interval from metadata
+						// TODO: end-time increases with simulation
 						TimerService.start({ interval: 200, end: 4000 });
 					} else if (newState === 'running' && oldState === 'paused') {
 						TimerService.resume();

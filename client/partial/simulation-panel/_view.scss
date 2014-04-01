@@ -68,7 +68,7 @@ amy-simulation-panel {
 
 			.pointer {
 				@include border-radius(50%);
-				cursor           : move;
+				cursor      : move;
 				width            : $amy-control-size;
 				height           : $amy-control-size;
 				top              : 0;
@@ -89,11 +89,8 @@ amy-simulation-panel {
 				font-size   : 0.9em;
 				font-weight : bold;
 				line-height : 1.8em;
-				//				font-family : sans-serif;
-				text-align  : center;
 				text-shadow : none;
 				top         : -2em;
-				cursor      : pointer;
 
 				&.floor, &.ceiling {
 					display : none;

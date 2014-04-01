@@ -2,17 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb443da2-c5b7-4919-9dda-26632e987897" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Node_js_Dependencies_for_apinatomy.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/simulation-panel/_view.scss" afterPath="$PROJECT_DIR$/client/partial/simulation-panel/_view.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/apinatomy.iml" afterPath="$PROJECT_DIR$/.idea/apinatomy.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/compass_library.xml" afterPath="$PROJECT_DIR$/.idea/libraries/compass_library.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/simulation-panel/directive.js" afterPath="$PROJECT_DIR$/client/partial/simulation-panel/directive.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/simulation-panel/time-trace/directive.js" afterPath="$PROJECT_DIR$/client/partial/simulation-panel/time-trace/directive.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/mhelvens.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/mhelvens.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/requirejsPlugin.xml" afterPath="$PROJECT_DIR$/.idea/requirejsPlugin.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/simulation-panel/view.html" afterPath="$PROJECT_DIR$/client/partial/simulation-panel/view.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="apinatomy.iws" />
@@ -41,8 +32,8 @@
           <file leaf-file-name="directive.js" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/time-trace/directive.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="48" max-vertical-offset="1352">
-                  <caret line="27" column="24" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1352">
+                  <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -51,8 +42,8 @@
           <file leaf-file-name="directive.js" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/directive.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.052419353" vertical-offset="312" max-vertical-offset="1911">
-                  <caret line="28" column="43" selection-start-line="28" selection-start-column="43" selection-end-line="28" selection-end-column="43" />
+                <state vertical-scroll-proportion="0.7469758" vertical-offset="0" max-vertical-offset="1963">
+                  <caret line="57" column="33" selection-start-line="57" selection-start-column="33" selection-end-line="57" selection-end-column="33" />
                   <folding />
                 </state>
               </provider>
@@ -71,8 +62,8 @@
           <file leaf-file-name="_view.scss" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/_view.scss">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="11.454545" vertical-offset="746" max-vertical-offset="1703">
-                  <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+                <state vertical-scroll-proportion="-21.045454" vertical-offset="707" max-vertical-offset="1664">
+                  <caret line="90" column="36" selection-start-line="90" selection-start-column="36" selection-end-line="90" selection-end-column="36" />
                   <folding>
                     <element signature="e#699#1930#2" expanded="true" />
                     <element signature="e#1980#2391#2" expanded="true" />
@@ -203,9 +194,9 @@
         <option value="$PROJECT_DIR$/client/index.html" />
         <option value="$PROJECT_DIR$/client/main.js" />
         <option value="$PROJECT_DIR$/client/partial/simulation-panel/view.html" />
-        <option value="$PROJECT_DIR$/client/partial/simulation-panel/directive.js" />
-        <option value="$PROJECT_DIR$/client/partial/simulation-panel/_view.scss" />
         <option value="$PROJECT_DIR$/client/partial/simulation-panel/time-trace/directive.js" />
+        <option value="$PROJECT_DIR$/client/partial/simulation-panel/_view.scss" />
+        <option value="$PROJECT_DIR$/client/partial/simulation-panel/directive.js" />
       </list>
     </option>
   </component>
@@ -618,7 +609,11 @@
       <created>1396386243999</created>
       <updated>1396386243999</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Changed the simulation traces to stretch the entire width of the graph area, as per Bernard's request.">
+      <created>1396389055526</created>
+      <updated>1396389055526</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -710,7 +705,8 @@
     <MESSAGE value="Fixed the bug where opening a tile would sometimes show weird behavior." />
     <MESSAGE value="Some refactoring: added $.fn.addSvgClass, $.fn.removeSvgClass and $.fn.toggleSvgClass. Also removed useless jquery extension $.fn.equals." />
     <MESSAGE value="Rudimentary controls and output for simulation." />
-    <option name="LAST_COMMIT_MESSAGE" value="Rudimentary controls and output for simulation." />
+    <MESSAGE value="Changed the simulation traces to stretch the entire width of the graph area, as per Bernard's request." />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed the simulation traces to stretch the entire width of the graph area, as per Bernard's request." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1087,31 +1083,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/time-trace/_view.scss">
+    <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/time-trace/directive.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.863636" vertical-offset="0" max-vertical-offset="611">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1352">
+          <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/_view.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="11.454545" vertical-offset="746" max-vertical-offset="1703">
-          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+        <state vertical-scroll-proportion="-21.045454" vertical-offset="707" max-vertical-offset="1664">
+          <caret line="90" column="36" selection-start-line="90" selection-start-column="36" selection-end-line="90" selection-end-column="36" />
           <folding>
             <element signature="e#699#1930#2" expanded="true" />
             <element signature="e#1980#2391#2" expanded="true" />
             <element signature="e#2440#2787#2" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/time-trace/directive.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="48" max-vertical-offset="1352">
-          <caret line="27" column="24" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1123,10 +1111,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/time-trace/_view.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.863636" vertical-offset="0" max-vertical-offset="611">
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/directive.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.052419353" vertical-offset="312" max-vertical-offset="1911">
-          <caret line="28" column="43" selection-start-line="28" selection-start-column="43" selection-end-line="28" selection-end-column="43" />
+        <state vertical-scroll-proportion="0.7469758" vertical-offset="0" max-vertical-offset="1963">
+          <caret line="57" column="33" selection-start-line="57" selection-start-column="33" selection-end-line="57" selection-end-column="33" />
           <folding />
         </state>
       </provider>
