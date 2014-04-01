@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="compass-library">
     <CLASSES>
-      <root url="file:///usr/local/lib64/ruby/gems/1.8/gems/compass-0.12.2" />
-      <root url="file:///usr/local/lib64/ruby/gems/1.8/gems/compass-0.12.2" />
+      <root url="file:///usr/local/lib64/ruby/gems/1.8/gems/compass-0.12.4" />
+      <root url="file:///usr/local/lib64/ruby/gems/1.8/gems/compass-0.12.4" />
     </CLASSES>
     <SOURCES />
   </library>

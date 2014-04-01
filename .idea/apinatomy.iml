@@ -6,8 +6,8 @@
     <option name="compassSupportEnabled" value="true" />
     <option name="importPaths">
       <list>
-        <option value="/usr/local/lib64/ruby/gems/1.8/gems/compass-0.12.2/frameworks/blueprint/stylesheets" />
-        <option value="/usr/local/lib64/ruby/gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets" />
+        <option value="/usr/local/lib64/ruby/gems/1.8/gems/compass-0.12.4/frameworks/blueprint/stylesheets" />
+        <option value="/usr/local/lib64/ruby/gems/1.8/gems/compass-0.12.4/frameworks/compass/stylesheets" />
       </list>
     </option>
   </component>
@@ -19,24 +19,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="angular" level="application" />
-    <orderEntry type="library" name="angular-animate" level="application" />
-    <orderEntry type="library" name="angularjs-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="express-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="gruntjs-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="jasmine-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="node-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="requirejs-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="Node.js Dependencies for apinatomy" level="project" />
     <orderEntry type="library" name="sass-stdlib" level="application" />
-    <orderEntry type="library" name="jQuery UI-1.10.2" level="application" />
-    <orderEntry type="library" name="jQuery-2.0.0" level="application" />
-    <orderEntry type="library" name="jquery-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="lodash-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="D3" level="application" />
     <orderEntry type="library" name="compass-library" level="project" />
-    <orderEntry type="library" name="Node.js v0.10.26 Core Modules" level="application" />
-    <orderEntry type="library" name="d3-DefinitelyTyped" level="application" />
   </component>
 </module>
 

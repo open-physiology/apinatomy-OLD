@@ -20,15 +20,7 @@ define(['app/module', 'd3', 'lodash'], function (app, d3, _) {
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-			controller: ['$scope', function ($scope) {
-
-				$scope.timeFormat = function (ms) {
-					return (ms / 1000) + 's';
-				};
-
-
-
-			}],
+			controller: ['$scope', function ($scope) {}],
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -62,7 +54,7 @@ define(['app/module', 'd3', 'lodash'], function (app, d3, _) {
 									.x(function (d) { return xScale(d.time); })
 									.y(function (d) { return yScale(d.value); });
 
-							xScale.domain([0, $scope.maxTime]);
+							xScale.domain([0, $scope.currentTime]);
 							yScale.domain(_($scope.trace.data).pluck('value').extent());
 
 							svgPath.datum(_.filter($scope.trace.data, function (d) { return d.time <= $scope.currentTime; }))

@@ -23,6 +23,14 @@ define(['app/module',
 
 			controller: ['$scope', function ($scope) {
 
+				//// format the time-strings
+
+				$scope.timeFormat = function (ms) {
+					return (ms / 1000) + 's';
+				};
+
+
+				//// control the timer
 
 				$scope.currentTime = 0;
 				$scope.maxTime = 4000;
@@ -50,7 +58,8 @@ define(['app/module',
 					}
 				});
 
-				// temporary data; TODO: use real data
+
+				//// temporary data; TODO: use real data
 
 				$scope.traces = [
 					{

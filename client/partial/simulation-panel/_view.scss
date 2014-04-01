@@ -4,28 +4,27 @@ amy-simulation-panel {
 	$amy-control-size : 20px;
 	$amy-control-spacing : 10px;
 	padding     : $amy-control-spacing;
-	padding-top : 2 * $amy-control-spacing + $amy-control-size;
+	padding-top : 2 * $amy-control-spacing + $amy-control-size  + 20px;
 
 	.controls {
 		display  : block;
 		position : absolute;
 		top      : $amy-control-spacing;
 		left     : $amy-control-spacing;
-		right: $amy-control-spacing;
-		height   : $amy-control-size;
+		right    : $amy-control-spacing;
+		height   : $amy-control-size + 20px;
 
 		icon-btn {
 			display  : block;
 			position : absolute;
 			width    : $amy-control-size;
 			height   : $amy-control-size;
+			top:  20px;
 			&.run-pause-btn {
 				left : 0;
-				top  : 0;
 			}
 			&.stop-btn {
 				left : $amy-control-spacing + $amy-control-size;
-				top  : 0;
 			}
 			&.action-run {
 				background-image : url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAQAAADa613fAAADTUlEQVR42uWcTUgUYRjHf66VZQSVh8IkIoXIwIigk2RfRl9oBB2CIiwr6ODVg/Rx7LrgJbpl2KkwgroEmZuauZLuuu5qqWWHykI6lGCi22GICNzdmdn5eJ7peW+7Oy/z29+8u8/8d2fgP6siyqkMAkg5HcQ5oB+kkjgLfCZMgXaQYRZJkybFdok7GLK8xTYGaQqCEWN0sla7EaNqmOBUEIwY4y7LggGS5h07dR9af79fBrgZBCPGiFKq3YhRuxnlbBCMGKODldqNGFXPOHuDAAKlPOeW7G7MzKH1ZwyxWbsRo6oYk9uNWTFijCcUazdi1FGmqA8CCJTQwW0K9YMAXCbFjiCAQAVvaNa82P8dEdZrN2JUNe/d7cZCnjldQxvtLNcPAnCGCaqDAAJlvHCnGwt5/rERopkByvSDAOxilMYggEAxd3jMKv0gACeYcC4W9xMENvLMqVjcXxAooImkE7G43yDgUCwuAQRWEKaPDfpBAPaQzCcWlwMC63hgPxaXBAJwjlF7sbg0ENhqLxaXBwKF3CDKJv0gYCMWlwoCq2njkflYXC4IQJ35WFw2CJTSaa4bkw5idGODbNEPAlBFKlc3pgMEigjzNFssrgUE4Ei2WFwTCJTwkENBAAFoWfphXX/BmCHOfv1GolxnX6YntRiZo5fDzGd+gQ6QMfpztZDyQdJ0cYm3uV4mHeQLCQ7qbxpf02IOQ7KRn0Qzf0bpMZLkvhUMmUYWiHCab9Y2kgfykWGOWd9M2qHVzUU7GLKMfCdGjd2N5RhJcM8+hhQjv+jhOLP5TCEBZJIYJ/OdxG+QNF1cZST/ifwFmSbh1M+hfi72fq4596uuX0Zm6ac224mSDpAUvVxwdkrvQRaJ0MCk09N6DfKJkUzJlKbF3sMVdzC8NPKDAWtnGDKNxGh1E8MbI/N0Wz9RkgfygRh17r9bbh9aERq8wHDXyAxxd9eFN0ayRs5ajOSMnHWAjPGK8153Pk6DLBIxEzlLBzEdOcte7H3mI2e5RixGzlKNJGn3F8MJI7YiZ3kgUyTsZbV+1dLXWL2kVsoO2jeSV+QsZ7EP0SoJw54RByJnCSCORM5+g3xlxJnI2T+QOcaBaf03piqiwpuLh92vAtn3cvgNNqI9BTutJc8AAAAASUVORK5CYII=);
@@ -43,7 +42,7 @@ amy-simulation-panel {
 			position : absolute;
 			left     : 2 * $amy-control-spacing + 2 * $amy-control-size;
 			right    : 0px;
-			top      : 0;
+			top      : 20px;
 			height   : $amy-control-size;
 
 			.bar {
@@ -75,7 +74,7 @@ amy-simulation-panel {
 				top              : 0;
 				bottom           : 0;
 				background-color : white;
-				border: solid 1px black;
+				border           : solid 1px black;
 
 				&:hover {
 				}
@@ -87,19 +86,26 @@ amy-simulation-panel {
 			}
 
 			.bubble {
-				font-size   : 0.7em;
-				line-height : 1.4em;
-				font-family : sans-serif;
+				font-size   : 0.9em;
+				font-weight : bold;
+				line-height : 1.8em;
+				//				font-family : sans-serif;
 				text-align  : center;
 				text-shadow : none;
-				top         : -1.3em;
+				top         : -2em;
 				cursor      : pointer;
 
-				&.selection, &.limit {
-					top : 25%;
+				&.floor, &.ceiling {
+					display : none;
 				}
 
-				&.low, &.high { }
+				&.selection, &.limit {
+					display : none;
+				}
+
+				&.low, &.high {
+					display : none;
+				}
 			}
 		}
 	}
