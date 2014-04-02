@@ -2,22 +2,22 @@
 	<icon-btn class="run-pause-btn"
 	          states ="{ stopped: 'running', paused: 'running', running: 'paused'   }"
 	          classes="{ stopped: 'action-run',  paused: 'action-run',  running: 'action-pause' }"
-	          ng-model="timerState"></icon-btn>
+	          ng-model="timer.state"></icon-btn>
 	<icon-btn class="stop-btn action-stop"
 	          states ="{ stopped: 'stopped', paused: 'stopped', running: 'stopped'  }"
-	          ng-model="timerState"></icon-btn>
-	<slider ng-model="currentTime"
+	          ng-model="timer.state"></icon-btn>
+	<slider ng-model="timer.currentTime"
 	        floor="0"
-	        ceiling="4000"
+	        ceiling="{{timer.maxTime}}"
 	        step="200"
 	        translate="timeFormat">
 	</slider>
 </div>
 
 <section>
-	<amy-time-trace ng-repeat="trace in traces"
-	                amy-trace="trace"
-	                amy-current-time="currentTime"
-	                amy-max-time="maxTime">
+	<amy-time-trace ng-repeat="stream in streams"
+	                amy-stream="stream"
+	                amy-current-time="timer.currentTime"
+	                amy-max-time="timer.maxTime">
 	</amy-time-trace>
 </section>

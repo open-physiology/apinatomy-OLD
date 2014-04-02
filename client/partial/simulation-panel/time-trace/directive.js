@@ -13,7 +13,7 @@ define(['app/module', 'd3', 'lodash'], function (app, d3, _) {
 			templateUrl: 'partial/simulation-panel/time-trace/view.html',
 			replace:     false,
 			scope:       {
-				trace:       '=amyTrace',
+				stream:      '=amyStream',
 				currentTime: '=amyCurrentTime',
 				maxTime:     '=amyMaxTime'
 			},
@@ -33,16 +33,14 @@ define(['app/module', 'd3', 'lodash'], function (app, d3, _) {
 						var svgPath = svgCanvas.select('path.trace');
 						var margin = {top: 10, right: 10, bottom: 10, left: 40};
 						var lineEncoding;
-						var width;
-						var height;
-						var xScale;
-						var yScale;
+						var width, height;
+						var xScale, yScale;
 						var yAxis;
 
 						svgCanvas.attr('transform', "translate(" + margin.left + "," + margin.top + ")");
 						svgCanvas.select('rect.border').attr({ top: 0, left: 0 });
 						svgCanvas.select('#dataArea > rect').attr({ top: 0, left: 0 });
-						svgPath.attr('clip-path', 'url(#dataArea)').style($scope.trace.css);
+						svgPath.attr('clip-path', 'url(#dataArea)').style($scope.stream.css);
 
 						function drawData() {
 							xScale = d3.scale.linear().range([0, width]).nice();
@@ -54,10 +52,10 @@ define(['app/module', 'd3', 'lodash'], function (app, d3, _) {
 									.x(function (d) { return xScale(d.time); })
 									.y(function (d) { return yScale(d.value); });
 
-							xScale.domain([0, $scope.currentTime]);
-							yScale.domain(_($scope.trace.data).pluck('value').extent());
+							xScale.domain([0, $scope.maxTime]);
+							yScale.domain(_($scope.stream.data).pluck('value').extent());
 
-							svgPath.datum(_.filter($scope.trace.data, function (d) { return d.time <= $scope.currentTime; }))
+							svgPath.datum(_.filter($scope.stream.data, function (d) { return d.time <= $scope.currentTime; }))
 									.attr("d", lineEncoding);
 
 							svgCanvas.select(".y.axis").call(yAxis);
@@ -77,7 +75,7 @@ define(['app/module', 'd3', 'lodash'], function (app, d3, _) {
 
 						// TODO: automatically react to size changes
 
-						$scope.$watch('trace', drawData);
+						$scope.$watch('stream', drawData);
 						$scope.$watch('currentTime', drawData);
 						$scope.$watch('maxTime', drawData);
 

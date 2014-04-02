@@ -2,8 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb443da2-c5b7-4919-9dda-26632e987897" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/apinatomy_node_modules.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/utility/multiBase.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/simulation-panel/_view.scss" afterPath="$PROJECT_DIR$/client/partial/simulation-panel/_view.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/apinatomy.iml" afterPath="$PROJECT_DIR$/.idea/apinatomy.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/simulation-panel/directive.js" afterPath="$PROJECT_DIR$/client/partial/simulation-panel/directive.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/simulation-panel/time-trace/directive.js" afterPath="$PROJECT_DIR$/client/partial/simulation-panel/time-trace/directive.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/index.html" afterPath="$PROJECT_DIR$/client/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/main.js" afterPath="$PROJECT_DIR$/client/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/simulation-panel/view.html" afterPath="$PROJECT_DIR$/client/partial/simulation-panel/view.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/partial/top-nav/view.html" afterPath="$PROJECT_DIR$/client/partial/top-nav/view.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="apinatomy.iws" />
@@ -32,8 +41,8 @@
           <file leaf-file-name="directive.js" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/time-trace/directive.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1352">
-                  <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1326">
+                  <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -42,8 +51,28 @@
           <file leaf-file-name="directive.js" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/directive.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.7469758" vertical-offset="0" max-vertical-offset="1963">
-                  <caret line="57" column="33" selection-start-line="57" selection-start-column="33" selection-end-line="57" selection-end-column="33" />
+                <state vertical-scroll-proportion="0.444668" vertical-offset="338" max-vertical-offset="2119">
+                  <caret line="60" column="99" selection-start-line="60" selection-start-column="99" selection-end-line="60" selection-end-column="99" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/client/index.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="-14.772727" vertical-offset="0" max-vertical-offset="403">
+                  <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="main.js" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/client/main.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="101" max-vertical-offset="1235">
+                  <caret line="70" column="22" selection-start-line="70" selection-start-column="22" selection-end-line="70" selection-end-column="22" />
                   <folding />
                 </state>
               </provider>
@@ -52,8 +81,8 @@
           <file leaf-file-name="view.html" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/view.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-7.090909" vertical-offset="0" max-vertical-offset="377">
-                  <caret line="12" column="31" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="31" />
+                <state vertical-scroll-proportion="-5.909091" vertical-offset="0" max-vertical-offset="377">
+                  <caret line="10" column="38" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="38" />
                   <folding />
                 </state>
               </provider>
@@ -62,13 +91,9 @@
           <file leaf-file-name="_view.scss" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/_view.scss">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-21.045454" vertical-offset="707" max-vertical-offset="1664">
-                  <caret line="90" column="36" selection-start-line="90" selection-start-column="36" selection-end-line="90" selection-end-column="36" />
-                  <folding>
-                    <element signature="e#699#1930#2" expanded="true" />
-                    <element signature="e#1980#2391#2" expanded="true" />
-                    <element signature="e#2440#2787#2" expanded="true" />
-                  </folding>
+                <state vertical-scroll-proportion="-24.818182" vertical-offset="689" max-vertical-offset="1742">
+                  <caret line="95" column="26" selection-start-line="95" selection-start-column="26" selection-end-line="95" selection-end-column="26" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -87,6 +112,16 @@
       </split-first>
       <split-second>
         <leaf>
+          <file leaf-file-name="multiBase.js" pinned="false" current="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/client/utility/multiBase.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.222334" vertical-offset="0" max-vertical-offset="994">
+                  <caret line="17" column="74" selection-start-line="17" selection-start-column="74" selection-end-line="17" selection-end-column="74" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="service.js" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/client/timer/service.js">
               <provider selected="true" editor-type-id="text-editor">
@@ -100,18 +135,8 @@
           <file leaf-file-name="view.html" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/client/partial/top-nav/view.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-3.5454545" vertical-offset="0" max-vertical-offset="806">
-                  <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/client/index.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.2814433" vertical-offset="0" max-vertical-offset="970">
-                  <caret line="21" column="56" selection-start-line="21" selection-start-column="56" selection-end-line="21" selection-end-column="56" />
+                <state vertical-scroll-proportion="-5.909091" vertical-offset="0" max-vertical-offset="806">
+                  <caret line="10" column="8" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
                   <folding />
                 </state>
               </provider>
@@ -147,8 +172,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/server/tmp/type1.js" />
-        <option value="$PROJECT_DIR$/server/tmp/type3.js" />
         <option value="$PROJECT_DIR$/server/tmp/convert.js" />
         <option value="$PROJECT_DIR$/server/tmp/pathCache.js" />
         <option value="$PROJECT_DIR$/server/tmp/buildPathCache.js" />
@@ -191,11 +214,14 @@
         <option value="$PROJECT_DIR$/client/partial/icon-btn/directive.js" />
         <option value="$PROJECT_DIR$/client/timer/service.js" />
         <option value="$PROJECT_DIR$/client/partial/top-nav/view.html" />
-        <option value="$PROJECT_DIR$/client/index.html" />
+        <option value="$PROJECT_DIR$/client/utility/multimodulo.js" />
+        <option value="$PROJECT_DIR$/client/utility/multiModulo.js" />
         <option value="$PROJECT_DIR$/client/main.js" />
+        <option value="$PROJECT_DIR$/client/utility/multiBase.js" />
+        <option value="$PROJECT_DIR$/client/index.html" />
+        <option value="$PROJECT_DIR$/client/partial/simulation-panel/_view.scss" />
         <option value="$PROJECT_DIR$/client/partial/simulation-panel/view.html" />
         <option value="$PROJECT_DIR$/client/partial/simulation-panel/time-trace/directive.js" />
-        <option value="$PROJECT_DIR$/client/partial/simulation-panel/_view.scss" />
         <option value="$PROJECT_DIR$/client/partial/simulation-panel/directive.js" />
       </list>
     </option>
@@ -370,6 +396,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="utility" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apinatomy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apinatomy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="partial" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -396,6 +440,32 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apinatomy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apinatomy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="partial" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="simulation-panel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="time-trace" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -407,7 +477,7 @@
     <property name="options.lastSelected" value="preferences.pluginManager" />
     <property name="SearchEverywhereHistory" value="" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ric" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
@@ -420,9 +490,9 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/client/utility" />
       <recent name="$PROJECT_DIR$/client/partial/top-nav/icons" />
       <recent name="$PROJECT_DIR$/client/partial/simulation-panel" />
-      <recent name="$PROJECT_DIR$/client/utility" />
       <recent name="$PROJECT_DIR$/client/partial/time-trace" />
       <recent name="$PROJECT_DIR$/server/tmp" />
     </key>
@@ -435,8 +505,10 @@
     </key>
   </component>
   <component name="RunManager" selected="Node.js.Development Run (8081)">
-    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
-      <envs />
+    <configuration default="true" type="CucumberJavaScriptRunConfigurationType" factoryName="Cucumber.js">
+      <option name="cucumberJsArguments" />
+      <option name="executablePath" />
+      <option name="filePath" />
       <method />
     </configuration>
     <configuration default="true" type="JSTestDriver:ConfigurationType" factoryName="JsTestDriver">
@@ -446,10 +518,8 @@
       <setting name="preferredDebugBrowser" value="Chrome" />
       <method />
     </configuration>
-    <configuration default="true" type="CucumberJavaScriptRunConfigurationType" factoryName="Cucumber.js">
-      <option name="cucumberJsArguments" />
-      <option name="executablePath" />
-      <option name="filePath" />
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
@@ -613,7 +683,11 @@
       <created>1396389055526</created>
       <updated>1396389055526</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Minor changes.">
+      <created>1396390401302</created>
+      <updated>1396390401302</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -640,26 +714,26 @@
     <frame x="-1" y="27" width="2562" height="1414" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.10248447" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20775194" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32884398" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24691358" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32375777" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13463892" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.306677" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Mongo Runner" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3164557" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27795032" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20807454" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32990506" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.249694" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17067403" sideWeight="0.5585443" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13463892" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.09253376" sideWeight="0.67246836" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30620155" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27795032" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Mongo Runner" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3164557" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24691358" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.10248447" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32375777" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -706,7 +780,8 @@
     <MESSAGE value="Some refactoring: added $.fn.addSvgClass, $.fn.removeSvgClass and $.fn.toggleSvgClass. Also removed useless jquery extension $.fn.equals." />
     <MESSAGE value="Rudimentary controls and output for simulation." />
     <MESSAGE value="Changed the simulation traces to stretch the entire width of the graph area, as per Bernard's request." />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed the simulation traces to stretch the entire width of the graph area, as per Bernard's request." />
+    <MESSAGE value="Minor changes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor changes." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -729,13 +804,6 @@
     </PATH>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/client/partial/treemap/directive.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7374392" vertical-offset="273" max-vertical-offset="1846">
-          <caret line="91" column="59" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/partial/circuitboard/tile/_view.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="864">
@@ -789,7 +857,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1602" max-vertical-offset="4680">
           <caret line="147" column="21" selection-start-line="147" selection-start-column="21" selection-end-line="147" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -860,7 +927,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33025405" vertical-offset="0" max-vertical-offset="1313">
           <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -868,7 +934,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5563492" vertical-offset="612" max-vertical-offset="1872">
           <caret line="101" column="35" selection-start-line="101" selection-start-column="35" selection-end-line="101" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -884,7 +949,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.1595092" vertical-offset="0" max-vertical-offset="815">
           <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -908,7 +972,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.13278855" vertical-offset="0" max-vertical-offset="979">
           <caret line="10" column="42" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="42" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -916,7 +979,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="273">
           <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -948,7 +1010,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-7.090909" vertical-offset="0" max-vertical-offset="234">
           <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -956,10 +1017,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="338">
           <caret line="13" column="31" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
-          <folding>
-            <marker date="1396287752467" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1396287752467" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -967,7 +1025,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="351">
           <caret line="3" column="37" selection-start-line="3" selection-start-column="37" selection-end-line="3" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -983,7 +1040,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.013104838" vertical-offset="0" max-vertical-offset="992">
           <caret line="1" column="14" selection-start-line="1" selection-start-column="14" selection-end-line="1" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1011,14 +1067,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/time-trace/view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08041237" vertical-offset="0" max-vertical-offset="970">
-          <caret line="6" column="15" selection-start-line="6" selection-start-column="15" selection-end-line="6" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/lib/venturocket-angular-slider/example.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.1363635" vertical-offset="0" max-vertical-offset="1599">
@@ -1039,7 +1087,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.28830644" vertical-offset="0" max-vertical-offset="992">
           <caret line="22" column="42" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1059,58 +1106,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/top-nav/view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.5454545" vertical-offset="0" max-vertical-offset="806">
-          <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2814433" vertical-offset="0" max-vertical-offset="970">
-          <caret line="21" column="56" selection-start-line="21" selection-start-column="56" selection-end-line="21" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3916591" vertical-offset="101" max-vertical-offset="1222">
-          <caret line="41" column="5" selection-start-line="41" selection-start-column="5" selection-end-line="41" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/time-trace/directive.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1352">
-          <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/_view.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-21.045454" vertical-offset="707" max-vertical-offset="1664">
-          <caret line="90" column="36" selection-start-line="90" selection-start-column="36" selection-end-line="90" selection-end-column="36" />
-          <folding>
-            <element signature="e#699#1930#2" expanded="true" />
-            <element signature="e#1980#2391#2" expanded="true" />
-            <element signature="e#2440#2787#2" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.090909" vertical-offset="0" max-vertical-offset="377">
-          <caret line="12" column="31" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/time-trace/_view.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-8.863636" vertical-offset="0" max-vertical-offset="611">
@@ -1119,10 +1114,74 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/client/partial/top-nav/view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.909091" vertical-offset="0" max-vertical-offset="806">
+          <caret line="10" column="8" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/utility/multiBase.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.222334" vertical-offset="0" max-vertical-offset="994">
+          <caret line="17" column="74" selection-start-line="17" selection-start-column="74" selection-end-line="17" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/time-trace/view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.08024691" vertical-offset="0" max-vertical-offset="972">
+          <caret line="6" column="15" selection-start-line="6" selection-start-column="15" selection-end-line="6" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/_view.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-24.818182" vertical-offset="689" max-vertical-offset="1742">
+          <caret line="95" column="26" selection-start-line="95" selection-start-column="26" selection-end-line="95" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="101" max-vertical-offset="1235">
+          <caret line="70" column="22" selection-start-line="70" selection-start-column="22" selection-end-line="70" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-14.772727" vertical-offset="0" max-vertical-offset="403">
+          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.909091" vertical-offset="0" max-vertical-offset="377">
+          <caret line="10" column="38" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/time-trace/directive.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1326">
+          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/client/partial/simulation-panel/directive.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7469758" vertical-offset="0" max-vertical-offset="1963">
-          <caret line="57" column="33" selection-start-line="57" selection-start-column="33" selection-end-line="57" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.444668" vertical-offset="338" max-vertical-offset="2119">
+          <caret line="60" column="99" selection-start-line="60" selection-start-column="99" selection-end-line="60" selection-end-column="99" />
           <folding />
         </state>
       </provider>

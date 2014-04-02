@@ -22,6 +22,7 @@
     <orderEntry type="library" name="sass-stdlib" level="application" />
     <orderEntry type="library" name="D3" level="application" />
     <orderEntry type="library" name="compass-library" level="project" />
+    <orderEntry type="library" name="apinatomy node_modules" level="project" />
   </component>
 </module>
 

@@ -16,7 +16,7 @@ define(['app/module',
 			replace:     false,
 			templateUrl: 'partial/simulation-panel/view.html',
 			scope:       {
-				traces: '=amyTraces'
+				streams: '=amyStreams'
 			},
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,47 +25,59 @@ define(['app/module',
 
 				//// format the time-strings
 
-				$scope.timeFormat = function (ms) {
-					var minutes = Math.floor(ms / 1000 / 60);
-					var seconds = ms / 1000 - minutes * 60;
-					return (minutes ? minutes + 'm ' : '') + seconds + 's';
+				$scope.timeFormat = function (time) {
+					return _(time / 100)
+							.multiBase([24, 60, 60, 10], 2)
+							.suffixed(['d ', 'h ', 'm ', '.', 's'])
+							.join('');
 				};
 
 
 				//// control the timer
 
-				$scope.currentTime = 0;
-				$scope.maxTime = 4000;
-
-				$scope.timerState = 'stopped';
+				$scope.timer = {
+					state: 'stopped',
+					currentTime: 0,
+					maxTime: 0
+				};
 
 				TimerService.onInterval(function (t) {
-					$scope.currentTime = t;
+					$scope.timer.currentTime = t;
 				});
 
 				TimerService.onEnd(function (t) {
-					$scope.currentTime = t;
-					$scope.timerState = 'paused';
+					$scope.timer.currentTime = t;
+					$scope.timer.state = 'paused';
 				});
 
-				$scope.$watch('timerState', function (newState, oldState) {
+				$scope.$watch('timer.state', function (newState, oldState) {
 					if (newState === 'stopped') {
 						TimerService.stop();
+						$scope.timer.maxTime = 0;
 					} else if (newState === 'paused') {
 						TimerService.pause();
-					} else if (newState === 'running' && oldState === 'stopped') {
+					} else if (newState === 'running') {
 						// TODO: interval from metadata
-						// TODO: end-time increases with simulation
-						TimerService.start({ interval: 200, end: 4000 });
-					} else if (newState === 'running' && oldState === 'paused') {
-						TimerService.resume();
+						TimerService.start({ beginning: $scope.timer.currentTime, interval: 200 });
+					}
+				});
+
+				$scope.$watch('timer.currentTime', function (currentTime) {
+					if (currentTime > $scope.timer.maxTime) {
+						$scope.timer.maxTime = currentTime;
+					}
+				});
+
+				$scope.$watch('timer.maxTime', function (maxTime) {
+					if (maxTime > 0 && $scope.timer.state === 'stopped') {
+						$scope.timer.state = 'paused';
 					}
 				});
 
 
 				//// temporary data; TODO: use real data
 
-				$scope.traces = [
+				$scope.streams = [
 					{
 						_id:  'var:1',
 						css:  { stroke: 'green' },

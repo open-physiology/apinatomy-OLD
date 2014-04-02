@@ -67,7 +67,8 @@ var UTILITY_MODULES = [
 	'utility/prefixOf',
 	'utility/derivedProperty',
 	'utility/concatenated',
-	'utility/extent'
+	'utility/extent',
+    'utility/multiBase'
 ];
 
 

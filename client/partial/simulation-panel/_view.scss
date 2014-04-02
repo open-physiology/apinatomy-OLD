@@ -19,7 +19,7 @@ amy-simulation-panel {
 			position : absolute;
 			width    : $amy-control-size;
 			height   : $amy-control-size;
-			top:  20px;
+			top      : 20px;
 			&.run-pause-btn {
 				left : 0;
 			}
@@ -46,6 +46,7 @@ amy-simulation-panel {
 			height   : $amy-control-size;
 
 			.bar {
+				@include border-radius(2px);
 				height     : 4px;
 				margin-top : -2px;
 				z-index    : 0;
@@ -68,7 +69,7 @@ amy-simulation-panel {
 
 			.pointer {
 				@include border-radius(50%);
-				cursor      : move;
+				cursor           : move !important;
 				width            : $amy-control-size;
 				height           : $amy-control-size;
 				top              : 0;
@@ -92,8 +93,9 @@ amy-simulation-panel {
 				text-shadow : none;
 				top         : -2em;
 
-				&.floor, &.ceiling {
-					display : none;
+				&.floor {}
+				&.ceiling {
+					color: gray;
 				}
 
 				&.selection, &.limit {
@@ -103,6 +105,10 @@ amy-simulation-panel {
 				&.low, &.high {
 					display : none;
 				}
+			}
+
+			input {
+				cursor: move;
 			}
 		}
 	}
