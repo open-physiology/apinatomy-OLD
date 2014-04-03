@@ -45,6 +45,10 @@ amy-simulation-panel {
 			top      : 20px;
 			height   : $amy-control-size;
 
+			&.disabled {
+				pointer-events: none;
+			}
+
 			.bar {
 				@include border-radius(2px);
 				height     : 4px;

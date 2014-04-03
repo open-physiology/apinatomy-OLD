@@ -23,20 +23,18 @@ define(['jquery',
 		$locationProvider.html5Mode(true).hashPrefix('!');
 	});
 
-	ApiNATOMY.run(function ($rootScope) {
+	ApiNATOMY.controller('MainController', ['$rootScope', '$window', function ($rootScope, $window) {
 
-		//// some settings are initially disabled
+		//// disable global settings
 
 		$rootScope.threeDRotateEnabled = false;
 		$rootScope.simulationEnabled = false;
 
-	});
 
-	ApiNATOMY.controller('PanelController', ['$rootScope', '$window', function ($rootScope, $window) {
-		var amySpacing = 15;      // $amy-spacing
+		//// manage bottom sliding panels
+
+		var amySpacing = 15;      // $amy-spacing; TODO: automatically extract sass variables
 		var amyPanelHeight = 250; // $amy-panel-height
-
-		console.debug('PanelController');
 
 		$rootScope.$watch('simulationEnabled', function (enabled) {
 			if (enabled) {
@@ -46,6 +44,7 @@ define(['jquery',
 			}
 			_($($window)).bindKey('trigger', 'resize').defer();
 		});
+
 	}]);
 
 

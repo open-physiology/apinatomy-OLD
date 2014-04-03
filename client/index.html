@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--maximum-scale=1, user-scalable=no-->
 </head>
-<body>
+<body ng-controller="MainController">
 
 	<amy-top-nav id="top-nav"></amy-top-nav>
 
@@ -19,7 +19,7 @@
 
 	<main><amy-circuitboard></amy-circuitboard></main>
 
-    <footer ng-controller="PanelController" ng-cloak>
+    <footer ng-cloak>
 	    <amy-simulation-panel ng-if="$root.simulationEnabled" amy-streams="streams"></amy-simulation-panel>
     </footer>
 

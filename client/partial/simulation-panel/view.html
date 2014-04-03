@@ -6,7 +6,8 @@
 	<icon-btn class="stop-btn action-stop"
 	          states ="{ stopped: 'stopped', paused: 'stopped', running: 'stopped'  }"
 	          ng-model="timer.state"></icon-btn>
-	<slider ng-model="timer.currentTime"
+	<slider ng-class="{ disabled: timer.state === 'running' }"
+			ng-model="timer.currentTime"
 	        floor="0"
 	        ceiling="{{timer.maxTime}}"
 	        step="{{timer.timeInterval}}"

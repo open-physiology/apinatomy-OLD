@@ -84,6 +84,9 @@ define(['app/module', 'd3', 'lodash'], function (app, d3, _) {
 
 							//// possibly add new shadows or remove all shadows if there is no data at all
 
+							// TODO: move to a system where the shadow-traces are passed in from the outside as arrays,
+							//     : not derived from the main trace
+
 							if ($scope.maxTime === 0) {
 								shadowData = {};
 								minValue = Infinity;

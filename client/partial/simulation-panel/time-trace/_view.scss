@@ -9,7 +9,7 @@ amy-time-trace {
 		& > g {
 
 			.border {
-				fill: none;
+				fill: white;
 				stroke: black;
 				stroke-width: 1px;
 				shape-rendering: crispEdges;
@@ -18,8 +18,6 @@ amy-time-trace {
 			.trace {
 				fill: none;
 				stroke-linejoin: round;
-				stroke: steelblue;
-				stroke-width: 1.6px;
 			}
 
 			& > .shadows > line {
@@ -35,11 +33,9 @@ amy-time-trace {
 					shape-rendering: crispEdges;
 				}
 
-				&.x {
-				}
+				&.x {}
 
-				&.y {
-				}
+				&.y {}
 			}
 
 		}

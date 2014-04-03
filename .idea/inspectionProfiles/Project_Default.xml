@@ -4,16 +4,18 @@
     <option name="myLocal" value="false" />
     <inspection_tool class="CommaExpressionJS" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="CssInvalidHtmlTagReference" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="CssOptimizeSimilarProperties" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="CssUnknownProperty" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myCustomPropertiesEnabled" value="true" />
       <option name="myIgnoreVendorSpecificProperties" value="false" />
       <option name="myCustomPropertiesList">
         <value>
-          <list size="4">
+          <list size="5">
             <item index="0" class="java.lang.String" itemvalue="perspective" />
             <item index="1" class="java.lang.String" itemvalue="stroke" />
             <item index="2" class="java.lang.String" itemvalue="stroke-width" />
             <item index="3" class="java.lang.String" itemvalue="fill" />
+            <item index="4" class="java.lang.String" itemvalue="pointer-events" />
           </list>
         </value>
       </option>

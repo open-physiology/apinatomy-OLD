@@ -80,8 +80,9 @@ define(['app/module',
 					} else if (state === 'paused') {
 						TimerService.pause();
 					} else if (state === 'running') {
-						// TODO: interval from metadata
 						TimerService.start({ beginning: $scope.timer.currentTime, interval: $scope.timer.timeInterval });
+
+						// TODO: move the initial part of the latest shadow-stream (up to current time) to a new shadow-stream
 
 						//// reinitialize stream generator
 						stream0.loadMoreEntries(1, $scope.timer.currentTime);

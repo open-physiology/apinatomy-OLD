@@ -10,7 +10,7 @@ define(['lodash'], function (_) {
 			if (_(minLength).isUndefined()) { minLength = 1 }
 			if ((_(A).isEmpty() || num === 0) && minLength <= 0) { return []; }
 			var val = num % _(A).last();
-			return multiBase((num - val) / _(A).last(), _(A).initial(), minLength-1).concat([val]);
+			return multiBase((num - val) / _(A).last(),  _(A).initial(),  minLength-1).concat([val]);
 		},
 		suffixed: function (A, suffixes) {
 			var result = [];
