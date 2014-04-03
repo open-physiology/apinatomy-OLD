@@ -19,7 +19,7 @@
 
 	<main><amy-circuitboard></amy-circuitboard></main>
 
-    <footer ng-controller="PanelController">
+    <footer ng-controller="PanelController" ng-cloak>
 	    <amy-simulation-panel ng-if="$root.simulationEnabled" amy-streams="streams"></amy-simulation-panel>
     </footer>
 
