@@ -3,9 +3,11 @@
 $amy-spacing : 15px;
 $amy-top-nav-height : $navbar-height;
 $amy-side-nav-width : 200px;
+$amy-panel-height: 250px;
 $amy-tile-header-height : 26px;
 $amy-tile-border-width : 1px; // important for position calculation in javascript; don't change
 $amy-tile-status-icon-size: 10px;
+$amy-standard-duration: 600ms;
 
 
 ///////////////////////// Mixins /////////////////////////
@@ -23,7 +25,7 @@ $amy-tile-status-icon-size: 10px;
 
 ///////////////////////// Fade-in & Fade-out /////////////////////////
 
-@mixin -fade-in-out-transition($duration: 600ms) {
+@mixin -fade-in-out-transition($duration: $amy-standard-duration) {
 	&.ng-hide-add, &.ng-hide-remove {
 		@include single-transition(opacity, linear, $duration);
 		display : block !important;
@@ -31,7 +33,7 @@ $amy-tile-status-icon-size: 10px;
 }
 
 
-@mixin fade-out($duration: 600ms) {
+@mixin fade-out($duration: $amy-standard-duration) {
 	@include -fade-in-out-transition($duration);
 	&.ng-hide-add.ng-hide-add-active {
 		opacity : 0;
@@ -41,7 +43,7 @@ $amy-tile-status-icon-size: 10px;
 	}
 }
 
-@mixin fade-in($duration: 600ms) {
+@mixin fade-in($duration: $amy-standard-duration) {
 	@include -fade-in-out-transition($duration);
 	&.ng-hide-remove.ng-hide-remove-active {
 		opacity : 0;
@@ -51,7 +53,7 @@ $amy-tile-status-icon-size: 10px;
 	}
 }
 
-@mixin fade-in-out($duration: 600ms) {
+@mixin fade-in-out($duration: $amy-standard-duration) {
 	@include fade-out($duration);
 	@include fade-in ($duration);
 }

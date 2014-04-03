@@ -9,14 +9,14 @@
 	<slider ng-model="timer.currentTime"
 	        floor="0"
 	        ceiling="{{timer.maxTime}}"
-	        step="200"
+	        step="{{timer.timeInterval}}"
 	        translate="timeFormat">
 	</slider>
 </div>
 
 <section>
 	<amy-time-trace ng-repeat="stream in streams"
-	                amy-stream="stream"
+                    amy-stream="stream"
 	                amy-current-time="timer.currentTime"
 	                amy-max-time="timer.maxTime">
 	</amy-time-trace>

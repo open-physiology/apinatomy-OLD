@@ -2,6 +2,6 @@
 
 amy-rotation {
 	display: block;
-	overflow : hidden;
+	overflow : visible;
 	@include perspective(600px);
 }

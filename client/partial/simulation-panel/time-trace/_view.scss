@@ -17,9 +17,15 @@ amy-time-trace {
 
 			.trace {
 				fill: none;
-				stroke: steelblue;
-				stroke-width: 1.5px;
 				stroke-linejoin: round;
+				stroke: steelblue;
+				stroke-width: 1.6px;
+			}
+
+			& > .shadows > line {
+				stroke: lightgray;
+				stroke-width: 1.4px;
+				stroke-cap: round;
 			}
 
 			& > .axis {
@@ -29,9 +35,11 @@ amy-time-trace {
 					shape-rendering: crispEdges;
 				}
 
-				&.x {}
+				&.x {
+				}
 
-				&.y {}
+				&.y {
+				}
 			}
 
 		}

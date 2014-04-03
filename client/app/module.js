@@ -1,12 +1,14 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['angular',
+define(['jquery',
+		'lodash',
+	    'angular',
         'angular-animate',
         'angular-bootstrap',
         'angular-recursion',
         'angular-once',
-        'angular-slider'], function (ng) {
+        'angular-slider'], function ($, _, ng) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -23,11 +25,28 @@ define(['angular',
 
 	ApiNATOMY.run(function ($rootScope) {
 
-		//// 3D rotation is initially disabled
+		//// some settings are initially disabled
 
 		$rootScope.threeDRotateEnabled = false;
+		$rootScope.simulationEnabled = false;
 
 	});
+
+	ApiNATOMY.controller('PanelController', ['$rootScope', '$window', function ($rootScope, $window) {
+		var amySpacing = 15;      // $amy-spacing
+		var amyPanelHeight = 250; // $amy-panel-height
+
+		console.debug('PanelController');
+
+		$rootScope.$watch('simulationEnabled', function (enabled) {
+			if (enabled) {
+				$('main').css('bottom', amySpacing + amyPanelHeight);
+			} else {
+				$('main').css('bottom', amySpacing);
+			}
+			_($($window)).bindKey('trigger', 'resize').defer();
+		});
+	}]);
 
 
 	return ApiNATOMY;
