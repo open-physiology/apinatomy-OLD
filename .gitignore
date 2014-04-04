@@ -5,4 +5,5 @@ client/lib
 SpecRunner.html
 .grunt
 .sass-cache
+.idea
 tmp
