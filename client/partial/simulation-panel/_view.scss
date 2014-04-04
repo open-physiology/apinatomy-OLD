@@ -81,8 +81,7 @@ amy-simulation-panel {
 				background-color : white;
 				border           : solid 1px black;
 
-				&:hover {
-				}
+				&:hover {}
 
 				&.active {
 					background-color : red;
@@ -103,11 +102,11 @@ amy-simulation-panel {
 				}
 
 				&.selection, &.limit {
-					display : none;
+//					display : none;
 				}
 
 				&.low, &.high {
-					display : none;
+//					display : none;
 				}
 			}
 
@@ -121,9 +120,6 @@ amy-simulation-panel {
 		amy-time-trace {
 			width  : 300px;
 			height : 100%;
-			&:first-of-type {
-				margin-left : -10px;
-			}
 		}
 	}
 

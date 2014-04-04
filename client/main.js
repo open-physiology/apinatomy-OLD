@@ -21,7 +21,7 @@ requirejs.config({
 		'angular-bootstrap': 'lib/angular-bootstrap/ui-bootstrap-tpls',
 		'angular-recursion': 'lib/angular-recursion/angular-recursion',
 		'angular-once':      'lib/angular-once/once',
-		'angular-slider':    'lib/venturocket-angular-slider/build/angular-slider',
+		'angular-slider':    'patched-lib/angular-slider',
 		'chroma':            'lib/chroma-js/chroma',
 		'd3':                'lib/d3/d3'
 	},
