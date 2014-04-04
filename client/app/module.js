@@ -25,11 +25,10 @@ define(['jquery',
 
 	ApiNATOMY.controller('MainController', ['$rootScope', '$window', function ($rootScope, $window) {
 
-		//// disable global settings
+		//// initially disable global settings
 
 		$rootScope.threeDRotateEnabled = false;
 		$rootScope.simulationEnabled = false;
-
 
 		//// manage bottom sliding panels
 

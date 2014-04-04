@@ -124,22 +124,24 @@ define(['app/module', 'd3', 'lodash'], function (app, d3, _) {
 						}
 
 						function adjustSize() {
-							width = iElement.width() - margin.left - margin.right;
-							height = iElement.height() - margin.top - margin.bottom;
+							if (iElement.width() > margin.left + margin.right &&
+							    iElement.height() > margin.top + margin.bottom) {
+								width = iElement.width() - margin.left - margin.right;
+								height = iElement.height() - margin.top - margin.bottom;
 
-							svgCanvas.select('rect.border').attr({ width: width, height: height });
-							svgCanvas.select('#dataArea > rect').attr({ width: width, height: height });
+								svgCanvas.select('rect.border').attr({ width: width, height: height });
+								svgCanvas.select('#dataArea > rect').attr({ width: width, height: height });
 
-							xScale.range([0, width]);
-							yScale.range([height, 0]);
+								xScale.range([0, width]);
+								yScale.range([height, 0]);
 
-							drawData();
+								drawData();
+							}
 						}
 
 						adjustSize();
 
-						// TODO: automatically react to size changes
-
+						$($window).on('resize', adjustSize);
 						$scope.$watch('stream', drawData);
 						$scope.$watch('currentTime', drawData);
 						$scope.$watch('maxTime', drawData);
