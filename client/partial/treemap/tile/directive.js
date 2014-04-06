@@ -155,6 +155,16 @@ define(['angular',
 
 								}
 
+
+								//// explicitly hide tiles with 0 width or height
+
+								if (pos.hidden) {
+									$timeout(function () { iElement.hide(); }, 600);
+								} else {
+									iElement.show();
+								}
+
+
 								//// notify new position
 
 								$scope.afterRepositionFn({ newPosition: controller.positionInTreemap() });
@@ -185,6 +195,7 @@ define(['angular',
 									//// adjust for tile spacing
 
 									_(positions).forEach(function (pos) {
+										pos.hidden = (pos.height === 0 || pos.width === 0);
 										pos.top += $scope.tileSpacing;
 										pos.left += $scope.tileSpacing;
 										pos.height -= $scope.tileSpacing;

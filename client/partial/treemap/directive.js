@@ -80,6 +80,7 @@ define(['lodash',
 						//// adjust for tile spacing
 
 						_(positions).each(function (pos) {
+							pos.hidden = (pos.height === 0 || pos.width === 0);
 							pos.top += $scope.tileSpacing;
 							pos.left += $scope.tileSpacing;
 							pos.height -= $scope.tileSpacing;

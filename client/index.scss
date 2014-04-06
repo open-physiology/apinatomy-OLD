@@ -76,10 +76,7 @@ html, body {
 			background-color: #f5f5f5;
 
 			&.ng-enter, &.ng-leave {
-				@include transition-property(top, bottom, left, right, width, height, min-width, min-height);
-				@include transition-duration($amy-standard-duration);
-				@include transition-delay(50ms);
-				@include transition-timing-function(ease-in-out);
+				@include move-transition($amy-standard-duration, 50ms);
 			}
 
 			&.ng-enter, &.ng-leave.ng-leave-active {

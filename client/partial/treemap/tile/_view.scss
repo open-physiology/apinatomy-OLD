@@ -12,9 +12,7 @@ amy-tile {
 	padding    : 0 8px;
 
 	//// growing / shrinking animations
-	@include transition-property(top, bottom, left, right, width, height, min-width, min-height, font-size, padding, line-height);
-	@include transition-duration($amy-standard-duration);
-	@include transition-timing-function(ease-in-out);
+	@include move-transition;
 
 	& > .full-header {
 		@include box-sizing(border-box);
