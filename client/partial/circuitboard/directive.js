@@ -10,7 +10,8 @@ define(['lodash',
 	'defaults/service',
 	'partial/treemap/directive',
 	'partial/circuitboard/tile/directive',
-	'partial/circuitboard/graph/directive'
+	'partial/circuitboard/graph/directive',
+	'partial/circuitboard/threed/directive'
 ], function (_, ng, ApiNATOMY) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -121,9 +122,11 @@ define(['lodash',
 			compile: function () {
 				return {
 
-					pre: function preLink(/*$scope, iElement, iAttrs, controller*/) {},
+					pre: function preLink(/*$scope, iElement, iAttrs, controller*/) {
+					},
 
-					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {}
+					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {
+					}
 
 				};
 			}

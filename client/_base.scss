@@ -26,7 +26,7 @@ $amy-standard-duration: 600ms;
 ///////////////////////// Fade-in & Fade-out /////////////////////////
 
 @mixin -fade-in-out-transition($duration: $amy-standard-duration) {
-	&.ng-hide-add, &.ng-hide-remove {
+	&.ng-hide-add, &.ng-hide-remove, &.ng-enter, &.ng-leave {
 		@include single-transition(opacity, linear, $duration);
 		display : block !important;
 	}
@@ -35,21 +35,21 @@ $amy-standard-duration: 600ms;
 
 @mixin fade-out($duration: $amy-standard-duration) {
 	@include -fade-in-out-transition($duration);
-	&.ng-hide-add.ng-hide-add-active {
+	&.ng-hide-add.ng-hide-add-active, &.ng-leave.ng-leave-active {
 		opacity : 0;
 	}
-	&.ng-hide-add {
+	&.ng-hide-add, &.ng-leave {
 		opacity : 1;
 	}
 }
 
 @mixin fade-in($duration: $amy-standard-duration) {
 	@include -fade-in-out-transition($duration);
-	&.ng-hide-remove.ng-hide-remove-active {
-		opacity : 0;
-	}
-	&.ng-hide-remove {
+	&.ng-hide-remove.ng-hide-remove-active, &.ng-enter.ng-enter-active {
 		opacity : 1;
+	}
+	&.ng-hide-remove, &.ng-enter {
+		opacity : 0;
 	}
 }
 

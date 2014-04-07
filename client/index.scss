@@ -49,16 +49,19 @@ html, body {
 			@include edge-to-edge;
 			amy-rotation {
 				@include edge-to-edge;
+				left: $amy-spacing + $amy-side-nav-width;
+				right: $amy-spacing;
 				amy-treemap {
 					@include edge-to-edge;
-					left: $amy-spacing + $amy-side-nav-width;
-					right: $amy-spacing;
 				}
 				amy-graph {
 					@include edge-to-edge;
-					left: $amy-spacing + $amy-side-nav-width;
-					right: $amy-spacing;
 				}
+			}
+			amy-canvas {
+				@include edge-to-edge;
+				left: $amy-spacing + $amy-side-nav-width;
+				right: $amy-spacing;
 			}
 		}
 	}

@@ -14,11 +14,12 @@ define(['lodash', 'app/module', 'utility/putStyle', '$bind/service'], function (
 	ApiNATOMY.directive('amyRotation', ['$bind', function ($bind) {
 		return {
 			restrict: 'E',
-			scope:    {
-				amyModel: '=',
-				enabled:  '='
+			scope   : {
+				amyModel      : '=',
+				transformation: '=amyTransformation',
+				enabled       : '='
 			},
-			link:     function ($scope, iElement) {
+			link    : function ($scope, iElement) {
 
 				//////////////////// initialize the model to the empty object ////////////////////
 
@@ -27,22 +28,41 @@ define(['lodash', 'app/module', 'utility/putStyle', '$bind/service'], function (
 
 				//////////////////// 3D manipulations based on mouse move distances ////////////////////
 
+				$scope.transformation = {
+					translate: {
+						x: 0,
+						y: 0,
+						z: 0
+					},
+					rotate: {
+						x: 0,
+						y: 0,
+						z: 0
+					}
+				};
+
 				var backAway = 0;
 				var lower = 0;
 				var tilt = 0;
 				var rotation = 0;
 
-				function backAwayBy(dist) { return Math.max(0, Math.min(backAway + 5 * dist, BACK_AWAY_MAX)); }
+				function backAwayBy(dist) {
+					return Math.max(0, Math.min(backAway + 5 * dist, BACK_AWAY_MAX));
+				}
 
-				function lowerBy(dist) { return Math.max(0, Math.min(lower + dist, LOWER_MAX)); }
+				function lowerBy(dist) {
+					return Math.max(0, Math.min(lower + dist, LOWER_MAX));
+				}
 
-				function tiltBy(dist) { return Math.max(0, Math.min(tilt + .5 * dist, TILT_MAX)); }
+				function tiltBy(dist) {
+					return Math.max(0, Math.min(tilt + .5 * dist, TILT_MAX));
+				}
 
 				function rotateBy(dist, newTilt) {
 					return Math.max(
-							-ROTATION_MAX * (newTilt / TILT_MAX),
+									-ROTATION_MAX * (newTilt / TILT_MAX),
 							Math.min(rotation + .2 * dist,
-									ROTATION_MAX * (newTilt / TILT_MAX)));
+											ROTATION_MAX * (newTilt / TILT_MAX)));
 				}
 
 
@@ -53,7 +73,9 @@ define(['lodash', 'app/module', 'utility/putStyle', '$bind/service'], function (
 						$scope.$parent.$broadcast('3d-manipulation-enabled');
 					}
 					if (oldEnabled && !newEnabled) {
-						if (startingX !== null) { endManipulation(); }
+						if (startingX !== null) {
+							endManipulation();
+						}
 						$scope.$parent.$broadcast('3d-manipulation-disabled');
 					}
 				});
@@ -79,11 +101,23 @@ define(['lodash', 'app/module', 'utility/putStyle', '$bind/service'], function (
 					var newTilt = tiltBy(lastY - startingY);
 					var newRotation = rotateBy(lastX - startingX, newTilt);
 					putStyle($scope.amyModel, 'transform',
-							'translateZ(' + -newBackAway + 'px) ' +
-							'translateY(' + newLower + 'px) ' +
-							'rotateX(' + newTilt + 'deg) ' +
-							'rotateZ(' + newRotation + 'deg)'
+									'translateZ(' + -newBackAway + 'px) ' +
+									'translateY(' + newLower + 'px) ' +
+									'rotateX(' + newTilt + 'deg) ' +
+									'rotateZ(' + newRotation + 'deg)'
 					);
+					$scope.transformation = {
+						translate: {
+							x: 0,
+							y: newLower,
+							z: -newBackAway
+						},
+						rotate: {
+							x: newTilt,
+							y: 0,
+							z: newRotation
+						}
+					};
 				});
 
 

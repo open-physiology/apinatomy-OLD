@@ -3,7 +3,15 @@
 @import "partial/circuitboard/graph/view";
 @import "partial/rotation/view";
 @import "partial/treemap/view";
+@import "partial/circuitboard/threed/view";
 
 amy-circuitboard {
+
+	amy-canvas {
+
+		@include fade-in-out;
+
+	}
+
 
 }
