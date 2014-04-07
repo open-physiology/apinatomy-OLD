@@ -6,7 +6,7 @@ define(['app/module'], function (ApiNATOMY) {
 
 
 	ApiNATOMY.factory('$bind', ['$rootScope', function ($rootScope) {
-		return function $bind(fn) {
+		return function $bind(fn, thisArg) {
 
 			return function () {
 
@@ -14,7 +14,7 @@ define(['app/module'], function (ApiNATOMY) {
 
 				$rootScope.$apply(function () {
 
-					fn.apply(undefined, args);
+					fn.apply(thisArg, args);
 
 				});
 
@@ -22,9 +22,6 @@ define(['app/module'], function (ApiNATOMY) {
 
 		};
 	}]);
-
-
-	return '$bind';
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -23,6 +23,16 @@ $amy-standard-duration: 600ms;
 }
 
 
+///////////////////////// Animated move & resize /////////////////////////
+
+@mixin move-transition($duration: $amy-standard-duration, $delay: 0s) {
+	@include transition-property(top, bottom, left, right, width, height, min-width, min-height, line-height, font-size, padding, margin, border-width);
+	@include transition-duration($duration);
+	@include transition-delay($delay);
+	@include transition-timing-function(ease-in-out);
+}
+
+
 ///////////////////////// Fade-in & Fade-out /////////////////////////
 
 @mixin -fade-in-out-transition($duration: $amy-standard-duration) {
@@ -31,7 +41,6 @@ $amy-standard-duration: 600ms;
 		display : block !important;
 	}
 }
-
 
 @mixin fade-out($duration: $amy-standard-duration) {
 	@include -fade-in-out-transition($duration);
