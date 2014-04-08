@@ -72,7 +72,8 @@ var UTILITY_MODULES = [
 	'utility/derivedProperty',
 	'utility/concatenated',
 	'utility/extent',
-	'utility/multiBase'
+    'utility/multiBase',
+    'utility/between'
 ];
 
 

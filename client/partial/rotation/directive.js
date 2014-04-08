@@ -11,7 +11,7 @@ define(['lodash', 'app/module', 'utility/putStyle', '$bind/service'], function (
 	var ROTATION_MAX = 45;
 
 
-	ApiNATOMY.directive('amyRotation', ['$bind', function ($bind) {
+	ApiNATOMY.directive('amyRotation', ['$bind', '$window', function ($bind, $window) {
 		return {
 			restrict: 'E',
 			scope   : {
@@ -26,7 +26,34 @@ define(['lodash', 'app/module', 'utility/putStyle', '$bind/service'], function (
 				$scope.amyModel = {};
 
 
-				//////////////////// 3D manipulations based on mouse move distances ////////////////////
+				//////////////////// the mouse events driving 3D manipulation ////////////////////
+
+				var startingX = 0, startingY = 0, lastX = 0, lastY = 0;
+
+				var manipulateByMouseMove = $bind(function manipulateByMouseMove(event) {
+					lastX = event.pageX;
+					lastY = event.pageY;
+					transform(lastX - startingX, lastY - startingY);
+				});
+
+				iElement.on('mousedown', $bind(function onMouseDown(event) {
+					if ($scope.enabled) {
+						startingX = lastX = event.pageX;
+						startingY = lastY = event.pageY;
+						$($window).on('mousemove', manipulateByMouseMove);
+					}
+				}));
+
+				$($window).on('mouseup', $bind(function onMouseUp() {
+					if ($scope.enabled) {
+						updateTransformation();
+						startingX = startingY = lastX = lastY = null;
+						$($window).off('mousemove', manipulateByMouseMove);
+					}
+				}));
+
+
+				//////////////////// 3D manipulations based on drag distances ////////////////////
 
 				$scope.transformation = {
 					translate: {
@@ -40,104 +67,43 @@ define(['lodash', 'app/module', 'utility/putStyle', '$bind/service'], function (
 						z: 0
 					}
 				};
+				
+				var currentTransformation = { backAway: 0, lower: 0, tilt: 0, rotation: 0 };
 
-				var backAway = 0;
-				var lower = 0;
-				var tilt = 0;
-				var rotation = 0;
-
-				function backAwayBy(dist) {
-					return Math.max(0, Math.min(backAway + 5 * dist, BACK_AWAY_MAX));
+				function newTransformation(distX, distY) {
+					var result = {
+						backAway: _(currentTransformation.backAway + 5 * distY).between(0, BACK_AWAY_MAX),
+						lower:    _(currentTransformation.lower + distY)       .between(0, LOWER_MAX    ),
+						tilt:     _(currentTransformation.tilt + .5 * distY)   .between(0, TILT_MAX     )
+					};
+					var rotationLimit = ROTATION_MAX * (result.tilt / TILT_MAX);
+					result.rotation = _(currentTransformation.rotation + .2 * distX).between(-rotationLimit, rotationLimit);
+					return result;
 				}
 
-				function lowerBy(dist) {
-					return Math.max(0, Math.min(lower + dist, LOWER_MAX));
+				function updateTransformation() {
+					currentTransformation = newTransformation(lastX - startingX, lastY - startingY);
 				}
 
-				function tiltBy(dist) {
-					return Math.max(0, Math.min(tilt + .5 * dist, TILT_MAX));
-				}
-
-				function rotateBy(dist, newTilt) {
-					return Math.max(
-									-ROTATION_MAX * (newTilt / TILT_MAX),
-							Math.min(rotation + .2 * dist,
-											ROTATION_MAX * (newTilt / TILT_MAX)));
-				}
-
-
-				//////////////////// 3D manipulation starts and ends with the 'enabled' attribute ////////////////////
-
-				$scope.$watch('enabled', function (newEnabled, oldEnabled) {
-					if (!oldEnabled && newEnabled) {
-						$scope.$parent.$broadcast('3d-manipulation-enabled');
-					}
-					if (oldEnabled && !newEnabled) {
-						if (startingX !== null) {
-							endManipulation();
-						}
-						$scope.$parent.$broadcast('3d-manipulation-disabled');
-					}
-				});
-
-				iElement.on('mousedown', $bind(function (event) {
-					$scope.enabled && startManipulation(event.clientX, event.clientY);
-				}));
-
-				iElement.on('mouseup', $bind(function () {
-					$scope.enabled && endManipulation();
-				}));
-
-
-				//////////////////// 3D-manipulation implementation ////////////////////
-
-				var startingX, startingY, lastX, lastY;
-
-				var manipulateByMouseMove = $bind(function manipulateByMouseMove(event) {
-					lastX = event.clientX;
-					lastY = event.clientY;
-					var newBackAway = backAwayBy(lastY - startingY);
-					var newLower = lowerBy(lastY - startingY);
-					var newTilt = tiltBy(lastY - startingY);
-					var newRotation = rotateBy(lastX - startingX, newTilt);
-					putStyle($scope.amyModel, 'transform',
-									'translateZ(' + -newBackAway + 'px) ' +
-									'translateY(' + newLower + 'px) ' +
-									'rotateX(' + newTilt + 'deg) ' +
-									'rotateZ(' + newRotation + 'deg)'
-					);
+				function transform(distX, distY) {
+					var transformation = newTransformation(distX, distY);
+					putStyle($scope.amyModel, 'transform', (
+							'translateZ(' + -transformation.backAway + 'px) ' +
+							'translateY(' + transformation.lower + 'px) ' +
+							'rotateX(' + transformation.tilt + 'deg) ' +
+							'rotateZ(' + transformation.rotation + 'deg)'));
 					$scope.transformation = {
 						translate: {
 							x: 0,
-							y: newLower,
-							z: -newBackAway
+							y: transformation.lower,
+							z: -transformation.backAway
 						},
 						rotate: {
-							x: newTilt,
+							x: transformation.tilt,
 							y: 0,
-							z: newRotation
+							z: transformation.rotation
 						}
 					};
-				});
-
-
-				//////////////////// starting and ending 3D manipulation ////////////////////
-
-				function startManipulation(x, y) {
-					$scope.$parent.$broadcast('3d-manipulation-start');
-					startingX = lastX = x;
-					startingY = lastY = y;
-					iElement.on('mousemove', manipulateByMouseMove);
-				}
-
-				function endManipulation() {
-					backAway = backAwayBy(lastY - startingY);
-					lower = lowerBy(lastY - startingY);
-					tilt = tiltBy(lastY - startingY);
-					rotation = rotateBy(lastX - startingX, tilt);
-					iElement.off('mousemove', manipulateByMouseMove);
-					startingX = startingY = lastX = lastY = null;
-					$scope.$parent.$broadcast('3d-manipulation-end');
 				}
 
 			}
