@@ -1,7 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'chroma'], function (ApiNATOMY, color) {
+define(['app/module', 'chroma', 'lodash'], function (ApiNATOMY, color, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -21,6 +21,11 @@ define(['app/module', 'chroma'], function (ApiNATOMY, color) {
 				return {
 
 					pre: function preLink($scope, iElement/*, iAttrs, controller*/) {
+
+						if (_($scope.bundle.styling).isUndefined()) { // TODO: trying to capture and repair this condition
+							console.debug($scope.bundle);
+						}
+
 						iElement.putCSS($scope.bundle.styling.focus.css);
 						iElement.css({
 							backgroundColor: color($scope.bundle.styling.normal.css['&'].backgroundColor).brighten(30).css()
