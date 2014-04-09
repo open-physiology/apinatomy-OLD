@@ -6,6 +6,7 @@ define(['lodash',
 	'app/module',
 	'threejs',
 	'threejs-obj-loader',
+	'threejs-css-3d-renderer',
 	'$bind/service',
 	'defaults/service'
 ], function (_, ng, app, THREE) {
@@ -13,6 +14,20 @@ define(['lodash',
 
 
 	var DEG_TO_RAD = Math.PI / 180;
+
+	var URI_TO_MODEL = {
+		'fma:7148' : 'partial/circuitboard/threed/models/FMA7148_Stomach.obj',
+		'fma:7197' : 'partial/circuitboard/threed/models/FMA7197_Liver.obj',
+		'fma:7204' : 'partial/circuitboard/threed/models/FMA7204_Right_Kidney.obj',
+		'fma:7205' : 'partial/circuitboard/threed/models/FMA7205_Left_Kidney.obj',
+		'fma:7394' : 'partial/circuitboard/threed/models/FMA7394_Trachea.obj',
+		'fma:12513': 'partial/circuitboard/threed/models/FMA12513_Eyeball.obj',
+		'fma:13076': 'partial/circuitboard/threed/models/FMA13076_Fifth_Lumbar_Vertebra.obj',
+		'fma:24498': 'partial/circuitboard/threed/models/FMA24498_Left_Calcaneus.obj',
+		'fma:52735': 'partial/circuitboard/threed/models/FMA52735_Occipital_Bone.obj',
+		'fma:52748': 'partial/circuitboard/threed/models/FMA52748_Mandible.obj',
+		'fma:62004': 'partial/circuitboard/threed/models/FMA62004_Medulla_Oblongata.obj'
+	};
 
 
 	app.directive('amyCanvas', ['$window', '$bind', function ($window, $bind) {
@@ -23,10 +38,12 @@ define(['lodash',
 			restrict: 'E',
 			replace : false,
 			scope   : {
-				transformation: '=amyTransformation'
+				transformation     : '=amyTransformation',
+				circuitBoardElement: '='
 			},
 
-			controller: ['$scope', '$rootScope', function ($scope, $rootScope) {}],
+			controller: ['$scope', '$rootScope', function ($scope, $rootScope) {
+			}],
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -37,16 +54,33 @@ define(['lodash',
 
 						function init() {
 
-							//// camera
+							//////////////////// how to transform an object in sync with the circuitboard //////////////
 
-							$scope.camera = new THREE.PerspectiveCamera(45, iElement.width() / iElement.height(), 1, 600);
-							$scope.camera.position.z = 200;
+							function transformWithCircuitboard(obj) {
+								$scope.$watch('transformation', function (transformation) {
+									obj.position.x = .24 * transformation.translate.x;
+									obj.position.y = .24 * transformation.translate.y;
+									obj.position.z = .24 * transformation.translate.z;
 
-							//// scene
+									obj.rotation.x = -transformation.rotate.x * DEG_TO_RAD;
+									obj.rotation.y = -transformation.rotate.y * DEG_TO_RAD;
+									obj.rotation.z = -transformation.rotate.z * DEG_TO_RAD;
+
+									render();
+								});
+							}
+
+
+							//////////////////// camera ////////////////////
+
+							$scope.camera = new THREE.PerspectiveCamera(60, iElement.width() / iElement.height(), 1, 10000);
+							$scope.camera.position.z = iElement.height() / (2 * Math.tan($scope.camera.fov * DEG_TO_RAD / 2));
+
+							//////////////////// scene ////////////////////
 
 							$scope.scene = new THREE.Scene();
 
-							//// lighting
+							//////////////////// lighting ////////////////////
 
 							var ambientLight = new THREE.AmbientLight(0x101030);
 							$scope.scene.add(ambientLight);
@@ -55,40 +89,67 @@ define(['lodash',
 							directionalLight.position.set(0, 0, 1);
 							$scope.scene.add(directionalLight);
 
-							//// loading manager
+							//////////////////// loading manager ////////////////////
 
 							var manager = new THREE.LoadingManager();
 
-							//// loading the .obj file
+							//////////////////// TEST: Loading HTML circuitboard ///////////////////
 
-							var objLoader = new THREE.OBJLoader(manager);
-							objLoader.load('partial/circuitboard/threed/example/bust.obj', $bind(function (obj) {
-								$scope.object = obj;
-								$scope.scene.add($scope.object);
-								$scope.object.scale.set(15, 15, 15);
-								$scope.object.eulerOrder = 'XYZ';
+							(function () {
+//								var material = new THREE.MeshBasicMaterial({ color: '#000000', wireframe: true });
+//								var geometry = new THREE.PlaneGeometry(iElement.width(), iElement.height(), 30, 30);
+//								var planeMesh= new THREE.Mesh( geometry, material );
+//
+//								$scope.scene.add(planeMesh);
+//
+//								transformWithCircuitboard(planeMesh);
 
+								var circuitBoard = new THREE.CSS3DObject($scope.circuitBoardElement[0]);
 
-
-								$scope.$watch('transformation', function (transformation) {
-									$scope.object.position.x = .19 * transformation.translate.x;
-									$scope.object.position.y = .19 * transformation.translate.y;
-									$scope.object.position.z = .19 * transformation.translate.z;
-
-									$scope.object.rotation.x = -transformation.rotate.x * DEG_TO_RAD;
-									$scope.object.rotation.y = -transformation.rotate.y * DEG_TO_RAD;
-									$scope.object.rotation.z = -transformation.rotate.z * DEG_TO_RAD;
-
-									render();
+								$scope.circuitBoardElement.css({
+									width : iElement.width(),
+									height: iElement.height()
 								});
 
+								$scope.scene.add(circuitBoard);
+
+								transformWithCircuitboard(circuitBoard);
+							}());
+
+
+							//////////////////// loading the .obj file ////////////////////
+
+							var objLoader = new THREE.OBJLoader(manager);
+							objLoader.load(URI_TO_MODEL['fma:52748'], $bind(function (obj) {
+								$scope.object = obj;
+
+								//// Normalize position and size
+
+								var boundingSphere = $scope.object.children[0].geometry.boundingSphere;
+								var translation = boundingSphere.center.negate();
+								$scope.object.children[0].geometry.applyMatrix(new THREE.Matrix4().setPosition(translation));
+								var scalingFactor = 100 / boundingSphere.radius;
+								$scope.object.children[0].geometry.applyMatrix(new THREE.Matrix4().makeScale(scalingFactor, scalingFactor, scalingFactor));
+
+								//// Add to scene
+
+								$scope.scene.add($scope.object);
+
+								$scope.object.children[0].position.z = 150;
+
+								transformWithCircuitboard($scope.object);
 							}));
 
-							//// renderer
+							//////////////////// renderer ////////////////////
 
 							$scope.renderer = new THREE.WebGLRenderer({ alpha: true });
 							$scope.renderer.setSize(iElement.width(), iElement.height());
-							iElement.append($scope.renderer.domElement);
+
+							$scope.cssRenderer = new THREE.CSS3DRenderer();
+							$scope.cssRenderer.setSize(iElement.width(), iElement.height());
+							$($scope.cssRenderer.domElement).append($scope.renderer.domElement);
+
+							iElement.append($scope.cssRenderer.domElement);
 
 						}
 
@@ -97,6 +158,7 @@ define(['lodash',
 						function render() {
 							$scope.camera.lookAt($scope.scene.position);
 							$scope.renderer.render($scope.scene, $scope.camera);
+							$scope.cssRenderer.render($scope.scene, $scope.camera);
 						}
 
 						//// start doing stuff
@@ -107,9 +169,26 @@ define(['lodash',
 						//// reacting to window resize
 
 						$($window).on('resize', $bind(function () {
+							//// update the camera
+
 							$scope.camera.aspect = iElement.width() / iElement.height();
 							$scope.camera.updateProjectionMatrix();
+							$scope.camera.position.z = iElement.height() / (2 * Math.tan($scope.camera.fov * DEG_TO_RAD / 2));
+
+							//// update the renderer
+
 							$scope.renderer.setSize(iElement.width(), iElement.height());
+							$scope.cssRenderer.setSize(iElement.width(), iElement.height());
+
+							//// update the circuit-board
+
+							$scope.circuitBoardElement.css({
+								width : iElement.width(),
+								height: iElement.height()
+							});
+
+							//// and render
+
 							render();
 						}));
 

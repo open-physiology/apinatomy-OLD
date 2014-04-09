@@ -1,8 +1,8 @@
 <!-- to rotate the circuitboard -->
 <amy-rotation amy-transformation="transform3D" amy-model="style3D" enabled="$root.threeDRotateEnabled">
 
-    <!-- the treemap -->
-    <amy-treemap ng-style="style3D"
+    <!-- the treemap ... ng-style="style3D"-->
+    <amy-treemap
                  layout="rowsOfTiles"
                  on-redraw="onTreemapRedraw()">
 
@@ -18,4 +18,4 @@
 
 </amy-rotation>
 
-<amy-canvas ng-if="$root.threeDModelEnabled" amy-transformation="transform3D"></amy-canvas>
+<amy-canvas ng-if="$root.threeDModelEnabled" amy-transformation="transform3D" circuit-board-element="cbElement"></amy-canvas>

@@ -125,7 +125,9 @@ define(['lodash',
 					pre: function preLink(/*$scope, iElement, iAttrs, controller*/) {
 					},
 
-					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {
+					post: function postLink($scope, iElement/*, iAttrs, controller*/) {
+						$scope.cbElement = iElement.find('amy-treemap');
+//						$scope.cbElement.parentNode.removeChild($scope.cbElement); // FIXME: remove; this is just for test...
 					}
 
 				};

@@ -1,10 +1,20 @@
-@import "../../../base";
+@import "base";
 
 amy-canvas {
 
-	pointer-events: none;
+	& > div {
+		@include edge-to-edge;
 
-	canvas {}
+		& > div {
+			@include edge-to-edge;
+			z-index: 0;
+		}
+		canvas {
+			@include edge-to-edge;
+			z-index: 1;
+			pointer-events: none;
+		}
+	}
 
 }
 
