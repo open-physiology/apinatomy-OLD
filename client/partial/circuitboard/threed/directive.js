@@ -7,11 +7,11 @@ define(['lodash',
 	'threejs',
 	'threejs-obj-loader',
 	'threejs-css-3d-renderer',
+	'threejs-trackball-controls',
 	'$bind/service',
 	'defaults/service'
 ], function (_, ng, app, THREE) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 	var DEG_TO_RAD = Math.PI / 180;
 
@@ -39,6 +39,7 @@ define(['lodash',
 			replace : false,
 			scope   : {
 				transformation     : '=amyTransformation',
+				margin             : '=amyMargin',
 				circuitBoardElement: '='
 			},
 
@@ -53,23 +54,6 @@ define(['lodash',
 					pre: function preLink($scope, iElement/*, iAttrs, controller*/) {
 
 						function init() {
-
-							//////////////////// how to transform an object in sync with the circuitboard //////////////
-
-							function transformWithCircuitboard(obj) {
-								$scope.$watch('transformation', function (transformation) {
-									obj.position.x = .24 * transformation.translate.x;
-									obj.position.y = .24 * transformation.translate.y;
-									obj.position.z = .24 * transformation.translate.z;
-
-									obj.rotation.x = -transformation.rotate.x * DEG_TO_RAD;
-									obj.rotation.y = -transformation.rotate.y * DEG_TO_RAD;
-									obj.rotation.z = -transformation.rotate.z * DEG_TO_RAD;
-
-									render();
-								});
-							}
-
 
 							//////////////////// camera ////////////////////
 
@@ -86,36 +70,48 @@ define(['lodash',
 							$scope.scene.add(ambientLight);
 
 							var directionalLight = new THREE.DirectionalLight(0xffeedd);
-							directionalLight.position.set(0, 0, 1);
+							directionalLight.position.set(1, -1, 1);
 							$scope.scene.add(directionalLight);
 
 							//////////////////// loading manager ////////////////////
 
 							var manager = new THREE.LoadingManager();
 
-							//////////////////// TEST: Loading HTML circuitboard ///////////////////
+							//////////////////// circuitboard ///////////////////
 
 							(function () {
 //								var material = new THREE.MeshBasicMaterial({ color: '#000000', wireframe: true });
 //								var geometry = new THREE.PlaneGeometry(iElement.width(), iElement.height(), 30, 30);
 //								var planeMesh= new THREE.Mesh( geometry, material );
-//
 //								$scope.scene.add(planeMesh);
-//
-//								transformWithCircuitboard(planeMesh);
 
-								var circuitBoard = new THREE.CSS3DObject($scope.circuitBoardElement[0]);
+								$scope.circuitBoard = new THREE.CSS3DObject($scope.circuitBoardElement[0]);
 
 								$scope.circuitBoardElement.css({
-									width : iElement.width(),
-									height: iElement.height()
+									width : iElement.width() - $scope.margin.left - $scope.margin.right,
+									height: iElement.height() - $scope.margin.top - $scope.margin.bottom
 								});
+								$scope.circuitBoard.position.x = -($scope.margin.left + $scope.margin.right) / 2;
+								$scope.circuitBoard.position.y = -($scope.margin.top + $scope.margin.bottom) / 2;
 
-								$scope.scene.add(circuitBoard);
+								$scope.scene.add($scope.circuitBoard);
 
-								transformWithCircuitboard(circuitBoard);
+								$scope.backfaceElement = $('<div></div>');
+								$scope.backface = new THREE.CSS3DObject($scope.backfaceElement[0]);
+								$scope.backfaceElement.css({
+									position: 'absolute',
+									width : iElement.width() - $scope.margin.left - $scope.margin.right,
+									height: iElement.height() - $scope.margin.top - $scope.margin.bottom,
+									border: 'solid 1px black',
+									backfaceVisibility: 'hidden'
+								});
+								$scope.backface.rotation.set(Math.PI, 0, 0);
+								$scope.backface.position.x = $scope.margin.left / 2 - $scope.margin.right / 2;
+								$scope.backface.position.y = $scope.margin.top  / 2 - $scope.margin.bottom / 2;
+
+								$scope.scene.add($scope.backface);
+
 							}());
-
 
 							//////////////////// loading the .obj file ////////////////////
 
@@ -136,8 +132,8 @@ define(['lodash',
 								$scope.scene.add($scope.object);
 
 								$scope.object.children[0].position.z = 150;
-
-								transformWithCircuitboard($scope.object);
+								$scope.object.position.x = $scope.margin.left / 2 - $scope.margin.right / 2;
+								$scope.object.position.y = $scope.margin.top / 2 - $scope.margin.bottom / 2;
 							}));
 
 							//////////////////// renderer ////////////////////
@@ -151,12 +147,28 @@ define(['lodash',
 
 							iElement.append($scope.cssRenderer.domElement);
 
+							//////////////////// controls ////////////////////
+
+							$scope.controls = new THREE.TrackballControls($scope.camera, iElement[0]);
+							$scope.controls.rotateSpeed = 1.0;
+							$scope.controls.zoomSpeed = 1.2;
+							$scope.controls.panSpeed = 0.8;
+							$scope.controls.noZoom = false;
+							$scope.controls.noPan = false;
+							$scope.controls.staticMoving = true;
+							$scope.controls.dynamicDampingFactor = 0.3;
+							$scope.controls.keys = [ 65, 83, 68 ];
+							$scope.controls.addEventListener('change', render);
+						}
+
+						function animateByControls() {
+							requestAnimationFrame(animateByControls);
+							$scope.controls.update();
 						}
 
 						//// the function that actually renders the scene:
 
 						function render() {
-							$scope.camera.lookAt($scope.scene.position);
 							$scope.renderer.render($scope.scene, $scope.camera);
 							$scope.cssRenderer.render($scope.scene, $scope.camera);
 						}
@@ -165,10 +177,11 @@ define(['lodash',
 
 						init();
 						render();
+						animateByControls();
 
 						//// reacting to window resize
 
-						$($window).on('resize', $bind(function () {
+						function onResize() {
 							//// update the camera
 
 							$scope.camera.aspect = iElement.width() / iElement.height();
@@ -183,23 +196,51 @@ define(['lodash',
 							//// update the circuit-board
 
 							$scope.circuitBoardElement.css({
-								width : iElement.width(),
-								height: iElement.height()
+								width : iElement.width() - $scope.margin.left - $scope.margin.right,
+								height: iElement.height() - $scope.margin.top - $scope.margin.bottom
 							});
+							$scope.circuitBoard.position.x = -($scope.margin.left + $scope.margin.right) / 2;
+							$scope.circuitBoard.position.y = -($scope.margin.top + $scope.margin.bottom) / 2;
+
+							//// update the circuit-board backface
+
+							$scope.backfaceElement.css({
+								width : iElement.width() - $scope.margin.left - $scope.margin.right,
+								height: iElement.height() - $scope.margin.top - $scope.margin.bottom
+							});
+							$scope.backface.position.x = $scope.margin.left / 2 - $scope.margin.right / 2;
+							$scope.backface.position.y = $scope.margin.top  / 2 - $scope.margin.bottom / 2;
+
+							//// update the 3D model positions; TODO: adjust to multiple unknown models
+
+							if ($scope.object) {
+								$scope.object.position.x = $scope.margin.left / 2 - $scope.margin.right / 2;
+								$scope.object.position.y = $scope.margin.top / 2 - $scope.margin.bottom / 2;
+							}
+
+							//// update controls
+
+							$scope.controls.handleResize();
 
 							//// and render
 
 							render();
-						}));
+						}
+
+						//// react to events
+
+						var bindOnResize = $bind(onResize);
+						$($window).on('resize', bindOnResize);
+						$scope.$on('$destroy', function () { $($window).off('resize', bindOnResize); });
+
+						$scope.$watch('margin', onResize);
 
 						$scope.$watch('object.position', render);
 						$scope.$watch('object.rotation', render);
 
 					},
 
-					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {
-
-					}
+					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {}
 
 				};
 			}

@@ -37,9 +37,9 @@ define(['jquery',
 
 		$rootScope.$watch('simulationEnabled', function (enabled) {
 			if (enabled) {
-				$('main').css('bottom', amySpacing + amyPanelHeight);
+				$('main').css('bottom', amyPanelHeight);
 			} else {
-				$('main').css('bottom', amySpacing);
+				$('main').css('bottom', 0);
 			}
 			_($($window)).bindKey('trigger', 'resize').defer();
 		});

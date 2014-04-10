@@ -126,8 +126,20 @@ define(['lodash',
 					},
 
 					post: function postLink($scope, iElement/*, iAttrs, controller*/) {
-						$scope.cbElement = iElement.find('amy-treemap');
-//						$scope.cbElement.parentNode.removeChild($scope.cbElement); // FIXME: remove; this is just for test...
+						$scope.cbElement = iElement.find('.amy-flat-circuitboard');
+
+						$scope.$root.$watch('threeDEnabled', function (isEnabled, wasEnabled) {
+							if (wasEnabled && !isEnabled) {
+								$scope.cbElement.prependTo(iElement);
+								$scope.cbElement.css({
+									WebkitTransform: 'none',
+									MozTransform   : 'none',
+									oTransform     : 'none',
+									transform      : 'none'
+								});
+								$scope.$broadcast('element-reset');
+							}
+						});
 					}
 
 				};

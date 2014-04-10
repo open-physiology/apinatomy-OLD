@@ -6,12 +6,18 @@
 @import "partial/circuitboard/threed/view";
 
 amy-circuitboard {
-
-	amy-canvas {
-
-//		@include fade-in-out;
-
+	.amy-flat-circuitboard {
+		@include edge-to-edge;
+		@include backface-visibility(hidden);
+		amy-treemap {
+			@include edge-to-edge;
+		}
+		amy-graph {
+			@include edge-to-edge;
+		}
 	}
-
-
+	amy-canvas {
+		@include edge-to-edge;
+	}
 }
+

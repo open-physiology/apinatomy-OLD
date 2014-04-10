@@ -43,12 +43,13 @@ html, body {
 
 	main {
 		@include edge-to-edge;
-		bottom: $amy-spacing;
-		top: $amy-spacing + $amy-top-nav-height;
+		top: $amy-top-nav-height;
 		& > amy-circuitboard {
 			@include edge-to-edge;
-			amy-rotation {
+			.amy-flat-circuitboard {
 				@include edge-to-edge;
+				top: $amy-spacing;
+				bottom: $amy-spacing;
 				left: $amy-spacing + $amy-side-nav-width;
 				right: $amy-spacing;
 				amy-treemap {
@@ -60,8 +61,20 @@ html, body {
 			}
 			amy-canvas {
 				@include edge-to-edge;
-				left: $amy-spacing + $amy-side-nav-width;
-				right: $amy-spacing;
+
+				& > div {
+					@include edge-to-edge;
+
+					& > div {
+						@include edge-to-edge;
+						z-index: 0;
+					}
+					canvas {
+						@include edge-to-edge;
+						z-index: 1;
+						pointer-events: none;
+					}
+				}
 			}
 		}
 	}

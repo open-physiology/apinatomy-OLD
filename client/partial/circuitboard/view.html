@@ -1,10 +1,7 @@
-<!-- to rotate the circuitboard -->
-<amy-rotation amy-transformation="transform3D" amy-model="style3D" enabled="$root.threeDRotateEnabled">
+<div class="amy-flat-circuitboard">
 
-    <!-- the treemap ... ng-style="style3D"-->
-    <amy-treemap
-                 layout="rowsOfTiles"
-                 on-redraw="onTreemapRedraw()">
+    <!-- the treemap -->
+    <amy-treemap layout="rowsOfTiles" on-redraw="onTreemapRedraw()">
 
         <!-- one tile for each 'child element' (of the 24 tiles) -->
         <amy-circuitboard-tile ng-repeat="child in children" amy-entity="child"></amy-circuitboard-tile>
@@ -12,10 +9,14 @@
     </amy-treemap>
 
     <!-- the connection-graph hovering over the treemap -->
-    <amy-graph ng-if="$root.connectionsEnabled" ng-style="style3D"
+    <amy-graph ng-if="$root.connectionsEnabled"
                amy-active-tile-junctions="activeTileJunctions"
-		       dragging="thisTile.tileHighlightingDisabled"></amy-graph>
+               dragging="thisTile.tileHighlightingDisabled"></amy-graph>
 
-</amy-rotation>
+</div>
 
-<amy-canvas ng-if="$root.threeDModelEnabled" amy-transformation="transform3D" circuit-board-element="cbElement"></amy-canvas>
+<!-- the 3D canvas -->
+<amy-canvas ng-if="$root.threeDEnabled"
+            circuit-board-element="cbElement"
+            amy-margin="{ top: 15, left: 200 + 15, right: 15, bottom: ($root.simulationEnabled ? 250 : 0) + 15 }">
+</amy-canvas>
