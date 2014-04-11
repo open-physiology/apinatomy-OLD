@@ -28,17 +28,20 @@ define(['angular',
 			transclude : true,
 			templateUrl: 'partial/treemap/tile/view.html',
 			scope      : {
-				open             : '=amyOpen',
-				weight           : '=amyWeight',
-				title            : '=amyTitle',
-				layout           : '=amyLayout',
-				sizeButtonModel  : '=amySizeButtonModel',
-				sizeButtonStates : '=amySizeButtonStates',
-				sizeButtonClasses: '=amySizeButtonClasses',
-				frontIcon        : '=amyFrontIcon',
-				frontIconTitle   : '=amyFrontIconTitle',
-				onReadyFn        : '&onReady',
-				afterRepositionFn: '&afterReposition'
+				open                  : '=amyOpen',
+				weight                : '=amyWeight',
+				title                 : '=amyTitle',
+				layout                : '=amyLayout',
+				sizeButtonModel       : '=amySizeButtonModel',
+				sizeButtonStates      : '=amySizeButtonStates',
+				sizeButtonClasses     : '=amySizeButtonClasses',
+				showThreeDModelStates : '=amyShowThreeDModelStates',
+				showThreeDModelClasses: '=amyShowThreeDModelClasses',
+				showThreeDModelModel  : '=amyShowThreeDModelModel',
+				frontIcon             : '=amyFrontIcon',
+				frontIconTitle        : '=amyFrontIconTitle',
+				onReadyFn             : '&onReady',
+				afterRepositionFn     : '&afterReposition'
 			},
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -159,7 +162,9 @@ define(['angular',
 								//// explicitly hide tiles with 0 width or height
 
 								if (pos.hidden) {
-									$timeout(function () { iElement.hide(); }, 600);
+									$timeout(function () {
+										iElement.hide();
+									}, 600);
 								} else {
 									iElement.show();
 								}
@@ -187,9 +192,9 @@ define(['angular',
 													.forEach(function (childIface, i) {
 														childIface.index = i;
 													}).value(),
-											$scope.layout || DEFAULT_LAYOUT,
-											pos.height - $scope.tileSpacing - 3 * $scope.borderWidth - _.parseInt(TILE_HEADER_HEIGHT),
-											pos.width - $scope.tileSpacing - 2 * $scope.borderWidth
+													$scope.layout || DEFAULT_LAYOUT,
+													pos.height - $scope.tileSpacing - 3 * $scope.borderWidth - _.parseInt(TILE_HEADER_HEIGHT),
+													pos.width - $scope.tileSpacing - 2 * $scope.borderWidth
 									);
 
 									//// adjust for tile spacing
@@ -217,7 +222,7 @@ define(['angular',
 						//// connect with the parent tile controller
 
 						controller.connectWithParent(iElement.parent().controller('amyTile') ||
-								iElement.parent().controller('amyTreemap'));
+						                             iElement.parent().controller('amyTreemap'));
 
 
 						//// set some non-changing css styling for the header

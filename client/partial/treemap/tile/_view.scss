@@ -68,13 +68,18 @@ amy-tile {
 		opacity        : 0;
 		&.opaque { opacity : 1; }
 
-		//// the icon button to the right
+		//// the icon buttons to the right
 		& > icon-btn {
 			position : absolute;
 			top      : 2px;
-			right    : 2px;
 			height   : $amy-tile-header-height - 4px;
 			width    : $amy-tile-header-height - 4px;
+			&:nth-last-of-type(1)  {
+				right    : 2px;
+			}
+			&:nth-last-of-type(2)  {
+				right    : 2px + $amy-tile-header-height - 2px;
+			}
 		}
 	}
 

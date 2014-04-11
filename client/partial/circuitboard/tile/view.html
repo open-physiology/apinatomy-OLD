@@ -6,6 +6,10 @@
           amy-size-button-states="{ 'open': 'maximized', 'maximized': 'open' }"
           amy-size-button-classes="{ open:      'icon-btn-full-'  + styling[state].css['&'].color,
 	                                 maximized: 'icon-btn-small-' + styling[state].css['&'].color }"
+          amy-show-three-d-model-model="tile3D.show"
+          amy-show-three-d-model-states="{ 'true': 'false', 'false': 'true' }"
+          amy-show-three-d-model-classes="{ 'true':  'icon-btn-show3d-' + styling[state].css['&'].color,
+	                                        'false': 'icon-btn-hide3d-' + styling[state].css['&'].color }"
           amy-front-icon="visible && !active && 'asterisk'"
           amy-front-icon-title="'The \'' + entity.name + '\' is active in another tile.'"
           ng-mouseenter="mouseOver = true"

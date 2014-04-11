@@ -16,17 +16,17 @@ define(['lodash',
 	var DEG_TO_RAD = Math.PI / 180;
 
 	var URI_TO_MODEL = {
-		'fma:7148' : 'partial/circuitboard/threed/models/FMA7148_Stomach.obj',
-		'fma:7197' : 'partial/circuitboard/threed/models/FMA7197_Liver.obj',
-		'fma:7204' : 'partial/circuitboard/threed/models/FMA7204_Right_Kidney.obj',
-		'fma:7205' : 'partial/circuitboard/threed/models/FMA7205_Left_Kidney.obj',
-		'fma:7394' : 'partial/circuitboard/threed/models/FMA7394_Trachea.obj',
-		'fma:12513': 'partial/circuitboard/threed/models/FMA12513_Eyeball.obj',
-		'fma:13076': 'partial/circuitboard/threed/models/FMA13076_Fifth_Lumbar_Vertebra.obj',
-		'fma:24498': 'partial/circuitboard/threed/models/FMA24498_Left_Calcaneus.obj',
-		'fma:52735': 'partial/circuitboard/threed/models/FMA52735_Occipital_Bone.obj',
-		'fma:52748': 'partial/circuitboard/threed/models/FMA52748_Mandible.obj',
-		'fma:62004': 'partial/circuitboard/threed/models/FMA62004_Medulla_Oblongata.obj'
+		'fma:7148' : '3d-models/FMA7148_Stomach.obj',
+		'fma:7197' : '3d-models/FMA7197_Liver.obj',
+		'fma:7204' : '3d-models/FMA7204_Right_Kidney.obj',
+		'fma:7205' : '3d-models/FMA7205_Left_Kidney.obj',
+		'fma:7394' : '3d-models/FMA7394_Trachea.obj',
+		'fma:12513': '3d-models/FMA12513_Eyeball.obj',
+		'fma:13076': '3d-models/FMA13076_Fifth_Lumbar_Vertebra.obj',
+		'fma:24498': '3d-models/FMA24498_Left_Calcaneus.obj',
+		'fma:52735': '3d-models/FMA52735_Occipital_Bone.obj',
+		'fma:52748': '3d-models/FMA52748_Mandible.obj',
+		'fma:62004': '3d-models/FMA62004_Medulla_Oblongata.obj'
 	};
 
 
@@ -40,10 +40,11 @@ define(['lodash',
 			scope   : {
 				transformation     : '=amyTransformation',
 				margin             : '=amyMargin',
-				circuitBoardElement: '='
+				circuitBoardElement: '=amyCircuitBoardElement',
+				activeTiles        : '=amyActiveTiles'
 			},
 
-			controller: ['$scope', '$rootScope', function ($scope, $rootScope) {
+			controller: ['$scope', '$rootScope', function (/*$scope, $rootScope*/) {
 			}],
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,47 +95,91 @@ define(['lodash',
 								$scope.circuitBoard.position.x = -($scope.margin.left + $scope.margin.right) / 2;
 								$scope.circuitBoard.position.y = -($scope.margin.top + $scope.margin.bottom) / 2;
 
+								$scope.baseX = ($scope.margin.left - $scope.margin.right - $scope.circuitBoardElement.width()) / 2;
+								$scope.baseY = ($scope.margin.top - $scope.margin.bottom + $scope.circuitBoardElement.height()) / 2;
+
 								$scope.scene.add($scope.circuitBoard);
 
 								$scope.backfaceElement = $('<div></div>');
 								$scope.backface = new THREE.CSS3DObject($scope.backfaceElement[0]);
 								$scope.backfaceElement.css({
-									position: 'absolute',
-									width : iElement.width() - $scope.margin.left - $scope.margin.right,
-									height: iElement.height() - $scope.margin.top - $scope.margin.bottom,
-									border: 'solid 1px black',
+									position          : 'absolute',
+									width             : iElement.width() - $scope.margin.left - $scope.margin.right,
+									height            : iElement.height() - $scope.margin.top - $scope.margin.bottom,
+									border            : 'solid 1px black',
 									backfaceVisibility: 'hidden'
 								});
 								$scope.backface.rotation.set(Math.PI, 0, 0);
 								$scope.backface.position.x = $scope.margin.left / 2 - $scope.margin.right / 2;
-								$scope.backface.position.y = $scope.margin.top  / 2 - $scope.margin.bottom / 2;
+								$scope.backface.position.y = $scope.margin.top / 2 - $scope.margin.bottom / 2;
 
 								$scope.scene.add($scope.backface);
 
 							}());
 
-							//////////////////// loading the .obj file ////////////////////
+							//////////////////// loading the .obj files ////////////////////
 
 							var objLoader = new THREE.OBJLoader(manager);
-							objLoader.load(URI_TO_MODEL['fma:52748'], $bind(function (obj) {
-								$scope.object = obj;
 
-								//// Normalize position and size
+							$scope.entityObjects = {};
 
-								var boundingSphere = $scope.object.children[0].geometry.boundingSphere;
-								var translation = boundingSphere.center.negate();
-								$scope.object.children[0].geometry.applyMatrix(new THREE.Matrix4().setPosition(translation));
-								var scalingFactor = 100 / boundingSphere.radius;
-								$scope.object.children[0].geometry.applyMatrix(new THREE.Matrix4().makeScale(scalingFactor, scalingFactor, scalingFactor));
+							$scope.$watchCollection('activeTiles', function (activeTiles) {
+								var idsWithObjects = [];
+								_(activeTiles).forEach(function (tile, id) {
+									if (!_(URI_TO_MODEL[id]).isUndefined()) {
+										idsWithObjects.push(id);
+										if (_($scope.entityObjects[id]).isUndefined()) {
 
-								//// Add to scene
+											objLoader.load(URI_TO_MODEL[id], $bind(function (obj) {
 
-								$scope.scene.add($scope.object);
+												//// Normalize position and size
 
-								$scope.object.children[0].position.z = 150;
-								$scope.object.position.x = $scope.margin.left / 2 - $scope.margin.right / 2;
-								$scope.object.position.y = $scope.margin.top / 2 - $scope.margin.bottom / 2;
-							}));
+												obj.children[0].geometry.computeBoundingBox();
+												var boundingBox = obj.children[0].geometry.boundingBox;
+
+												var translation = boundingBox.center().negate();
+												obj.children[0].geometry.applyMatrix(new THREE.Matrix4().setPosition(translation));
+
+												var modelWidth = boundingBox.max.x - boundingBox.min.x;
+												var modelHeight = boundingBox.max.y - boundingBox.min.y;
+												var modelDepth = boundingBox.max.z - boundingBox.min.z;
+
+												//// Model position/size + reposition when tile position changes
+
+												var deregisterPos = $scope.$watch('activeTiles["' + id + '"].position', function (pos) {
+													obj.position.x = $scope.baseX + pos.left + pos.width / 2;
+													obj.position.y = $scope.baseY - pos.top - pos.height / 2;
+													var ratio = Math.min(pos.width / modelWidth, pos.height / modelHeight) * .7;
+													obj.position.z = 0.5 * ratio * modelDepth + 30;
+													obj.scale.set(ratio, ratio, ratio);
+													render();
+												}, true);
+
+												var deregisterShow = $scope.$watch('activeTiles["' + id + '"].show', function (showNow, showBefore) {
+													if (showNow === 'true') {
+														$scope.scene.add(obj);
+													} else if (!_(showBefore).isUndefined()) {
+														$scope.scene.remove(obj);
+													}
+													render();
+												});
+
+												//// Store object
+
+												$scope.entityObjects[id] = obj;
+												$scope.entityObjects[id].deregisterNgWatch = _.compose(deregisterPos, deregisterShow);
+											}));
+										}
+									}
+								});
+								_($scope.entityObjects).keys().difference(idsWithObjects).forEach(function (id) {
+									$scope.entityObjects[id].deregisterNgWatch();
+									$scope.scene.remove($scope.entityObjects[id]);
+									delete $scope.entityObjects[id];
+								});
+								render();
+							});
+
 
 							//////////////////// renderer ////////////////////
 
@@ -182,6 +227,9 @@ define(['lodash',
 						//// reacting to window resize
 
 						function onResize() {
+							$scope.baseX = ($scope.margin.left - $scope.margin.right - $scope.circuitBoardElement.width()) / 2;
+							$scope.baseY = ($scope.margin.top - $scope.margin.bottom + $scope.circuitBoardElement.height()) / 2;
+
 							//// update the camera
 
 							$scope.camera.aspect = iElement.width() / iElement.height();
@@ -209,14 +257,7 @@ define(['lodash',
 								height: iElement.height() - $scope.margin.top - $scope.margin.bottom
 							});
 							$scope.backface.position.x = $scope.margin.left / 2 - $scope.margin.right / 2;
-							$scope.backface.position.y = $scope.margin.top  / 2 - $scope.margin.bottom / 2;
-
-							//// update the 3D model positions; TODO: adjust to multiple unknown models
-
-							if ($scope.object) {
-								$scope.object.position.x = $scope.margin.left / 2 - $scope.margin.right / 2;
-								$scope.object.position.y = $scope.margin.top / 2 - $scope.margin.bottom / 2;
-							}
+							$scope.backface.position.y = $scope.margin.top / 2 - $scope.margin.bottom / 2;
 
 							//// update controls
 
@@ -231,7 +272,9 @@ define(['lodash',
 
 						var bindOnResize = $bind(onResize);
 						$($window).on('resize', bindOnResize);
-						$scope.$on('$destroy', function () { $($window).off('resize', bindOnResize); });
+						$scope.$on('$destroy', function () {
+							$($window).off('resize', bindOnResize);
+						});
 
 						$scope.$watch('margin', onResize);
 
@@ -240,7 +283,8 @@ define(['lodash',
 
 					},
 
-					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {}
+					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {
+					}
 
 				};
 			}

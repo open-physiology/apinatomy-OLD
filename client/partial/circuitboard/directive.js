@@ -54,6 +54,7 @@ define(['lodash',
 
 				$scope.activeQueueByEntity = {};
 				$scope.activeTileJunctions = {};
+				$scope.activeTile3Ds = {};
 
 				$scope.registerTile = function (tile) {
 					if (!_($scope.activeQueueByEntity[tile.entity._id]).isArray()) {
@@ -68,12 +69,14 @@ define(['lodash',
 								$scope.activeQueueByEntity[tile.entity._id].push(tile);
 								if (tile.active) {
 									$scope.activeTileJunctions[tile.entity._id] = tile.junction;
+									$scope.activeTile3Ds[tile.entity._id] = tile.tile3D;
 								}
 							} else {
 								var wasActive = tile.active;
 								_($scope.activeQueueByEntity[tile.entity._id]).pull(tile);
 								if (wasActive) {
 									delete $scope.activeTileJunctions[tile.entity._id];
+									delete $scope.activeTile3Ds[tile.entity._id];
 								}
 							}
 						}
@@ -87,8 +90,10 @@ define(['lodash',
 								var previouslyActiveTile = $scope.activeQueueByEntity[tile.entity._id][0];
 								$scope.activeQueueByEntity[tile.entity._id].unshift(tile);
 								$scope.activeTileJunctions[tile.entity._id] = tile.junction;
+								$scope.activeTile3Ds[tile.entity._id] = tile.tile3D;
 								if (previouslyActiveTile) {
 									delete $scope.activeTileJunctions[previouslyActiveTile.entity._id];
+									delete $scope.activeTile3Ds[previouslyActiveTile.entity._id];
 								}
 							}
 						} else {

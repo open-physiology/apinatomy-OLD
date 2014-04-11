@@ -17,6 +17,7 @@
 
 <!-- the 3D canvas -->
 <amy-canvas ng-if="$root.threeDEnabled"
-            circuit-board-element="cbElement"
+            amy-circuit-board-element="cbElement"
+            amy-active-tiles="activeTile3Ds"
             amy-margin="{ top: 15, left: 200 + 15, right: 15, bottom: ($root.simulationEnabled ? 250 : 0) + 15 }">
 </amy-canvas>
