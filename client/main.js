@@ -26,6 +26,7 @@ requirejs.config({
 		'd3'                        : 'lib/d3/d3',
 		'threejs'                   : 'lib/threejs/build/three',
 		'threejs-obj-loader'        : 'patched-lib/OBJLoader',
+		'threejs-swc-loader'        : 'patched-lib/SWCLoader/SWCLoader',
 		'threejs-css-3d-renderer'   : 'patched-lib/CSS3DRenderer',
 		'threejs-trackball-controls': 'patched-lib/TrackballControls'
 	},
@@ -35,6 +36,7 @@ requirejs.config({
 		'lodash'                    : { exports: '_' },
 		'threejs'                   : { exports: 'THREE' },
 		'threejs-obj-loader'        : ['threejs'],
+		'threejs-swc-loader'        : ['threejs'],
 		'threejs-css-3d-renderer'   : ['threejs'],
 		'threejs-trackball-controls': ['threejs'],
 		'es6-shim'                  : ['es5-shim'],

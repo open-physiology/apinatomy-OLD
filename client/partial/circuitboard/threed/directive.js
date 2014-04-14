@@ -6,12 +6,28 @@ define(['lodash',
 	'app/module',
 	'threejs',
 	'threejs-obj-loader',
+	'threejs-swc-loader',
 	'threejs-css-3d-renderer',
 	'threejs-trackball-controls',
 	'$bind/service',
 	'defaults/service'
 ], function (_, ng, app, THREE) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	function getCompoundBoundingBox(object3D) {
+		var box = null;
+		object3D.traverse(function (obj3D) {
+			var geometry = obj3D.geometry;
+			if (geometry === undefined) return;
+			geometry.computeBoundingBox();
+			if (box === null) {
+				box = geometry.boundingBox;
+			} else {
+				box.union(geometry.boundingBox);
+			}
+		});
+		return box;
+	}
 
 	var DEG_TO_RAD = Math.PI / 180;
 
@@ -26,7 +42,11 @@ define(['lodash',
 		'fma:24498': '3d-models/FMA24498_Left_Calcaneus.obj',
 		'fma:52735': '3d-models/FMA52735_Occipital_Bone.obj',
 		'fma:52748': '3d-models/FMA52748_Mandible.obj',
-		'fma:62004': '3d-models/FMA62004_Medulla_Oblongata.obj'
+		'fma:62004': '3d-models/FMA62004_Medulla_Oblongata.obj',
+		'fma:58301': ['3d-models/FMA58301_Retina_cell-147-trace.CNG.swc',
+			          '3d-models/FMA58301_Retina_cell-167-trace.CNG.swc'],
+		'fma:62429': '3d-models/FMA62429_Neocortex_07b_pyramidal14aACC.CNG.swc',
+		'fma:84013': '3d-models/FMA84013_Basal_ganglia_D2OE-AAV-GFP-14.CNG.swc'
 	};
 
 
@@ -120,6 +140,7 @@ define(['lodash',
 							//////////////////// loading the .obj files ////////////////////
 
 							var objLoader = new THREE.OBJLoader(manager);
+							var swcLoader = new THREE.SWCLoader(manager);
 
 							$scope.entityObjects = {};
 
@@ -130,28 +151,44 @@ define(['lodash',
 										idsWithObjects.push(id);
 										if (_($scope.entityObjects[id]).isUndefined()) {
 
-											objLoader.load(URI_TO_MODEL[id], $bind(function (obj) {
+
+											//// get model URL (using only the first, if an entity has multiples); TODO: options to switch
+											var filename = URI_TO_MODEL[id];
+											if (_(filename).isArray()) { filename = filename[0]; }
+
+											var loader;
+											if (/\.swc$/.test(filename)) {
+												loader = swcLoader;
+											} else if (/\.obj$/.test(filename)) {
+												loader = objLoader;
+											} else {
+												console.error('The file "' + filename + '" is not supported.');
+												return;
+											}
+
+											loader.load(filename, $bind(function (obj) {
 
 												//// Normalize position and size
 
-												obj.children[0].geometry.computeBoundingBox();
-												var boundingBox = obj.children[0].geometry.boundingBox;
+												var boundingBox = getCompoundBoundingBox(obj);
 
 												var translation = boundingBox.center().negate();
 												obj.children[0].geometry.applyMatrix(new THREE.Matrix4().setPosition(translation));
 
-												var modelWidth = boundingBox.max.x - boundingBox.min.x;
-												var modelHeight = boundingBox.max.y - boundingBox.min.y;
-												var modelDepth = boundingBox.max.z - boundingBox.min.z;
-
 												//// Model position/size + reposition when tile position changes
 
 												var deregisterPos = $scope.$watch('activeTiles["' + id + '"].position', function (pos) {
+													var ratio = Math.min(pos.width / boundingBox.size().x, pos.height / boundingBox.size().y) * .7;
+													if (/\.swc/.test(filename)) { ratio *= 2; }
 													obj.position.x = $scope.baseX + pos.left + pos.width / 2;
 													obj.position.y = $scope.baseY - pos.top - pos.height / 2;
-													var ratio = Math.min(pos.width / modelWidth, pos.height / modelHeight) * .7;
-													obj.position.z = 0.5 * ratio * modelDepth + 30;
+													obj.position.z = 0.5 * ratio * boundingBox.size().z + 30;
 													obj.scale.set(ratio, ratio, ratio);
+
+													if (/\.swc/.test(filename)) {
+														obj.regenerateMaterial(iElement.height(), $scope.camera.fov);
+													}
+
 													render();
 												}, true);
 
@@ -183,7 +220,7 @@ define(['lodash',
 
 							//////////////////// renderer ////////////////////
 
-							$scope.renderer = new THREE.WebGLRenderer({ alpha: true });
+							$scope.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 							$scope.renderer.setSize(iElement.width(), iElement.height());
 
 							$scope.cssRenderer = new THREE.CSS3DRenderer();
@@ -206,9 +243,10 @@ define(['lodash',
 							$scope.controls.addEventListener('change', render);
 						}
 
-						function animateByControls() {
-							requestAnimationFrame(animateByControls);
+						function animate() {
+							requestAnimationFrame(animate);
 							$scope.controls.update();
+							render();
 						}
 
 						//// the function that actually renders the scene:
@@ -222,7 +260,7 @@ define(['lodash',
 
 						init();
 						render();
-						animateByControls();
+						animate();
 
 						//// reacting to window resize
 
