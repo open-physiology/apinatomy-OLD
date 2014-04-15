@@ -44,7 +44,7 @@ define(['lodash',
 		'fma:52748': '3d-models/FMA52748_Mandible.obj',
 		'fma:62004': '3d-models/FMA62004_Medulla_Oblongata.obj',
 		'fma:58301': ['3d-models/FMA58301_Retina_cell-147-trace.CNG.swc',
-			          '3d-models/FMA58301_Retina_cell-167-trace.CNG.swc'],
+		              '3d-models/FMA58301_Retina_cell-167-trace.CNG.swc'],
 		'fma:62429': '3d-models/FMA62429_Neocortex_07b_pyramidal14aACC.CNG.swc',
 		'fma:84013': '3d-models/FMA84013_Basal_ganglia_D2OE-AAV-GFP-14.CNG.swc'
 	};
