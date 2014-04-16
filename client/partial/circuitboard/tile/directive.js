@@ -295,10 +295,16 @@ define(['angular',
 				//////////////////// Tile info for 3D Environment //////////////////////////////////////////////////////
 
 				$scope.tile3D = {
-					show: 'true',
+					show: 'false',
 					entity: $scope.entity,
 					position: $scope.position
 				};
+
+				Resources.threeDModels([$scope.entity._id]).then(function (modelMap) {
+					if (!_(modelMap).isEmpty()) {
+						$scope.tile3D.hasModels = true;
+					}
+				});
 
 			}],
 

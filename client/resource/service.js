@@ -85,8 +85,33 @@ define(['app/module', 'lodash', 'defaults/service'], function (ApiNATOMY, _) {
 					.then(function (data) { return data.data; });
 		};
 
-		return iface;
+		//////////////////// 3D Models /////////////////////////////////////////////////////////////////////////////////
 
+		var URI_TO_MODEL = {
+			'fma:7148' : ['3d-models/FMA7148_Stomach.obj'],
+			'fma:7197' : ['3d-models/FMA7197_Liver.obj'],
+			'fma:7204' : ['3d-models/FMA7204_Right_Kidney.obj'],
+			'fma:7205' : ['3d-models/FMA7205_Left_Kidney.obj'],
+			'fma:7394' : ['3d-models/FMA7394_Trachea.obj'],
+			'fma:12513': ['3d-models/FMA12513_Eyeball.obj'],
+			'fma:13076': ['3d-models/FMA13076_Fifth_Lumbar_Vertebra.obj'],
+			'fma:24498': ['3d-models/FMA24498_Left_Calcaneus.obj'],
+			'fma:52735': ['3d-models/FMA52735_Occipital_Bone.obj'],
+			'fma:52748': ['3d-models/FMA52748_Mandible.obj'],
+			'fma:62004': ['3d-models/FMA62004_Medulla_Oblongata.obj'],
+			'fma:58301': ['3d-models/FMA58301_Retina_cell-147-trace.CNG.swc',
+			              '3d-models/FMA58301_Retina_cell-167-trace.CNG.swc'],
+			'fma:62429': ['3d-models/FMA62429_Neocortex_07b_pyramidal14aACC.CNG.swc'],
+			'fma:84013': ['3d-models/FMA84013_Basal_ganglia_D2OE-AAV-GFP-14.CNG.swc']
+		};
+
+		iface.threeDModels = function (ids) {
+			var result = _.at(URI_TO_MODEL, ids);
+
+			return $q.when(_(URI_TO_MODEL).pick(_.intersection(ids, _.keys(URI_TO_MODEL))).value());
+		};
+
+		return iface;
 	}]);
 
 

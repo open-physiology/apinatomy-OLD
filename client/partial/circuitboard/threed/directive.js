@@ -32,26 +32,8 @@ define(['jquery',
 
 	var DEG_TO_RAD = Math.PI / 180;
 
-	var URI_TO_MODEL = {
-		'fma:7148' : '3d-models/FMA7148_Stomach.obj',
-		'fma:7197' : '3d-models/FMA7197_Liver.obj',
-		'fma:7204' : '3d-models/FMA7204_Right_Kidney.obj',
-		'fma:7205' : '3d-models/FMA7205_Left_Kidney.obj',
-		'fma:7394' : '3d-models/FMA7394_Trachea.obj',
-		'fma:12513': '3d-models/FMA12513_Eyeball.obj',
-		'fma:13076': '3d-models/FMA13076_Fifth_Lumbar_Vertebra.obj',
-		'fma:24498': '3d-models/FMA24498_Left_Calcaneus.obj',
-		'fma:52735': '3d-models/FMA52735_Occipital_Bone.obj',
-		'fma:52748': '3d-models/FMA52748_Mandible.obj',
-		'fma:62004': '3d-models/FMA62004_Medulla_Oblongata.obj',
-		'fma:58301': ['3d-models/FMA58301_Retina_cell-147-trace.CNG.swc',
-		              '3d-models/FMA58301_Retina_cell-167-trace.CNG.swc'],
-		'fma:62429': '3d-models/FMA62429_Neocortex_07b_pyramidal14aACC.CNG.swc',
-		'fma:84013': '3d-models/FMA84013_Basal_ganglia_D2OE-AAV-GFP-14.CNG.swc'
-	};
 
-
-	app.directive('amyCanvas', ['$window', '$bind', '$timeout', function ($window, $bind/*, $timeout*/) {
+	app.directive('amyCanvas', ['$window', '$bind', 'ResourceService', function ($window, $bind, Resources) {
 		return {
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -146,76 +128,81 @@ define(['jquery',
 							$scope.entityObjects = {};
 
 							$scope.$watchCollection('activeTiles', function (activeTiles) {
-								var idsWithObjects = [];
-								_(activeTiles).forEach(function (tile, id) {
-									if (!_(URI_TO_MODEL[id]).isUndefined()) {
-										idsWithObjects.push(id);
-										if (_($scope.entityObjects[id]).isUndefined()) {
+								Resources.threeDModels(_.keys(activeTiles)).then(function (modelMap) {
+									var idsWithObjects = [];
+									_(modelMap).forEach(function (models, id) {
+										if (!_(models).isEmpty()) {
+											idsWithObjects.push(id);
+											if (_($scope.entityObjects[id]).isUndefined()) {
+												var filename = models[0]; //// TODO: options to switch; now getting only the first
 
+												var loader;
+												if (/\.swc$/.test(filename)) {
+													loader = swcLoader;
+												} else if (/\.obj$/.test(filename)) {
+													loader = objLoader;
+												} else {
+													console.error('The file "' + filename + '" is not supported.');
+													return;
+												}
 
-											//// get model URL (using only the first, if an entity has multiples); TODO: options to switch
-											var filename = URI_TO_MODEL[id];
-											if (_(filename).isArray()) { filename = filename[0]; }
+												loader.load(filename, $bind(function (obj) {
 
-											var loader;
-											if (/\.swc$/.test(filename)) {
-												loader = swcLoader;
-											} else if (/\.obj$/.test(filename)) {
-												loader = objLoader;
-											} else {
-												console.error('The file "' + filename + '" is not supported.');
-												return;
+													var boundingBox = getCompoundBoundingBox(obj);
+
+													//// Normalize position
+
+													var translation = boundingBox.center().negate();
+													obj.children[0].geometry.applyMatrix(new THREE.Matrix4().setPosition(translation));
+
+													//// Model position/size + reposition when tile position changes
+
+													var deregisterPos = $scope.$watch('activeTiles["' + id + '"].position', function (pos) {
+														if (!_(pos).isUndefined()) {
+															var ratio = Math.min(pos.width / boundingBox.size().x, pos.height / boundingBox.size().y) * .7;
+															if (/\.swc/.test(filename)) {
+																ratio *= 2;
+															}
+															obj.position.x = $scope.baseX + pos.left + pos.width / 2;
+															obj.position.y = $scope.baseY - pos.top - pos.height / 2;
+															obj.position.z = 0.5 * ratio * boundingBox.size().z + 30;
+															obj.scale.set(ratio, ratio, ratio);
+
+															if (/\.swc/.test(filename)) {
+																obj.regenerateMaterial(iElement.height(), $scope.camera.fov);
+															}
+
+															render();
+														}
+													}, true);
+
+													var deregisterShow = $scope.$watch('activeTiles["' + id + '"].show', function (showNow, showBefore) {
+														if (!_(showNow).isUndefined()) {
+															if (showNow === 'true') {
+																$scope.scene.add(obj);
+															} else if (!_(showBefore).isUndefined()) {
+																$scope.scene.remove(obj);
+															}
+															render();
+														}
+													});
+
+													//// Store object
+
+													$scope.entityObjects[id] = obj;
+													$scope.entityObjects[id].deregisterNgWatch = _.compose(deregisterPos, deregisterShow);
+												}));
 											}
-
-											loader.load(filename, $bind(function (obj) {
-
-												//// Normalize position and size
-
-												var boundingBox = getCompoundBoundingBox(obj);
-
-												var translation = boundingBox.center().negate();
-												obj.children[0].geometry.applyMatrix(new THREE.Matrix4().setPosition(translation));
-
-												//// Model position/size + reposition when tile position changes
-
-												var deregisterPos = $scope.$watch('activeTiles["' + id + '"].position', function (pos) {
-													var ratio = Math.min(pos.width / boundingBox.size().x, pos.height / boundingBox.size().y) * .7;
-													if (/\.swc/.test(filename)) { ratio *= 2; }
-													obj.position.x = $scope.baseX + pos.left + pos.width / 2;
-													obj.position.y = $scope.baseY - pos.top - pos.height / 2;
-													obj.position.z = 0.5 * ratio * boundingBox.size().z + 30;
-													obj.scale.set(ratio, ratio, ratio);
-
-													if (/\.swc/.test(filename)) {
-														obj.regenerateMaterial(iElement.height(), $scope.camera.fov);
-													}
-
-													render();
-												}, true);
-
-												var deregisterShow = $scope.$watch('activeTiles["' + id + '"].show', function (showNow, showBefore) {
-													if (showNow === 'true') {
-														$scope.scene.add(obj);
-													} else if (!_(showBefore).isUndefined()) {
-														$scope.scene.remove(obj);
-													}
-													render();
-												});
-
-												//// Store object
-
-												$scope.entityObjects[id] = obj;
-												$scope.entityObjects[id].deregisterNgWatch = _.compose(deregisterPos, deregisterShow);
-											}));
 										}
-									}
+									});
+
+									_($scope.entityObjects).keys().difference(idsWithObjects).forEach(function (id) {
+										$scope.entityObjects[id].deregisterNgWatch();
+										$scope.scene.remove($scope.entityObjects[id]);
+										delete $scope.entityObjects[id];
+									});
+									render();
 								});
-								_($scope.entityObjects).keys().difference(idsWithObjects).forEach(function (id) {
-									$scope.entityObjects[id].deregisterNgWatch();
-									$scope.scene.remove($scope.entityObjects[id]);
-									delete $scope.entityObjects[id];
-								});
-								render();
 							});
 
 
@@ -329,16 +316,19 @@ define(['jquery',
 						});
 					},
 
-					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {}
+					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {
+					}
 
 				};
 			}
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		};
-	}]);
+	}])
+	;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-});/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+})
+;/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
