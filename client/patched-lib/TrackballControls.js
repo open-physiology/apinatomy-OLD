@@ -57,6 +57,9 @@ THREE.TrackballControls = function ( object, domElement ) {
 	_panStart = new THREE.Vector2(),
 	_panEnd = new THREE.Vector2();
 
+	// added from http://threejs.org/examples/js/controls/PointerLockControls.js for ApiNATOMY
+	var _amy_velocity = new THREE.Vector3();
+
 	// for reset
 
 	this.target0 = this.target.clone();
@@ -85,9 +88,9 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 			this.screen = this.domElement.getBoundingClientRect();
 			// adjustments come from similar code in the jquery offset() function
-			var d = this.domElement.ownerDocument.documentElement
-			this.screen.left += window.pageXOffset - d.clientLeft
-			this.screen.top += window.pageYOffset - d.clientTop
+			var d = this.domElement.ownerDocument.documentElement;
+			this.screen.left += window.pageXOffset - d.clientLeft;
+			this.screen.top += window.pageYOffset - d.clientTop;
 
 		}
 
@@ -152,7 +155,7 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 			_eye.copy( _this.object.position ).sub( _this.target );
 
-			projection.copy( _this.object.up ).setLength( mouseOnBall.y )
+			projection.copy( _this.object.up ).setLength( mouseOnBall.y );
 			projection.add( objectUp.copy( _this.object.up ).cross( _eye ).setLength( mouseOnBall.x ) );
 			projection.add( _eye.setLength( mouseOnBall.z ) );
 
@@ -291,25 +294,15 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 		_eye.subVectors( _this.object.position, _this.target );
 
-		if ( !_this.noRotate ) {
+		if ( !_this.noRotate ) { _this.rotateCamera(); }
 
-			_this.rotateCamera();
+		if ( !_this.noZoom ) { _this.zoomCamera(); }
 
-		}
-
-		if ( !_this.noZoom ) {
-
-			_this.zoomCamera();
-
-		}
-
-		if ( !_this.noPan ) {
-
-			_this.panCamera();
-
-		}
+		if ( !_this.noPan ) { _this.panCamera(); 	}
 
 		_this.object.position.addVectors( _this.target, _eye );
+
+		_this.object.position.add(_amy_velocity);// _amy_velocity added for apinatomy
 
 		_this.checkDistances();
 
@@ -346,43 +339,79 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 	// listeners
 
+
+
+
+
+
+
+
+	var KEYBOARD_VELOCITY = 5;
+
+
+	// added from http://threejs.org/examples/js/controls/PointerLockControls.js
 	function keydown( event ) {
 
-		if ( _this.enabled === false ) return;
+		console.debug('keydown: ', event, _amy_velocity);
 
-		window.removeEventListener( 'keydown', keydown );
+		switch ( event.keyCode ) {
 
-		_prevState = _state;
+			case 38: // up
+			case 87: // w
+				_amy_velocity.y = KEYBOARD_VELOCITY;
+				break;
 
-		if ( _state !== STATE.NONE ) {
+			case 37: // left
+			case 65: // a
+				_amy_velocity.x = -KEYBOARD_VELOCITY;
+				break;
 
-			return;
+			case 40: // down
+			case 83: // s
+				_amy_velocity.y = -KEYBOARD_VELOCITY;
+				break;
 
-		} else if ( event.keyCode === _this.keys[ STATE.ROTATE ] && !_this.noRotate ) {
-
-			_state = STATE.ROTATE;
-
-		} else if ( event.keyCode === _this.keys[ STATE.ZOOM ] && !_this.noZoom ) {
-
-			_state = STATE.ZOOM;
-
-		} else if ( event.keyCode === _this.keys[ STATE.PAN ] && !_this.noPan ) {
-
-			_state = STATE.PAN;
+			case 39: // right
+			case 68: // d
+				_amy_velocity.x = KEYBOARD_VELOCITY;
+				break;
 
 		}
 
 	}
 
+	// added from http://threejs.org/examples/js/controls/PointerLockControls.js
 	function keyup( event ) {
 
-		if ( _this.enabled === false ) return;
+		switch( event.keyCode ) {
 
-		_state = _prevState;
+			case 38: // up
+			case 87: // w
+				_amy_velocity.y = 0;
+				break;
 
-		window.addEventListener( 'keydown', keydown, false );
+			case 37: // left
+			case 65: // a
+				_amy_velocity.x = 0;
+				break;
+
+			case 40: // down
+			case 83: // s
+				_amy_velocity.y = 0;
+				break;
+
+			case 39: // right
+			case 68: // d
+				_amy_velocity.x = 0;
+				break;
+
+		}
 
 	}
+
+
+
+
 
 	function mousedown( event ) {
 
