@@ -1,7 +1,8 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['lodash',
+define(['jquery',
+	'lodash',
 	'angular',
 	'app/module',
 	'threejs',
@@ -11,7 +12,7 @@ define(['lodash',
 	'threejs-trackball-controls',
 	'$bind/service',
 	'defaults/service'
-], function (_, ng, app, THREE) {
+], function ($, _, ng, app, THREE) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	function getCompoundBoundingBox(object3D) {
@@ -50,7 +51,7 @@ define(['lodash',
 	};
 
 
-	app.directive('amyCanvas', ['$window', '$bind', function ($window, $bind) {
+	app.directive('amyCanvas', ['$window', '$bind', '$timeout', function ($window, $bind/*, $timeout*/) {
 		return {
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -252,8 +253,10 @@ define(['lodash',
 						//// the function that actually renders the scene:
 
 						function render() {
-							$scope.renderer.render($scope.scene, $scope.camera);
-							$scope.cssRenderer.render($scope.scene, $scope.camera);
+							if (!$scope.destroying) {
+								$scope.renderer.render($scope.scene, $scope.camera);
+								$scope.cssRenderer.render($scope.scene, $scope.camera);
+							}
 						}
 
 						//// start doing stuff
@@ -310,19 +313,23 @@ define(['lodash',
 
 						var bindOnResize = $bind(onResize);
 						$($window).on('resize', bindOnResize);
-						$scope.$on('$destroy', function () {
-							$($window).off('resize', bindOnResize);
-						});
-
 						$scope.$watch('margin', onResize);
-
 						$scope.$watch('object.position', render);
 						$scope.$watch('object.rotation', render);
 
+						$scope.$on('$destroy', function () {
+							$scope.destroying = true;
+							$($window).off('resize', bindOnResize);
+							$scope.circuitBoardElement.css({
+								WebkitTransform: 'none',
+								MozTransform   : 'none',
+								oTransform     : 'none',
+								transform      : 'none'
+							});
+						});
 					},
 
-					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {
-					}
+					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {}
 
 				};
 			}

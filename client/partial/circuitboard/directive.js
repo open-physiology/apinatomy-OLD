@@ -136,13 +136,6 @@ define(['lodash',
 						$scope.$root.$watch('threeDEnabled', function (isEnabled, wasEnabled) {
 							if (wasEnabled && !isEnabled) {
 								$scope.cbElement.prependTo(iElement);
-								$scope.cbElement.css({
-									WebkitTransform: 'none',
-									MozTransform   : 'none',
-									oTransform     : 'none',
-									transform      : 'none'
-								});
-								$scope.$broadcast('element-reset');
 							}
 						});
 					}
