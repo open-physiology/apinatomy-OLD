@@ -96,6 +96,7 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 	};
 
+	//noinspection JSUnusedGlobalSymbols
 	this.handleEvent = function ( event ) {
 
 		if ( typeof this[ event.type ] == 'function' ) {
@@ -205,15 +206,17 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 	this.zoomCamera = function () {
 
+		var factor;
+
 		if ( _state === STATE.TOUCH_ZOOM ) {
 
-			var factor = _touchZoomDistanceStart / _touchZoomDistanceEnd;
+			factor = _touchZoomDistanceStart / _touchZoomDistanceEnd;
 			_touchZoomDistanceStart = _touchZoomDistanceEnd;
 			_eye.multiplyScalar( factor );
 
 		} else {
 
-			var factor = 1.0 + ( _zoomEnd.y - _zoomStart.y ) * _this.zoomSpeed;
+			factor = 1.0 + ( _zoomEnd.y - _zoomStart.y ) * _this.zoomSpeed;
 
 			if ( factor !== 1.0 && factor > 0.0 ) {
 
@@ -345,14 +348,12 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 
 
+//  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	var KEYBOARD_VELOCITY = 5;
 
-
 	// added from http://threejs.org/examples/js/controls/PointerLockControls.js
 	function keydown( event ) {
-
-		console.debug('keydown: ', event, _amy_velocity);
 
 		switch ( event.keyCode ) {
 
@@ -409,6 +410,7 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 	}
 
+//  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -561,7 +563,7 @@ THREE.TrackballControls = function ( object, domElement ) {
 			case 2:
 				var dx = event.touches[ 0 ].pageX - event.touches[ 1 ].pageX;
 				var dy = event.touches[ 0 ].pageY - event.touches[ 1 ].pageY;
-				_touchZoomDistanceEnd = Math.sqrt( dx * dx + dy * dy )
+				_touchZoomDistanceEnd = Math.sqrt( dx * dx + dy * dy );
 				break;
 
 			case 3:
