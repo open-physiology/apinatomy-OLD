@@ -16,10 +16,10 @@
 </div>
 
 <section>
-	<amy-time-trace ng-repeat="stream in streams"
-                    amy-stream="stream"
-	                amy-current-time="timer.currentTime"
-	                amy-max-time="timer.maxTime"
-                    ng-style="{ width: (100 / streams.length) + '%' }">
+	<amy-time-trace ng-repeat="variable in $root.selectedVariables"
+	                amy-variable="variable"
+	                amy-timer="timer"
+	                ng-show="variable.selected">
 	</amy-time-trace>
+	<!--amy-stream="stream"-->
 </section>

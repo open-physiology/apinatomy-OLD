@@ -8,10 +8,18 @@
 
     </amy-treemap>
 
+    <!-- semi-transparent veil to increase visibility of d3 artifacts -->
+	<div ng-show="$root.connectionsEnabled || $root.simulationEnabled" class="smokescreen"></div>
+
     <!-- the connection-graph hovering over the treemap -->
-    <amy-graph ng-if="$root.connectionsEnabled"
-               amy-active-tile-junctions="activeTileJunctions"
-               dragging="thisTile.tileHighlightingDisabled"></amy-graph>
+	<amy-graph ng-if="$root.connectionsEnabled"
+	           amy-active-tile-junctions="activeTileJunctions"
+	           dragging="thisTile.tileHighlightingDisabled"></amy-graph>
+
+    <!-- the connection-graph hovering over the treemap -->
+	<amy-variable-glyphs ng-if="$root.simulationEnabled"
+	                     amy-active-tile-junctions="activeTileJunctions"
+	                     amy-selected-variables="selectedVariables"></amy-variable-glyphs>
 
 </div>
 

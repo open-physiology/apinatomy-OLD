@@ -2,32 +2,30 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['app/module',
-	'lodash',
-	'partial/simulation-panel/time-trace/directive',
-	'timer/service',
-	'partial/simulation-panel/stream/service'], function (app, _) {
+        'lodash',
+        'partial/simulation-panel/time-trace/directive',
+        'timer/service',
+        'partial/simulation-panel/stream/service'], function (app, _) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	app.directive('amySimulationPanel', ['TimerService', 'StreamService', function (TimerService, StreamService) {
+	app.directive('amySimulationPanel', ['TimerService', function (TimerService) {
 		return {
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-			restrict   : 'E',
-			replace    : false,
+			restrict:    'E',
+			replace:     false,
 			templateUrl: 'partial/simulation-panel/view.html',
-			scope      : {
-				streams: '=amyStreams'
-			},
+			scope:       {},
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			controller: ['$scope', function ($scope) {
 
 				$scope.timer = {
-					state       : 'stopped',
-					currentTime : 0,
-					maxTime     : 0,
+					state:        'stopped',
+					currentTime:  0,
+					maxTime:      0,
 					timeInterval: 100
 				};
 
@@ -41,35 +39,9 @@ define(['app/module',
 				};
 
 
-				//// the streams
-				// temporary data; TODO: use real data
-
-				$scope.streams = [
-					{
-						_id : 'var:1',
-						css : { stroke: 'green' },
-						data: []
-					},
-					{
-						_id : 'var:2',
-						css : { stroke: 'red' },
-						data: []
-					}
-				];
-
-				var stream0 = StreamService.newRandomDataStream($scope.streams[0], 'data', $scope.timer.timeInterval);
-				var stream1 = StreamService.newRandomDataStream($scope.streams[1], 'data', $scope.timer.timeInterval);
-
-				var maxTimeWithData = 0;
-
 				//// control the timer
 
 				TimerService.onInterval(function (t) {
-					if (maxTimeWithData < t) { // TODO: more flexible conditions for preloading data (now it's done exactly when needed)
-						stream0.loadMoreEntries(10);
-						stream1.loadMoreEntries(10); // TODO: for all streams
-						maxTimeWithData +=  10 * $scope.timer.timeInterval;
-					}
 					$scope.timer.currentTime = t;
 				});
 
@@ -81,13 +53,6 @@ define(['app/module',
 						TimerService.pause();
 					} else if (state === 'running') {
 						TimerService.start({ beginning: $scope.timer.currentTime, interval: $scope.timer.timeInterval });
-
-						// TODO: move the initial part of the latest shadow-stream (up to current time) to a new shadow-stream
-
-						//// reinitialize stream generator
-						stream0.loadMoreEntries(1, $scope.timer.currentTime);
-						stream1.loadMoreEntries(1, $scope.timer.currentTime);
-						maxTimeWithData = $scope.timer.currentTime + $scope.timer.timeInterval;
 					}
 				});
 
@@ -103,6 +68,10 @@ define(['app/module',
 					}
 				});
 
+				$scope.$root.$watchCollection('selectedVariables', function () {
+					$scope.timer.state = 'stopped';
+				});
+
 
 			}],
 
@@ -111,11 +80,9 @@ define(['app/module',
 			compile: function () {
 				return {
 
-					pre: function preLink(/*$scope, iElement, iAttrs, controller*/) {
-					},
+					pre: function preLink(/*$scope, iElement, iAttrs, controller*/) {},
 
-					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {
-					}
+					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {}
 
 				};
 			}

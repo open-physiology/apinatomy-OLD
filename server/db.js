@@ -53,13 +53,23 @@ var subEntitySchema = new mongoose.Schema({
 	type:   StringEnum('regional part', 'constitutional part', 'subclass', 'seed')
 });
 
+var subExternalSchema = new mongoose.Schema({
+	external: {
+		_id : StringType(),
+		name: StringType(),
+		type: StringType()
+	},
+	type    : StringType()
+});
+
 //// main schemas
 
 var entitySchema = new mongoose.Schema({
 	_id:         StringType({ unique: true }),
 	name:        StringType(),
 	description: StringType(),
-	sub:         [subEntitySchema]
+	sub:         [subEntitySchema],
+	externals  : [subExternalSchema]
 }, { _id: false });
 entitySchema.index({ externals: 1 });
 

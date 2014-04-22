@@ -1,0 +1,16 @@
+@import "base";
+
+amy-variable-glyphs {
+
+	pointer-events: none;
+
+	& > svg {
+
+		rect.variablePoint {
+			pointer-events: visiblePainted;
+			cursor: pointer;
+		}
+
+	}
+}
+

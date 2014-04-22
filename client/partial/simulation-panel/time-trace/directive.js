@@ -1,26 +1,58 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'd3', 'lodash'], function (app, d3, _) {
+define(['app/module', 'd3', 'lodash', 'partial/simulation-panel/stream/service'], function (app, d3, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	app.directive('amyTimeTrace', ['$window', function ($window) {
+	app.directive('amyTimeTrace', ['$window', 'TimerService', 'StreamService', function ($window, TimerService, StreamService) {
 		return {
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-			restrict   : 'E',
+			restrict:    'E',
 			templateUrl: 'partial/simulation-panel/time-trace/view.html',
-			replace    : false,
-			scope      : {
-				stream     : '=amyStream',
-				currentTime: '=amyCurrentTime',
-				maxTime    : '=amyMaxTime'
+			replace:     false,
+			scope:       {
+				variable: '=amyVariable',
+				timer:    '=amyTimer'
 			},
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-			controller: ['$scope', function (/*$scope*/) {}],
+			controller: ['$scope', function ($scope) {
+
+				$scope.selectedOnly = function (v) {
+					return v.selected;
+				};
+
+				//// Temporarily using a random stream; TODO: real data
+
+				$scope.stream = {
+					css:  { stroke: $scope.variable.color },
+					data: []
+				};
+
+				var stream = StreamService.newRandomDataStream($scope.stream, 'data', $scope.timer.timeInterval);
+
+				var maxTimeWithData = 0;
+
+				TimerService.onInterval(function (t) {
+					// TODO: more flexible conditions for preloading data (now it's done exactly when needed)
+					if (maxTimeWithData < t) {
+						maxTimeWithData += 10 * $scope.timer.timeInterval;
+						stream.loadMoreEntries(10);
+					}
+				});
+
+				$scope.$watch('timer.state', function (state) {
+					if (state === 'running') {
+						//// reinitialize stream generator
+						stream.loadMoreEntries(1, $scope.timer.currentTime);
+						maxTimeWithData = $scope.timer.currentTime + $scope.timer.timeInterval;
+					}
+				});
+
+			}],
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -62,48 +94,52 @@ define(['app/module', 'd3', 'lodash'], function (app, d3, _) {
 							//// adjust min/max values
 
 							_($scope.stream.data).filter(function (d) {
-								return d.time <= $scope.maxTime
+								return d.time <= $scope.timer.maxTime
 							}).forEach(function (d) {
 								minValue = Math.min(minValue, d.value);
 								maxValue = Math.max(maxValue, d.value);
 							});
 
+
 							//// perform scaling
 
-							xScale.domain([0, $scope.maxTime]);
+							xScale.domain([0, $scope.timer.maxTime]);
 							yScale.domain([minValue, maxValue]);
 
 							yAxis.scale(yScale).orient('left');
 							svgCanvas.select(".y.axis").call(yAxis);
 
+
 							//// draw the main trace
 
 							tracePath.datum(_.filter($scope.stream.data, function (d) {
-								return d.time <= $scope.currentTime;
+								return d.time <= $scope.timer.currentTime;
 							})).attr("d", lineGenerator);
+
 
 							//// possibly add new shadows or remove all shadows if there is no data at all
 
 							// TODO: move to a system where the shadow-traces are passed in from the outside as arrays,
-							//     : not derived from the main trace
+							//     : not derived from the main trace (maybe)
 
-							if ($scope.maxTime === 0) {
+							if ($scope.timer.maxTime === 0) {
 								shadowData = {};
 								minValue = Infinity;
 								maxValue = -Infinity;
 							} else {
 								for (var i = 0; i < $scope.stream.data.length - 1; ++i) {
 									var d = $scope.stream.data;
-									if (d[i + 1].time <= $scope.currentTime) {
+									if (d[i + 1].time <= $scope.timer.currentTime) {
 										shadowData[d[i].time + '(' + d[i].value + ',' + d[i + 1].value + ')'] = {
-											time1 : d[i].time,
-											time2 : d[i + 1].time,
+											time1:  d[i].time,
+											time2:  d[i + 1].time,
 											value1: d[i].value,
 											value2: d[i + 1].value
 										};
 									}
 								}
 							}
+
 
 							//// draw the shadows
 
@@ -143,8 +179,8 @@ define(['app/module', 'd3', 'lodash'], function (app, d3, _) {
 
 						$($window).on('resize', adjustSize);
 						$scope.$watch('stream', drawData);
-						$scope.$watch('currentTime', drawData);
-						$scope.$watch('maxTime', drawData);
+						$scope.$watch('timer.currentTime', drawData);
+						$scope.$watch('timer.maxTime', drawData);
 
 					},
 

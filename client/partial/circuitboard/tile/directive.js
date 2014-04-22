@@ -256,6 +256,7 @@ define(['angular',
 
 				$scope.junction = {
 					isTileJunction: true,
+					entity: $scope.entity,
 					id: $scope.entity._id,
 					x: 0,
 					y: 0
@@ -263,11 +264,11 @@ define(['angular',
 
 
 				$scope.junction.bindX = function (newX) {
-					return this.x = Math.max(this.x1, Math.min(this.x2, this.x));
+					return Math.max(this.x1, Math.min(this.x2, newX));
 				};
 
-				$scope.junction.bindY = function (newX) {
-					return this.y = Math.max(this.y1, Math.min(this.y2, this.y));
+				$scope.junction.bindY = function (newY) {
+					return Math.max(this.y1, Math.min(this.y2, newY));
 				};
 
 				//// after it redraws, record its coordinates

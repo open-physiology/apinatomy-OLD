@@ -1,6 +1,7 @@
 @import "base";
 @import "partial/circuitboard/tile/view";
 @import "partial/circuitboard/graph/view";
+@import "partial/circuitboard/variable-glyphs/view";
 @import "partial/rotation/view";
 @import "partial/treemap/view";
 @import "partial/circuitboard/threed/view";
@@ -12,12 +13,34 @@ amy-circuitboard {
 		amy-treemap {
 			@include edge-to-edge;
 		}
+		div.smokescreen {
+			@include edge-to-edge;
+			pointer-events: none;
+			background-color: rgba(255,255,255,.3);
+		}
 		amy-graph {
+			@include edge-to-edge;
+		}
+		amy-variable-glyphs {
 			@include edge-to-edge;
 		}
 	}
 	amy-canvas {
 		@include edge-to-edge;
+
+		& > div {
+			@include edge-to-edge;
+
+			& > div {
+				@include edge-to-edge;
+				z-index: 0;
+			}
+			canvas {
+				@include edge-to-edge;
+				z-index: 1;
+				pointer-events: none;
+			}
+		}
 	}
 }
 

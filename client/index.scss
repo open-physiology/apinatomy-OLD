@@ -52,29 +52,9 @@ html, body {
 				bottom: $amy-spacing;
 				left: $amy-spacing + $amy-side-nav-width;
 				right: $amy-spacing;
-				amy-treemap {
-					@include edge-to-edge;
-				}
-				amy-graph {
-					@include edge-to-edge;
-				}
 			}
 			amy-canvas {
 				@include edge-to-edge;
-
-				& > div {
-					@include edge-to-edge;
-
-					& > div {
-						@include edge-to-edge;
-						z-index: 0;
-					}
-					canvas {
-						@include edge-to-edge;
-						z-index: 1;
-						pointer-events: none;
-					}
-				}
 			}
 		}
 	}

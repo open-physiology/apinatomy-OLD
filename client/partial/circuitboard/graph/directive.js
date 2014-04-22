@@ -65,8 +65,8 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 									.attr('class', function (d) { return (d.isTileJunction ? 'tilePoint' : 'junctionPoint'); })
 									.attr("r", function (d) { return (d.isTileJunction ? 4 : 2); });
 							junctionPoints
-									.attr("cx", function (junction) { return junction.bindX ? junction.bindX() : junction.x; })
-									.attr("cy", function (junction) { return junction.bindY ? junction.bindY() : junction.y; });
+									.attr("cx", function (junction) { return junction.x = (junction.bindX ? junction.bindX(junction.x) : junction.x); })
+									.attr("cy", function (junction) { return junction.y = (junction.bindY ? junction.bindY(junction.y) : junction.y); });
 							junctionPoints.exit().remove();
 
 							//// junctionAreas (a larger area by which to grab / drag junction points)
@@ -77,8 +77,8 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 									.attr("r", function (d) { return (d.isTileJunction ? 12 : 10); })
 									.call(force.drag);
 							junctionAreas
-									.attr("cx", function (junction) { return junction.bindX ? junction.bindX() : junction.x; })
-									.attr("cy", function (junction) { return junction.bindY ? junction.bindY() : junction.y; });
+									.attr("cx", function (junction) { return junction.x; })
+									.attr("cy", function (junction) { return junction.y; });
 							junctionAreas.exit().remove();
 
 							//// connectionLines
@@ -116,8 +116,8 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 
 						force.on("tick", function tick() {
 							junctionPoints
-									.attr("cx", function (junction) { return junction.bindX ? junction.bindX() : junction.x; })
-									.attr("cy", function (junction) { return junction.bindY ? junction.bindY() : junction.y; });
+									.attr("cx", function (junction) { return junction.x = (junction.bindX ? junction.bindX(junction.x) : junction.x); })
+									.attr("cy", function (junction) { return junction.y = (junction.bindY ? junction.bindY(junction.y) : junction.y); });
 
 							junctionAreas
 									.attr("cx", function (junction) { return junction.x; })
