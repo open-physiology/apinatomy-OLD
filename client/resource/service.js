@@ -1,11 +1,11 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'lodash', 'defaults/service'], function (ApiNATOMY, _) {
+define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	ApiNATOMY.factory('ResourceService', ['$http', '$q', function ($http, $q) {
+	app.factory('ResourceService', ['$http', '$q', function ($http, $q) {
 
 		var iface = {};
 

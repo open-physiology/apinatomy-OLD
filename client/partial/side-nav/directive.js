@@ -1,11 +1,11 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'lodash', 'partial/side-nav/details/directive'], function (ApiNATOMY, _) {
+define(['app/module', 'lodash', 'partial/side-nav/details/directive'], function (app, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	ApiNATOMY.directive('amySideNav', [function () {
+	app.directive('amySideNav', [function () {
 		return {
 			restrict:    'E',
 			replace:     true,

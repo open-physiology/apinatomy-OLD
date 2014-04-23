@@ -1,7 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module'], function (ApiNATOMY) {
+define(['app/module'], function (app) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	function isString(value){return typeof value === 'string';}
@@ -21,7 +21,7 @@ define(['app/module'], function (ApiNATOMY) {
 	}
 
 
-	ApiNATOMY.directive('amyOnce', ['$animate', function($animate) {
+	app.directive('amyOnce', ['$animate', function($animate) {
 		return {
 			transclude: 'element',
 			priority: 600,
@@ -43,7 +43,7 @@ define(['app/module'], function (ApiNATOMY) {
 	}]);
 
 
-	ApiNATOMY.directive('amyUntil', ['$animate', function($animate) {
+	app.directive('amyUntil', ['$animate', function($animate) {
 		return {
 			transclude: 'element',
 			priority: 600,

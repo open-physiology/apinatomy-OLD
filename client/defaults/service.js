@@ -1,14 +1,14 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'lodash', 'chroma'], function (ApiNATOMY, _, color) {
+define(['app/module', 'lodash', 'chroma'], function (app, _, color) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	var CONTEXT = { _: _, color: color };
 
 
-	ApiNATOMY.factory('defaults', ['$parse', function ($parse) {
+	app.factory('defaults', ['$parse', function ($parse) {
 		return function defaults(spec) {
 
 			//noinspection FunctionWithInconsistentReturnsJS

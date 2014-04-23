@@ -12,18 +12,18 @@ define(['jquery',
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	var ApiNATOMY = ng.module('ApiNATOMY', ['ngAnimate',
+	var app = ng.module('ApiNATOMY', ['ngAnimate',
 	                                        'ui.bootstrap',
 	                                        'RecursionHelper',
 	                                        'once',
 	                                        'vr.directives.slider']);
 
 
-	ApiNATOMY.config(function ($locationProvider) {
+	app.config(function ($locationProvider) {
 		$locationProvider.html5Mode(true).hashPrefix('!');
 	});
 
-	ApiNATOMY.controller('MainController', ['$rootScope', '$window', function ($rootScope, $window) {
+	app.controller('MainController', ['$rootScope', '$window', function ($rootScope, $window) {
 
 		//// initially disable global settings
 
@@ -47,7 +47,7 @@ define(['jquery',
 	}]);
 
 
-	return ApiNATOMY;
+	return app;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

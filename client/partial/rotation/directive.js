@@ -1,7 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['lodash', 'app/module', 'utility/putStyle', '$bind/service'], function (_, ApiNATOMY, putStyle) {
+define(['lodash', 'app/module', 'utility/putStyle', '$bind/service'], function (_, app, putStyle) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -11,7 +11,7 @@ define(['lodash', 'app/module', 'utility/putStyle', '$bind/service'], function (
 	var ROTATION_MAX = 45;
 
 
-	ApiNATOMY.directive('amyRotation', ['$bind', '$window', function ($bind, $window) {
+	app.directive('amyRotation', ['$bind', '$window', function ($bind, $window) {
 		return {
 			restrict: 'E',
 			scope   : {

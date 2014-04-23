@@ -8,7 +8,7 @@ define(['lodash',
 	'partial/treemap/layout/predefined',
 	'$bind/service',
 	'partial/treemap/tile/directive'], function
-		(_, ng, ApiNATOMY, Layout) {
+		(_, ng, app, Layout) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -16,7 +16,7 @@ define(['lodash',
 	var DEFAULT_TILE_LAYOUT = 'twentyFourTile';
 
 
-	ApiNATOMY.directive('amyTreemap', ['$q', '$window', '$bind', function ($q, $window, $bind) {
+	app.directive('amyTreemap', ['$q', '$window', '$bind', function ($q, $window, $bind) {
 		return {
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////

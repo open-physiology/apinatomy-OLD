@@ -13,11 +13,11 @@ define(['lodash',
 	'partial/circuitboard/graph/directive',
 	'partial/circuitboard/variable-glyphs/directive',
 	'partial/circuitboard/threed/directive'
-], function (_, ng, ApiNATOMY) {
+], function (_, ng, app) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	ApiNATOMY.directive('amyCircuitboard', ['ResourceService', function (ResourceService) {
+	app.directive('amyCircuitboard', ['ResourceService', function (ResourceService) {
 		return {
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////

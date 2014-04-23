@@ -7,7 +7,7 @@ define(['angular',
 	'lodash',
 	'partial/treemap/layout/manager',
 	'resource/service',
-	'$bind/service'], function (ng, ApiNATOMY, color, _) {
+	'$bind/service'], function (ng, app, color, _) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -20,7 +20,7 @@ define(['angular',
 		maximized: Infinity
 	};
 
-	ApiNATOMY.directive('amyCircuitboardTile', ['$bind', 'ResourceService', 'RecursionHelper', 'defaults', '$timeout', function ($bind, Resources, RecursionHelper, defaults, $timeout) {
+	app.directive('amyCircuitboardTile', ['$bind', 'ResourceService', 'RecursionHelper', 'defaults', '$timeout', function ($bind, Resources, RecursionHelper, defaults, $timeout) {
 
 		var generateStylingDefaults = defaults({
 			normal: {

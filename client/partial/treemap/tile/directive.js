@@ -8,7 +8,7 @@ define(['angular',
 	'partial/treemap/layout/manager',
 	'resource/service',
 	'$bind/service',
-	'partial/icon-btn/directive'], function (ng, ApiNATOMY, color, _, Layout) {
+	'partial/icon-btn/directive'], function (ng, app, color, _, Layout) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -18,7 +18,7 @@ define(['angular',
 	var TILE_HEADER_HEIGHT = '26px';
 
 
-	ApiNATOMY.directive('amyTile', ['$timeout', function ($timeout) {
+	app.directive('amyTile', ['$timeout', function ($timeout) {
 		return {
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
