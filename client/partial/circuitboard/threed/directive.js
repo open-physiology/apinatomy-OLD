@@ -317,6 +317,11 @@ define(['jquery',
 										render();
 									});
 								} else if (_(deregisterProteinWatch).isFunction()) {
+									_($scope.proteinKebabObjects).forEach(function (kebab, id) {
+										$scope.proteinKebabObjects[id].deregisterNgWatch();
+										$scope.scene.remove($scope.proteinKebabObjects[id]);
+										delete $scope.proteinKebabObjects[id];
+									});
 									deregisterProteinWatch();
 								}
 							});
