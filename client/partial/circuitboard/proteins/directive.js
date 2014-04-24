@@ -41,8 +41,8 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 								.links(connections)
 								.size([iElement.width(), iElement.height()])
 								.gravity(0)
-								.charge(-30)
-								.linkDistance(40);
+								.charge(-100)
+								.linkDistance(60);
 
 						//// create corresponding svg elements
 
