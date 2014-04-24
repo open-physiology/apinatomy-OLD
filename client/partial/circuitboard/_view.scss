@@ -2,6 +2,7 @@
 @import "partial/circuitboard/tile/view";
 @import "partial/circuitboard/graph/view";
 @import "partial/circuitboard/variable-glyphs/view";
+@import "partial/circuitboard/proteins/view";
 @import "partial/rotation/view";
 @import "partial/treemap/view";
 @import "partial/circuitboard/threed/view";
@@ -22,6 +23,9 @@ amy-circuitboard {
 			@include edge-to-edge;
 		}
 		amy-variable-glyphs {
+			@include edge-to-edge;
+		}
+		amy-protein-graph {
 			@include edge-to-edge;
 		}
 	}

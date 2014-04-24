@@ -44,7 +44,9 @@ define(['jquery',
 				transformation     : '=amyTransformation',
 				margin             : '=amyMargin',
 				circuitBoardElement: '=amyCircuitBoardElement',
-				activeTiles        : '=amyActiveTiles'
+				activeTiles        : '=amyActiveTiles',
+				visibleProteins    : '=amyVisibleProteins',
+				showProteins       : '=amyShowProteins'
 			},
 
 			controller: ['$scope', '$rootScope', function (/*$scope, $rootScope*/) {
@@ -73,9 +75,13 @@ define(['jquery',
 							var ambientLight = new THREE.AmbientLight(0x101030);
 							$scope.scene.add(ambientLight);
 
-							var directionalLight = new THREE.DirectionalLight(0xffeedd);
-							directionalLight.position.set(1, -1, 1);
-							$scope.scene.add(directionalLight);
+							var directionalLight1 = new THREE.DirectionalLight(0xffeedd);
+							directionalLight1.position.set(1, -1, 1);
+							$scope.scene.add(directionalLight1);
+
+							var directionalLight2 = new THREE.DirectionalLight(0xffeedd);
+							directionalLight2.position.set(-1, 1, -1);
+							$scope.scene.add(directionalLight2);
 
 							//////////////////// loading manager ////////////////////
 
@@ -203,6 +209,116 @@ define(['jquery',
 									});
 									render();
 								});
+							});
+
+
+							///////////////////////// PROTEINS ////////////////////////////////
+
+							$scope.proteinKebabData = {};
+
+							var COLORS = [
+								'red',
+								'blue',
+								'green',
+								'purple',
+								'yellow',
+								'gray'
+							];
+
+							function generateRandomKebabData() {
+								var length = _.random(100, 1000);
+
+								var domainCount = _.random(2, 7);
+								var domainBoundaries = [];
+
+								for (var i = 0; i < 2 * domainCount; ++i) {
+									domainBoundaries.push(_.random(1, 1000));
+								}
+								domainBoundaries = _.sortBy(domainBoundaries);
+
+								var domains = [];
+								for (var j = 0; j < 2 * domainCount; j += 2) {
+									var domainLength = domainBoundaries[j + 1] - domainBoundaries[j];
+									if (10 <= domainLength && domainLength <= 100 && domainBoundaries[j + 1] <= length) {
+										domains.push({
+											from : domainBoundaries[j],
+											to   : domainBoundaries[j + 1],
+											color: COLORS[_.random(0, 5)]
+										});
+									}
+								}
+
+								return {
+									length : length,
+									domains: domains
+								};
+							}
+
+							$scope.proteinKebabObjects = {};
+
+							var deregisterProteinWatch;
+							$scope.$watch('showProteins', function (showProteins) {
+								if (showProteins) {
+									deregisterProteinWatch = $scope.$watchCollection('visibleProteins', function (visibleProteins) {
+										var idsWithObjects = [];
+										_(visibleProteins).forEach(function (protein, id) {
+											idsWithObjects.push(id);
+											if (_($scope.proteinKebabObjects[id]).isUndefined()) {
+
+												if (_($scope.proteinKebabData[id]).isUndefined()) {
+													$scope.proteinKebabData[id] = generateRandomKebabData();
+												}
+												var kebabData = $scope.proteinKebabData[id];
+
+												var kebab = new THREE.Object3D();
+
+												var stickMaterial = new THREE.MeshLambertMaterial({ color: 0xaaaaaa });
+
+												var stickGeometry = new THREE.CylinderGeometry(1, 1, kebabData.length, 32);
+
+												var domainGeometry = new THREE.CylinderGeometry(6, 6, 1, 32);
+												_(kebabData.domains).forEach(function (domain) {
+													var domainMaterial = new THREE.MeshLambertMaterial({color: domain.color});
+													var domainObj = new THREE.Mesh(domainGeometry, domainMaterial);
+													domainObj.translateY(.5 * domain.from + .5 * domain.to);
+													domainObj.scale.y = (domain.to - domain.from);
+													kebab.add(domainObj);
+												});
+
+												var stick = new THREE.Mesh(stickGeometry, stickMaterial);
+												stick.translateY(kebabData.length / 2);
+												kebab.add(stick);
+
+												kebab.rotation.x = 90 * DEG_TO_RAD;
+												kebab.scale.y = .3;
+
+												$scope.proteinKebabObjects[id] = kebab;
+
+												$scope.scene.add(kebab);
+
+												var deregisterProteinWatchX = $scope.$watch('visibleProteins["' + id + '"].x', function (x) {
+													kebab.position.x = $scope.baseX + x;
+												});
+
+												var deregisterProteinWatchY = $scope.$watch('visibleProteins["' + id + '"].y', function (y) {
+													kebab.position.y = $scope.baseY - y;
+												});
+
+												$scope.proteinKebabObjects[id].deregisterNgWatch = _.compose(deregisterProteinWatchX, deregisterProteinWatchY);
+											}
+										});
+
+										_($scope.proteinKebabObjects).keys().difference(idsWithObjects).forEach(function (id) {
+											$scope.proteinKebabObjects[id].deregisterNgWatch();
+											$scope.scene.remove($scope.proteinKebabObjects[id]);
+											delete $scope.proteinKebabObjects[id];
+										});
+
+										render();
+									});
+								} else if (_(deregisterProteinWatch).isFunction()) {
+									deregisterProteinWatch();
+								}
 							});
 
 

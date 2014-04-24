@@ -9,7 +9,7 @@
     </amy-treemap>
 
     <!-- semi-transparent veil to increase visibility of d3 artifacts -->
-	<div ng-show="$root.connectionsEnabled || $root.simulationEnabled" class="smokescreen"></div>
+	<div ng-show="$root.connectionsEnabled || $root.simulationEnabled || $root.proteinsEnabled" class="smokescreen"></div>
 
     <!-- the connection-graph hovering over the treemap -->
 	<amy-graph ng-if="$root.connectionsEnabled"
@@ -17,9 +17,16 @@
 	           dragging="thisTile.tileHighlightingDisabled"></amy-graph>
 
     <!-- the connection-graph hovering over the treemap -->
-	<amy-variable-glyphs ng-if="$root.simulationEnabled"
-	                     amy-active-tile-junctions="activeTileJunctions"
-	                     amy-selected-variables="selectedVariables"></amy-variable-glyphs>
+    <amy-variable-glyphs ng-if="$root.simulationEnabled"
+                         amy-active-tile-junctions="activeTileJunctions"
+                         amy-selected-variables="selectedVariables"
+                         dragging="thisTile.tileHighlightingDisabled"></amy-variable-glyphs>
+
+    <!-- the connection-graph hovering over the treemap -->
+    <amy-protein-graph ng-if="$root.proteinsEnabled"
+                       amy-visible-proteins="rootTile.visibleProteins"
+                         amy-active-tile-junctions="activeTileJunctions"
+                         dragging="thisTile.tileHighlightingDisabled"></amy-protein-graph>
 
 </div>
 
@@ -27,5 +34,7 @@
 <amy-canvas ng-if="$root.threeDEnabled"
             amy-circuit-board-element="cbElement"
             amy-active-tiles="activeTile3Ds"
+            amy-show-proteins="$root.proteinsEnabled"
+            amy-visible-proteins="rootTile.visibleProteins"
             amy-margin="{ top: 15, left: 200 + 15, right: 15, bottom: ($root.simulationEnabled ? 250 : 0) + 15 }">
 </amy-canvas>
