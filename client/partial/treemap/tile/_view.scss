@@ -29,11 +29,27 @@ amy-tile {
 			@include single-transition(opacity, linear, $amy-standard-duration, $amy-standard-duration + 200ms);
 			opacity : 1;
 		}
+
+		//// the icon buttons to the top right
+		& > icon-btn {
+			display: none;
+			position : absolute;
+			top      : 2px;
+			height   : $amy-tile-header-height * .8 - 4px;
+			width    : $amy-tile-header-height * .8 - 4px;
+			&:nth-last-of-type(1)  {
+				right    : 2px;
+			}
+			&:nth-last-of-type(2)  {
+				right    : 2px + $amy-tile-header-height * .8 - 2px;
+			}
+		}
+
 		& > .amy-tile-status-icon {
 			position    : absolute !important;
 			display     : block;
 			text-align  : center;
-			top         : 3px !important;
+			bottom      : 3px !important;
 			right       : 3px !important;
 			z-index     : 2;
 			width       : $amy-tile-status-icon-size;
@@ -41,6 +57,9 @@ amy-tile {
 			font-size   : $amy-tile-status-icon-size;
 			line-height : $amy-tile-status-icon-size;
 		}
+	}
+	&:hover > .full-header > icon-btn {
+		display: block;
 	}
 
 	& > .top-header {

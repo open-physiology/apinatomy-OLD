@@ -17,10 +17,11 @@ define(['angular',
 		hidden   : 0,
 		closed   : 1,
 		open     : 8,
-		maximized: Infinity
+		maximized: Infinity,
+		closedMaximized: Infinity
 	};
 
-	app.directive('amyCircuitboardTile', ['$bind', 'ResourceService', 'RecursionHelper', 'defaults', '$timeout', function ($bind, Resources, RecursionHelper, defaults, $timeout) {
+	app.directive('amyCircuitboardTile', ['$bind', 'ResourceService', 'RecursionHelper', 'defaults', '$timeout', '$window', function ($bind, Resources, RecursionHelper, defaults, $timeout, $window) {
 
 		var generateStylingDefaults = defaults({
 			normal: {
@@ -91,7 +92,7 @@ define(['angular',
 
 				//////////////////// Tile Condition ////////////////////////////////////////////////////////////////////
 
-				//// The condition of a tile can be 'hidden', 'closed', 'open' or 'maximized'. It starts 'closed'.
+				//// The condition of a tile can be 'hidden', 'closed', 'open', 'maximized' or 'closedMaximized'. It starts 'closed'.
 
 				$scope.condition = 'closed';
 
@@ -115,7 +116,7 @@ define(['angular',
 				//// or if it is maximized and its parent has focus.
 
 				$scope.recursivelyBuiltFocusChain = function () {
-					if ($scope.mouseOver || $scope.condition === 'maximized') {
+					if ($scope.mouseOver || $scope.condition === 'maximized' || $scope.condition === 'closedMaximized') {
 						var bundle = {
 							entity : $scope.entity,
 							styling: $scope.styling
@@ -159,6 +160,7 @@ define(['angular',
 				$scope.$on('entity-focus', function localFocus(event, focusChain) {
 					$scope.state = (!_(focusChain).isEmpty() &&
 					                $scope.condition !== 'maximized' &&
+					                $scope.condition !== 'closedMaximized' &&
 					                $scope.entity === focusChain[focusChain.length - 1].entity)
 							? 'focus'
 							: 'normal';
@@ -172,24 +174,31 @@ define(['angular',
 				_($scope).derivedProperty('open', function () {
 					return $scope.condition === 'open' || $scope.condition === 'maximized';
 				}, function (shouldBeOpen) {
-					if (shouldBeOpen && !$scope.open) {
+					if (shouldBeOpen && $scope.condition === 'closed') {
 						$scope.condition = 'open';
-					} else if (!shouldBeOpen && $scope.open) {
+					} else if (shouldBeOpen && $scope.condition === 'closedMaximized') {
+						$scope.condition = 'maximized';
+					} else if (!shouldBeOpen && $scope.condition === 'open') {
 						$scope.condition = 'closed';
+					} else if (!shouldBeOpen && $scope.condition === 'maximized') {
+						$scope.condition = 'closedMaximized';
 					}
 				});
+
 
 				//// when a tile is closed, close all sub-tiles
 
 				$scope.recursivelyCloseTile = function () {
-					$scope.open = false;
+					$scope.condition = 'closed';
 					_($scope.childTiles).forEach(function (childTile) {
 						childTile.recursivelyCloseTile();
 					});
 				};
 				$scope.$watch('open', function (isOpen, wasOpen) {
 					if (wasOpen && !isOpen) {
-						$scope.recursivelyCloseTile();
+						_($scope.childTiles).forEach(function (childTile) {
+							childTile.recursivelyCloseTile();
+						});
 					}
 				});
 
@@ -201,6 +210,7 @@ define(['angular',
 						Resources.entities(_.map($scope.entity.sub, function (sub) {
 							return sub.entity._id;
 						}));
+						// TODO: when opening for the first time from a maximized state, redraw when the children are available
 					});
 					$scope.open = !$scope.open;
 				};

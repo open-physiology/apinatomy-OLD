@@ -6,6 +6,8 @@
 
 <header ng-class="{ opaque: !open }" class="full-header">
 	<span once-text="title"></span>
+    <icon-btn ng-show="$root.threeDEnabled && showThreeDButton && !open" states="showThreeDModelStates" classes="showThreeDModelClasses" ng-model="showThreeDModelModel"></icon-btn>
+    <icon-btn ng-show="!open" states="sizeButtonStates" classes="sizeButtonClasses" ng-model="sizeButtonModel"></icon-btn>
 	<span ng-if="frontIcon" title="{{ frontIconTitle }}"
 	      class="amy-tile-status-icon glyphicon glyphicon-{{ frontIcon }}"></span>
 </header>
