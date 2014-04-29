@@ -21,6 +21,12 @@ amy-protein-graph {
 
 				&:hover, &.dragged {}
 			}
+
+			&.smallMoleculeIndicator {
+				stroke-width: 2px;
+				stroke: purple;
+				fill: none;
+			}
 		}
 
 	}

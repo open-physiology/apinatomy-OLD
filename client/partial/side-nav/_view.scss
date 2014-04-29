@@ -23,7 +23,7 @@
 
 	}
 
-	& .amy-entity-details {
+	& .amy-entity-details, & .amy-protein-details {
 //		@include fade-out;
 		margin-left   : $amy-spacing;
 		margin-bottom : $amy-spacing / 2;
@@ -49,3 +49,4 @@
 }
 
 @import "partial/side-nav/details/view";
+@import "partial/side-nav/proteinDetails/view";

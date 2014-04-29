@@ -14,4 +14,12 @@
 
 	</div>
 
+	<!-- the panel with the entity details -->
+
+	<div ng-if="sideNav.protein" class="amy-relation-types">
+		<div>protein expression</div>
+	</div>
+
+	<amy-protein-details ng-if="sideNav.protein" protein="sideNav.protein"></amy-protein-details>
+
 </nav>

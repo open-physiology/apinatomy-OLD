@@ -44,15 +44,19 @@ function StringEnum() {
 	};
 }
 
-function EntityReference(other) {
-	return StringType(_.assign({ ref: 'Entity' }, other));
-}
-
 function NumberType(other) {
 	return _.assign({
 		type:    Number,
 		default: -1
 	}, other);
+}
+
+function EntityReference(other) {
+	return StringType(_.assign({ ref: 'Entity' }, other));
+}
+
+function ProteinReference(other) {
+	return StringType(_.assign({ ref: 'Protein' }, other));
 }
 
 
@@ -90,7 +94,7 @@ var entitySchema = new mongoose.Schema({
 	sub:                 [subEntitySchema],
 	super:               [EntityReference()],
 	externals:           [subExternalSchema],
-	proteins:            [StringType()],
+	proteins:            [ProteinReference()],
 	proteinInteractions: [subProteinInteractionSchema],
 	reachable:           BooleanType(),
 	descendantCount:     NumberType()
@@ -133,6 +137,15 @@ metadataSchema.index({ type: 1 });
 metadataSchema.index({ externalType: 1 });
 metadataSchema.index({ entity: 1, type: 1, eid: 1 }, { unique: true });
 
+var proteinSchema = new mongoose.Schema({
+	_id:            StringType({ unique: true }),
+	ensembl:        StringType(),
+	swissprot:      StringType(),
+	smallMolecules: [mongoose.Schema.Types.Mixed]
+});
+metadataSchema.index({ ensembl: 1 });
+metadataSchema.index({ swissprot: 1 });
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////// Models ///////////////////////////////////////////////
@@ -143,3 +156,4 @@ exports.Unit = mongoose.model('Unit', unitSchema);
 exports.Connection = mongoose.model('Connection', connectionSchema);
 exports.Path = mongoose.model('Path', pathSchema);
 exports.Metadata = mongoose.model('Metadata', metadataSchema);
+exports.Protein = mongoose.model('Protein', proteinSchema);

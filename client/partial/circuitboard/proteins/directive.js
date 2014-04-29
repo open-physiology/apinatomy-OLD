@@ -11,11 +11,11 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 
 			restrict: 'E',
 			template: '<svg></svg>',
-			replace : false,
-			scope   : {
+			replace:  false,
+			scope:    {
 				activeTileJunctions: '=amyActiveTileJunctions',
-				dragging           : '=',
-				visibleProteins    : '=amyVisibleProteins'
+				dragging:            '=',
+				visibleProteins:     '=amyVisibleProteins'
 			},
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,6 +49,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 						var svg = d3.select(iElement.find('svg')[0]);
 						var connectionLines = svg.selectAll('line');
 						var junctionAreas = svg.selectAll('.junctionArea');
+						var smallMoleculeIndicators = svg.selectAll('.smallMoleculeIndicator');
 
 						//////////////////// updating the graph ////////////////////////////////////////////////////////
 
@@ -69,6 +70,12 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 							junctionAreas.enter().append("circle")
 									.attr('class', 'junctionArea')
 									.attr("r", 4)
+									.on('mouseover', $bind(function (d) {
+										$scope.$root.$broadcast('protein-focus', d.protein)
+									}))
+									.on('mouseout', $bind(function (d) {
+										$scope.$root.$broadcast('protein-focus')
+									}))
 									.call(force.drag);
 							junctionAreas
 									.attr("cx", function (junction) {
@@ -78,6 +85,27 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 										return junction.y = junction.bindY(junction.y);
 									});
 							junctionAreas.exit().remove();
+
+
+							//// smallMoleculeIndicators
+
+							smallMoleculeIndicators = svg.selectAll('.smallMoleculeIndicator').data(_.filter(junctions, function (d) {
+								return !_(d.protein.smallMolecules).isEmpty();
+							}), function (d) {
+								return d.id;
+							});
+							smallMoleculeIndicators.enter().append("circle")
+									.attr('class', 'smallMoleculeIndicator')
+									.attr("r", 8);
+							smallMoleculeIndicators
+									.attr("cx", function (junction) {
+										return junction.x;
+									})
+									.attr("cy", function (junction) {
+										return junction.y;
+									});
+							smallMoleculeIndicators.exit().remove();
+
 
 							//// connectionLines
 
@@ -124,6 +152,14 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 									})
 									.attr("cy", function (junction) {
 										return junction.y = junction.bindY(junction.y);
+									});
+
+							smallMoleculeIndicators
+									.attr("cx", function (junction) {
+										return junction.x;
+									})
+									.attr("cy", function (junction) {
+										return junction.y;
 									});
 
 							connectionLines
@@ -181,15 +217,16 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 								var bindY = _.bindKey(tile, 'bindY');
 
 								_(tile.entity.proteins).forEach(function (protein) {
-									$scope.visibleProteins[id(protein)] = {
-										bindX: bindX,
-										bindY: bindY,
-										x    : 0,
-										y    : 0,
-										id   : id(protein),
-										tile : tile
+									$scope.visibleProteins[id(protein._id)] = {
+										bindX:          bindX,
+										bindY:          bindY,
+										x:              0,
+										y:              0,
+										id:             id(protein._id),
+										protein: protein,
+										tile:           tile
 									};
-									junctions.push($scope.visibleProteins[id(protein)]);
+									junctions.push($scope.visibleProteins[id(protein._id)]);
 								});
 
 								_(tile.entity.proteinInteractions).forEach(function (interaction) {

@@ -1,0 +1,14 @@
+<div class="amy-protein-details">
+
+	<dl>
+		<dt ng-if="protein.ensembl">Ensembl ID:</dt>
+		<dd ng-if="protein.ensembl">{{ protein.ensembl }}</dd>
+
+		<dt ng-if="protein.swissprot">SwissProt ID:</dt>
+		<dd ng-if="protein.swissprot">{{ protein.swissprot }}</dd>
+
+		<dt ng-if="protein.smallMolecules.length > 0">Sm.M. Interactions:</dt>
+		<dd ng-if="protein.smallMolecules.length > 0">{{ protein.smallMolecules.length }}</dd>
+	</dl>
+
+</div>

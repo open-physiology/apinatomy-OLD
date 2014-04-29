@@ -1,0 +1,30 @@
+@import "base";
+
+.amy-protein-details {
+	@include border-radius(5px);
+
+	display : block;
+	border  : solid 1px;
+	padding : 0;
+
+	&.fixed {
+		border-width: 2px;
+	}
+
+
+	//// protein details
+
+	& > dl {
+		margin : 4px;
+
+		& > dt {
+			margin-right : 5px;
+			float        : left;
+			clear        : both;
+		}
+		& > dd {
+			margin  : 0px;
+		}
+	}
+
+}

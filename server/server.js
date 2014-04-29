@@ -69,6 +69,7 @@ app.get('/resources/entities/:ids', function (req, res) {
 			.sort({ '_id': 1 })
 			.skip(skip)
 			.limit(limit)
+			.populate('proteins')
 			.populate('sub.entity', '_id')
 			.exec(function (err, ents) {
 				if (err) {
@@ -76,6 +77,9 @@ app.get('/resources/entities/:ids', function (req, res) {
 					res.status(HTTP_INTERNAL_SERVER_ERROR).send(null);
 					return;
 				}
+
+				console.log(ents);
+
 				res.status(HTTP_OK).json(ents);
 			});
 });
@@ -90,6 +94,7 @@ app.get('/resources/entities', function (req, res) {
 			.sort({ '_id': 1 })
 			.skip(skip)
 			.limit(limit)
+			.populate('proteins')
 			.populate('sub.entity', '_id')
 			.exec(function (err, ents) {
 				if (err) {

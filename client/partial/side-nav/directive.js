@@ -1,7 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'lodash', 'partial/side-nav/details/directive'], function (app, _) {
+define(['app/module', 'lodash', 'partial/side-nav/details/directive', 'partial/side-nav/proteinDetails/directive'], function (app, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -14,10 +14,16 @@ define(['app/module', 'lodash', 'partial/side-nav/details/directive'], function 
 
 				$scope._ = _;
 
+				$scope.sideNav = $scope;
+
 				$scope.bundles = [];
 
 				$scope.$on('entity-focus', function (event, focusChain) {
 					$scope.bundles = focusChain;
+				});
+
+				$scope.$on('protein-focus', function (event, protein) {
+					$scope.protein = protein;
 				});
 
 				$scope.relationType = function (bundle) {
