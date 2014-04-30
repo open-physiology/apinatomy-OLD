@@ -15,14 +15,21 @@ define(['app/module', 'chroma', 'lodash'], function (app, color, _) {
 				protein: '='
 			},
 
-			controller: function ($scope) {},
+			controller: function ($scope) {
+
+				$scope.extractChemblID = function (sm) {
+					return sm._about.replace(/^.+(CHEMBL.+)/, '$1');
+				}
+
+
+			},
 
 			compile: function () {
 				return {
 
 					pre: function preLink($scope, iElement/*, iAttrs, controller*/) {
 						iElement.css({
-							backgroundColor: color('purple').brighten(40).css(),
+							backgroundColor: color('purple').brighten(60).css(),
 							borderColor: 'purple'
 						});
 					},

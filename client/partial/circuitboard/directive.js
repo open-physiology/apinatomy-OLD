@@ -12,7 +12,7 @@ define(['lodash',
 	'partial/circuitboard/tile/directive',
 	'partial/circuitboard/graph/directive',
 	'partial/circuitboard/variable-glyphs/directive',
-	'partial/circuitboard/proteins/directive',
+	'partial/circuitboard/protein-graph/directive',
 	'partial/circuitboard/threed/directive'
 ], function (_, ng, app) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -7,8 +7,16 @@
 		<dt ng-if="protein.swissprot">SwissProt ID:</dt>
 		<dd ng-if="protein.swissprot">{{ protein.swissprot }}</dd>
 
-		<dt ng-if="protein.smallMolecules.length > 0">Sm.M. Interactions:</dt>
+		<dt ng-if="protein.smallMolecules.length > 0" title="Small Molecule Interactions">Sm.M. Interactions:</dt>
 		<dd ng-if="protein.smallMolecules.length > 0">{{ protein.smallMolecules.length }}</dd>
 	</dl>
+    <ul ng-if="protein.smallMolecules.length > 0">
+        <li ng-repeat="sm in protein.smallMolecules">
+            {{ extractChemblID(sm) }}
+        </li>
+        <li ng-if="protein.smallMolecules.length >= 10">
+            ...
+        </li>
+    </ul>
 
 </div>
