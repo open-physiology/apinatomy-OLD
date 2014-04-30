@@ -16,10 +16,12 @@
 
 	<!-- the panel with the entity details -->
 
+	<!-- TODO: protein expression should be part of the real focus-chain, not pasted on like this -->
+
 	<div ng-if="sideNav.protein" class="amy-relation-types">
 		<div>protein expression</div>
 	</div>
 
-	<amy-protein-details ng-if="sideNav.protein" protein="sideNav.protein"></amy-protein-details>
+	<amy-protein-details ng-if="sideNav.protein" amy-protein="sideNav.protein" amy-fixed="proteinFixed"></amy-protein-details>
 
 </nav>

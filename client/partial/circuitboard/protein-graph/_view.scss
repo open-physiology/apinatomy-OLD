@@ -20,12 +20,21 @@ amy-protein-graph {
 				stroke: purple;
 
 				&:hover, &.dragged {}
+
+				&.fixed {
+					fill: lighten(green, 20);
+					stroke: green;
+				}
 			}
 
 			&.smallMoleculeIndicator {
 				stroke-width: 2px;
 				stroke: purple;
 				fill: none;
+
+				&.fixed {
+					stroke: green;
+				}
 			}
 		}
 

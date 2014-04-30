@@ -23,7 +23,14 @@ define(['app/module', 'lodash', 'partial/side-nav/details/directive', 'partial/s
 				});
 
 				$scope.$on('protein-focus', function (event, protein) {
+					if (!$scope.proteinFixed) {
+						$scope.protein = protein;
+					}
+				});
+
+				$scope.$on('protein-fix', function (event, protein) {
 					$scope.protein = protein;
+					$scope.proteinFixed = !!protein;
 				});
 
 				$scope.relationType = function (bundle) {

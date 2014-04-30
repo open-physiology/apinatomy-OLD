@@ -51,11 +51,14 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 						var junctionAreas = svg.selectAll('.junctionArea');
 						var smallMoleculeIndicators = svg.selectAll('.smallMoleculeIndicator');
 
+						var fixedProtein = null;
+
 						//////////////////// updating the graph ////////////////////////////////////////////////////////
 
 						function updateGraph() {
 							// using the d3 general update pattern:
 							// http://bl.ocks.org/mbostock/3808218
+
 
 							//// restart the force
 
@@ -68,13 +71,25 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 								return d.id;
 							});
 							junctionAreas.enter().append("circle")
-									.attr('class', 'junctionArea')
-									.attr("r", 4)
+									.attr('class', function (d) { return (d.isFixed) ? 'junctionArea fixed' : 'junctionArea'; })
+									.attr("r", function (d) { return d.isFixed ? 5 : 4; })
 									.on('mouseover', $bind(function (d) {
 										$scope.$root.$broadcast('protein-focus', d.protein)
 									}))
 									.on('mouseout', $bind(function (d) {
 										$scope.$root.$broadcast('protein-focus')
+									}))
+									.on('click', $bind(function (d) {
+										if (d.isFixed) {
+											d.isFixed = false;
+											fixedProtein = null;
+										} else {
+											if (fixedProtein) { fixedProtein.isFixed = false; }
+											fixedProtein = d;
+											d.isFixed = true;
+										}
+										$scope.$root.$broadcast('protein-fix', fixedProtein && fixedProtein.protein);
+										force.alpha(0.05);
 									}))
 									.call(force.drag);
 							junctionAreas
@@ -86,6 +101,12 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 									});
 							junctionAreas.exit().remove();
 
+							$scope.$watch('activeTileJunctions', function () {
+								if (fixedProtein) { fixedProtein.isFixed = false; }
+								$scope.$root.$broadcast('protein-fix', null);
+								fixedProtein = null;
+							});
+
 
 							//// smallMoleculeIndicators
 
@@ -95,8 +116,8 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 								return d.id;
 							});
 							smallMoleculeIndicators.enter().append("circle")
-									.attr('class', 'smallMoleculeIndicator')
-									.attr("r", 8);
+									.attr('class', function (d) { return d.isFixed ? 'smallMoleculeIndicator fixed' : 'smallMoleculeIndicator'; })
+									.attr("r", function (d) { return d.isFixed ? 9 : 8; });
 							smallMoleculeIndicators
 									.attr("cx", function (junction) {
 										return junction.x;
@@ -147,6 +168,8 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 							});
 
 							junctionAreas
+									.attr('class', function (d) { return (d.isFixed) ? 'junctionArea fixed' : 'junctionArea'; })
+									.attr("r", function (d) { return d.isFixed ? 5 : 4; })
 									.attr("cx", function (junction) {
 										return junction.x = junction.bindX(junction.x);
 									})
@@ -155,6 +178,8 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 									});
 
 							smallMoleculeIndicators
+									.attr('class', function (d) { return d.isFixed ? 'smallMoleculeIndicator fixed' : 'smallMoleculeIndicator'; })
+									.attr("r", function (d) { return d.isFixed ? 9 : 8; })
 									.attr("cx", function (junction) {
 										return junction.x;
 									})
@@ -191,8 +216,17 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 						});
 
 						$scope.$on('treemap-redraw', function () {
+
+//							var currentSize = force.size();
+//
+//							_(junctions).forEach(function (j) {
+//								j.x *= iElement.width() / currentSize[0];
+//								j.y *= iElement.height() / currentSize[1];
+//							});
+
 							force.size([iElement.width(), iElement.height()]);
-							updateGraph();
+
+//							force.resume();
 						});
 
 						$scope.$watch('activeTileJunctions', function (activeTileJunctions) {
@@ -218,13 +252,13 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 
 								_(tile.entity.proteins).forEach(function (protein) {
 									$scope.visibleProteins[id(protein._id)] = {
-										bindX:          bindX,
-										bindY:          bindY,
-										x:              0,
-										y:              0,
-										id:             id(protein._id),
+										bindX:   bindX,
+										bindY:   bindY,
+										x:       0,
+										y:       0,
+										id:      id(protein._id),
 										protein: protein,
-										tile:           tile
+										tile:    tile
 									};
 									junctions.push($scope.visibleProteins[id(protein._id)]);
 								});

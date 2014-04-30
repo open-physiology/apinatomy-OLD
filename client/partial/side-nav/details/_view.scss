@@ -23,6 +23,20 @@
 	}
 
 
+	//// important links
+
+	& > a.importantLink {
+		margin: 4px;
+		display: block;
+		font-weight: bold;
+
+		& > span {
+			font-size: 80%;
+			margin-left: 10px;
+		}
+	}
+
+
 	//// entity details
 
 	& > dl {

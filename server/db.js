@@ -138,10 +138,12 @@ metadataSchema.index({ externalType: 1 });
 metadataSchema.index({ entity: 1, type: 1, eid: 1 }, { unique: true });
 
 var proteinSchema = new mongoose.Schema({
-	_id:            StringType({ unique: true }),
-	ensembl:        StringType(),
-	swissprot:      StringType(),
-	smallMolecules: [mongoose.Schema.Types.Mixed]
+	_id:                StringType({ unique: true }),
+	ensembl:            StringType(),
+	swissprot:          StringType(),
+	info:               mongoose.Schema.Types.Mixed,
+	smallMoleculeCount: NumberType(),
+	smallMolecules:     [mongoose.Schema.Types.Mixed]
 });
 metadataSchema.index({ ensembl: 1 });
 metadataSchema.index({ swissprot: 1 });
