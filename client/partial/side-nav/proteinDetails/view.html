@@ -8,7 +8,7 @@
 	<a ng-if="protein.swissprot" class="importantLink" ng-href="http://www.uniprot.org/uniprot/{{ protein.swissprot }}" title="{{ protein.swissprot }}" target="_blank">
 		At UniProt<span class="glyphicon glyphicon-new-window"></span></a>
 
-	<div ng-if="protein.smallMoleculeCount > 0 && protein.smallMolecules > 0" style="margin: 0; padding: 0;">
+	<div ng-if="protein.smallMoleculeCount > 0 && protein.smallMolecules.length > 0" style="margin: 0; padding: 0;">
 		<dl>
 			<dt title="Small Molecule Interactions">S.M. Interactions:</dt>
 			<dd>{{ protein.smallMoleculeCount }}</dd>
@@ -20,7 +20,7 @@
 				</div>
 			</li>
 		</ul>
-		<div ng-if="protein.smallMoleculeCount > 10 && protein.smallMolecules > 0" style="text-align: center; font-weight: bold;">
+		<div ng-if="protein.smallMoleculeCount > 10 && protein.smallMolecules.length > 0" style="text-align: center; font-weight: bold;">
 			<a href="#" style="color: black;">&lt;&lt;</a>
 			&nbsp;
 			<a href="#" style="color: black;">&lt;</a>
