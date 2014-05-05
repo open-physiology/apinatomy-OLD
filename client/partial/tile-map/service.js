@@ -128,7 +128,8 @@ define(['app/module', 'lodash'], function (app, _) {
 		return _(result).map(function (pos) {
 			return _(pos).assign({
 				top: pos.top + top,
-				left: pos.left + left
+				left: pos.left + left,
+				hidden: (_(pos.height).approx(0) || _(pos.width).approx(0))
 			}).value();
 		}).value();
 	}

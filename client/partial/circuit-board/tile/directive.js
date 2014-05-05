@@ -20,7 +20,7 @@ define(['angular',
 
 		var generateTileDefaults = defaults({
 			normal: {
-				css:     {
+				css: {
 					'&':                        {
 						backgroundColor: " bgColor                                                                           ",
 						borderColor:     " color(`.normal.css['&'].backgroundColor`).brighten(20).css()                      ",
@@ -36,12 +36,10 @@ define(['angular',
 						color:   " `.normal.css['&'].color` "
 					},
 					'& > section':              " {} "
-				},
-				layout:  " 'rowsOfTiles' ",
-				spacing: " 2 "
+				}
 			},
 			focus:  {
-				css:     {
+				css: {
 					'&':                        {
 						backgroundColor: " color(`.normal.css['&'].backgroundColor`).brighten(40).css()                      ",
 						borderColor:     " color(`.normal.css['&'].borderColor`).darken(40).css()                            ",
@@ -57,16 +55,8 @@ define(['angular',
 						color:   " `.focus.css['&'].color` "
 					},
 					'& > section':              " `.normal.css['& > section']` "
-				},
-				layout:  "`.normal.layout`",
-				spacing: "`.normal.spacing`"
+				}
 			}
-		});
-
-
-		var generateTileMapDefaults = defaults({
-			layout:  " 'rowsOfTiles' ",
-			spacing: " 2 "
 		});
 
 
@@ -102,6 +92,7 @@ define(['angular',
 
 					//// entity:
 					entity:       $scope.subEntity.entity,
+					active:       true, // only one active tile per entity; TODO
 
 					//// state:
 					mouseOver:    false,
@@ -110,7 +101,7 @@ define(['angular',
 					//// properties:
 					open:         false,
 					maximized:    false,
-					weight:       1,
+					hidden:       false,
 
 					//// 3D-model related properties:
 					has3DModel:   false,
@@ -118,6 +109,16 @@ define(['angular',
 				};
 
 				$scope.artefact.parent.children.push($scope.artefact);
+
+
+				//////////////////// Tile Weight ///////////////////////////////////////////////////////////////////////
+
+				_($scope.tile).derivedProperty('weight', function () {
+					if ($scope.tile.maximized) { return Infinity; }
+					else if ($scope.tile.open) { return 8; }
+					else if ($scope.tile.hidden) { return 0; }
+					else { return 1; }
+				});
 
 
 				//////////////////// Reacting to Mouse-over ////////////////////////////////////////////////////////////
@@ -130,6 +131,10 @@ define(['angular',
 				$scope.onMouseLeave = function (/*$event*/) {
 					$scope.tile.mouseOver = false;
 					$scope.$root.$broadcast('artefact-unfocus', $scope.tile);
+				};
+
+				$scope.onHeaderClick = function (/*$event*/) {
+					$scope.tile.open = !$scope.tile.open;
 				};
 
 			}],
@@ -184,11 +189,6 @@ define(['angular',
 							});
 
 
-							//////////////////// Tile-map Styling //////////////////////////////////////////////////////
-
-							$scope.tileMapStyling = generateTileMapDefaults($scope.tile.entity.tileMap);
-
-
 							//////////////////// Hover to set focus ////////////////////////////////////////////////////
 
 							$scope.$on('artefact-focus', function (event, artefact) {
@@ -204,7 +204,8 @@ define(['angular',
 							});
 
 
-						});
+						}); // $scope.tile.entity._promise.then
+
 					},
 
 					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {}

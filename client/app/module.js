@@ -27,6 +27,7 @@ define(['jquery',
 	app.run(['$rootScope', function ($rootScope) {
 		$rootScope.constructor.prototype._ = _;
 		$rootScope.constructor.prototype.console = console;
+		$rootScope.constructor.prototype.Infinity = Infinity;
 	}]);
 
 

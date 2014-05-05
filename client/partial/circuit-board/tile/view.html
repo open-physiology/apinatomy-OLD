@@ -1,9 +1,10 @@
-<div tile tile-weight="{{ tile.weight }}"
+<div tile tile-weight="{{ tile.weight.toString() }}"
      ng-mouseenter="onMouseEnter($event)"
      ng-mouseleave="onMouseLeave($event)">
 
 
-	<header ng-class="{ top: tile.open, full: !tile.open }">
+	<header ng-class="{ top: tile.open, full: !tile.open }"
+			ng-click="onHeaderClick($event)">
 
 		<div class="header-title">{{ tile.entity.name }}</div>
 

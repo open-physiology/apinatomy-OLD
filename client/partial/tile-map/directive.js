@@ -92,13 +92,17 @@ define(['app/module', 'lodash', 'partial/tile-map/service'], function (app, _) {
 							);
 
 							_(positions).forEach(function (position, index) {
-								var correctedPosition = positionWithSpacing(position);
-								$scope.tiles[index].position = correctedPosition;
-								$scope.tiles[index].element.css(correctedPosition);
-								$scope.tiles[index].element.attr('tileHeight', correctedPosition.height);
-								$scope.tiles[index].element.attr('tileWidth', correctedPosition.width);
-								$scope.tiles[index].element.attr('tileMapHeight', correctedPosition.height);
-								$scope.tiles[index].element.attr('tileMapWidth', correctedPosition.width);
+								if (position.hidden) {
+									$scope.tiles[index].element.hide();
+								} else {
+									var correctedPosition = positionWithSpacing(position);
+									$scope.tiles[index].position = correctedPosition;
+									$scope.tiles[index].element.show();
+									$scope.tiles[index].element.css(correctedPosition);
+									$scope.tiles[index].element.attr('tileHeight', correctedPosition.height);
+									$scope.tiles[index].element.attr('tileWidth', correctedPosition.width);
+									// TODO: does it work with Infinity?
+								}
 							});
 						}
 
