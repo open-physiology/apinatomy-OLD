@@ -63,7 +63,7 @@ define(['angular',
 
 		return {
 			restrict   : 'E',
-			replace    : false,
+			replace    : true,
 			templateUrl: 'partial/circuitboard/tile/view.html',
 			scope      : {
 				entity: '=amyEntity'

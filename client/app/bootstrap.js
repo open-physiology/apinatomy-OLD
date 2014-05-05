@@ -4,8 +4,7 @@
 define(['angular', 'app/module', 'domReady!',
         'partial/top-nav/directive',
         'partial/side-nav/directive',
-        'partial/rotation/directive',
-        'partial/circuitboard/directive',
+        'partial/circuit-board/directive',// TODO: has the experimental circuitboard
         'partial/simulation-panel/directive',
         'amy-once/directive'], function (ng/*, app*/) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

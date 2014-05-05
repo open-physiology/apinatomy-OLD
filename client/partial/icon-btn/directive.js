@@ -14,8 +14,6 @@ define(['lodash', 'app/module', '$bind/service'], function (_, app) {
 				states:  '='
 			},
 			link:     function ($scope, iElement) {
-				iElement.css('background-size', iElement.height() - 4);
-
 				var currentClass = '';
 
 				function adjustToStatus() {

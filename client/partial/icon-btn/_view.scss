@@ -6,7 +6,7 @@ icon-btn {
 	background-position : center;
 	background-repeat   : no-repeat;
 	background-origin   : border-box;
-	// setting background-size in directive.js
+	// setting background-size elsewhere
 
 	border-style        : none;
 	&:hover { border: dotted 1px; }

@@ -5,10 +5,10 @@ define(['angular',
 	'app/module',
 	'chroma',
 	'lodash',
-	'partial/treemap/layout/manager',
+	'partial/tile-map/service',
 	'resource/service',
 	'$bind/service',
-	'partial/icon-btn/directive'], function (ng, app, color, _, Layout) {
+	'partial/icon-btn/directive'], function (ng, app, color, _) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -18,7 +18,7 @@ define(['angular',
 	var TILE_HEADER_HEIGHT = '26px';
 
 
-	app.directive('amyTile', ['$timeout', function ($timeout) {
+	app.directive('amyTile', ['$timeout', 'TileMap', function ($timeout, TileMap) {
 		return {
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -187,7 +187,7 @@ define(['angular',
 								//// reposition any child tiles - TODO: move to layout directive
 
 								if (!_(children).isEmpty()) {
-									var positions = Layout(
+									var positions = TileMap(
 											_(children)
 													.pluck('layoutInterface')
 													.forEach(function (childIface, i) {

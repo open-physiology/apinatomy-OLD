@@ -65,15 +65,15 @@ define(['lodash'], function (_) {
 
 		return result;
 	}
-	
+
 // Here is an overview of the sizing and
 // positioning of a tile and its children:
-// 
+//
 //
 //                                    width
 //                 ╭┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄╮
 //                 ┆                                         ┆
-//               
+//
 //               ┌─────────────────────────────────────────────┐  ┄┄┄┄╮ border
 //         ╭┄┄┄  │ ╔═════════════════════════════════════════╗ │  ┄┄┄┄╯ width
 //  header ┊     │ ║ header                                  ║ │
@@ -100,12 +100,12 @@ define(['lodash'], function (_) {
 //         ┊     │ ║                                         ║ │      ┊ spacing
 //         ╰┄┄┄  │ ╚═════════════════════════════════════════╝ │  ┄┄┄┄╯
 //               └─────────────────────────────────────────────┘
-//               
+//
 //                 ┆     ┆             ┆               ┆     ┆ ┆
 //                 ╰┄┄┄┄┄╯             ╰┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄╯     ╰┄╯
 //                  tile                  child width       border
 //                 spacing                                  width
-// 	
+//
 
 
 

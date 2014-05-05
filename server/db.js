@@ -97,7 +97,9 @@ var entitySchema = new mongoose.Schema({
 	proteins:            [ProteinReference()],
 	proteinInteractions: [subProteinInteractionSchema],
 	reachable:           BooleanType(),
-	descendantCount:     NumberType()
+	descendantCount:     NumberType(),
+	tile:                mongoose.Schema.Types.Mixed,
+	tileMap:             mongoose.Schema.Types.Mixed
 }, { _id: false });
 entitySchema.index({ externals: 1 });
 

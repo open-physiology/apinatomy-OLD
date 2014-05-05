@@ -4,11 +4,11 @@
 define(['lodash',
 	'angular',
 	'app/module',
-	'partial/treemap/layout/manager',
+	'partial/tile-map/service',
 	'partial/treemap/layout/predefined',
 	'$bind/service',
 	'partial/treemap/tile/directive'], function
-		(_, ng, app, Layout) {
+		(_, ng, app) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -16,7 +16,7 @@ define(['lodash',
 	var DEFAULT_TILE_LAYOUT = 'twentyFourTile';
 
 
-	app.directive('amyTreemap', ['$q', '$window', '$bind', function ($q, $window, $bind) {
+	app.directive('amyTreemap', ['$q', '$window', '$bind', 'TileMap', function ($q, $window, $bind, TileMap) {
 		return {
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -66,7 +66,7 @@ define(['lodash',
 					},
 
 					requestRedraw: _($bind(function () {
-						var positions = Layout(
+						var positions = TileMap(
 								_(children)
 										.pluck('layoutInterface')
 										.map(function (childIface, i) {

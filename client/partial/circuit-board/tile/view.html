@@ -1,0 +1,27 @@
+<div tile tile-weight="{{ tile.weight }}"
+     ng-mouseenter="onMouseEnter($event)"
+     ng-mouseleave="onMouseLeave($event)">
+
+
+	<header ng-class="{ top: tile.open, full: !tile.open }">
+
+		<div class="header-title">{{ tile.entity.name }}</div>
+
+		<icon-btn ng-if="tile.has3DModel"
+		          ng-model="tile.show3DModel"
+		          states=" { true:  false,           false:  true            }"
+		          classes="{ true: 'action-show-3d', false: 'action-hide-3d' }"></icon-btn>
+
+		<icon-btn ng-model="tile.maximized"
+		          states=" { true:  false,              false:  true             }"
+		          classes="{ true: 'action-unmaximize', false: 'action-maximize' }"></icon-btn>
+
+	</header>
+
+
+	<section ng-if="tile.open">
+		<amy-circuit-board entity="tile.entity"></amy-circuit-board>
+	</section>
+
+
+</div>

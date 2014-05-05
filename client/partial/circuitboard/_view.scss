@@ -3,7 +3,6 @@
 @import "partial/circuitboard/graph/view";
 @import "partial/circuitboard/variable-glyphs/view";
 @import "partial/circuitboard/protein-graph/view";
-@import "partial/rotation/view";
 @import "partial/treemap/view";
 @import "partial/circuitboard/threed/view";
 
@@ -12,6 +11,9 @@ amy-circuitboard {
 		@include edge-to-edge;
 		@include backface-visibility(hidden);
 		amy-treemap {
+			@include edge-to-edge;
+		}
+		tile-map {
 			@include edge-to-edge;
 		}
 		div.smokescreen {
@@ -47,4 +49,3 @@ amy-circuitboard {
 		}
 	}
 }
-

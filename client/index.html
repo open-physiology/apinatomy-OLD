@@ -17,11 +17,73 @@
 
 	<amy-side-nav id="side-nav"></amy-side-nav>
 
-	<main><amy-circuitboard></amy-circuitboard></main>
+	<main><amy-circuit-board entity="webPage.entity"></amy-circuit-board></main>
 
     <footer ng-cloak>
 	    <amy-simulation-panel ng-if="$root.simulationEnabled" amy-streams="streams"></amy-simulation-panel>
     </footer>
+
+
+	<!--<tile-map tile-spacing="4" tiles="tiles" ng-init="tileWeights = [{w:1}, {w:2}, {w:2}, {w:1}]">-->
+
+
+		<!--<div ng-repeat="(i, t) in tileWeights" tile tile-weight="{{t.w}}">-->
+			<!--<button ng-click="tileWeights[i].w = 3 - tileWeights[i].w">{{ tiles[i].weight() }}</button>-->
+		<!--</div>-->
+
+		<!--<div tile tile-weight="{{ tileWeights[0] }}">-->
+
+			<!--<button ng-click="tileWeights[0] = 3 - tileWeights[0]">{{ tiles[0].weight() }}</button>-->
+
+		<!--</div>-->
+
+		<!--<div tile tile-weight="{{ tileWeights[1] }}">-->
+
+			<!--<button ng-click="tileWeights[1] = 3 - tileWeights[1]">{{ tiles[1].weight() }}</button>-->
+
+		<!--</div>-->
+
+		<!--<div tile tile-weight="{{ tileWeights[2] }}">-->
+
+			<!--<button ng-click="tileWeights[2] = 3 - tileWeights[2]">{{ tiles[2].weight() }}</button>-->
+
+		<!--</div>-->
+
+		<!--<tile-map tile tile-weight="{{ tileWeights[3] }}"-->
+		              <!--tile-spacing="2" tiles="tiles2"-->
+		              <!--ng-init="tileWeights2 = [1, 2, 1, 2]"-->
+		              <!--style="margin: 0; padding: 0;"-->
+		              <!--tile-map-height="{{ tiles[3].position.height }}"-->
+		              <!--tile-map-width="{{ tiles[3].position.width }}">-->
+
+			<!--<div tile tile-weight="{{ tileWeights2[0] }}">-->
+
+				<!--<button ng-click="tileWeights2[0] = 3 - tileWeights2[0]">{{ tiles2[0].position.height }}</button>-->
+
+			<!--</div>-->
+
+			<!--<div tile tile-weight="{{ tileWeights2[1] }}">-->
+
+				<!--<button ng-click="tileWeights2[1] = 3 - tileWeights2[1]">{{ tiles2[1].weight() }}</button>-->
+
+			<!--</div>-->
+
+			<!--<div tile tile-weight="{{ tileWeights2[2] }}">-->
+
+				<!--<button ng-click="tileWeights2[2] = 3 - tileWeights2[2]">{{ tiles2[2].weight() }}</button>-->
+
+			<!--</div>-->
+
+			<!--<div tile tile-weight="{{ tileWeights2[3] }}">-->
+
+				<!--<button ng-click="tileWeights2[3] = 3 - tileWeights2[3]">{{ tiles2[3].weight() }}</button>-->
+
+			<!--</div>-->
+
+		<!--</tile-map>-->
+
+	<!--</tile-map>-->
+
 
 </body>
 </html>

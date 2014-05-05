@@ -2,40 +2,67 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['jquery',
-		'lodash',
-	    'angular',
+        'lodash',
+        'angular',
         'angular-animate',
         'angular-bootstrap',
         'angular-recursion',
         'angular-once',
         'angular-slider'], function ($, _, ng) {
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	var app = ng.module('ApiNATOMY', ['ngAnimate',
-	                                        'ui.bootstrap',
-	                                        'RecursionHelper',
-	                                        'once',
-	                                        'vr.directives.slider']);
+	                                  'ui.bootstrap',
+	                                  'RecursionHelper',
+	                                  'once',
+	                                  'vr.directives.slider']);
 
 
 	app.config(function ($locationProvider) {
 		$locationProvider.html5Mode(true).hashPrefix('!');
 	});
 
-	app.controller('MainController', ['$rootScope', '$window', function ($rootScope, $window) {
 
-		//// initially disable global settings
+	app.run(['$rootScope', function ($rootScope) {
+		$rootScope.constructor.prototype._ = _;
+		$rootScope.constructor.prototype.console = console;
+	}]);
 
-		$rootScope.threeDRotateEnabled = false;
-		$rootScope.simulationEnabled = false;
 
-		//// manage bottom sliding panels
+	app.controller('MainController', ['$scope', '$window', 'ResourceService', function ($scope, $window, ResourceService) {
+
+		//////////////////// Artefact Hierarchy ////////////////////////////////////////////////////////////////////////
+
+		$scope.webPage =
+		$scope.artefact = {
+			id:       $scope.$id,
+			type:     'webPage',
+
+			//// artefact hierarchy:
+			parent:   null,
+			children: [],
+
+
+			//// root entity:
+			entity:   ResourceService.entities(['24tile:60000000'])[0]
+		};
+
+		$scope.artefact.root = $scope.artefact;
+
+
+		//////////////////// Initially disable global settings /////////////////////////////////////////////////////////
+
+		$scope.$root.threeDRotateEnabled = false;
+		$scope.$root.simulationEnabled = false;
+
+
+		//////////////////// Manage bottom sliding panels //////////////////////////////////////////////////////////////
 
 		var amySpacing = 15;      // $amy-spacing; TODO: automatically extract sass variables
 		var amyPanelHeight = 250; // $amy-panel-height
 
-		$rootScope.$watch('simulationEnabled', function (enabled) {
+		$scope.$root.$watch('simulationEnabled', function (enabled) {
 			if (enabled) {
 				$('main').css('bottom', amyPanelHeight);
 			} else {
