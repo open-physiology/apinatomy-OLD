@@ -18,7 +18,7 @@ var app = express();
 
 var HTTP_OK = 200;
 var HTTP_CREATED = 201;
-var HTTP_NO_CONTENT = 204;
+//var HTTP_NO_CONTENT = 204;
 var HTTP_BAD_REQUEST = 400;
 var HTTP_NOT_FOUND = 404;
 var HTTP_INTERNAL_SERVER_ERROR = 500;
@@ -77,8 +77,6 @@ app.get('/resources/entities/:ids', function (req, res) {
 					res.status(HTTP_INTERNAL_SERVER_ERROR).send(null);
 					return;
 				}
-
-				console.log(ents);
 
 				res.status(HTTP_OK).json(ents);
 			});
