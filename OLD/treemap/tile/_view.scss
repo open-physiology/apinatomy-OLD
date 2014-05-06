@@ -1,5 +1,5 @@
-@import "base";
-@import "partial/icon-btn/view";
+@import "../../../client/base";
+@import "../../../client/partial/icon-btn/view";
 
 amy-tile {
 	@include user-select(none);

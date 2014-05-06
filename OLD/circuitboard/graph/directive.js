@@ -1,7 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], function (_, $, ng, app, d3) {
+define(['lodash', 'jquery', 'angular', '../../../client/app/module', 'd3', 'resource/service'], function (_, $, ng, app, d3) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	app.directive('amyGraph', ['$window', '$bind', 'ResourceService', function ($window, $bind, Resources) {

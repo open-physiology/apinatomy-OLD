@@ -137,11 +137,20 @@ define(['app/module', 'lodash'], function (app, _) {
 	TileMap.register = function register() {
 		if (_(arguments[0]).isString() && _(arguments[1]).isFunction()) {
 			registeredLayouts[arguments[0]] = arguments[1];
+			registeredLayouts[arguments[0]]._tileMapLayout_ = {
+				stable: false
+			};
+			_(registeredLayouts[arguments[0]]._tileMapLayout_).assign(arguments[2]);
 		} else if (_(arguments[0]).isPlainObject()) {
-			_(arguments[0]).forOwn(function (fn, name) { register(name, fn); });
+			var options = arguments[1];
+			_(arguments[0]).forOwn(function (fn, name) { register(name, fn, options); });
 		} else {
 			throw new TypeError("Use either register(name, fn) or register({ name1: fn1, name2: fn2, ... }).");
 		}
+	};
+
+	TileMap.layoutIsStable = function layoutIsStable(layout) {
+		return registeredLayouts[layout]._tileMapLayout_.stable;
 	};
 
 
@@ -238,7 +247,6 @@ define(['app/module', 'lodash'], function (app, _) {
 
 		slice: function (tiles, height, width) {
 			return gridLayout(tiles, height, width, null, 1);
-
 		},
 
 		dice: function (tiles, height, width) {
@@ -271,7 +279,7 @@ define(['app/module', 'lodash'], function (app, _) {
 			return TileMap(tiles, resultingLayout, height, width, 0, 0);
 		}
 
-	});
+	}, { stable: true });
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

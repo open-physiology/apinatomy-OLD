@@ -4,7 +4,7 @@
 define(['jquery',
 	'lodash',
 	'angular',
-	'app/module',
+	'../../../client/app/module',
 	'threejs',
 	'threejs-obj-loader',
 	'threejs-swc-loader',

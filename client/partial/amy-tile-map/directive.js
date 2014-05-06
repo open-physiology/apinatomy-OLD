@@ -2,16 +2,15 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['lodash', 'angular', 'app/module',
-        '$bind/service',
-        'defaults/service',
-        'partial/treemap/directive',
-        'partial/circuit-board/tile/directive',
-        'partial/tile-map/directive'
+	'$bind/service',
+	'defaults/service',
+	'partial/amy-tile-map/tile/directive',
+	'partial/tile-map/directive'
 ], function (_, ng, app) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	app.directive('amyCircuitBoard', ['ResourceService', 'defaults', function (ResourceService, defaults) {
+	app.directive('amyTileMap', ['ResourceService', 'RecursionHelper', 'defaults', function (ResourceService, RecursionHelper, defaults) {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,7 +18,7 @@ define(['lodash', 'angular', 'app/module',
 
 
 		var generateTileMapDefaults = defaults({
-			layout:  " 'rowsOfTiles' ",
+			layout : " 'rowsOfTiles' ",
 			spacing: " 2 "
 		});
 
@@ -29,63 +28,63 @@ define(['lodash', 'angular', 'app/module',
 
 
 		return {
-			restrict:    'E',
-			replace:     false,
-			templateUrl: 'partial/circuit-board/view.html',
-			scope: {
-				entity: '='
-			},
+			restrict   : 'E',
+			replace    : true,
+			templateUrl: 'partial/amy-tile-map/view.html',
+			require    : 'ngModel',
+			scope      : true,
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-			controller: ['$scope', function ($scope) {
-
-				//////////////////// TileMap / Artefact Hierarchy //////////////////////////////////////////////////////
-
-				$scope.tileMap =
-				$scope.artefact = {
-					id:           $scope.$id,
-					type:         'tileMap',
-
-					//// artefact hierarchy:
-					parent:       $scope.$parent.artefact,
-					children:     [],
-					root:         $scope.$parent.artefact.root
-				};
-
-
-				//////////////////// Loading sub-entities //////////////////////////////////////////////////////////////
-
-				$scope.entity._promise.then(function () {
-					ResourceService.entities(_($scope.entity.sub).map(function (sub) {
-						return sub.entity._id;
-					}).value());
-				});
-
-			}],
-
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			compile: function () {
 				return {
 
-					pre: function preLink($scope/*, iElement, iAttrs, controller*/) {
+					pre: function preLink($scope, iElement, iAttrs, ngModel) {
+						iElement.attr('amy-tile-map', '');
 
-						$scope.entity._promise.then(function () {
+						//////////////////// Getting the model value ///////////////////////////////////////////////////
 
-							//// Styling
+						ngModel.$render = function () {
+							$scope.entity = ngModel.$modelValue;
 
-							$scope.styling = generateTileMapDefaults($scope.entity.tileMap, {});
+							//////////////////// TileMap / Artefact Hierarchy //////////////////////////////////////////
 
-						});
+							$scope.tileMap =
+							$scope.artefact = {
+								id      : $scope.$id,
+								type    : 'tileMap',
+
+								//// artefact hierarchy:
+								parent  : $scope.$parent.artefact,
+								children: [],
+								root    : $scope.$parent.artefact.root
+							};
+
+
+							$scope.entity._promise.then(function () {
+
+								//////////////////// Loading sub-entities //////////////////////////////////////////////
+
+								ResourceService.entities(_($scope.entity.sub).map(function (sub) {
+									return sub.entity._id;
+								}).value());
+
+								//////////////////// Fetch tileMap styling options /////////////////////////////////////
+
+								$scope.styling = generateTileMapDefaults($scope.entity.tileMap, {});
+
+							});
+
+						};
 
 
 					},
 
-					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {}
+					post: function () {
+					}
 
-				};
+				}
 			}
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,4 +1,4 @@
-<div tile tile-weight="{{ tile.weight.toString() }}"
+<tile tile-weight="{{ tile.weight.toString() }}"
      ng-mouseenter="onMouseEnter($event)"
      ng-mouseleave="onMouseLeave($event)">
 
@@ -21,8 +21,8 @@
 
 
 	<section ng-if="tile.open">
-		<amy-circuit-board entity="tile.entity"></amy-circuit-board>
+		<amy-tile-map ng-model="tile.entity"></amy-tile-map>
 	</section>
 
 
-</div>
+</tile>

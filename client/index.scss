@@ -11,7 +11,7 @@
 
 @import "partial/top-nav/view";
 @import "partial/side-nav/view";
-@import "partial/circuit-board/view"; // TODO: this is the experimental one
+@import "partial/amy-tile-map/view"; // TODO: this is the experimental one
 @import "partial/simulation-panel/view";
 
 //// main page styles
@@ -44,8 +44,8 @@ html, body {
 	main {
 		@include edge-to-edge;
 		top: $amy-top-nav-height;
-		& > amy-circuit-board { // TODO: this is the experimental one
-			@include edge-to-edge;
+		& > [amy-tile-map] { // TODO: this is the experimental one
+			position: absolute;
 			top: $amy-spacing;
 			bottom: $amy-spacing;
 			left: $amy-spacing + $amy-side-nav-width;

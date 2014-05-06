@@ -1,7 +1,5 @@
 'use strict';
 
-// 'css!partial/tile-map/temp',
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['app/module', 'lodash', 'partial/tile-map/service'], function (app, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -11,16 +9,16 @@ define(['app/module', 'lodash', 'partial/tile-map/service'], function (app, _) {
 	var DEFAULT_LAYOUT = 'rowsOfTiles';
 
 
-	app.directive('tileMap', ['TileMap', function (TileMap) {
+	app.directive('tileMap', ['TileMap', '$window', function (TileMap, $window) {
 		return {
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			restrict: 'EA',
-			replace:  false,
-			scope:    {
-				layout:  '@tileLayout',
+			replace : false,
+			scope   : {
+				layout : '@tileLayout',
 				spacing: '@tileSpacing',
-				tiles:   '=?tiles'
+				tiles  : '=?tiles'
 			},
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -33,45 +31,43 @@ define(['app/module', 'lodash', 'partial/tile-map/service'], function (app, _) {
 
 			compile: function () {
 				return {
-					pre:  function preLink($scope, iElement, iAttrs, controller) {
+					pre : function preLink($scope, iElement, iAttrs, controller) {
 
 						$scope.tiles = [];
 
 						var spacing = parseFloat(_($scope.spacing).or(DEFAULT_SPACING));
 						var layout = _($scope.layout).or(DEFAULT_LAYOUT);
 						var position = {
-							width:  iElement.width(),
+							width : iElement.width(),
 							height: iElement.height()
 						};
-
-
-						////////// Procedures //////////
+						var positions = [];
 
 						function positionWithSpacing(position) {
 							return {
-								top: position.top + spacing,
-								left: position.left + spacing,
+								top   : position.top + spacing,
+								left  : position.left + spacing,
 								height: position.height - spacing,
-								width: position.width - spacing
+								width : position.width - spacing
 							};
 						}
 
-						var processNewTiles = function processNewTiles() {
 
-							var newTiles = iElement.children('[tile]').toArray();
+						////////// Procedures //////////////////////////////////////////////////////////////////////////
 
+						var processNewTiles = _.debounce(function processNewTiles() {
+							var newTiles = iElement.children('[tile], tile').toArray();
 							_($scope.tiles).remove();
-
 							_(newTiles).forEach(function (element) {
 								element = $(element);
 
 								element.css({
-									position:  'absolute',
+									position : 'absolute',
 									borderBox: 'border-box'
 								});
 
 								var tileObj = {
-									weight:  _.constant(parseFloat(_(element.attr('tile-weight')).or(1))),
+									weight : _.constant(parseFloat(_(element.attr('tile-weight')).or(1))),
 									element: element
 								};
 
@@ -79,18 +75,15 @@ define(['app/module', 'lodash', 'partial/tile-map/service'], function (app, _) {
 
 								element.data('tileObj', tileObj);
 							});
-
 							calculateAndApplyPositions();
+						}, 100);
 
-						};
-
-						function calculateAndApplyPositions() {
-							var positions = TileMap(
+						var calculateAndApplyPositions = _.throttle(function calculateAndApplyPositions() {
+							positions = TileMap(
 									$scope.tiles, layout,
 									(position.height - spacing),
 									(position.width - spacing)
 							);
-
 							_(positions).forEach(function (position, index) {
 								if (position.hidden) {
 									$scope.tiles[index].element.hide();
@@ -104,85 +97,50 @@ define(['app/module', 'lodash', 'partial/tile-map/service'], function (app, _) {
 									// TODO: does it work with Infinity?
 								}
 							});
-						}
+						}, 50);
 
 
-						////////// Controller; the way to communicate with individual tiles //////////
+						////////// Controller; the way to communicate with individual tiles ////////////////////////////
 
 						controller.registerTile = function (tile) {
-
 							processNewTiles();
-
 							return {
 								registerNewWeight: function (newWeight) {
-									tile.data('tileObj').weight = _.constant(newWeight);
-									calculateAndApplyPositions();
+									if (!_(tile.data('tileObj')).isUndefined()) {
+										tile.data('tileObj').weight = _.constant(newWeight);
+										calculateAndApplyPositions();
+										iElement.trigger('resize');
+									}
 								}
 							};
-
 						};
 
 
-						////////// Responding to changes //////////
+						////////// Responding to changes ///////////////////////////////////////////////////////////////
 
-//						$scope.$watch('position', function recalculateAndApplyPositionsForNewSize(newPosition) {
-//
-//
-//							if (_(newPosition).isUndefined()) {
-//								position = {
-//									width:  iElement.width(),
-//									height: iElement.height()
-//								};
-//							} else {
-//								position = newPosition;
-//								position.width -= (parseFloat(iElement.css('borderLeftWidth')) +
-//								                   parseFloat(iElement.css('borderRightWidth')));
-//								position.height -= (parseFloat(iElement.css('borderTopWidth')) +
-//								                    parseFloat(iElement.css('borderBottomWidth')));
-//							}
-//							calculateAndApplyPositions();
-//						});
-
-						iAttrs.$observe('tileMapHeight', function (newHeight) {
-							position.height = (_(newHeight).isUndefined())
-									? iElement.height()
-									: newHeight - parseFloat(iElement.css('borderTopWidth')) - parseFloat(iElement.css('borderBottomWidth'));
-							calculateAndApplyPositions();
-						});
-
-						iAttrs.$observe('tileMapWidth', function (newWidth) {
-							position.width = (_(newWidth).isUndefined())
-									? iElement.width()
-									: newWidth - parseFloat(iElement.css('borderLeftWidth')) - parseFloat(iElement.css('borderRightWidth'));
-							calculateAndApplyPositions();
-						});
-
-						$scope.$watch('position', function recalculateAndApplyPositionsForNewSize(newPosition) {
-
-
-							if (_(newPosition).isUndefined()) {
-								position = {
-									width:  iElement.width(),
-									height: iElement.height()
-								};
-							} else {
-								position = newPosition;
-								position.width -= (parseFloat(iElement.css('borderLeftWidth')) +
-								                   parseFloat(iElement.css('borderRightWidth')));
-								position.height -= (parseFloat(iElement.css('borderTopWidth')) +
-								                    parseFloat(iElement.css('borderBottomWidth')));
+						$($window).resize(_.throttle(function onResize() {
+							var newSize = {
+								width : iElement.width(),
+								height: iElement.height()
+							};
+							if (!_(position.width).approx(newSize.width) || !_(position.height).approx(newSize.height)) {
+								_(position).assign(newSize);
+								calculateAndApplyPositions();
 							}
-							calculateAndApplyPositions();
+						}, 50));
+
+						$scope.$watch('layout', function recalculateAndApplyPositionsForNewLayout(newLayout, oldLayout) {
+							if (newLayout !== oldLayout) {
+								layout = _(newLayout).or(DEFAULT_LAYOUT);
+								calculateAndApplyPositions();
+							}
 						});
 
-						$scope.$watch('layout', function recalculateAndApplyPositionsForNewLayout(newLayout) {
-							layout = _(newLayout).or(DEFAULT_LAYOUT);
-							calculateAndApplyPositions();
-						});
-
-						$scope.$watch('spacing', function recalculateAndApplyPositionsForNewSpacing(newSpacing) {
-							spacing = parseFloat(_(newSpacing).or(DEFAULT_SPACING));
-							calculateAndApplyPositions();
+						$scope.$watch('spacing', function recalculateAndApplyPositionsForNewSpacing(newSpacing, oldSpacing) {
+							if (newSpacing !== oldSpacing) {
+								spacing = parseFloat(_(newSpacing).or(DEFAULT_SPACING));
+								calculateAndApplyPositions();
+							}
 						});
 
 					},
@@ -199,14 +157,14 @@ define(['app/module', 'lodash', 'partial/tile-map/service'], function (app, _) {
 		return {
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-			restrict: 'A',
-			require:  '^tileMap',
+			restrict: 'EA',
+			require : '^tileMap',
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			compile: function () {
 				return {
-					pre:  function preLink($scope, iElement, iAttrs, controller) {
+					pre : function preLink($scope, iElement, iAttrs, controller) {
 
 						////////// Getting an interface from the controller //////////
 

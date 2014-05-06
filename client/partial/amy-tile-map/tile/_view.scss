@@ -1,7 +1,7 @@
 @import "base";
 @import "partial/icon-btn/view";
 
-amy-circuit-board [tile] {
+[amy-tile-map] tile {
 	@include user-select(none);
 	@include box-sizing(border-box);
 	display    : block;
@@ -9,6 +9,7 @@ amy-circuit-board [tile] {
 	margin     : 0;
 	cursor     : crosshair;
 	text-align : center;
+	overflow: hidden;
 
 	// borders
 	border     : solid 1px;
@@ -87,7 +88,6 @@ amy-circuit-board [tile] {
 		bottom   : 0;
 		right    : 0;
 	}
-
 }
 
 icon-btn {

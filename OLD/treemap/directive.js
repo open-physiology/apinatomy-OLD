@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['lodash',
 	'angular',
-	'app/module',
+	'../../client/app/module',
 	'partial/tile-map/service',
 	'partial/treemap/layout/predefined',
 	'$bind/service',
