@@ -77,7 +77,7 @@ define(['angular',
 
 				//// basic initialization
 
-				$scope._ = _; // TODO: find a way to do this once for all $scope's
+				$scope._ = _;
 
 				//////////////////// Tile Hierarchy ////////////////////////////////////////////////////////////////////
 
@@ -342,6 +342,8 @@ define(['angular',
 							//// styling
 
 							$scope.entity._promise.then(function () {
+
+								$scope.entityLoaded = true;
 
 								$scope.styling = generateStylingDefaults($scope.entity.tile, {
 									bgColor: ($scope.parentTile.entity) ?

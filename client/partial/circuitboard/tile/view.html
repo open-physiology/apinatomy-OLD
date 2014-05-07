@@ -15,15 +15,14 @@
           amy-show-three-d-button="tile3D.hasModels"
           amy-front-icon="visible && !active && 'asterisk'"
           amy-front-icon-title="'The \'' + entity.name + '\' is active in another tile.'"
-          ng-mouseenter="mouseOver = true"
-          ng-mouseleave="mouseOver = false"
+          ng-mouseenter="entityLoaded && (mouseOver = true)"
+          ng-mouseleave="entityLoaded && (mouseOver = false)"
           ng-click="onClick($event)"
           on-ready="onTileReady()"
           after-reposition="afterTileReposition(newPosition)">
 
 	<div amy-once="open">
-		<amy-circuitboard-tile ng-repeat="sub in _.uniq(entity.sub, false, 'entity')"
-		                       amy-entity="sub.entity"></amy-circuitboard-tile>
+		<amy-circuitboard-tile ng-repeat="sub in _.uniq(entity.sub, false, 'entity')" amy-entity="sub.entity"></amy-circuitboard-tile>
 	</div>
 
 </amy-tile>
