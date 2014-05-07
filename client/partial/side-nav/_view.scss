@@ -1,6 +1,6 @@
 @import "base";
 
-.amy-side-nav {
+[amy-side-nav] {
 	background-color : rgba(255, 255, 255, .5);
 
 	& > header {
@@ -23,7 +23,7 @@
 
 	}
 
-	& .amy-entity-details, & .amy-protein-details {
+	& [amy-entity-details], & [amy-protein-details] {
 //		@include fade-out;
 		margin-left   : $amy-spacing;
 		margin-bottom : $amy-spacing / 2;

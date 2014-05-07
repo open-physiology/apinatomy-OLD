@@ -7,32 +7,25 @@ define(['app/module', 'chroma', 'lodash'], function (app, color, _) {
 
 	app.directive('amyEntityDetails', [function () {
 		return {
-			restrict:    'E',
-			replace:     true,
-			transclude:  true,
+			restrict   : 'E',
+			replace    : true,
 			templateUrl: 'partial/side-nav/details/view.html',
-			scope:       {
-				bundle: '='
-			},
-
-			controller: function ($scope) {},
+			require    : '?ngModel',
+			scope      : true,
 
 			compile: function () {
 				return {
 
-					pre: function preLink($scope, iElement/*, iAttrs, controller*/) {
-
-						if (_($scope.bundle.styling).isUndefined()) { // TODO: trying to capture and repair this condition
-							console.debug($scope.bundle);
-						}
-
-						iElement.putCSS($scope.bundle.styling.focus.css);
-						iElement.css({
-							backgroundColor: color($scope.bundle.styling.normal.css['&'].backgroundColor).brighten(30).css()
-						});
-					},
-
-					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {}
+					pre: function preLink($scope, iElement, iAttrs, ngModel) {
+						ngModel.$render = function () {
+							$scope.tile = ngModel.$modelValue;
+							iElement.putCSS($scope.tile.styling.focus.css);
+							iElement.css(
+									'backgroundColor',
+									color($scope.tile.styling.normal.css['&'].backgroundColor).brighten(30).css()
+							);
+						};
+					}
 
 				};
 			}

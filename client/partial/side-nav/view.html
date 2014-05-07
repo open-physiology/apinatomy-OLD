@@ -1,27 +1,24 @@
-<nav class="amy-side-nav" role="navigation">
+<nav amy-side-nav role="navigation">
 
 	<header><h2>ApiNATOMY</h2></header>
 
-	<div ng-repeat="bundle in bundles">
+	<div ng-repeat="artefact in artefacts">
 
-		<!-- the relation-type indicator inbetween two entities -->
+		<!-- the relation-type indicator in-between two artefacts -->
 		<div ng-if="!$first" class="amy-relation-types">
-			<div ng-repeat="relType in relationType(bundle)">{{ relType }}</div>
+			<div ng-repeat="relType in relTypeArray(artefact)">{{ relType }}</div>
 		</div>
 
-		<!-- the panel with the entity details -->
-		<amy-entity-details ng-repeat-end bundle="bundle"></amy-entity-details>
+		<!-- the panel with the tile details; TODO: make it work for all artefacts -->
+		<amy-entity-details ng-model="artefact"></amy-entity-details>
 
 	</div>
 
-	<!-- the panel with the entity details -->
 
-	<!-- TODO: protein expression should be part of the real focus-chain, not pasted on like this -->
+	<!--<div ng-if="sideNav.protein" class="amy-relation-types">-->
+		<!--<div>protein expression</div>-->
+	<!--</div>-->
 
-	<div ng-if="sideNav.protein" class="amy-relation-types">
-		<div>protein expression</div>
-	</div>
-
-	<amy-protein-details ng-if="sideNav.protein" amy-protein="sideNav.protein" amy-fixed="proteinFixed"></amy-protein-details>
+	<!--<amy-protein-details ng-if="sideNav.protein" amy-protein="sideNav.protein" amy-fixed="proteinFixed"></amy-protein-details>-->
 
 </nav>

@@ -54,6 +54,7 @@ define(['lodash', 'angular', 'app/module',
 							$scope.artefact = {
 								id      : $scope.$id,
 								type    : 'tileMap',
+								show    : false,
 
 								//// artefact hierarchy:
 								parent  : $scope.$parent.artefact,

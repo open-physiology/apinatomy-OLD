@@ -91,6 +91,7 @@ define(['angular',
 							$scope.artefact = {
 								id          : $scope.$id,
 								type        : 'tile',
+								show        : true,
 
 								//// artefact hierarchy:
 								parent      : $scope.$parent.artefact,
