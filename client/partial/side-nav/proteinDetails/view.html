@@ -8,28 +8,28 @@
 	<a ng-if="protein.swissprot" class="importantLink" ng-href="http://www.uniprot.org/uniprot/{{ protein.swissprot }}" title="{{ protein.swissprot }}" target="_blank">
 		At UniProt<span class="glyphicon glyphicon-new-window"></span></a>
 
-	<div ng-if="protein.smallMoleculeCount > 0 && protein.smallMolecules.length > 0" style="margin: 0; padding: 0;">
+	<div ng-if="protein.smallMoleculeInteractions.length > 0" style="margin: 0; padding: 0;">
 		<dl>
 			<dt title="Small Molecule Interactions">S.M. Interactions:</dt>
-			<dd>{{ protein.smallMoleculeCount }}</dd>
+			<dd>{{ protein.smallMoleculeInteractions.length }}</dd>
 		</dl>
 		<ul style="padding-left: 27px; margin-top: -4px;">
-			<li ng-repeat="sm in protein.smallMolecules">
+			<li ng-repeat="sm in visibleSmallMolecules">
 				<div style="display: inline-block; position: relative; top: 5px; width: 144px; overflow: hidden; text-overflow: ellipsis;">
 					<a ng-href="{{ extractURL(sm) }}" style="white-space: nowrap;" title="{{ extractPrefLabel(sm) }}" target="_blank">{{ extractPrefLabel(sm) }}</a>
 				</div>
 			</li>
 		</ul>
-		<div ng-if="protein.smallMoleculeCount > 10 && protein.smallMolecules.length > 0" style="text-align: center; font-weight: bold;">
-			<a href="#" style="color: black;">&lt;&lt;</a>
+		<div class="pagination">
+			<a ng-click="smPagination.page = 1" ng-class="{ disabled: smPagination.page === 1 }">&lt;&lt;</a>
 			&nbsp;
-			<a href="#" style="color: black;">&lt;</a>
+			<a ng-click="smPagination.page = Math.max(1, smPagination.page - 1)" ng-class="{ disabled: smPagination.page === 1 }">&lt;</a>
 			&nbsp;&nbsp;
-			<span>1 / {{ Math.ceil(protein.smallMoleculeCount / 10) }}</span>
+			<span>{{ smPagination.page }} / {{ smPagination.lastPage }}</span>
 			&nbsp;&nbsp;
-			<a href="#" style="color: black;">&gt;</a>
+			<a ng-click="smPagination.page = Math.min(smPagination.lastPage, smPagination.page + 1)" ng-class="{ disabled: smPagination.page === smPagination.lastPage }">&gt;</a>
 			&nbsp;
-			<a href="#" style="color: black;">&gt;&gt;</a>
+			<a ng-click="smPagination.page = smPagination.lastPage" ng-class="{ disabled: smPagination.page === smPagination.lastPage }">&gt;&gt;</a>
 		</div>
 	</div>
 

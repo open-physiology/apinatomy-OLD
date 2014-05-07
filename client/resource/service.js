@@ -85,6 +85,14 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 					.then(function (data) { return data.data; });
 		};
 
+		//////////////////// Small Molecules ///////////////////////////////////////////////////////////////////////////
+
+		iface.smallMolecules = function (ids) {
+			if (_(ids).isEmpty()) { return $q.when([]); }
+			return $http.get('/resources/small-molecules/' + ids.join(','))
+					.then(function (data) { return data.data; });
+		};
+
 		//////////////////// 3D Models /////////////////////////////////////////////////////////////////////////////////
 
 		var URI_TO_MODEL = {

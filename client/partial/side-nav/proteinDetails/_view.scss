@@ -53,4 +53,21 @@
 		}
 	}
 
+	.pagination {
+		text-align: center;
+		color: black;
+		font-weight: bold;
+
+		a {
+			cursor: pointer;
+			color: black;
+
+			&.disabled {
+				cursor: not-allowed;
+				color: gray;
+				text-decoration: none;
+			}
+		}
+	}
+
 }

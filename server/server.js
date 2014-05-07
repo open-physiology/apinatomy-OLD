@@ -78,8 +78,6 @@ app.get('/resources/entities/:ids', function (req, res) {
 					return;
 				}
 
-				console.log(ents);
-
 				res.status(HTTP_OK).json(ents);
 			});
 });
@@ -257,6 +255,37 @@ app.get('/resources/paths/:ids', function (req, res) {
 				res.status(HTTP_OK).json(paths);
 			});
 });
+
+
+///////////////////////////  //  //  /  /  /
+///// Small Molecules ////  //  //  /  /  /
+/////////////////////////  //  //  /  /  /
+
+//// GET specific set of small molecules
+
+app.get('/resources/small-molecules/:ids', function (req, res) {
+	var ids = req.params.ids.split(',');
+	var skip = req.query.skip || 0;
+	var limit = req.query.limit || Infinity;
+	db.SmallMolecule.find()
+			.where('_id').in(ids)
+			.sort({ '_id': 1 })
+			.skip(skip)
+			.limit(limit)
+			.exec(function (err, smallMolecules) {
+				if (err) {
+					console.log(err);
+					res.status(HTTP_INTERNAL_SERVER_ERROR).send(null);
+					return;
+				}
+
+				res.status(HTTP_OK).json(smallMolecules);
+			});
+});
+
+
+
+
 
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -111,7 +111,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 							//// smallMoleculeIndicators
 
 							smallMoleculeIndicators = svg.selectAll('.smallMoleculeIndicator').data(_.filter(junctions, function (d) {
-								return !_(d.protein.smallMolecules).isEmpty();
+								return !_(d.protein.smallMoleculeInteractions).isUndefined() && d.protein.smallMoleculeInteractions.length > 0;
 							}), function (d) {
 								return d.id;
 							});
@@ -216,17 +216,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 						});
 
 						$scope.$on('treemap-redraw', function () {
-
-//							var currentSize = force.size();
-//
-//							_(junctions).forEach(function (j) {
-//								j.x *= iElement.width() / currentSize[0];
-//								j.y *= iElement.height() / currentSize[1];
-//							});
-
 							force.size([iElement.width(), iElement.height()]);
-
-//							force.resume();
 						});
 
 						$scope.$watch('activeTileJunctions', function (activeTileJunctions) {
