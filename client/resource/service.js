@@ -57,6 +57,7 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 						//// resolve this entity's promise
 
 						entityDeferredCache[newEntity._id].resolve(entityCache[newEntity._id]);
+						entityCache[newEntity._id]._resolved = true;
 					});
 				}, function (err) {
 					//// in the case of error, reject all promises related to this request

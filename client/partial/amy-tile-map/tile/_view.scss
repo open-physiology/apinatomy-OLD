@@ -1,7 +1,7 @@
 @import "base";
 @import "partial/icon-btn/view";
 
-[amy-tile-map] tile {
+[amy-tile] {
 	@include user-select(none);
 	@include box-sizing(border-box);
 	display    : block;
@@ -55,8 +55,7 @@
 				overflow    : hidden;
 			}
 
-			// line-height, font-size and border-color are
-			// dynamically defined in directive.js
+			// border-color is dynamically defined in directive.js
 		}
 
 		////////// Buttons in the top right corner //////////
