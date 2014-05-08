@@ -6,6 +6,7 @@ define(['angular',
 	'chroma',
 	'lodash',
 	'partial/icon-btn/directive',
+	'partial/font-fit/directive',
 	'resource/service',
 	'$bind/service'], function (ng, app, color, _) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -140,12 +141,12 @@ define(['angular',
 
 							//////////////////// Reacting to Mouse-over ////////////////////////////////////////////////
 
-							$scope.onMouseEnter = function (/*$event*/) {
+							$scope.onMouseOver = function (/*$event*/) {
 								$scope.tile.mouseOver = true;
 								$scope.$root.$broadcast('artefact-focus', $scope.tile);
 							};
 
-							$scope.onMouseLeave = function (/*$event*/) {
+							$scope.onMouseOut = function (/*$event*/) {
 								$scope.tile.mouseOver = false;
 								$scope.$root.$broadcast('artefact-unfocus', $scope.tile);
 							};
@@ -214,9 +215,6 @@ define(['angular',
 							}); // $scope.tile.entity._promise.then
 						}
 
-					},
-
-					post: function () {
 					}
 
 				});

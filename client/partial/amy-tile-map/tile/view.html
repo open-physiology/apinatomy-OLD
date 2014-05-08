@@ -1,22 +1,25 @@
 <tile tile-weight="{{ tile.weight.toString() }}"
-      ng-mouseenter="onMouseEnter($event)"
-      ng-mouseleave="onMouseLeave($event)">
+      font-fit
+      ng-mouseover="$event.stopPropagation(); onMouseOver($event);"
+      ng-mouseout="$event.stopPropagation(); onMouseOut($event)">
 
 
     <header ng-class="{ top: tile.open, full: !tile.open }"
             ng-click="onHeaderClick($event)">
+        <div class="inner-header">
 
-        <div class="header-title">{{ tile.entity.name }}</div>
+            {{ tile.entity.name }}
 
-        <icon-btn ng-if="tile.has3DModel"
-                  ng-model="tile.show3DModel"
-                  states=" { true:  false,           false:  true            }"
-                  classes="{ true: 'action-show-3d', false: 'action-hide-3d' }"></icon-btn>
+            <icon-btn ng-if="tile.has3DModel"
+                      ng-model="tile.show3DModel"
+                      states=" { true:  false,           false:  true            }"
+                      classes="{ true: 'action-show-3d', false: 'action-hide-3d' }"></icon-btn>
 
-        <icon-btn ng-model="tile.maximized"
-                  states=" { true:  false,              false:  true             }"
-                  classes="{ true: 'action-unmaximize', false: 'action-maximize' }"></icon-btn>
+            <icon-btn ng-model="tile.maximized"
+                      states=" { true:  false,              false:  true             }"
+                      classes="{ true: 'action-unmaximize', false: 'action-maximize' }"></icon-btn>
 
+        </div>
     </header>
 
 

@@ -9,9 +9,7 @@
 	margin     : 0;
 	cursor     : crosshair;
 	text-align : center;
-	overflow: hidden;
-
-	// borders
+	overflow   : hidden;
 	border     : solid 1px;
 
 	& > header {
@@ -24,6 +22,10 @@
 		text-align     : center;
 		vertical-align : middle;
 
+		& > .inner-header {
+			padding: 0 6px;
+		}
+
 		////////// Specific styles for top- and full headers //////////
 
 		&.full {
@@ -33,7 +35,7 @@
 			height       : 100%;
 			width        : 100%;
 			display      : table;
-			& > .header-title {
+			& > .inner-header {
 				display        : table-cell;
 				vertical-align : middle;
 			}
@@ -43,14 +45,14 @@
 		&.top {
 			//// set to the proper height, independent of border size
 			@include box-sizing(content-box);
-			height       : $amy-tile-header-height;
+			height : $amy-tile-header-height;
 
-			& > .header-title {
+			& > .inner-header {
 				@include edge-to-edge;
-				white-space: nowrap;
-				line-height: $amy-tile-header-height;
-				font-size  : .8 * $amy-tile-header-height;
-				overflow: hidden;
+				white-space : nowrap;
+				line-height : $amy-tile-header-height;
+				font-size   : .8 * $amy-tile-header-height;
+				overflow    : hidden;
 			}
 
 			// line-height, font-size and border-color are
@@ -65,14 +67,19 @@
 			height          : $scale * $amy-tile-header-height - 2*$margin;
 			width           : $scale * $amy-tile-header-height - 2*$margin;
 			background-size : $scale * $amy-tile-header-height - 2*$margin - 2px - 2*$padding;
-			@for $i from 1 through 2 { // increase counter if more buttons are inserted
+			@for $i from 1 through 2 {
+				// increase counter if more buttons are inserted
 				&:nth-last-of-type(#{$i}) {
 					right : $margin + ($i - 1) * ($scale * $amy-tile-header-height - $margin);
 				}
 			}
 		}
-		&.full > icon-btn { @include icon-btn-tmpl($scale : .8); }
-		&.top > icon-btn { @include icon-btn-tmpl; }
+		&.full icon-btn {
+			@include icon-btn-tmpl($scale : .8);
+		}
+		&.top icon-btn {
+			@include icon-btn-tmpl;
+		}
 
 	}
 

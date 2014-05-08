@@ -29,8 +29,11 @@ define(['app/module', 'lodash', 'partial/side-nav/details/directive', 'partial/s
 					}
 				});
 
-				$scope.$on('artefact-unfocus', function (/*e, artefact*/) {
-					$scope.artefacts = [];
+				$scope.$on('artefact-unfocus', function (e, artefact) {
+					if (artefact === $scope.mainArtefact) {
+						$scope.mainArtefact = null;
+						$scope.artefacts = [];
+					}
 				});
 
 

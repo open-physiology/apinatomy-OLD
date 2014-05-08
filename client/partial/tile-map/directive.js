@@ -97,6 +97,7 @@ define(['app/module', 'lodash', 'partial/tile-map/service'], function (app, _) {
 									// TODO: does it work with Infinity?
 								}
 							});
+							iElement.trigger('resize');
 						}, 50);
 
 
@@ -109,7 +110,6 @@ define(['app/module', 'lodash', 'partial/tile-map/service'], function (app, _) {
 									if (!_(tile.data('tileObj')).isUndefined()) {
 										tile.data('tileObj').weight = _.constant(newWeight);
 										calculateAndApplyPositions();
-										iElement.trigger('resize');
 									}
 								}
 							};
