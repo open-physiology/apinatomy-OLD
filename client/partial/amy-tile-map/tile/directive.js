@@ -14,77 +14,44 @@ define(['angular',
 
 	app.directive('amyTile', ['$bind', 'ResourceService', 'RecursionHelper', 'defaults', function ($bind, Resources, RecursionHelper, defaults) {
 
-
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 		var generateTileDefaults = defaults({
-			normal         : {
+			normal: {
 				css: {
-					'&'                       : {
+					'&'           : {
 						backgroundColor: " bgColor                                                                           ",
 						borderColor    : " color(`.normal.css['&'].backgroundColor`).brighten(20).css()                      ",
-						color          : " color(`.normal.css['&'].backgroundColor`).luminance() > 0.5 && 'black' || 'white' ",
-						borderWidth    : " '1px' ",
-						borderStyle    : " 'solid' "
+						color          : " color(`.normal.css['&'].backgroundColor`).luminance() > 0.5 && 'black' || 'white' "
 					},
-					'& > header'              : {
-						borderColor: " `.normal.css['&'].borderColor` ",
-						borderWidth: " `.normal.css['&'].borderWidth` "
+					'& > icon-btn': {
+						backgroundColor: " `.normal.css['&'].backgroundColor` "
 					},
-					'& > header.full icon-btn': {
-						display: " 'none' "
-					},
-					'& > section'             : " {} "
+					'& > header'  : {
+						borderColor: " `.normal.css['&'].borderColor` "
+					}
 				}
 			},
-			focus          : {
+			focus : {
 				css: {
-					'&'                       : {
+					'&'           : {
 						backgroundColor: " color(`.normal.css['&'].backgroundColor`).brighten(40).css()                      ",
 						borderColor    : " color(`.normal.css['&'].borderColor`).darken(40).css()                            ",
-						color          : " color(`.focus .css['&'].backgroundColor`).luminance() > 0.5 && 'black' || 'white' ",
-						borderWidth    : " `.normal.css['&'].borderWidth` ",
-						borderStyle    : " `.normal.css['&'].borderStyle` "
+						color          : " color(`.focus .css['&'].backgroundColor`).luminance() > 0.5 && 'black' || 'white' "
 					},
-					'& > header'              : {
-						borderColor: " `.focus.css['&'].borderColor` ",
-						borderWidth: " `.focus.css['&'].borderWidth` "
+					'& > icon-btn': {
+						backgroundColor: " `.focus.css['&'].backgroundColor` "
 					},
-					'& > header.full icon-btn': {
-						display: " 'initial' ",
-						color  : " `.focus.css['&'].color` "
-					},
-					'& > section'             : " `.normal.css['& > section']` "
-				}
-			},
-			inactiveFocus: {
-				css: {
-					'&'                       : {
-						backgroundColor: " `.focus.css['&'].backgroundColor`  ",
-						borderColor    : " `.focus.css['&'].borderColor`      ",
-						color          : " `.focus.css['&'].color`            ",
-						borderWidth    : " `.focus.css['&'].borderWidth`      ",
-						borderStyle    : " 'dotted' "
-					},
-					'& > header'              : {
-						borderColor: " `.inactiveFocus.css['&'].borderColor` ",
-						borderWidth: " `.inactiveFocus.css['&'].borderWidth` "
-					},
-					'& > header.full icon-btn': {
-						display: " `.normal.css['& > header.full icon-btn'].display` ",
-						color  : " `.focus.css['& > header.full icon-btn'].color` "
-					},
-					'& > section'             : " `.focus.css['& > section']` "
+					'& > header'  : {
+						borderColor: " `.focus.css['&'].borderColor` "
+					}
 				}
 			}
 		});
 
-
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 		return {
 			restrict   : 'E',
@@ -106,8 +73,9 @@ define(['angular',
 
 						ngModel.$render = function () {
 							$scope.subEntity = ngModel.$modelValue;
+							$scope.entity = $scope.subEntity.entity;
 
-							//////////////////// Tile / Artefact Hierarchy /////////////////////////////////////////////
+							//////////////////// Tile / Artefact Interface /////////////////////////////////////////////
 
 							$scope.tile =
 							$scope.artefact = {
@@ -122,11 +90,9 @@ define(['angular',
 								root          : $scope.$parent.artefact.root,
 
 								//// entity:
-								entity        : $scope.subEntity.entity,
-								active        : true, // only one active tile per entity; TODO
-
-								//// state:
-								state         : 'normal',
+								entity        : $scope.entity,
+								active        : true,
+								focus         : false,
 
 								//// properties:
 								open          : false,
@@ -139,55 +105,110 @@ define(['angular',
 								show3DModel   : false
 							};
 
+
+							//////////////////// Maintaining the Hierarchy /////////////////////////////////////////////
+
+							//// Announce this tile to the parent artefact
+							//
 							$scope.artefact.parent.children.push($scope.artefact);
 
-							$scope.tile.getParentTile = function parentTile() {
-								// TODO: put in artefact prototype
-								var result = this.parent;
-								while (result && result.type !== 'tile') {
-									result = result.parent;
-								}
-								return result;
-							};
+							//// Find the parent tile (if any)
+							//
+							$scope.tile.parentTile = $scope.tile.parent;
+							while ($scope.tile.parentTile && $scope.tile.parentTile.type !== 'tile') {
+								$scope.tile.parentTile = $scope.tile.parentTile.parent;
+							}
 
+							//// Remove references to this tile when it is destroyed
+							//
 							$scope.$on('$destroy', function () {
 								_($scope.tile.parent).pull($scope.tile);
-								if ($scope.tile.getParentTile() && $scope.tile.getParentTile().maximizedChild === $scope.tile) {
-									$scope.tile.getParentTile().maximizedChild = null;
+								if ($scope.tile.parentTile && $scope.tile.parentTile.maximizedChild === $scope.tile) {
+									$scope.tile.parentTile.maximizedChild = null;
 								}
 							});
 
 
-							//////////////////// Maximization //////////////////////////////////////////////////////////
+							//////////////////// Managing Active / Inactive Tiles //////////////////////////////////////
+
+							//// Given an entity, if there are tiles present that represent it, exactly one of them is
+							//// active. To keep track of this, we communicate with the root tile, which gives it the
+							//// 'active' and 'activatable' properties.
+
+							if (_($scope.entity._activeTile).isUndefined()) {
+								$scope.entity._activeTile = [$scope.tile];
+							} else {
+								$scope.entity._activeTile.push($scope.tile);
+							}
+
+							//// When a tile is destroyed, remove it as a candidate for activation
+							//
+							$scope.$on('$destroy', function () {
+								_($scope.entity._activeTile).pull($scope.tile);
+							});
+
+							_($scope.tile).derivedProperty('active', function () {
+								return $scope.entity._activeTile[0] === $scope.tile;
+							}, function (shouldBeActive) {
+								if (shouldBeActive) {
+									_($scope.entity._activeTile).pull($scope.tile);
+									$scope.entity._activeTile.unshift($scope.tile);
+								} else {
+									console.error('$scope.tile.active should not be explicitly set to false.');
+								}
+							});
+
+							if ($scope.tile.parentTile) {
+								$scope.$watch('tile.parentTile.maximized', function (parentIsMaximized, parentWasMaximized) {
+									if (!parentWasMaximized && parentIsMaximized) {
+
+									}
+								});
+							}
+
+							//// When a tile is opened, activate it
+							//
+							$scope.$watch('tile.open', function (isOpen, wasOpen) {
+								if (!wasOpen && isOpen) { $scope.tile.active = true; }
+							});
+
+							//// When a tile is deactivated, close it
+							//
+							$scope.$watch('tile.active', function (isActive, wasActive) {
+								if (wasActive && !isActive) { $scope.tile.open = false; }
+							});
+
+
+							//////////////////// Reacting to Maximization //////////////////////////////////////////////
 
 							//// A parent tile should know which (if any) of its children are maximized
-
-							$scope.$watch('tile.maximized', function (isMaximized, wasMaximized) {
-								if (isMaximized !== wasMaximized) {
-									if (isMaximized && $scope.tile.getParentTile()) {
-										$scope.tile.getParentTile().maximizedChild = $scope.tile;
-									} else if ($scope.tile.parent.maximizedChild === $scope.tile && $scope.tile.getParentTile()) {
-										$scope.tile.getParentTile().maximizedChild = null;
+							//
+							if ($scope.tile.parentTile) {
+								$scope.$watch('tile.maximized', function (isMaximized, wasMaximized) {
+									if (isMaximized !== wasMaximized) {
+										if (isMaximized) {
+											$scope.tile.parentTile.maximizedChild = $scope.tile;
+										} else if ($scope.tile.parent.maximizedChild === $scope.tile) {
+											$scope.tile.parentTile.maximizedChild = null;
+										}
 									}
-								}
+								});
+							}
+
+							//// When a tile is closed, it should unmaximize (demaximize?)
+							//
+							$scope.$watch('tile.open', function (isOpen, wasOpen) {
+								if (wasOpen && !isOpen) { $scope.tile.maximized = false; }
 							});
 
 
-							//////////////////// Tile Weight ///////////////////////////////////////////////////////////
+							//////////////////// Deriving Tile Weight //////////////////////////////////////////////////
 
 							_($scope.tile).derivedProperty('weight', function () {
-								if ($scope.tile.maximized) {
-									return Infinity;
-								}
-								else if ($scope.tile.open) {
-									return 8;
-								}
-								else if ($scope.tile.hidden) {
-									return 0;
-								}
-								else {
-									return 1;
-								}
+								if ($scope.tile.maximized) { return Infinity; }
+								else if ($scope.tile.open) { return 8; }
+								else if ($scope.tile.hidden) { return 0; }
+								else { return 1; }
 							});
 
 
@@ -217,21 +238,35 @@ define(['angular',
 								$scope.tile.open = !$scope.tile.open;
 							};
 
-							$scope.tile.entity._promise.then(function () {
 
-								//////////////////// Tile Styling //////////////////////////////////////////////////////
+							//////////////////// Reacting to Artefact Focus ////////////////////////////////////////////
+
+							$scope.$on('artefact-focus', function (event, artefact) {
+								$scope.tile.focus = (artefact.entity && artefact.entity === $scope.entity);
+							});
+
+							$scope.$on('artefact-unfocus', function (event, artefact) {
+								if (artefact.entity && artefact.entity === $scope.entity) {
+									$scope.tile.focus = false;
+								}
+							});
+
+
+							//////////////////// Tile Styling //////////////////////////////////////////////////////////
+
+							$scope.entity._promise.then(function () {
 
 								//// calculate styling, possibly based on parent tile background
 								//
 								if (($scope.tile.parent.parent.type === 'tile')) {
 									var parentBgColor = $scope.tile.parent.parent.styling.normal.css['&'].backgroundColor;
-									$scope.tile.styling = generateTileDefaults($scope.tile.entity.tile, {
+									$scope.tile.styling = generateTileDefaults($scope.entity.tile, {
 										bgColor: (color(parentBgColor).luminance() < .5 ?
 												color(parentBgColor).brighten(30).css() :
 												color(parentBgColor).darken(30).css() )
 									});
 								} else {
-									$scope.tile.styling = generateTileDefaults($scope.tile.entity.tile, {
+									$scope.tile.styling = generateTileDefaults($scope.entity.tile, {
 										bgColor: '#eeeeee'
 									});
 								}
@@ -239,7 +274,7 @@ define(['angular',
 								//// applying styling to the tile
 								//
 								function applyTileStyling() {
-									iElement.putCSS($scope.tile.styling[$scope.tile.state].css);
+									iElement.putCSS($scope.tile.styling[$scope.tile.focus ? 'focus' : 'normal'].css);
 								}
 
 								//// do it now
@@ -249,40 +284,15 @@ define(['angular',
 								//// dynamically applying the right CSS to the tile
 								//
 								$scope.$watch("tile.open", function (isOpen, wasOpen) {
-									if (isOpen !== wasOpen) {
-										applyTileStyling();
-									}
+									if (isOpen !== wasOpen) { applyTileStyling(); }
 								});
-								$scope.$watch('tile.state', function (newState, oldState) {
-									if (newState !== oldState) {
-										applyTileStyling();
-									}
+								$scope.$watch('tile.focus', function (hasFocus, hadFocus) {
+									if (hasFocus !== hadFocus) { applyTileStyling(); }
 								});
 
-
-								//////////////////// Hover to set focus ////////////////////////////////////////////////
-
-								$scope.$on('artefact-focus', function (event, artefact) {
-									if (artefact === $scope.tile) {
-										$scope.tile.state = 'focus';
-									} else if (artefact.entity && artefact.entity === $scope.tile.entity) {
-										$scope.tile.state = 'inactiveFocus';
-									} else {
-										$scope.tile.state = 'normal'
-									}
-								});
-
-								$scope.$on('artefact-unfocus', function (event, artefact) {
-									if (artefact.entity && artefact.entity === $scope.tile.entity) {
-										$scope.tile.state = 'normal';
-									}
-								});
-
-							}); // $scope.tile.entity._promise.then
+							}); // $scope.entity._promise.then
 						}
-
 					}
-
 				});
 			}
 
