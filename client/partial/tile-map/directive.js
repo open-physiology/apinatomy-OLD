@@ -86,11 +86,13 @@ define(['app/module', 'lodash', 'partial/tile-map/service'], function (app, _) {
 							);
 							_(positions).forEach(function (position, index) {
 								if (position.hidden) {
-									$scope.tiles[index].element.hide();
+									// setting 'visibility' to 'hidden' rather than
+									// 'display' to 'none' gives a significant speedup
+									$scope.tiles[index].element.css('visibility', 'hidden');
 								} else {
 									var correctedPosition = positionWithSpacing(position);
 									$scope.tiles[index].position = correctedPosition;
-									$scope.tiles[index].element.show();
+									$scope.tiles[index].element.css('visibility', 'visible');
 									$scope.tiles[index].element.css(correctedPosition);
 									$scope.tiles[index].element.attr('tileHeight', correctedPosition.height);
 									$scope.tiles[index].element.attr('tileWidth', correctedPosition.width);

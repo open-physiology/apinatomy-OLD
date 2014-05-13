@@ -2,21 +2,21 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['jquery',
-	'lodash',
-	'angular',
-	'angular-animate',
-	'angular-bootstrap',
-	'angular-recursion',
-	'angular-once',
-	'angular-slider'], function ($, _, ng) {
+        'lodash',
+        'angular',
+        'angular-animate',
+        'angular-bootstrap',
+        'angular-recursion',
+        'angular-once',
+        'angular-slider'], function ($, _, ng) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	var app = ng.module('ApiNATOMY', ['ngAnimate',
-		'ui.bootstrap',
-		'RecursionHelper',
-		'once',
-		'vr.directives.slider']);
+	                                  'ui.bootstrap',
+	                                  'RecursionHelper',
+	                                  'once',
+	                                  'vr.directives.slider']);
 
 
 	app.config(function ($locationProvider) {
@@ -37,17 +37,16 @@ define(['jquery',
 
 		$scope.webPage =
 		$scope.artefact = {
-			id      : $scope.$id,
-			type    : 'webPage',
-			show    : false,
+			id:       $scope.$id,
+			type:     'webPage',
+			show:     false,
 
 			//// artefact hierarchy:
-			parent  : null,
+			parent:   null,
 			children: [],
 
-
 			//// root entity:
-			entity  : ResourceService.entities(['24tile:60000000'])[0]
+			entity:   ResourceService.entities(['24tile:60000000'])[0]
 		};
 
 		$scope.artefact.root = $scope.artefact;

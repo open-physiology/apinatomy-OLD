@@ -59,9 +59,14 @@ define(['lodash', 'angular', 'app/module',
 								//// artefact hierarchy:
 								parent  : $scope.$parent.artefact,
 								children: [],
-								root    : $scope.$parent.artefact.root
+								root    : $scope.$parent.artefact.root,
+
+								//// which tile is maximized
+								maximizedChild: null
 							};
 
+
+							//////////////////// Tilemap Styling ///////////////////////////////////////////////////////
 
 							$scope.entity._promise.then(function () {
 

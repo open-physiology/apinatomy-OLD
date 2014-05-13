@@ -14,6 +14,7 @@
 	&.active { border-style : solid; }
 	&:not(.active) { border-style : dashed; }
 
+
 	////////// The Header //////////
 
 	& > header {
@@ -55,6 +56,7 @@
 		}
 	}
 
+
 	////////// The Content Section //////////
 
 	& > section {
@@ -64,6 +66,7 @@
 		top : $amy-tile-header-height + 1px;
 	}
 	&:not(.open) > section { display : none; }
+
 
 	////////// The Buttons in the top right corner //////////
 
@@ -83,7 +86,7 @@
 
 	&.open > icon-btn { @include icon-btn-tmpl; }
 	&:not(.open) > icon-btn { @include icon-btn-tmpl($scale : .8); }
-	&:not(.open):not(.focus) > icon-btn { display : none; }
+	&:not(.open):not(.highlighted) > icon-btn { display : none; }
 
 	@mixin white-font-icon-btn($cls) {
 		&[style*="color:white"] > icon-btn.#{$cls}, &[style*="color: white"] > icon-btn.#{$cls} { @content; }
