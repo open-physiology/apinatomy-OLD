@@ -8,8 +8,9 @@ var _ = require('lodash');
 var vars = require('./vars');
 var db = require('./db');
 var express = require('express');
-
 var app = express();
+
+var cellml = require('./cellml');
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -39,10 +40,80 @@ app.use(app.router);
 ///////////////////////// API //////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+//////////////////  //  //  /  /  /
+///// CellML ////  //  //  /  /  /
+////////////////  //  //  /  /  /
+
+//// POST: load new model
+
+app.post('/resources/cellml/load', function (req, res) {
+	console.log(req.body);
+	var id;
+	var promise = cellml.cellmlGet(cellml.loadURL(req.body.filename)).then(function (data) {
+		id = data.id;
+	});
+	_(req.body.outputVariables).forEach(function (variable, index) {
+		promise = promise.then(function () {
+			return cellml.cellmlGet(cellml.flagOutputURL(id, variable.component, variable.name, index+1)).then(function (data) {
+				if (data.returnCode !== 0) {
+					throw new Error("Something went wrong trying to flag variable '" + variable.name + "' for output.");
+				}
+			});
+		});
+	});
+	_(req.body.values).forEach(function (variable) {
+		promise = promise.then(function () {
+			return cellml.cellmlGet(cellml.setValueURL(id, variable.component, variable.name, variable.value)).then(function (data) {
+				if (data.returnCode !== 0) {
+					throw new Error("Something went wrong trying to set the variable '" + variable.name + "' to value '" + variable.value + "'.");
+				}
+			});
+		});
+	});
+	promise.then(function () {
+		res.status(HTTP_CREATED).json({ id: id });
+	}, function (err) {
+		res.status(HTTP_INTERNAL_SERVER_ERROR).json(err);
+	});
+});
+
+app.post('/resources/cellml/set-values/:id', function (req, res) {
+	var promise = Q(null);
+	_(req.body.values).forEach(function (variable) {
+		promise = promise.then(function () {
+			return cellml.cellmlGet(cellml.setValueURL(
+					req.params.id,
+					variable.component,
+					variable.name,
+					variable.value)).then(function (data) {
+				if (data.returnCode !== 0) {
+					throw new Error("Something went wrong trying to set the variable '" + variable.name + "' to value '" + variable.value + "'.");
+				}
+			});
+		});
+	});
+	promise.then(function () {
+		res.status(HTTP_CREATED).json({ id: req.params.id });
+	}, function (err) {
+		res.status(HTTP_INTERNAL_SERVER_ERROR).json(err);
+	});
+});
+
+app.post('/resources/cellml/execute/:id', function (req, res) {
+	cellml.cellmlGet(cellml.executeURL(req.params.id, req.body.start, req.body.end, req.body.interval)).then(function (data) {
+		res.status(HTTP_OK).json(data.data);
+	}, function (err) {
+		res.status(HTTP_INTERNAL_SERVER_ERROR).json(err);
+	});
+});
+
+
+
+
+
 ////////////////////  //  //  /  /  /
 ///// Entities ////  //  //  /  /  /
 //////////////////  //  //  /  /  /
-
 
 //// GET count of entities
 

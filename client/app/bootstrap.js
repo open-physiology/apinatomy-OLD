@@ -7,7 +7,8 @@ define(['angular', 'app/module', 'domReady!',
         'partial/rotation/directive',
         'partial/circuitboard/directive',
         'partial/simulation-panel/directive',
-        'amy-once/directive'], function (ng/*, app*/) {
+        'amy-once/directive',
+        'app/controller'], function (ng/*, app*/) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 

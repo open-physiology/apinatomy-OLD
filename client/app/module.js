@@ -13,38 +13,15 @@ define(['jquery',
 
 
 	var app = ng.module('ApiNATOMY', ['ngAnimate',
-	                                        'ui.bootstrap',
-	                                        'RecursionHelper',
-	                                        'once',
-	                                        'vr.directives.slider']);
+	                                  'ui.bootstrap',
+	                                  'RecursionHelper',
+	                                  'once',
+	                                  'vr.directives.slider']);
 
 
 	app.config(function ($locationProvider) {
 		$locationProvider.html5Mode(true).hashPrefix('!');
 	});
-
-	app.controller('MainController', ['$rootScope', '$window', function ($rootScope, $window) {
-
-		//// initially disable global settings
-
-		$rootScope.threeDRotateEnabled = false;
-		$rootScope.simulationEnabled = false;
-
-		//// manage bottom sliding panels
-
-		var amySpacing = 15;      // $amy-spacing; TODO: automatically extract sass variables
-		var amyPanelHeight = 250; // $amy-panel-height
-
-		$rootScope.$watch('simulationEnabled', function (enabled) {
-			if (enabled) {
-				$('main').css('bottom', amyPanelHeight);
-			} else {
-				$('main').css('bottom', 0);
-			}
-			_($($window)).bindKey('trigger', 'resize').defer();
-		});
-
-	}]);
 
 
 	return app;
