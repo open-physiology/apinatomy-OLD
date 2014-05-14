@@ -31,17 +31,17 @@ define(['jquery',
 
 
 
-		///////////////////// TESTING CELLML SERVICE //////////////////////////
+		/////////////////// TESTING CELLML SERVICE //////////////////////////
 
 
-		console.log('Testing CellML Service...');
-
-		CellMLService.loadModel().then(function () {
-			console.log('Model Loaded...');
-			CellMLService.executeModel(0, 5000, 500).then(function () {
-				console.log('Model Executed...');
-			});
-		});
+//		console.log('Testing CellML Service...');
+//
+//		CellMLService.loadModel().then(function () {
+//			console.log('Model Loaded...');
+//			CellMLService.executeModel(0, 5000, 500).then(function () {
+//				console.log('Model Executed...');
+//			});
+//		});
 
 
 	}]);

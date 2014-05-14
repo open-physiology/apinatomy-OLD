@@ -53,7 +53,18 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 				//    [1, 9  , 8  , 7  , 65 , 34 , 5  ],  // var 1
 				//    [1, 9  , 8  , 7  , 65 , 34 , 5  ]   // var 2...
 				// ]
-				return data.data;
+				var result = {};
+																				console.log(start, end, interval);
+																								console.log(data.data);
+				_(BEELER_REUTER_1977.outputVariables).forEach(function (variable, i) {
+					_(data.data[0]).forEach(function (time, ti) {
+						result[variable.name] = { // TODO: use proper URI
+							time: time,
+							value: data.data[i+1][ti]
+						};
+					});
+				});
+				return result;
 			});
 		};
 

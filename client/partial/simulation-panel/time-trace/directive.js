@@ -32,7 +32,8 @@ define(['app/module', 'd3', 'lodash', 'partial/simulation-panel/stream/service']
 					data: []
 				};
 
-				var stream = StreamService.newRandomDataStream($scope.stream, 'data', $scope.timer.timeInterval);
+//				var stream = StreamService.newRandomDataStream($scope.stream, 'data', $scope.timer.timeInterval);
+				var stream = StreamService.newCellMLDataStream('i_Na', $scope.stream, 'data', $scope.timer.timeInterval);
 
 				var maxTimeWithData = 0;
 
@@ -40,7 +41,7 @@ define(['app/module', 'd3', 'lodash', 'partial/simulation-panel/stream/service']
 					// TODO: more flexible conditions for preloading data (now it's done exactly when needed)
 					if (maxTimeWithData < t) {
 						maxTimeWithData += 10 * $scope.timer.timeInterval;
-						stream.loadMoreEntries(10);
+						stream.loadMoreEntries(10, $scope.timer.currentTime);
 					}
 				});
 

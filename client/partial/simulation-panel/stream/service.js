@@ -6,6 +6,10 @@ define(['lodash', 'angular', 'app/module'], function (_, ng, app) {
 
 
 	app.factory('StreamService', ['$q', 'CellMLService', function ($q, CellMLService) {
+
+		var cellMLModelPromise = CellMLService.loadModel();
+		var cellMLData = {};
+
 		return {
 			newRandomDataStream: function (obj, field, timeInterval) {
 				var nextTime = timeInterval;
@@ -37,10 +41,8 @@ define(['lodash', 'angular', 'app/module'], function (_, ng, app) {
 					}
 				};
 			},
-			newCellMLDataStream: function (obj, field, timeInterval) {
-				var nextTime = timeInterval;
-
-				var modelPromise = CellMLService.loadModel();
+			newCellMLDataStream: function (varName, obj, field, timeInterval) {
+				var nextTime = 0;
 
 				return {
 					loadMoreEntries: function (nr, timeBeginning) {
@@ -53,15 +55,18 @@ define(['lodash', 'angular', 'app/module'], function (_, ng, app) {
 							nextTime = timeBeginning + timeInterval;
 						}
 
-						return modelPromise.then(function () {
+						timeBeginning = _(timeBeginning).or(_(obj[field]).last().time);
 
+						return cellMLModelPromise.then(function () {
 							return CellMLService.executeModel(
-									(timeBeginning / 1000),
-									((timeBeginning + nr * timeInterval) / 1000),
-									(timeInterval / 1000)
+									timeBeginning,
+									(timeBeginning + nr * timeInterval),
+									timeInterval
 							).then
-							(function () {
-								// TODO: Continue here
+							(function (data) {
+								//// add the requested new elements
+//								console.log(data);
+								_(obj[field]).concatenate(data[varName]);
 							});
 						});
 					}
