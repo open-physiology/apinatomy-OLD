@@ -1,6 +1,12 @@
 <nav class="amy-side-nav" role="navigation">
 
-	<header><h2>ApiNATOMY</h2></header>
+	<!--<header><h2>Taxonomy</h2></header>-->
+
+    <div class="controls" ng-if="_(bundles).isEmpty()">
+        <kbd>hover</kbd>: tile information<br>
+        <kbd>left click</kbd>: open tile<br>
+        <kbd>right click</kbd>: close tile<br>
+    </div>
 
 	<div ng-repeat="bundle in bundles">
 
@@ -10,7 +16,7 @@
 		</div>
 
 		<!-- the panel with the entity details -->
-		<amy-entity-details ng-repeat-end bundle="bundle"></amy-entity-details>
+		<amy-entity-details bundle="bundle"></amy-entity-details>
 
 	</div>
 

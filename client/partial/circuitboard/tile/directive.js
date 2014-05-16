@@ -210,9 +210,16 @@ define(['angular',
 						Resources.entities(_.map($scope.entity.sub, function (sub) {
 							return sub.entity._id;
 						}));
-						// TODO: when opening for the first time from a maximized state, redraw when the children are available
 					});
 					$scope.open = !$scope.open;
+				};
+
+				$scope.onRightClick = function ($event) {
+					if ($scope.open) {
+						$event.preventDefault();
+						$event.stopPropagation();
+						$scope.open = false;
+					}
 				};
 
 				//// a tile is visible when its parent is open

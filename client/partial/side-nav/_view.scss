@@ -2,40 +2,40 @@
 
 .amy-side-nav {
 	background-color : rgba(255, 255, 255, .5);
+	padding-top      : $amy-spacing / 2;
 
-	& > header {
-		margin-top    : $amy-spacing;
-		margin-bottom : $amy-spacing;
-		padding       : 0px;
-		border-style  : none none solid none;
-		border-width  : 2px;
-		border-color  : lightgray;
+	div.controls {
+		@include border-radius(5px);
+		display  : block;
+		padding  : 4px;
+		position : absolute;
+		top      : $amy-spacing;
+		left     : $amy-spacing;
+		right    : $amy-spacing;
+		border   : dotted 1px gray;
+		line-height: 22px;
 
-		& > h2 {
-			text-align    : right;
-			padding-right : $amy-spacing;
-			font-size     : 18pt;
-			font-family   : serif;
-			font-weight   : bold;
-			margin-top    : 0;
-			margin-bottom : -4px;
+		kbd {
+			@include border-radius(4px);
+			border  : solid 1px lightgray;
+			margin  : 2px;
+			padding : 0 2px;
 		}
-
 	}
 
-	& .amy-entity-details, & .amy-protein-details {
-//		@include fade-out;
-		margin-left   : $amy-spacing;
-		margin-bottom : $amy-spacing / 2;
+	.amy-entity-details, .amy-protein-details {
+		//		@include fade-out;
+		margin-left : $amy-spacing;
+		margin-top  : $amy-spacing / 2;
 	}
 
 	& .amy-relation-types {
-		font-weight   : bold;
-		text-align    : center;
-		border        : dotted gray 1px;
-		margin-bottom : 0.5 * $amy-spacing;
-		margin-left   : 2.0 * $amy-spacing;
-		margin-right  : 1.0 * $amy-spacing;
+		font-weight  : bold;
+		text-align   : center;
+		border       : dotted gray 1px;
+		margin-top   : 0.5 * $amy-spacing;
+		margin-left  : 2.0 * $amy-spacing;
+		margin-right : 1.0 * $amy-spacing;
 
 		& > div {
 			margin : 0;

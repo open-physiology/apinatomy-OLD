@@ -80,7 +80,8 @@ var UTILITY_MODULES = [
 	'utility/concatenate',
 	'utility/extent',
 	'utility/multiBase',
-	'utility/between'
+	'utility/between',
+	'utility/ngRightClick'
 ];
 
 
