@@ -8,7 +8,7 @@ define(['jquery',
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	app.controller('MainController', ['$rootScope', '$window', 'CellMLService', function ($rootScope, $window, CellMLService) {
+	app.controller('MainController', ['$scope', '$rootScope', '$window', 'CellMLService', function ($scope, $rootScope, $window, CellMLService) {
 
 		//// initially disable global settings
 		//
@@ -34,14 +34,18 @@ define(['jquery',
 		/////////////////// TESTING CELLML SERVICE //////////////////////////
 
 
-//		console.log('Testing CellML Service...');
-//
-//		CellMLService.loadModel().then(function () {
-//			console.log('Model Loaded...');
-//			CellMLService.executeModel(0, 5000, 500).then(function () {
-//				console.log('Model Executed...');
-//			});
-//		});
+//		$scope.testArray = [
+//			{ time: 0, value: 10 },
+//			{ time: 1, value: 20 },
+//			{ time: 2, value: 30 },
+//			{ time: 3, value: 10 },
+//			{ time: 4, value: 20 },
+//			{ time: 5, value: 30 },
+//			{ time: 6, value: 10 },
+//			{ time: 7, value: 20 },
+//			{ time: 8, value: 30 },
+//			{ time: 9, value: 10 }
+//		];
 
 
 	}]);
