@@ -11,10 +11,10 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 
 			restrict: 'E',
 			template: '<svg></svg>',
-			replace:  false,
-			scope:    {
+			replace : false,
+			scope   : {
 				activeTileJunctions: '=amyActiveTileJunctions',
-				dragging:            '='
+				dragging           : '='
 			},
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,7 +85,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 
 							connectionLines = svg.selectAll('line').data(connections,
 									function (d) { return d.source.id + ' - ' + d.target.id; });
-							connectionLines.enter().append("line").attr('class', 'vesselLine');
+							connectionLines.enter().append("line").attr('class', function (d) { return d.type; }); // vascular, neural
 							connectionLines
 									.attr("x1", function (d) { return d.source.x; })
 									.attr("y1", function (d) { return d.source.y; })
@@ -207,22 +207,24 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 											if (_(innerJunctionMap[pathArray[i]]).isUndefined()) {
 												innerJunctionMap[pathArray[i]] = {
 													id: pathArray[i],
-													x: (tile1.x + tile2.x) / 2, // right in between; good enough
-													y: (tile1.y + tile2.y) / 2
+													x : (tile1.x + tile2.x) / 2, // right in between; good enough
+													y : (tile1.y + tile2.y) / 2
 												};
 												junctions.push(innerJunctionMap[pathArray[i]]);
 											}
 
 											connections.push({
 												source: sourceJunction,
-												target: innerJunctionMap[pathArray[i]]
+												target: innerJunctionMap[pathArray[i]],
+												type  : path.type
 											});
 											sourceJunction = innerJunctionMap[pathArray[i]];
 										}
 									}
 									connections.push({
 										source: sourceJunction,
-										target: tileJunctionMap[path.to]
+										target: tileJunctionMap[path.to],
+										type  : path.type
 									});
 								});
 

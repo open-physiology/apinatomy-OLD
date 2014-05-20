@@ -6,12 +6,12 @@ amy-graph {
 
 	& > svg {
 
-		line.vesselLine {
-//			pointer-events: visiblePainted;
-//			cursor: pointer;
-			stroke: red;
+		line {
 			stroke-width: 1.5px;
 			stroke-linecap: round;
+
+			&.vascular { stroke: red; }
+			&.neural { stroke: blue; }
 		}
 
 		circle {
