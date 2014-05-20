@@ -17,21 +17,39 @@ amy-graph {
 		circle {
 			stroke-width: 1.5px;
 
-			&.tilePoint {
-				fill: darkred;
-				stroke: darkred;
-			}
 
-			&.junctionPoint {
-				fill: red;
-				stroke: red;
+			&.vascular {
+				&.tilePoint {
+					fill: darkred;
+					stroke: darkred;
+				}
+				&.junctionPoint {
+					fill: red;
+					stroke: red;
+				}
+				&.junctionArea {
+					fill: red;
+					stroke: red;
+				}
+			}
+			&.neural {
+				&.tilePoint {
+					fill: darkblue;
+					stroke: darkblue;
+				}
+				&.junctionPoint {
+					fill: blue;
+					stroke: blue;
+				}
+				&.junctionArea {
+					fill: blue;
+					stroke: blue;
+				}
 			}
 
 			&.junctionArea {
 				pointer-events: visiblePainted;
 				cursor: move;
-				fill: red;
-				stroke: red;
 				opacity: 0;
 
 				&:hover, &.dragged {

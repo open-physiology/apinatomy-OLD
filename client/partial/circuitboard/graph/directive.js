@@ -62,7 +62,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 
 							junctionPoints = svg.selectAll('.tilePoint, .junctionPoint').data(junctions, function (d) { return d.id; });
 							junctionPoints.enter().append("circle")
-									.attr('class', function (d) { return (d.isTileJunction ? 'tilePoint' : 'junctionPoint'); })
+									.attr('class', function (d) { return (d.isTileJunction ? 'tilePoint ' : 'junctionPoint ') + d.type; }) // vascular, neural
 									.attr("r", function (d) { return (d.isTileJunction ? 4 : 2); });
 							junctionPoints
 									.attr("cx", function (junction) { return junction.x = (junction.bindX ? junction.bindX(junction.x) : junction.x); })
@@ -73,7 +73,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 
 							junctionAreas = svg.selectAll('.junctionArea').data(junctions, function (d) { return d.id; });
 							junctionAreas.enter().append("circle")
-									.attr('class', 'junctionArea')
+									.attr('class', function (d) { return 'junctionArea ' + d.type; }) // vascular, neural
 									.attr("r", function (d) { return (d.isTileJunction ? 12 : 10); })
 									.call(force.drag);
 							junctionAreas
@@ -213,6 +213,10 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 												junctions.push(innerJunctionMap[pathArray[i]]);
 											}
 
+											//// record (for styling) if this junction is vascular; TODO: separate junctions per type
+											sourceJunction.type = path.type;
+
+											//// and add the connection
 											connections.push({
 												source: sourceJunction,
 												target: innerJunctionMap[pathArray[i]],
@@ -221,6 +225,12 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 											sourceJunction = innerJunctionMap[pathArray[i]];
 										}
 									}
+
+									//// record (for styling) if this junction is vascular; TODO: separate junctions per type
+									sourceJunction.type = path.type;
+									tileJunctionMap[path.to].type = path.type;
+
+									//// and add the connection
 									connections.push({
 										source: sourceJunction,
 										target: tileJunctionMap[path.to],
