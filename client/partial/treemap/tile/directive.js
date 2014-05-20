@@ -2,13 +2,13 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['angular',
-	'app/module',
-	'chroma',
-	'lodash',
-	'partial/treemap/layout/manager',
-	'resource/service',
-	'$bind/service',
-	'partial/icon-btn/directive'], function (ng, app, color, _, Layout) {
+        'app/module',
+        'chroma',
+        'lodash',
+        'partial/treemap/layout/manager',
+        'resource/service',
+        '$bind/service',
+        'partial/icon-btn/directive'], function (ng, app, color, _, Layout) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -42,7 +42,8 @@ define(['angular',
 				frontIcon             : '=amyFrontIcon',
 				frontIconTitle        : '=amyFrontIconTitle',
 				onReadyFn             : '&onReady',
-				afterRepositionFn     : '&afterReposition'
+				afterRepositionFn     : '&afterReposition',
+				attention             : '=amyAttention'
 			},
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////

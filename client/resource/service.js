@@ -93,6 +93,13 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 					.then(function (data) { return data.data; });
 		};
 
+		//////////////////// Tree Walks ////////////////////////////////////////////////////////////////////////////////
+
+		iface.ancestors = function (id) {
+			return $http.get('/resources/ancestors/' + id)
+					.then(function (data) { return data.data; });
+		};
+
 		//////////////////// 3D Models /////////////////////////////////////////////////////////////////////////////////
 
 		var URI_TO_MODEL = {

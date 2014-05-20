@@ -20,7 +20,8 @@
           ng-click="onClick($event)"
           ng-right-click="onRightClick($event)"
           on-ready="onTileReady()"
-          after-reposition="afterTileReposition(newPosition)">
+          after-reposition="afterTileReposition(newPosition)"
+          amy-attention="_($root.attention).contains(entity._id)">
 
 	<div amy-once="open">
 		<amy-circuitboard-tile ng-repeat="sub in _.uniq(entity.sub, false, 'entity')" amy-entity="sub.entity"></amy-circuitboard-tile>

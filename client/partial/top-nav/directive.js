@@ -11,7 +11,22 @@ define(['app/module'], function (app) {
 			replace    : true,
 			templateUrl: 'partial/top-nav/view.html',
 			scope: false,
-			controller: function ($scope) {}
+			controller: ['$scope', 'ResourceService', function ($scope, ResourceService) {
+
+				$scope.$root.$watch('searchID', function (id) {
+					if (_(id).isEmpty()) {
+						$scope.$root.attention = [];
+					} else {
+						ResourceService.ancestors(id).then(function (ancestors) {
+							$scope.$root.attention = ancestors;
+							$scope.$root.attention.push(id);
+						}).catch(function (err) {
+							console.error(err);
+						});
+					}
+				});
+
+			}]
 		};
 	}]);
 

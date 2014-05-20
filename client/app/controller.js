@@ -8,7 +8,7 @@ define(['jquery',
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	app.controller('MainController', ['$scope', '$rootScope', '$window', 'CellMLService', function ($scope, $rootScope, $window, CellMLService) {
+	app.controller('MainController', ['$scope', '$rootScope', '$window', 'CellMLService', 'ResourceService', function ($scope, $rootScope, $window, CellMLService, ResourceService) {
 
 		//// initially disable global settings
 		//
@@ -30,6 +30,15 @@ define(['jquery',
 		});
 
 
+
+
+		/////////////////// TESTING WALKS ///////////////////////////////////
+
+//		ResourceService.ancestors('fma:17462').then(function (ancestors) {
+//			console.log(ancestors);
+//		}).catch(function (err) {
+//			console.error(err);
+//		});
 
 		/////////////////// TESTING CELLML SERVICE //////////////////////////
 

@@ -5,6 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 var _ = require('lodash');
+var Q = require('q');
 var vars = require('./vars');
 var db = require('./db');
 var express = require('express');
@@ -54,7 +55,7 @@ app.post('/resources/cellml/load', function (req, res) {
 	});
 	_(req.body.outputVariables).forEach(function (variable, index) {
 		promise = promise.then(function () {
-			return cellml.cellmlGet(cellml.flagOutputURL(id, variable.component, variable.name, index+1)).then(function (data) {
+			return cellml.cellmlGet(cellml.flagOutputURL(id, variable.component, variable.name, index + 1)).then(function (data) {
 				if (data.returnCode !== 0) {
 					throw new Error("Something went wrong trying to flag variable '" + variable.name + "' for output.");
 				}
@@ -106,9 +107,6 @@ app.post('/resources/cellml/execute/:id', function (req, res) {
 		res.status(HTTP_INTERNAL_SERVER_ERROR).json(err);
 	});
 });
-
-
-
 
 
 ////////////////////  //  //  /  /  /
@@ -355,8 +353,34 @@ app.get('/resources/small-molecules/:ids', function (req, res) {
 });
 
 
+/////////////////////  //  //  /  /  /
+///// Ancestors ////  //  //  /  /  /
+///////////////////  //  //  /  /  /
 
+app.get('/resources/ancestors/:id', function (req, res) {
+	var result = [];
 
+	(function checkParents(id) {
+		return Q.ninvoke(db.Entity.findById(id).populate('super', '_id descendantCount'), 'exec')
+				.then(function (ent) {
+					if (!ent) { return null; }
+					return Q.all(_(ent.super).filter(function (sup) {
+						return !_(sup.descendantCount).isUndefined() && sup.descendantCount >= 0;
+					}).map(function (sup) {
+						if (!_(result).contains(sup._id)) {
+							result.push(sup._id);
+						}
+						return checkParents(sup._id);
+					}).value());
+				});
+	}(req.params.id))
+			.then(function () {
+				res.status(HTTP_OK).json(result);
+			}).catch(function (err) {
+				console.error(err);
+				res.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
+			});
+});
 
 
 ////////////////////////////////////////////////////////////////////////////////

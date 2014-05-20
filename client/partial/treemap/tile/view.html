@@ -1,11 +1,11 @@
 <header ng-class="{ opaque: open }" class="top-header">
     <icon-btn ng-show="$root.threeDEnabled && showThreeDButton && open" states="showThreeDModelStates" classes="showThreeDModelClasses" ng-model="showThreeDModelModel"></icon-btn>
     <icon-btn ng-show="open" states="sizeButtonStates" classes="sizeButtonClasses" ng-model="sizeButtonModel"></icon-btn>
-	<span once-text="title"></span>
+	<span once-text="title" ng-class="{ attention: attention }"></span>
 </header>
 
 <header ng-class="{ opaque: !open }" class="full-header">
-	<span once-text="title"></span>
+	<span once-text="title" ng-class="{ attention: attention }"></span>
     <icon-btn ng-show="$root.threeDEnabled && showThreeDButton && !open" states="showThreeDModelStates" classes="showThreeDModelClasses" ng-model="showThreeDModelModel"></icon-btn>
     <icon-btn ng-show="!open" states="sizeButtonStates" classes="sizeButtonClasses" ng-model="sizeButtonModel"></icon-btn>
 	<span ng-if="frontIcon" title="{{ frontIconTitle }}"

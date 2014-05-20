@@ -43,11 +43,11 @@
 		<ul class="nav navbar-nav navbar-right">
 			<li>
 				<form class="navbar-form">
-					<div class="input-group" style="width: 200px;">
-						<input type="text" class="form-control" placeholder="Search">
+					<div ng-class="{ 'input-group' : !_($root.searchID).isEmpty()}" style="width: 200px;">
+						<input type="text" class="form-control" placeholder="Search" ng-model="$root.searchID">
 						<span class="input-group-btn">
-					        <button class="btn btn-default" type="button">
-						        <span class="glyphicon glyphicon-search"></span>
+					        <button class="btn btn-default" type="button" ng-if="!_($root.searchID).isEmpty()" ng-click="$root.searchID = ''">
+						        <span class="glyphicon glyphicon-remove"></span>
 					        </button>
 						</span>
 					</div>
