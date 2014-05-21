@@ -20,12 +20,12 @@ define(['angular',
 		var generateTileDefaults = defaults({
 			normal:      {
 				css: {
-					'&':                   {
+					'&':            {
 						backgroundColor: " bgColor                                                                           ",
 						borderColor:     " color(`.normal.css['&'].backgroundColor`).brighten(20).css()                      ",
 						color:           " color(`.normal.css['&'].backgroundColor`).luminance() > 0.5 && 'black' || 'white' "
 					},
-					'& > header':          {
+					'& > header':   {
 						borderColor: " `.normal.css['&'].borderColor` "
 					},
 					'& > icon-btn': {
@@ -35,12 +35,12 @@ define(['angular',
 			},
 			focus:       {
 				css: {
-					'&':                   {
+					'&':            {
 						backgroundColor: " color(`.normal.css['&'].backgroundColor`).brighten(40).css()                      ",
 						borderColor:     " color(`.normal.css['&'].borderColor`).darken(40).css()                            ",
 						color:           " color(`.focus .css['&'].backgroundColor`).luminance() > 0.5 && 'black' || 'white' "
 					},
-					'& > header':          {
+					'& > header':   {
 						borderColor: " `.focus.css['&'].borderColor` "
 					},
 					'& > icon-btn': {
@@ -243,6 +243,17 @@ define(['angular',
 								$scope.tile.open = !$scope.tile.open;
 							};
 
+
+							//// Right-clicking an open tile
+							//
+							$scope.onRightClick = function ($event) {
+								if ($scope.tile.open) {
+									$event.preventDefault();
+									$event.stopPropagation();
+									$scope.tile.open = false;
+								}
+							};
+
 							//// Mouse-over events
 							//
 							function broadcastFocusEvent(eventName, options) {
@@ -255,19 +266,23 @@ define(['angular',
 								}
 							}
 
-							$scope.onTileMouseOver = function (/*$event*/) {
+							$scope.onTileMouseOver = function ($event) {
+								$event.stopPropagation();
 								broadcastFocusEvent('artefact-focus', { excludeHighlighting: [$scope.tile] });
 							};
 
-							$scope.onTileMouseOut = function (/*$event*/) {
+							$scope.onTileMouseOut = function ($event) {
+								$event.stopPropagation();
 								broadcastFocusEvent('artefact-unfocus', { excludeHighlighting: [$scope.tile] });
 							};
 
-							$scope.onHeaderMouseOver = function (/*$event*/) {
+							$scope.onHeaderMouseOver = function ($event) {
+								$event.stopPropagation();
 								broadcastFocusEvent('artefact-focus', {});
 							};
 
-							$scope.onHeaderMouseOut = function (/*$event*/) {
+							$scope.onHeaderMouseOut = function ($event) {
+								$event.stopPropagation();
 								broadcastFocusEvent('artefact-unfocus', {});
 							};
 
@@ -290,10 +305,10 @@ define(['angular',
 							// Using ng-class doesn't seem to always work, so we're setting classes manually.
 							// (Report Angular bug?)
 
-							$scope.$watch('tile.open',        function (v) { iElement.toggleClass('open', v);        });
-							$scope.$watch('tile.maximized',   function (v) { iElement.toggleClass('maximized', v);   });
+							$scope.$watch('tile.open', function (v) { iElement.toggleClass('open', v); });
+							$scope.$watch('tile.maximized', function (v) { iElement.toggleClass('maximized', v); });
 							$scope.$watch('tile.highlighted', function (v) { iElement.toggleClass('highlighted', v); });
-							$scope.$watch('tile.active',      function (v) { iElement.toggleClass('active', v);      });
+							$scope.$watch('tile.active', function (v) { iElement.toggleClass('active', v); });
 
 
 							//////////////////// Tile Styling //////////////////////////////////////////////////////////

@@ -1,14 +1,15 @@
 <tile tile-weight="{{ tile.weight.toString() }}"
       font-fit
-      ng-mouseover="$event.stopPropagation(); onTileMouseOver($event);"
-      ng-mouseout="$event.stopPropagation(); onTileMouseOut($event);">
+      ng-mouseover="onTileMouseOver($event)"
+      ng-mouseout="onTileMouseOut($event)"
+      ng-right-click="onRightClick($event)">
 
 
     <header title="{{ !tile.active ? 'entity is active in another tile' : '' }}"
             ng-class="{ top: tile.open, full: !tile.open }"
             ng-click="onHeaderClick($event)"
-            ng-mouseover="$event.stopPropagation(); onHeaderMouseOver($event);"
-            ng-mouseout="$event.stopPropagation(); onHeaderMouseOut($event);">
+            ng-mouseover="onHeaderMouseOver($event)"
+            ng-mouseout="onHeaderMouseOut($event)">
         <div class="inner-header">{{ tile.entity.name }}</div>
     </header>
 
@@ -17,16 +18,16 @@
 	          ng-model="tile.show3DModel"
 	          states=" { true:  false,           false:  true            }"
 	          classes="{ true: 'action-show-3d', false: 'action-hide-3d' }"
-	          ng-mouseover="$event.stopPropagation(); onHeaderMouseOver($event);"
-	          ng-mouseout="$event.stopPropagation(); onHeaderMouseOut($event);"></icon-btn>
+	          ng-mouseover="onHeaderMouseOver($event)"
+	          ng-mouseout="onHeaderMouseOut($event)"></icon-btn>
 
 
 	<icon-btn ng-if="tile.parent.children.length > 1"
 			  ng-model="tile.maximized"
 	          states=" { true:  false,              false:  true             }"
 	          classes="{ true: 'action-unmaximize', false: 'action-maximize' }"
-	          ng-mouseover="$event.stopPropagation(); onHeaderMouseOver($event);"
-	          ng-mouseout="$event.stopPropagation(); onHeaderMouseOut($event);"></icon-btn>
+	          ng-mouseover="onHeaderMouseOver($event)"
+	          ng-mouseout="onHeaderMouseOut($event)"></icon-btn>
 
 
     <section ng-if="tile.open">
