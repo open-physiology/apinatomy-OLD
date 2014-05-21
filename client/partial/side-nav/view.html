@@ -1,6 +1,12 @@
-<nav amy-side-nav role="navigation">
+<nav amy-side-nav>
 
-	<header><h2>ApiNATOMY</h2></header>
+
+	<div class="controls" ng-if="_(artefacts).isEmpty()">
+		<kbd>hover</kbd>: tile information<br>
+		<kbd>left click</kbd>: open tile<br>
+		<kbd>right click</kbd>: close tile<br>
+	</div>
+
 
 	<div ng-repeat="artefact in artefacts">
 
