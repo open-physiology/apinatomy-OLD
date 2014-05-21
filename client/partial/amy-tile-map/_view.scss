@@ -3,8 +3,9 @@
 
 [amy-tile-map] {
 	@include edge-to-edge;
-//	@include backface-visibility(hidden); // TODO: put in amy-circuitboard scss
+	overflow: hidden;
 	tile-map {
 		@include edge-to-edge;
 	}
+	//	@include backface-visibility(hidden); // TODO: put in amy-circuitboard scss
 }

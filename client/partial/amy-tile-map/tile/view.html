@@ -21,7 +21,8 @@
 	          ng-mouseout="$event.stopPropagation(); onHeaderMouseOut($event);"></icon-btn>
 
 
-	<icon-btn ng-model="tile.maximized"
+	<icon-btn ng-if="tile.parent.children.length > 1"
+			  ng-model="tile.maximized"
 	          states=" { true:  false,              false:  true             }"
 	          classes="{ true: 'action-unmaximize', false: 'action-maximize' }"
 	          ng-mouseover="$event.stopPropagation(); onHeaderMouseOver($event);"

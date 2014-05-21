@@ -12,7 +12,7 @@ define(['angular',
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	app.directive('amyTile', ['$bind', 'ResourceService', 'RecursionHelper', 'defaults', function ($bind, Resources, RecursionHelper, defaults) {
+	app.directive('amyTile', ['$bind', '$q', 'ResourceService', 'RecursionHelper', 'defaults', function ($bind, $q, Resources, RecursionHelper, defaults) {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,6 +65,10 @@ define(['angular',
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			compile: function (dElement) {
+
+				var dAtPostLink = $q.defer();
+				var atPostLink = dAtPostLink.promise;
+
 				return RecursionHelper.compile(dElement, {
 
 					pre: function preLink($scope, iElement, iAttrs, ngModel) {
@@ -112,12 +116,6 @@ define(['angular',
 							//
 							$scope.artefact.parent.children.push($scope.artefact);
 
-							//// Find the parent tile (if any)
-							//
-							$scope.tile.parentTile = $scope.tile.parent;
-							while ($scope.tile.parentTile && $scope.tile.parentTile.type !== 'tile') {
-								$scope.tile.parentTile = $scope.tile.parentTile.parent;
-							}
 
 							//// Remove references to this tile when it is destroyed
 							//
@@ -198,26 +196,32 @@ define(['angular',
 							});
 
 
-							//////////////////// Reacting to Maximization //////////////////////////////////////////////
+							//////////////////// Tile Maximization /////////////////////////////////////////////////////
 
-							//// The parent (tilemap) should know which (if any) of its children are maximized
+							//// If a tile is the only in its tile-map, auto-maximize it
 							//
-							if ($scope.tile.parentTile) {
-								$scope.$watch('tile.maximized', function (isMaximized, wasMaximized) {
-									if (isMaximized !== wasMaximized) {
-										if (isMaximized) {
-											$scope.tile.parent.maximizedChild = $scope.tile;
-										} else if ($scope.tile.parent.maximizedChild === $scope.tile) {
-											$scope.tile.parent.maximizedChild = null;
-										}
-									}
+							atPostLink.then(function () {
+								$scope.$watch('tile.parent.children.length === 1', function (isOnlyChild) {
+									if (isOnlyChild) { $scope.tile.maximized = true; }
 								});
-							}
+							});
+
+							//// The tile-map should know which (if any) of its children are maximized
+							//
+							$scope.$watch('tile.maximized', function (isMaximized, wasMaximized) {
+								if (isMaximized !== wasMaximized) {
+									if (isMaximized) {
+										$scope.tile.parent.maximizedChild = $scope.tile;
+									} else if ($scope.tile.parent.maximizedChild === $scope.tile) {
+										$scope.tile.parent.maximizedChild = null;
+									}
+								}
+							});
 
 							//// When a tile is closed, it should unmaximize (demaximize?)
 							//
 							$scope.$watch('tile.open', function (isOpen, wasOpen) {
-								if (wasOpen && !isOpen) { $scope.tile.maximized = false; }
+								if (wasOpen && !isOpen && $scope.tile.parent.children.length > 1) { $scope.tile.maximized = false; }
 							});
 
 
@@ -332,7 +336,9 @@ define(['angular',
 
 							}); // $scope.entity._promise.then
 						}
-					}
+					},
+
+					post: function () { dAtPostLink.resolve(); }
 				});
 			}
 

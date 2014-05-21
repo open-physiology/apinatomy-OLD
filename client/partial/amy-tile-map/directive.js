@@ -66,6 +66,13 @@ define(['lodash', 'angular', 'app/module',
 							};
 
 
+							//////////////////// Maintaining the Hierarchy /////////////////////////////////////////////
+
+							//// Announce this tile to the parent artefact
+							//
+							$scope.artefact.parent.children.push($scope.artefact);
+
+
 							//////////////////// Tilemap Styling ///////////////////////////////////////////////////////
 
 							$scope.entity._promise.then(function () {
