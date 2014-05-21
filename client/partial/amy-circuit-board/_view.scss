@@ -1,6 +1,7 @@
 @import "base";
 @import "partial/amy-circuit-board/amy-tile-map/view";
 @import "partial/amy-circuit-board/amy-tile/view";
+@import "partial/amy-circuit-board/amy-graph-layer/view";
 
 [amy-circuit-board] {
 	& > .flat-circuit-board {
