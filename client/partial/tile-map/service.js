@@ -129,7 +129,7 @@ define(['app/module', 'lodash'], function (app, _) {
 			return _(pos).assign({
 				top: pos.top + top,
 				left: pos.left + left,
-				hidden: (_(pos.height).approx(0) || _(pos.width).approx(0))
+				hidden: (!pos.height || !pos.width || _(pos.height).approx(0) || _(pos.width).approx(0))
 			}).value();
 		}).value();
 	}
@@ -164,7 +164,7 @@ define(['app/module', 'lodash'], function (app, _) {
 	function gridLayout(tiles, height, width, nrOfRows, nrOfColumns) {
 
 		//// fix nr of rows and columns
-
+		//
 		if (_(nrOfRows).isNumber() && _(nrOfColumns).isNumber()) {
 			// a fixed grid; extra tiles are placed outside the treemap canvas
 		} else if (_(nrOfRows).isNumber() && !_(nrOfColumns).isNumber()) {
@@ -178,7 +178,7 @@ define(['app/module', 'lodash'], function (app, _) {
 
 
 		//// give each tile an index if they don't have one
-
+		//
 		_(tiles).forEach(function (tile, index) {
 			if (_(tile.index).isUndefined()) {
 				tile.index = index;
@@ -187,12 +187,12 @@ define(['app/module', 'lodash'], function (app, _) {
 
 
 		//// function for retrieving specific tiles by 2D position
-
+		//
 		function tile(row, col) { return tiles[row * nrOfColumns + col]; }
 
 
 		//// analyzing relative tile weight
-
+		//
 		var rowWeight = _(nrOfRows).range().map(function (row) {
 			return _(nrOfColumns).range().map(function (col) {
 				return (tile(row, col) ? tile(row, col).weight() : 0);
@@ -219,9 +219,8 @@ define(['app/module', 'lodash'], function (app, _) {
 
 
 		//// build the resulting layout array
-
+		//
 		var result = new Array(tiles.length);
-
 		var top = 0;
 		_(nrOfRows).range().each(function (row) {
 			var left = 0;

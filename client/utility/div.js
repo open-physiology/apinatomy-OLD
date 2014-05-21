@@ -5,11 +5,17 @@ define(['lodash'], function (_) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	//// Number division with one difference: Infinity / Infinity = 1
+	//// Number division with a naive treatment of Infinity
 
 	_.mixin({
 		div: function (a, b) {
-			return (a === Infinity && b === Infinity) ? (1) : (a / b);
+			if (a === b) {
+				return 1;
+			} else if (b === 0) {
+				return Infinity;
+			} else {
+				return a / b;
+			}
 		}
 	}, {chain: false});
 

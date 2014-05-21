@@ -1,9 +1,7 @@
 @import "base";
-@import "partial/amy-tile-map/tile/view";
 
 [amy-tile-map] {
 	@include edge-to-edge;
-	overflow: hidden;
 	tile-map {
 		@include edge-to-edge;
 	}

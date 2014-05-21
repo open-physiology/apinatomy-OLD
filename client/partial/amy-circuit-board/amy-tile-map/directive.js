@@ -2,10 +2,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['lodash', 'angular', 'app/module',
-	'$bind/service',
-	'defaults/service',
-	'partial/amy-tile-map/tile/directive',
-	'partial/tile-map/directive'
+        '$bind/service',
+        'defaults/service',
+        'partial/tile-map/directive'
 ], function (_, ng, app) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -18,7 +17,7 @@ define(['lodash', 'angular', 'app/module',
 
 
 		var generateTileMapDefaults = defaults({
-			layout : " 'rowsOfTiles' ",
+			layout:  " 'rowsOfTiles' ",
 			spacing: " 2 "
 		});
 
@@ -28,18 +27,17 @@ define(['lodash', 'angular', 'app/module',
 
 
 		return {
-			restrict   : 'E',
-			replace    : true,
-			templateUrl: 'partial/amy-tile-map/view.html',
-			require    : 'ngModel',
-			scope      : true,
+			restrict:    'E',
+			replace:     true,
+			templateUrl: 'partial/amy-circuit-board/amy-tile-map/view.html',
+			require:     'ngModel',
+			scope:       true,
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			compile: function () {
 				return {
-
 					pre: function preLink($scope, iElement, iAttrs, ngModel) {
 						iElement.attr('amy-tile-map', '');
 
@@ -50,27 +48,34 @@ define(['lodash', 'angular', 'app/module',
 
 							//////////////////// TileMap / Artefact Hierarchy //////////////////////////////////////////
 
+							//// This artefact:
+							//
 							$scope.tileMap =
 							$scope.artefact = {
-								id      : $scope.$id,
-								type    : 'tileMap',
-								show    : false,
+								id:             $scope.$id,
+								type:           'tileMap',
+								show:           false,
 
 								//// artefact hierarchy:
-								parent  : $scope.$parent.artefact,
-								children: [],
-								root    : $scope.$parent.artefact.root,
+								parent:         $scope.$parent.artefact,
+								children:       [],
+								root:           $scope.$parent.artefact.root,
 
 								//// which tile is maximized
 								maximizedChild: null
 							};
 
 
-							//////////////////// Maintaining the Hierarchy /////////////////////////////////////////////
-
-							//// Announce this tile to the parent artefact
+							//// Announce this artefact to its parent.
 							//
 							$scope.artefact.parent.children.push($scope.artefact);
+
+
+							//// Remove references to this tile when it is destroyed.
+							//
+							$scope.$on('$destroy', function () {
+								_($scope.tile.parent).pull($scope.tile);
+							});
 
 
 							//////////////////// Tilemap Styling ///////////////////////////////////////////////////////
@@ -91,12 +96,7 @@ define(['lodash', 'angular', 'app/module',
 
 						};
 
-
-					},
-
-					post: function () {
 					}
-
 				}
 			}
 

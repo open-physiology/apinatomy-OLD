@@ -57,7 +57,7 @@ define(['angular',
 		return {
 			restrict:    'E',
 			replace:     true,
-			templateUrl: 'partial/amy-tile-map/tile/view.html',
+			templateUrl: 'partial/amy-circuit-board/amy-tile/view.html',
 			require:     'ngModel',
 			scope:       true,
 
@@ -112,7 +112,7 @@ define(['angular',
 
 							//////////////////// Maintaining the Hierarchy /////////////////////////////////////////////
 
-							//// Announce this tile to the parent artefact
+							//// Announce this artefact to its parent.
 							//
 							$scope.artefact.parent.children.push($scope.artefact);
 
@@ -237,20 +237,19 @@ define(['angular',
 
 							//////////////////// Reacting to Mouse Events //////////////////////////////////////////////
 
-							//// Clicking the header
+							//// Clicking the header opens / closes the tile
 							//
 							$scope.onHeaderClick = function (/*$event*/) {
 								$scope.tile.open = !$scope.tile.open;
 							};
 
-
-							//// Right-clicking an open tile
+							//// Right-clicking an open or maximized tile closes it
 							//
 							$scope.onRightClick = function ($event) {
-								if ($scope.tile.open) {
-									$event.preventDefault();
+								if ($scope.tile.open || ($scope.tile.maximized && $scope.tile.parent.children.length > 1)) {
 									$event.stopPropagation();
 									$scope.tile.open = false;
+									$scope.tile.maximized = false;
 								}
 							};
 

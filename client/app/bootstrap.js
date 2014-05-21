@@ -4,7 +4,7 @@
 define(['angular', 'app/module', 'domReady!',
         'partial/top-nav/directive',
         'partial/side-nav/directive',
-        'partial/amy-tile-map/directive',
+        'partial/amy-circuit-board/directive',
         'partial/simulation-panel/directive',
         'amy-once/directive'], function (ng/*, app*/) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

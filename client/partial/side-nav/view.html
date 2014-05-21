@@ -15,16 +15,16 @@
 			<div ng-repeat="relType in relTypeArray(artefact)">{{ relType }}</div>
 		</div>
 
-		<!-- the panel with the tile details; TODO: make it work for all artefacts -->
+		<!-- the panel with the tile details; -->
 		<amy-entity-details ng-model="artefact"></amy-entity-details>
 
 	</div>
 
 
+	<!-- TODO: make it work for all artefacts -->
 	<!--<div ng-if="sideNav.protein" class="amy-relation-types">-->
 		<!--<div>protein expression</div>-->
 	<!--</div>-->
-
 	<!--<amy-protein-details ng-if="sideNav.protein" amy-protein="sideNav.protein" amy-fixed="proteinFixed"></amy-protein-details>-->
 
 </nav>

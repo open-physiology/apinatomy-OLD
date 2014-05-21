@@ -19,11 +19,15 @@ define(['jquery',
 	                                  'vr.directives.slider']);
 
 
+	//// Global configuration:
+	//
 	app.config(function ($locationProvider) {
 		$locationProvider.html5Mode(true).hashPrefix('!');
 	});
 
 
+	//// Register the variables we want to be available in every $scope everywhere.
+	//
 	app.run(['$rootScope', function ($rootScope) {
 		$rootScope.constructor.prototype._ = _;
 		$rootScope.constructor.prototype.console = console;
@@ -31,15 +35,18 @@ define(['jquery',
 	}]);
 
 
+	//// The main web-page controller:
+	//
 	app.controller('MainController', ['$scope', '$window', 'ResourceService', function ($scope, $window, ResourceService) {
 
 		//////////////////// Artefact Hierarchy ////////////////////////////////////////////////////////////////////////
 
+		//// The web-page:
+		//
 		$scope.webPage =
 		$scope.artefact = {
 			id:       $scope.$id,
 			type:     'webPage',
-			show:     false,
 
 			//// artefact hierarchy:
 			parent:   null,
@@ -49,13 +56,9 @@ define(['jquery',
 			entity:   ResourceService.entities(['24tile:60000000'])[0]
 		};
 
+		//// It is the root artefact:
+		//
 		$scope.artefact.root = $scope.artefact;
-
-
-		//////////////////// Initially disable global settings /////////////////////////////////////////////////////////
-
-		$scope.$root.threeDRotateEnabled = false;
-		$scope.$root.simulationEnabled = false;
 
 
 		//////////////////// Manage bottom sliding panels //////////////////////////////////////////////////////////////

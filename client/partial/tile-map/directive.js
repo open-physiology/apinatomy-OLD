@@ -86,7 +86,7 @@ define(['app/module', 'lodash', 'partial/tile-map/service'], function (app, _) {
 							);
 							_(positions).forEach(function (position, index) {
 								if (position.hidden) {
-									// setting 'visibility' to 'hidden' rather than
+									// Somehow, setting 'visibility' to 'hidden' rather than
 									// 'display' to 'none' gives a significant speedup
 									$scope.tiles[index].element.css('visibility', 'hidden');
 								} else {

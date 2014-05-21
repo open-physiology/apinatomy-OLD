@@ -7,7 +7,7 @@
 
     <header title="{{ !tile.active ? 'entity is active in another tile' : '' }}"
             ng-class="{ top: tile.open, full: !tile.open }"
-            ng-click="onHeaderClick($event)"
+            ng-left-click="onHeaderClick($event)"
             ng-mouseover="onHeaderMouseOver($event)"
             ng-mouseout="onHeaderMouseOut($event)">
         <div class="inner-header">{{ tile.entity.name }}</div>

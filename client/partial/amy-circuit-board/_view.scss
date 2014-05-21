@@ -1,0 +1,12 @@
+@import "base";
+@import "partial/amy-circuit-board/amy-tile-map/view";
+@import "partial/amy-circuit-board/amy-tile/view";
+
+[amy-circuit-board] {
+	& > .flat-circuit-board {
+		position: absolute;
+		& > [amy-tile-map] {
+			@include edge-to-edge;
+		}
+	}
+}

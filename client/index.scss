@@ -4,18 +4,18 @@
 @import "base";
 
 //// fast application of initial AngularJS css rules (like ng-cloak)
-
+//
 @import "lib/angular/angular-csp.css";
 
 //// sub-stylesheets
-
+//
 @import "partial/top-nav/view";
 @import "partial/side-nav/view";
-@import "partial/amy-tile-map/view"; // TODO: this is the experimental one
+@import "partial/amy-circuit-board/view";
 @import "partial/simulation-panel/view";
 
 //// main page styles
-
+//
 html, body {
 	@include user-select(none);
 	position: absolute;
@@ -44,22 +44,12 @@ html, body {
 	main {
 		@include edge-to-edge;
 		top: $amy-top-nav-height;
-		& > [amy-tile-map] { // TODO: this is the experimental one
+		& > [amy-circuit-board] {
 			position: absolute;
 			top: $amy-spacing;
 			bottom: $amy-spacing;
 			left: $amy-spacing + $amy-side-nav-width;
 			right: $amy-spacing;
-//			.amy-flat-circuitboard {
-//				@include edge-to-edge;
-//				top: $amy-spacing;
-//				bottom: $amy-spacing;
-//				left: $amy-spacing + $amy-side-nav-width;
-//				right: $amy-spacing;
-//			}
-//			amy-canvas {
-//				@include edge-to-edge;
-//			}
 		}
 	}
 
