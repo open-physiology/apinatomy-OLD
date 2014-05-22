@@ -5,9 +5,18 @@
 
 [amy-circuit-board] {
 	& > .flat-circuit-board {
+		@include edge-to-edge;
 		position: absolute;
+
 		& > [amy-tile-map] {
 			@include edge-to-edge;
+			z-index: 1 !important;
 		}
+
+		& > [amy-graph-layer] {
+			@include edge-to-edge;
+			z-index: 2 !important;
+		}
+
 	}
 }

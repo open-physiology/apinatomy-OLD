@@ -3,11 +3,12 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['app/module', 'lodash', 'resource/service',
         'partial/amy-circuit-board/amy-tile-map/directive',
-        'partial/amy-circuit-board/amy-tile/directive'], function (app, _) {
+        'partial/amy-circuit-board/amy-tile/directive',
+        'partial/amy-circuit-board/amy-graph-layer/directive'], function (app, _) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	app.directive('amyCircuitBoard', ['ResourceService', function (ResourceService) {
+	app.directive('amyCircuitBoard', ['$q', function ($q) {
 		return {
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -24,40 +25,45 @@ define(['app/module', 'lodash', 'resource/service',
 					pre: function preLink($scope, iElement, iAttrs, ngModel) {
 						iElement.attr('amy-circuit-board', '');
 
+						//////////////////// Artefact Hierarchy ////////////////////////////////////////////////////
+
+						$scope.circuitBoard =
+						$scope.artefact = {
+							id:       $scope.$id,
+							type:     'circuitBoard',
+							show:     false,
+
+							//// artefact hierarchy:
+							parent:   $scope.$parent.artefact,
+							children: [],
+
+							//// root entity:
+							entity: null // to be set
+						};
+
+						//// Announce this artefact to its parent.
+						//
+						$scope.artefact.parent.children.push($scope.artefact);
+
+						//// Remove references to this tile when it is destroyed.
+						//
+						$scope.$on('$destroy', function () {
+							_($scope.artefact.parent).pull($scope.artefact); // TODO: integrate into Artefact class
+						});
+
+
 						//////////////////// Getting the model value ///////////////////////////////////////////////////
 
 						ngModel.$render = function () {
-							$scope.entity = ngModel.$modelValue;
-
-							//////////////////// Artefact Hierarchy ////////////////////////////////////////////////////
-
-							$scope.circuitBoard =
-							$scope.artefact = {
-								id:       $scope.$id,
-								type:     'circuitBoard',
-								show:     false,
-
-								//// artefact hierarchy:
-								parent:   $scope.$parent.artefact,
-								children: [],
-
-								//// root entity:
-								entity:   ResourceService.entities(['24tile:60000000'])[0]
-							};
+							$scope.entity = $scope.circuitBoard.entity = ngModel.$modelValue;
+						};
 
 
-							//// Announce this artefact to its parent.
-							//
-							$scope.artefact.parent.children.push($scope.artefact);
+						//////////////////// Graph Layer ///////////////////////////////////////////////////////////////
 
+						$scope.graphLayerDeferred = $q.defer();
+						$scope.circuitBoard.graphLayer = $scope.graphLayerDeferred.promise;
 
-							//// Remove references to this tile when it is destroyed.
-							//
-							$scope.$on('$destroy', function () {
-								_($scope.tile.parent).pull($scope.tile);
-							});
-
-						}
 					}
 				};
 			}

@@ -44,7 +44,7 @@ html, body {
 	main {
 		@include edge-to-edge;
 		top: $amy-top-nav-height;
-		& > [amy-circuit-board] {
+		[amy-circuit-board] {
 			position: absolute;
 			top: $amy-spacing;
 			bottom: $amy-spacing;

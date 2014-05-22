@@ -310,6 +310,30 @@ define(['angular',
 							$scope.$watch('tile.active', function (v) { iElement.toggleClass('active', v); });
 
 
+							//////////////////// Graph Elements ////////////////////////////////////////////////////////
+
+							(function () {
+								var circuitBoard = $scope.tile.parent;
+								while (circuitBoard.type !== 'circuitBoard') { circuitBoard = circuitBoard.parent; }
+								circuitBoard.graphLayer.then(function (graphLayer) {
+									var graphGroup = graphLayer.newGraphGroup();
+
+									graphGroup.addVertex({
+										id: 'testVertex',
+										element: $('<svg style="overflow: visible; pointer-events: auto;">' +
+										           '    <circle r="10" stroke="black" fill="white"></circle>' +
+										           '</svg>')[0]
+									});
+
+									$scope.$on('$destroy', function () {
+										graphGroup.removeAllEdgesAndVertices();
+									});
+
+									// TODO: real stuff
+
+								});
+							}());
+
 							//////////////////// Tile Styling //////////////////////////////////////////////////////////
 
 							$scope.entity._promise.then(function () {

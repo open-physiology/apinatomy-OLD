@@ -8,7 +8,6 @@ var _ = require('lodash');
 var vars = require('./vars');
 var db = require('./db');
 var express = require('express');
-
 var app = express();
 
 
