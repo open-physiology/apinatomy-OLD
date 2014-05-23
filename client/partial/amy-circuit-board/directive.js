@@ -1,14 +1,14 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'lodash', 'resource/service',
+define(['app/module', 'lodash', 'resource/service', '$bind/service',
         'partial/amy-circuit-board/amy-tile-map/directive',
         'partial/amy-circuit-board/amy-tile/directive',
         'partial/amy-circuit-board/amy-graph-layer/directive'], function (app, _) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	app.directive('amyCircuitBoard', ['$q', function ($q) {
+	app.directive('amyCircuitBoard', ['$q', '$window', '$bind', function ($q, $window, $bind) {
 		return {
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -38,7 +38,15 @@ define(['app/module', 'lodash', 'resource/service',
 							children: [],
 
 							//// root entity:
-							entity: null // to be set
+							entity: null, // to be set
+
+							//// position:
+							position: {
+								top: 0,
+								left: 0,
+								height: null, // to be set
+								width:  null  // to be set
+							}
 						};
 
 						//// Announce this artefact to its parent.
@@ -50,6 +58,18 @@ define(['app/module', 'lodash', 'resource/service',
 						$scope.$on('$destroy', function () {
 							_($scope.artefact.parent).pull($scope.artefact); // TODO: integrate into Artefact class
 						});
+
+
+						//////////////////// Keeping Track of Circuit-board Position and Size //////////////////////////
+
+						//// The circuitboard position is the main reference position for all its tiles
+
+						$($window).on('resize', $bind(function onWindowResize() {
+							_($scope.circuitBoard.position).assign({
+								height: iElement.height(),
+								width: iElement.width()
+							});
+						}, { checkPhase: true })); // because window resize can be triggered synchronously
 
 
 						//////////////////// Getting the model value ///////////////////////////////////////////////////

@@ -12,6 +12,9 @@ define(['angular',
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+	var TILE_HEADER_HEIGHT = 26;
+
+
 	app.directive('amyTile', ['$bind', '$q', 'ResourceService', 'RecursionHelper', 'defaults', function ($bind, $q, Resources, RecursionHelper, defaults) {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,7 +109,10 @@ define(['angular',
 
 								//// 3D-model related properties:
 								has3DModel:   false,
-								show3DModel:  false
+								show3DModel:  false,
+
+								//// position:
+								position: null // to be set
 							};
 
 
@@ -123,6 +129,15 @@ define(['angular',
 								_($scope.tile.parent).pull($scope.tile);
 								if ($scope.tile.parent.maximizedChild === $scope.tile) {
 									$scope.tile.parent.maximizedChild = null;
+								}
+							});
+
+
+							//////////////////// Keeping Track of Tile Position and Size ///////////////////////////////
+
+							iAttrs.$observe('position', function (newPosition) {
+								if (newPosition) {
+									$scope.tile.position = $scope.$eval(newPosition);
 								}
 							});
 
@@ -318,11 +333,41 @@ define(['angular',
 								circuitBoard.graphLayer.then(function (graphLayer) {
 									var graphGroup = graphLayer.newGraphGroup();
 
-									graphGroup.addVertex({
-										id: 'testVertex',
-										element: $('<svg style="overflow: visible; pointer-events: auto;">' +
-										           '    <circle r="10" stroke="black" fill="white"></circle>' +
-										           '</svg>')[0]
+									function setRegion() {
+										var widthPadding = Math.min(TILE_HEADER_HEIGHT, $scope.tile.position.width) / 2;
+										var heightPadding = Math.min(TILE_HEADER_HEIGHT, $scope.tile.position.height) / 2;
+										var height = ($scope.tile.open ? TILE_HEADER_HEIGHT : $scope.tile.position.height);
+										graphGroup.setRegion({
+											top: $scope.tile.position.top + heightPadding,
+											left: $scope.tile.position.left + widthPadding,
+											height: height - 2 * heightPadding,
+											width: $scope.tile.position.width - 2 * widthPadding
+										});
+									}
+
+									function addAllEdgesAndVertices() {
+										graphGroup.addVertex({
+											id: 'testVertex',
+											element: $('<svg style="overflow: visible; pointer-events: auto;">' +
+											           '    <circle r="10" stroke="black" fill="white"></circle>' +
+											           '</svg>')[0]
+										});
+									}
+
+									$scope.$watch('tile.position', function (newPosition, oldPosition) {
+										if (newPosition !== oldPosition) { setRegion(); }
+									});
+
+									$scope.$watch('tile.open', function (isOpen, wasOpen) {
+										if (wasOpen !== isOpen) { setRegion(); }
+									});
+
+									$scope.$watch('tile.active', function (isActive) {
+										if (isActive) {
+											addAllEdgesAndVertices();
+										} else {
+											graphGroup.removeAllEdgesAndVertices();
+										}
 									});
 
 									$scope.$on('$destroy', function () {

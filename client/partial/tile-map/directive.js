@@ -18,7 +18,7 @@ define(['app/module', 'lodash', 'partial/tile-map/service'], function (app, _) {
 			scope   : {
 				layout : '@tileLayout',
 				spacing: '@tileSpacing',
-				tiles  : '=?tiles'
+				tiles  : '=?'
 			},
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////

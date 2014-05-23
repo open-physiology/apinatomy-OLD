@@ -62,7 +62,10 @@ define(['lodash', 'angular', 'app/module',
 								root:           $scope.$parent.artefact.root,
 
 								//// which tile is maximized
-								maximizedChild: null
+								maximizedChild: null,
+
+								//// position:
+								position: null // to be set
 							};
 
 
@@ -78,20 +81,28 @@ define(['lodash', 'angular', 'app/module',
 							});
 
 
-							//////////////////// Tilemap Styling ///////////////////////////////////////////////////////
+							//////////////////// Keeping Track of Tile-map Position and Size ///////////////////////////
+
+							iAttrs.$observe('position', function (newPosition) {
+								if (newPosition) {
+									$scope.tileMap.position = $scope.$eval(newPosition);
+								}
+							});
+
+
+							//////////////////// Loading sub-entities //////////////////////////////////////////////////
 
 							$scope.entity._promise.then(function () {
-
-								//////////////////// Loading sub-entities //////////////////////////////////////////////
-
 								ResourceService.entities(_($scope.entity.sub).map(function (sub) {
 									return sub.entity._id;
 								}).value());
+							});
 
-								//////////////////// Fetch tileMap styling options /////////////////////////////////////
 
+							//////////////////// Tile-map Styling //////////////////////////////////////////////////////
+
+							$scope.entity._promise.then(function () {
 								$scope.styling = generateTileMapDefaults($scope.entity.tileMap, {});
-
 							});
 
 						};

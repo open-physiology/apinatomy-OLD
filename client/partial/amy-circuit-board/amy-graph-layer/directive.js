@@ -33,7 +33,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 								.nodes(_.values($scope.vertexArtefacts))
 								.links(_.values($scope.edgeArtefacts))
 								.size([iElement.width(), iElement.height()])
-								.gravity(0.1)
+								.gravity(0)
 								.charge(-400)
 								.linkDistance(10); // TODO: function (d) { return _(d.linkDistance).or(10); }
 
@@ -45,15 +45,6 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 
 
 						//////////////////// updating the graph ////////////////////////////////////////////////////////
-
-						function bindVertexToRegion(d) {
-							if (d.group.region) {
-								d.x = Math.max(d.x, d.group.region.left);
-								d.x = Math.min(d.x, d.group.region.left + d.group.region.width);
-								d.y = Math.max(d.y, d.group.region.top);
-								d.y = Math.min(d.y, d.group.region.top + d.group.region.height);
-							}
-						}
 
 						$scope.updateGraph = _.debounce($bind(function updateGraph() {
 							// using the d3 general update pattern:
@@ -78,8 +69,23 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 							// TODO: sorting for z-order
 						}), 200);
 
-						force.on("tick", function tick() {
-							_($scope.vertexArtefacts).forEach(bindVertexToRegion);
+						force.on("tick", function tick(e) {
+							var k = .1 * e.alpha;
+
+							_($scope.vertexArtefacts).forEach(function (d) {
+								if (d.group.region) {
+									//// gravitate towards the center of the region
+									d.x += (d.group.region.left + .5 * d.group.region.width - d.x) * k;
+									d.y += (d.group.region.top + .5 * d.group.region.height - d.y) * k;
+
+									//// and always stay within the region
+									d.x = Math.max(d.x, d.group.region.left);
+									d.x = Math.min(d.x, d.group.region.left + d.group.region.width);
+									d.y = Math.max(d.y, d.group.region.top);
+									d.y = Math.min(d.y, d.group.region.top + d.group.region.height);
+								}
+							});
+
 							vertices.attr('x', function (d) { return d.x; })
 									.attr('y', function (d) { return d.y; });
 							edges   .attr("x1", function (d) { return d.source.x; })
