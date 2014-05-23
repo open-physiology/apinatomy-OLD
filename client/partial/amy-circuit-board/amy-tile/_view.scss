@@ -121,3 +121,32 @@
 	}
 
 }
+
+[amy-graph-layer] {
+	svg.protein.vertex-wrapper {
+		& > circle.core {
+			pointer-events: visiblePainted;
+			cursor: move;
+			fill: lighten(purple, 20);
+			stroke: purple;
+			&.fixed {
+				fill: lighten(green, 20);
+				stroke: green;
+			}
+		}
+		& > circle.small-molecule-indicator {
+			stroke-width: 2px;
+			stroke: purple;
+			fill: none;
+			&.fixed {
+				stroke: green;
+			}
+		}
+	}
+
+	line.protein-interaction {
+		stroke: purple;
+		stroke-width: 1.5px;
+		stroke-linecap: round;
+	}
+}

@@ -15,16 +15,21 @@ define(['app/module', 'lodash', 'partial/side-nav/details/directive'], function 
 				$scope.artefacts = [];
 				$scope.mainArtefact = [];
 
+				// TODO: Some weird stuff is going on. When a protein artefact is put on top of $scope.artefacts,
+				//     : it appears from the template as though $scope.artefacts is empty, even though
+				//     : it is clearly not empty when measured in this file. This does not happen when
+				//     : a tile artefact is put on top.
+
 				$scope.$on('artefact-focus', function (e, artefact) {
 					if ($scope.mainArtefact !== artefact) {
+
 						$scope.mainArtefact = artefact;
-						$scope.artefacts = [];
-						var a = artefact;
-						while (a) {
-							if (a.show) {
-								$scope.artefacts.unshift(a);
+						_($scope.artefacts).remove();
+						while (artefact) {
+							if (artefact.detailTemplateUrl) {
+								$scope.artefacts.unshift(artefact);
 							}
-							a = a.parent;
+							artefact = artefact.parent;
 						}
 					}
 				});
@@ -36,44 +41,11 @@ define(['app/module', 'lodash', 'partial/side-nav/details/directive'], function 
 					}
 				});
 
-
 				$scope.relTypeArray = function relTypeArray(artefact) {
 					return _(artefact.relationType).isArray()
 							? artefact.relationType
 							: [artefact.relationType];
 				};
-
-
-				/////////////////////////////////
-
-
-//				$scope.sideNav = $scope;
-//
-//				$scope.bundles = [];
-//
-//				$scope.$on('entity-focus', function (event, focusChain) {
-//					$scope.bundles = focusChain;
-//				});
-//
-//				$scope.$on('protein-focus', function (event, protein) {
-//					if (!$scope.proteinFixed) {
-//						$scope.protein = protein;
-//					}
-//				});
-//
-//				$scope.$on('protein-fix', function (event, protein) {
-//					$scope.protein = protein;
-//					$scope.proteinFixed = !!protein;
-//				});
-//
-//				$scope.relationType = function (bundle) {
-//					var index = $scope.bundles.indexOf(bundle);
-//					if (index === -1) {
-//						return undefined;
-//					}
-//					var prev = $scope.bundles[index-1];
-//					return _(prev.entity.sub).where({ entity: bundle.entity }).pluck('type').value();
-//				};
 
 			}
 		};

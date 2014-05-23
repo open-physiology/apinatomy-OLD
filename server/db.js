@@ -59,6 +59,10 @@ function ProteinReference(other) {
 	return StringType(_.assign({ ref: 'Protein' }, other));
 }
 
+function SmallMoleculeReference(other) {
+	return StringType(_.assign({ ref: 'SmallMolecule' }, other));
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////// Schemas //////////////////////////////////////////////
@@ -144,11 +148,15 @@ var proteinSchema = new mongoose.Schema({
 	ensembl:            StringType(),
 	swissprot:          StringType(),
 	info:               mongoose.Schema.Types.Mixed,
-	smallMoleculeCount: NumberType(),
-	smallMolecules:     [mongoose.Schema.Types.Mixed]
+	smallMoleculeInteractions: [SmallMoleculeReference()]
 });
-metadataSchema.index({ ensembl: 1 });
-metadataSchema.index({ swissprot: 1 });
+proteinSchema.index({ ensembl: 1 });
+proteinSchema.index({ swissprot: 1 });
+
+var smallMoleculeSchema = new mongoose.Schema({
+	_id:  StringType({ unique: true }),
+	info: mongoose.Schema.Types.Mixed
+});
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -161,3 +169,4 @@ exports.Connection = mongoose.model('Connection', connectionSchema);
 exports.Path = mongoose.model('Path', pathSchema);
 exports.Metadata = mongoose.model('Metadata', metadataSchema);
 exports.Protein = mongoose.model('Protein', proteinSchema);
+exports.SmallMolecule = mongoose.model('SmallMolecule', smallMoleculeSchema);

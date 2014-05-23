@@ -2,4 +2,8 @@
 
 [amy-graph-layer] {
 	pointer-events: none;
+
+	svg.vertex-wrapper {
+		overflow: visible;
+	}
 }

@@ -18,12 +18,14 @@ define(['app/module', 'chroma', 'lodash'], function (app, color, _) {
 
 					pre: function preLink($scope, iElement, iAttrs, ngModel) {
 						ngModel.$render = function () {
-							$scope.tile = ngModel.$modelValue;
-							iElement.putCSS($scope.tile.styling.focus.css);
-							iElement.css(
-									'backgroundColor',
-									color($scope.tile.styling.normal.css['&'].backgroundColor).brighten(30).css()
-							);
+							$scope.artefact = ngModel.$modelValue;
+							if ($scope.artefact.styling && $scope.artefact.styling.focus && $scope.artefact.styling.normal) {
+								iElement.putCSS($scope.artefact.styling.focus.css);
+								iElement.css(
+										'backgroundColor',
+										color($scope.artefact.styling.normal.css['&'].backgroundColor).brighten(30).css()
+								);
+							}
 						};
 					}
 

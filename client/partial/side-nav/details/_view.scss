@@ -14,7 +14,7 @@
 
 	//// entity title
 
-	& > header > h2 {
+	header > h2 {
 		font-size     : 16px;
 		font-weight   : bold;
 		border-bottom : solid 1px;
@@ -25,7 +25,7 @@
 
 	//// important links
 
-	& > a.importantLink {
+	a.importantLink {
 		margin: 4px;
 		display: block;
 		font-weight: bold;
@@ -39,7 +39,7 @@
 
 	//// entity details
 
-	& > dl {
+	dl {
 		margin : 4px;
 
 		& > dt {

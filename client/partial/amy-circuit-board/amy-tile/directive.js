@@ -11,9 +11,7 @@ define(['angular',
         '$bind/service'], function (ng, app, color, _) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
 	var TILE_HEADER_HEIGHT = 26;
-
 
 	app.directive('amyTile', ['$bind', '$q', 'ResourceService', 'RecursionHelper', 'defaults', function ($bind, $q, Resources, RecursionHelper, defaults) {
 
@@ -89,13 +87,16 @@ define(['angular',
 							$scope.artefact = {
 								id:           $scope.$id,
 								type:         'tile',
-								show:         true,
 
 								//// artefact hierarchy:
 								parent:       $scope.$parent.artefact,
 								relationType: $scope.subEntity.type,
 								children:     [],
 								root:         $scope.$parent.artefact.root,
+
+								//// detail view:
+								//
+								detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/detail-view.html',
 
 								//// entity:
 								entity:       $scope.entity,
@@ -333,6 +334,8 @@ define(['angular',
 								circuitBoard.graphLayer.then(function (graphLayer) {
 									var graphGroup = graphLayer.newGraphGroup();
 
+									//////////////////// Keep region up to date ////////////////////////////////////////
+
 									function setRegion() {
 										var widthPadding = Math.min(TILE_HEADER_HEIGHT, $scope.tile.position.width) / 2;
 										var heightPadding = Math.min(TILE_HEADER_HEIGHT, $scope.tile.position.height) / 2;
@@ -345,36 +348,94 @@ define(['angular',
 										});
 									}
 
-									function addAllEdgesAndVertices() {
-										graphGroup.addVertex({
-											id: 'testVertex',
-											element: $('<svg style="overflow: visible; pointer-events: auto;">' +
-											           '    <circle r="10" stroke="black" fill="white"></circle>' +
-											           '</svg>')[0]
-										});
-									}
+									//////////////////// Proteins //////////////////////////////////////////////////////
 
-									$scope.$watch('tile.position', function (newPosition, oldPosition) {
-										if (newPosition !== oldPosition) { setRegion(); }
-									});
 
-									$scope.$watch('tile.open', function (isOpen, wasOpen) {
-										if (wasOpen !== isOpen) { setRegion(); }
-									});
+										function addAllEdgesAndVertices() {
+											$scope.entity._promise.then(function () {
+												var proteinArtefactMap = {};
+												_($scope.entity.proteins).forEach(function (protein) {
+													//// generate the svg element for the protein
+													//
+													var smallMoleculeIndicator = '';
+													if (!_(protein.smallMoleculeInteractions).isUndefined() && protein.smallMoleculeInteractions.length > 0) {
+														smallMoleculeIndicator = '<circle class="small-molecule-indicator" r="9"></circle>';
+													}
+													var element = $('<svg class="protein vertex-wrapper">' +
+													                '    <circle class="core" r="4.5"></circle>' +
+													                smallMoleculeIndicator +
+													                '</svg>');
 
-									$scope.$watch('tile.active', function (isActive) {
-										if (isActive) {
-											addAllEdgesAndVertices();
-										} else {
-											graphGroup.removeAllEdgesAndVertices();
+													//// create the protein artefact
+													//
+													var proteinArtefact = {
+														id     : $scope.tile.id + ':' + protein._id,
+														detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/protein-detail-view.html',
+														element: element[0],
+														protein: protein,
+														parent: $scope.tile,
+														children: [],
+														root: $scope.tile.root,
+														type: 'protein',
+														relationType: 'protein expression'
+													};
+													$scope.tile.children.push(proteinArtefact);
+													proteinArtefactMap[protein._id] = proteinArtefact;
+
+													//// add the protein artefact to the graph group
+													//
+													graphGroup.addVertex(proteinArtefact);
+
+													//// react to mouse-events on the protein element
+													//
+													element.on('mouseover', function (event) {
+														event.stopPropagation();
+														$scope.$root.$broadcast('artefact-focus', proteinArtefact, {});
+													});
+													element.on('mouseout', function (event) {
+														event.stopPropagation();
+														$scope.$root.$broadcast('artefact-unfocus', proteinArtefact, {});
+													});
+													element.on('click', function (event) {
+														event.stopPropagation();
+														// TODO: fixed focus on/off
+													});
+												});
+
+												_($scope.entity.proteinInteractions).forEach(function (interaction) {
+													// NOTE: an svg element is added and immediately discarded
+													//       to fix a strange bug that otherwise leaves edges invisible
+													var element = $('<svg><line class="protein-interaction" stroke="purple"></line></svg>').children();
+													graphGroup.addEdge({
+														id: 'ppi:('+interaction.interaction[0]+','+interaction.interaction[1]+')',
+														source: proteinArtefactMap[interaction.interaction[0]],
+														target: proteinArtefactMap[interaction.interaction[1]],
+														element: element[0]
+													});
+												});
+
+											});
 										}
-									});
 
-									$scope.$on('$destroy', function () {
-										graphGroup.removeAllEdgesAndVertices();
-									});
+										$scope.$watch('tile.position', function (newPosition, oldPosition) {
+											if (newPosition !== oldPosition) { setRegion(); }
+										});
 
-									// TODO: real stuff
+										$scope.$watch('tile.open', function (isOpen, wasOpen) {
+											if (wasOpen !== isOpen) { setRegion(); }
+										});
+
+										$scope.$watch('tile.active', function (isActive) {
+											if (isActive) {
+												addAllEdgesAndVertices();
+											} else {
+												graphGroup.removeAllEdgesAndVertices();
+											}
+										});
+
+										$scope.$on('$destroy', function () {
+											graphGroup.removeAllEdgesAndVertices();
+										});
 
 								});
 							}());
