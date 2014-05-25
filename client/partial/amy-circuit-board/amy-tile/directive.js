@@ -266,6 +266,9 @@ define(['angular',
 							//////////////////// Reacting to Focus Broadcasts //////////////////////////////////////////
 
 							$scope.$on('artefact-focus', function (event, artefact, options) {
+								if (artefact.type === 'protein') {
+									artefact = artefact.ancestor('tile');
+								}
 								$scope.tile.highlighted = (artefact.entity && artefact.entity === $scope.entity && !_(options.excludeHighlighting).contains($scope.tile));
 							});
 
@@ -332,7 +335,8 @@ define(['angular',
 												var proteinArtefact = new artefacts.Protein({
 													parent: $scope.tile,
 													element: element[0],
-													protein: protein
+													protein: protein,
+													detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/protein-detail-view.html'
 												});
 												proteinArtefactMap[protein._id] = proteinArtefact;
 
@@ -342,18 +346,18 @@ define(['angular',
 
 												//// react to mouse-events on the protein element
 												//
-												element.on('mouseover', function (event) {
+												element.on('mouseover', $bind(function (event) {
 													event.stopPropagation();
 													$scope.$root.$broadcast('artefact-focus', proteinArtefact, {});
-												});
-												element.on('mouseout', function (event) {
+												}));
+												element.on('mouseout', $bind(function (event) {
 													event.stopPropagation();
 													$scope.$root.$broadcast('artefact-unfocus', proteinArtefact, {});
-												});
-												element.on('click', function (event) {
+												}));
+												element.on('click', $bind(function (event) {
 													event.stopPropagation();
 													// TODO: fixed focus on/off
-												});
+												}));
 											});
 
 											_($scope.entity.proteinInteractions).forEach(function (interaction) {
@@ -372,7 +376,7 @@ define(['angular',
 									}
 
 									$scope.$watch('tile.position', function (newPosition, oldPosition) {
-										if (newPosition !== oldPosition) { setRegion(); }
+										if (newPosition) { setRegion(); }
 									});
 
 									$scope.$watch('tile.open', function (isOpen, wasOpen) {

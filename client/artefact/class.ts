@@ -41,9 +41,9 @@ class Artefact {
 		_.pull(this.parent.children, this);
 	}
 
-	ancestor<T>(type: string): Artefact {
+	ancestor(type: string): Artefact {
 		var result = this.parent;
-		while (result && result.type === type) {
+		while (result && result.type !== type) {
 			result = result.parent;
 		}
 		return result;
