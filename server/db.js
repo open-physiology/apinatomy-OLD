@@ -117,7 +117,10 @@ var unitSchema = new mongoose.Schema({
 var connectionSchema = new mongoose.Schema({
 	from: EntityReference(),
 	to:   EntityReference(),
-	type: StringType()
+	type: StringType(),
+	subtype: StringType(),
+	entity: EntityReference(),
+	name: StringType()
 });
 connectionSchema.index({ from: 1, to: 1 }, { unique: true });
 connectionSchema.index({ type: 1 });

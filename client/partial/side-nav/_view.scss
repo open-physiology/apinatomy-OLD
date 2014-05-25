@@ -23,7 +23,7 @@
 		}
 	}
 
-	.amy-entity-details, .amy-protein-details {
+	.amy-entity-details, .amy-protein-details, .amy-vascular-details {
 		//		@include fade-out;
 		margin-left : $amy-spacing;
 		margin-top  : $amy-spacing / 2;
@@ -46,7 +46,13 @@
 
 	}
 
+	overflow: scroll;
+
+}
+::-webkit-scrollbar {
+	display: none;
 }
 
 @import "partial/side-nav/details/view";
 @import "partial/side-nav/proteinDetails/view";
+@import "partial/side-nav/vascularDetails/view";

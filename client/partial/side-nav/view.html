@@ -2,13 +2,13 @@
 
 	<!--<header><h2>Taxonomy</h2></header>-->
 
-    <div class="controls" ng-if="_(bundles).isEmpty()">
+    <div class="controls" ng-if="_(bundles).isEmpty() && !sideNav.protein && !sideNav.vascularSegment">
         <kbd>hover</kbd>: tile information<br>
         <kbd>left click</kbd>: open tile<br>
         <kbd>right click</kbd>: close tile<br>
     </div>
 
-	<div ng-repeat="bundle in bundles">
+	<div ng-if="!sideNav.vascularSegment" ng-repeat="bundle in bundles">
 
 		<!-- the relation-type indicator inbetween two entities -->
 		<div ng-if="!$first" class="amy-relation-types">
@@ -20,7 +20,7 @@
 
 	</div>
 
-	<!-- the panel with the entity details -->
+	<!-- the panel with the protein details -->
 
 	<!-- TODO: protein expression should be part of the real focus-chain, not pasted on like this -->
 
@@ -28,6 +28,12 @@
 		<div>protein expression</div>
 	</div>
 
-	<amy-protein-details ng-if="sideNav.protein" amy-protein="sideNav.protein" amy-fixed="proteinFixed"></amy-protein-details>
+	<amy-protein-details ng-if="sideNav.protein" amy-protein="sideNav.protein" amy-fixed="sideNav.proteinFixed"></amy-protein-details>
+
+
+	<!-- the panel with the vascular segment details -->
+
+	<amy-vascular-details ng-if="sideNav.vascularSegment" amy-segment="sideNav.vascularSegment" amy-fixed="sideNav.vascularFixed"></amy-vascular-details>
+
 
 </nav>

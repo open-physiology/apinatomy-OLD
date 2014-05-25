@@ -1,7 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'lodash', 'partial/side-nav/details/directive', 'partial/side-nav/proteinDetails/directive'], function (app, _) {
+define(['app/module', 'lodash', 'partial/side-nav/details/directive', 'partial/side-nav/proteinDetails/directive', 'partial/side-nav/vascularDetails/directive'], function (app, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -20,6 +20,18 @@ define(['app/module', 'lodash', 'partial/side-nav/details/directive', 'partial/s
 
 				$scope.$on('entity-focus', function (event, focusChain) {
 					$scope.bundles = focusChain;
+				});
+
+				$scope.$on('vascular-segment-focus', function (event, segment) {
+					if (!$scope.vascularFixed) {
+						$scope.vascularSegment = segment;
+					}
+				});
+
+				$scope.$on('vascular-segment-fix', function (event, segment) {
+					console.log(segment);
+					$scope.vascularSegment = segment;
+					$scope.vascularFixed = !!segment;
 				});
 
 				$scope.$on('protein-focus', function (event, protein) {

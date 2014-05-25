@@ -7,7 +7,8 @@ amy-graph {
 	& > svg {
 
 		line {
-			stroke-width: 1.5px;
+			pointer-events: visiblePainted;
+			stroke-width: 2px;
 			stroke-linecap: round;
 
 			&.vascular { stroke: red; }

@@ -50,6 +50,8 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 
 						//////////////////// updating the graph ////////////////////////////////////////////////////////
 
+						var fixedSegment = null;
+
 						function updateGraph() {
 							// using the d3 general update pattern:
 							// http://bl.ocks.org/mbostock/3808218
@@ -85,7 +87,24 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 
 							connectionLines = svg.selectAll('line').data(connections,
 									function (d) { return d.source.id + ' - ' + d.target.id; });
-							connectionLines.enter().append("line").attr('class', function (d) { return d.type; }); // vascular, neural
+							connectionLines.enter().append("line").attr('class', function (d) { return d.type; }) // vascular, neural
+									.on('mouseover', $bind(function (d) {
+										$scope.$root.$broadcast('vascular-segment-focus', d)
+									}))
+									.on('mouseout', $bind(function (d) {
+										$scope.$root.$broadcast('vascular-segment-focus')
+									}))
+									.on('click', $bind(function (d) {
+										if (d.isFixed) {
+											d.isFixed = false;
+											fixedSegment = null;
+										} else {
+											if (fixedSegment) { fixedSegment.isFixed = false; }
+											fixedSegment = d;
+											d.isFixed = true;
+										}
+										$scope.$root.$broadcast('vascular-segment-fix', fixedSegment)
+									}));
 							connectionLines
 									.attr("x1", function (d) { return d.source.x; })
 									.attr("y1", function (d) { return d.source.y; })
@@ -153,9 +172,6 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 
 								// find the connections of all inner junctions (so we can eliminate linear ones)
 
-								// TODO: there is at least one looping path from an fma tile back to the same
-								// TODO  fma tile (fma:7096 - Right atrium); this is not yet properly visualized
-
 								var junctionDirectConnections = {};
 
 								_(paths).forEach(function (path) {
@@ -200,10 +216,13 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 									var tile1 = tileJunctionMap[path.from];
 									var tile2 = tileJunctionMap[path.to];
 
+									var hiddenJunctions = [];
+
 									var sourceJunction = tileJunctionMap[path.from];
 									for (var i = 1; i < pathArray.length - 1; ++i) {
-										if (_(junctionDirectConnections[pathArray[i]]).size() > 2) {
-
+										if (_(junctionDirectConnections[pathArray[i]]).size() === 2) {
+											hiddenJunctions.push(pathArray[i]);
+										} else {
 											if (_(innerJunctionMap[pathArray[i]]).isUndefined()) {
 												innerJunctionMap[pathArray[i]] = {
 													id: pathArray[i],
@@ -220,9 +239,11 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 											connections.push({
 												source: sourceJunction,
 												target: innerJunctionMap[pathArray[i]],
-												type  : path.type
+												type  : path.type,
+												hiddenJunctions: hiddenJunctions
 											});
 											sourceJunction = innerJunctionMap[pathArray[i]];
+											hiddenJunctions = [];
 										}
 									}
 
@@ -234,7 +255,8 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 									connections.push({
 										source: sourceJunction,
 										target: tileJunctionMap[path.to],
-										type  : path.type
+										type  : path.type,
+										hiddenJunctions: hiddenJunctions
 									});
 								});
 

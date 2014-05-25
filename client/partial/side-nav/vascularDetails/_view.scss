@@ -1,0 +1,76 @@
+@import "base";
+
+.amy-vascular-details {
+	@include border-radius(5px);
+
+	display : block;
+	border  : dashed 1px;
+	padding : 0;
+	overflow: hidden;
+
+	background-color: lightpink;
+	border-color: red;
+
+	&.fixed {
+		border-style: solid;
+	}
+
+
+	//// entity title
+
+	& > header > h2 {
+		font-size     : 16px;
+		font-weight   : bold;
+		border-bottom : solid 1px red;
+		margin        : 0;
+		padding       : 4px;
+	}
+
+
+	//// important links
+
+	& a.importantLink {
+		margin: 4px;
+		display: block;
+		font-weight: bold;
+
+		& > span {
+			font-size: 80%;
+			margin-left: 6px;
+		}
+	}
+
+
+	//// protein details
+
+	& dl {
+		margin : 4px;
+
+		& > dt {
+			margin-right : 5px;
+			float        : left;
+			clear        : both;
+		}
+		& > dd {
+			margin  : 0px;
+		}
+	}
+
+	.pagination {
+		text-align: center;
+		color: black;
+		font-weight: bold;
+
+		a {
+			cursor: pointer;
+			color: black;
+
+			&.disabled {
+				cursor: not-allowed;
+				color: gray;
+				text-decoration: none;
+			}
+		}
+	}
+
+}

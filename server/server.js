@@ -249,6 +249,7 @@ app.get('/resources/connections/:ids', function (req, res) {
 			.where('to').in(ids)
 			.skip(skip)
 			.limit(limit)
+			.populate('entity')
 			.exec(function (err, conns) {
 				if (err) {
 					console.log(err);

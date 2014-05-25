@@ -1,0 +1,10 @@
+<div class="amy-vascular-details" ng-class="{ fixed: fixed }">
+
+	<header><h2>Segments</h2></header>
+
+	<div ng-repeat="seg in subSegments" style="border-top: dotted 1px red; padding: 2px;">
+		<b>At:</b> {{ seg.entity._id }} - {{ seg.entity.name }}<br />
+		<b>Name:</b> {{ seg.name }}
+	</div>
+
+</div>
