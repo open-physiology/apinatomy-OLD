@@ -5,10 +5,11 @@ define(['angular',
         'app/module',
         'chroma',
         'lodash',
+        'partial/amy-circuit-board/artefacts',
         'partial/icon-btn/directive',
         'partial/font-fit/directive',
         'resource/service',
-        '$bind/service'], function (ng, app, color, _) {
+        '$bind/service'], function (ng, app, color, _, artefacts) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	var TILE_HEADER_HEIGHT = 26;
@@ -84,54 +85,14 @@ define(['angular',
 							//////////////////// Tile / Artefact Interface /////////////////////////////////////////////
 
 							$scope.tile =
-							$scope.artefact = {
-								id:           $scope.$id,
-								type:         'tile',
-
-								//// artefact hierarchy:
-								parent:       $scope.$parent.artefact,
-								relationType: $scope.subEntity.type,
-								children:     [],
-								root:         $scope.$parent.artefact.root,
-
-								//// detail view:
-								//
+							$scope.artefact = new artefacts.Tile({
+								id:                $scope.$id,
+								parent:            $scope.$parent.artefact,
+								relationType:      $scope.subEntity.type,
 								detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/detail-view.html',
-
-								//// entity:
-								entity:       $scope.entity,
-								active:       true,
-								highlighted:  false,
-
-								//// properties:
-								open:         false,
-								maximized:    false,
-								visible:      true,
-
-								//// 3D-model related properties:
-								has3DModel:   false,
-								show3DModel:  false,
-
-								//// position:
-								position: null // to be set
-							};
-
-
-							//////////////////// Maintaining the Hierarchy /////////////////////////////////////////////
-
-							//// Announce this artefact to its parent.
-							//
-							$scope.artefact.parent.children.push($scope.artefact);
-
-
-							//// Remove references to this tile when it is destroyed
-							//
-							$scope.$on('$destroy', function () {
-								_($scope.tile.parent).pull($scope.tile);
-								if ($scope.tile.parent.maximizedChild === $scope.tile) {
-									$scope.tile.parent.maximizedChild = null;
-								}
+								entity:            $scope.entity
 							});
+							$scope.$on('$destroy', function () { $scope.tile.destructor(); });
 
 
 							//////////////////// Keeping Track of Tile Position and Size ///////////////////////////////
@@ -351,91 +312,84 @@ define(['angular',
 									//////////////////// Proteins //////////////////////////////////////////////////////
 
 
-										function addAllEdgesAndVertices() {
-											$scope.entity._promise.then(function () {
-												var proteinArtefactMap = {};
-												_($scope.entity.proteins).forEach(function (protein) {
-													//// generate the svg element for the protein
-													//
-													var smallMoleculeIndicator = '';
-													if (!_(protein.smallMoleculeInteractions).isUndefined() && protein.smallMoleculeInteractions.length > 0) {
-														smallMoleculeIndicator = '<circle class="small-molecule-indicator" r="9"></circle>';
-													}
-													var element = $('<svg class="protein vertex-wrapper">' +
-													                '    <circle class="core" r="4.5"></circle>' +
-													                smallMoleculeIndicator +
-													                '</svg>');
+									function addAllEdgesAndVertices() {
+										$scope.entity._promise.then(function () {
+											var proteinArtefactMap = {};
+											_($scope.entity.proteins).forEach(function (protein) {
+												//// generate the svg element for the protein
+												//
+												var smallMoleculeIndicator = '';
+												if (!_(protein.smallMoleculeInteractions).isUndefined() && protein.smallMoleculeInteractions.length > 0) {
+													smallMoleculeIndicator = '<circle class="small-molecule-indicator" r="9"></circle>';
+												}
+												var element = $('<svg class="protein vertex-wrapper">' +
+												                '    <circle class="core" r="4.5"></circle>' +
+												                smallMoleculeIndicator +
+												                '</svg>');
 
-													//// create the protein artefact
-													//
-													var proteinArtefact = {
-														id     : $scope.tile.id + ':' + protein._id,
-														detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/protein-detail-view.html',
-														element: element[0],
-														protein: protein,
-														parent: $scope.tile,
-														children: [],
-														root: $scope.tile.root,
-														type: 'protein',
-														relationType: 'protein expression'
-													};
-													$scope.tile.children.push(proteinArtefact);
-													proteinArtefactMap[protein._id] = proteinArtefact;
-
-													//// add the protein artefact to the graph group
-													//
-													graphGroup.addVertex(proteinArtefact);
-
-													//// react to mouse-events on the protein element
-													//
-													element.on('mouseover', function (event) {
-														event.stopPropagation();
-														$scope.$root.$broadcast('artefact-focus', proteinArtefact, {});
-													});
-													element.on('mouseout', function (event) {
-														event.stopPropagation();
-														$scope.$root.$broadcast('artefact-unfocus', proteinArtefact, {});
-													});
-													element.on('click', function (event) {
-														event.stopPropagation();
-														// TODO: fixed focus on/off
-													});
+												//// create the protein artefact
+												//
+												var proteinArtefact = new artefacts.Protein({
+													parent: $scope.tile,
+													element: element[0],
+													protein: protein
 												});
+												proteinArtefactMap[protein._id] = proteinArtefact;
 
-												_($scope.entity.proteinInteractions).forEach(function (interaction) {
-													// NOTE: an svg element is added and immediately discarded
-													//       to fix a strange bug that otherwise leaves edges invisible
-													var element = $('<svg><line class="protein-interaction" stroke="purple"></line></svg>').children();
-													graphGroup.addEdge({
-														id: 'ppi:('+interaction.interaction[0]+','+interaction.interaction[1]+')',
-														source: proteinArtefactMap[interaction.interaction[0]],
-														target: proteinArtefactMap[interaction.interaction[1]],
-														element: element[0]
-													});
+												//// add the protein artefact to the graph group
+												//
+												graphGroup.addVertex(proteinArtefact);
+
+												//// react to mouse-events on the protein element
+												//
+												element.on('mouseover', function (event) {
+													event.stopPropagation();
+													$scope.$root.$broadcast('artefact-focus', proteinArtefact, {});
 												});
-
+												element.on('mouseout', function (event) {
+													event.stopPropagation();
+													$scope.$root.$broadcast('artefact-unfocus', proteinArtefact, {});
+												});
+												element.on('click', function (event) {
+													event.stopPropagation();
+													// TODO: fixed focus on/off
+												});
 											});
-										}
 
-										$scope.$watch('tile.position', function (newPosition, oldPosition) {
-											if (newPosition !== oldPosition) { setRegion(); }
+											_($scope.entity.proteinInteractions).forEach(function (interaction) {
+												// NOTE: an svg element is added and immediately discarded
+												//       to fix a strange bug that otherwise leaves edges invisible
+												var element = $('<svg><line class="protein-interaction" stroke="purple"></line></svg>').children();
+												graphGroup.addEdge({
+													id: 'ppi:(' + interaction.interaction[0] + ',' + interaction.interaction[1] + ')',
+													source:  proteinArtefactMap[interaction.interaction[0]],
+													target:  proteinArtefactMap[interaction.interaction[1]],
+													element: element[0]
+												});
+											});
+
 										});
+									}
 
-										$scope.$watch('tile.open', function (isOpen, wasOpen) {
-											if (wasOpen !== isOpen) { setRegion(); }
-										});
+									$scope.$watch('tile.position', function (newPosition, oldPosition) {
+										if (newPosition !== oldPosition) { setRegion(); }
+									});
 
-										$scope.$watch('tile.active', function (isActive) {
-											if (isActive) {
-												addAllEdgesAndVertices();
-											} else {
-												graphGroup.removeAllEdgesAndVertices();
-											}
-										});
+									$scope.$watch('tile.open', function (isOpen, wasOpen) {
+										if (wasOpen !== isOpen) { setRegion(); }
+									});
 
-										$scope.$on('$destroy', function () {
+									$scope.$watch('tile.active', function (isActive) {
+										if (isActive) {
+											addAllEdgesAndVertices();
+										} else {
 											graphGroup.removeAllEdgesAndVertices();
-										});
+										}
+									});
+
+									$scope.$on('$destroy', function () {
+										graphGroup.removeAllEdgesAndVertices();
+									});
 
 								});
 							}());
