@@ -86,9 +86,26 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 					.then(function (data) { return data.data; });
 		};
 
+		//////////////////// Small Molecules ///////////////////////////////////////////////////////////////////////////
+
+		iface.smallMolecules = function (ids) {
+			if (_(ids).isEmpty()) { return $q.when([]); }
+			return $http.get('/resources/small-molecules/' + ids.join(','))
+					.then(function (data) { return data.data; });
+		};
+
+		//////////////////// Tree Walks ////////////////////////////////////////////////////////////////////////////////
+
+		iface.ancestors = function (id) {
+			return $http.get('/resources/ancestors/' + id)
+					.then(function (data) { return data.data; });
+		};
+
 		//////////////////// 3D Models /////////////////////////////////////////////////////////////////////////////////
 
 		var URI_TO_MODEL = {
+			'fma:7088' : ['3d-models/FMA_7088_Heart.4.obj',
+			              '3d-models/FMA_7088_Heart.3.obj'],
 			'fma:7148' : ['3d-models/FMA7148_Stomach.obj'],
 			'fma:7197' : ['3d-models/FMA7197_Liver.obj'],
 			'fma:7204' : ['3d-models/FMA7204_Right_Kidney.obj'],
@@ -100,6 +117,14 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 			'fma:52735': ['3d-models/FMA52735_Occipital_Bone.obj'],
 			'fma:52748': ['3d-models/FMA52748_Mandible.obj'],
 			'fma:62004': ['3d-models/FMA62004_Medulla_Oblongata.obj'],
+			'fma:67943': ['3d-models/FMA67943_Pons.obj'],
+			'fma:67944': ['3d-models/FMA67944_Cerebellum.obj'],
+			'fma:72717': ['3d-models/FMA72717_Right_cingulate_gyrus.obj'],
+			'fma:72826': ['3d-models/FMA72826_Right_caudate_nucleus.obj'],
+			'fma:72827': ['3d-models/FMA72827_Left_caudate_nucleus.obj'],
+			'fma:72828': ['3d-models/FMA72828_Right_putamen.obj'],
+			'fma:72829': ['3d-models/FMA72829_Left_putamen.obj'],
+			'fma:86464': ['3d-models/FMA86464_Corpus_callosum.obj'],
 			'fma:58301': ['3d-models/FMA58301_Retina_cell-147-trace.CNG.swc',
 			              '3d-models/FMA58301_Retina_cell-167-trace.CNG.swc'],
 			'fma:62429': ['3d-models/FMA62429_Neocortex_07b_pyramidal14aACC.CNG.swc'],
@@ -114,6 +139,8 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 
 		return iface;
 	}]);
+
+	//FMA_7088_Heart.
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -71,12 +71,90 @@ export class Protein extends Artefact {
 
 	element: SVGElement;
 	protein: any;
+	ResourceService: any;
 
 	constructor(properties) {
 		super(_.extend({
 			type        : 'protein',
 			relationType: 'protein expression'
 		}, properties));
+	}
+
+	////////////////////////////////////////////////////////////////////////////
+
+	visibleSmallMolecules: any[] = [];
+
+	smPagination: {
+		pageSize   : number;
+		page       : number;
+		lastPage   : number;
+	};
+
+	initializeSmPagination() {
+		this.smPagination = {
+			pageSize: 10,
+			page    : 1,
+			lastPage: Math.ceil(this.protein.smallMoleculeCount / 10)
+		};
+		this.fetchSmPage();
+	}
+
+	fetchSmPage() {
+
+		console.log(this.protein);
+
+		var ids = this.protein.smallMoleculeInteractions.slice(
+						(this.smPagination.page - 1) * this.smPagination.pageSize,
+						this.smPagination.page * this.smPagination.pageSize
+		);
+
+		console.log(ids);
+
+		this.ResourceService.smallMolecules(ids).then(function (smallMolecules) {
+			var that = this;
+			_.remove(that.visibleSmallMolecules);
+			_(smallMolecules).forEach(function (smallMolecule) {
+				that.visibleSmallMolecules.push(smallMolecule);
+			});
+		});
+	}
+
+	prefLabel(): string {
+		var result: string;
+		if (this.protein.info) {
+			_(this.protein.info.exactMatch).forEach(function (match: any) {
+				if (match.prefLabel) {
+					result = match.prefLabel.replace(/^(.+)\(homo sapiens\)\s*$/i, '$1');
+					return false;
+				}
+			});
+		}
+		return result;
+	}
+
+	smChemblID(sm: any) {
+		return sm.info._about.replace(/^.+(CHEMBL.+)/, '$1');
+	}
+
+	smURL(sm: any) {
+		return sm.info._about;
+	}
+
+	smPrefLabel(sm: any): string {
+		var result: string;
+
+		if (sm.info) {
+			_(sm.info.exactMatch).forEach(function (match: any) {
+				if (match.prefLabel) {
+					result = match.prefLabel;
+					return false;
+				}
+			});
+		}
+
+		if (!result) { result = this.smChemblID(sm); }
+
+		return result;
 	}
 
 }

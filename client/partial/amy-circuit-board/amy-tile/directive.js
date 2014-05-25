@@ -9,12 +9,13 @@ define(['angular',
         'partial/icon-btn/directive',
         'partial/font-fit/directive',
         'resource/service',
-        '$bind/service'], function (ng, app, color, _, artefacts) {
+        '$bind/service',
+        'resource/service'], function (ng, app, color, _, artefacts) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	var TILE_HEADER_HEIGHT = 26;
 
-	app.directive('amyTile', ['$bind', '$q', 'ResourceService', 'RecursionHelper', 'defaults', function ($bind, $q, Resources, RecursionHelper, defaults) {
+	app.directive('amyTile', ['$bind', '$q', 'ResourceService', 'RecursionHelper', 'defaults', 'ResourceService', function ($bind, $q, Resources, RecursionHelper, defaults, ResourceService) {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -333,10 +334,11 @@ define(['angular',
 												//// create the protein artefact
 												//
 												var proteinArtefact = new artefacts.Protein({
-													parent: $scope.tile,
-													element: element[0],
-													protein: protein,
-													detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/protein-detail-view.html'
+													parent:            $scope.tile,
+													element:           element[0],
+													protein:           protein,
+													detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/protein-detail-view.html',
+													ResourceService:   ResourceService
 												});
 												proteinArtefactMap[protein._id] = proteinArtefact;
 
