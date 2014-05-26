@@ -293,7 +293,7 @@ define(['angular',
 
 							//////////////////// Graph Elements ////////////////////////////////////////////////////////
 
-							$scope.tile.ancestor('circuitBoard').graphLayer.then(function (graphLayer) {
+							$scope.circuitBoard.graphLayer.then(function (graphLayer) {
 								var graphGroup = graphLayer.newGraphGroup();
 
 								//////////////////// Keep region up to date ////////////////////////////////////////
@@ -364,12 +364,14 @@ define(['angular',
 											if (!_(protein.smallMoleculeInteractions).isUndefined() && protein.smallMoleculeInteractions.length > 0) {
 												smallMoleculeIndicator = '<circle class="small-molecule-indicator" r="9"></circle>';
 											}
-											var element = $('<svg class="protein vertex-wrapper">' + '<circle class="core" r="4.5"></circle>' +
+											var element = $('<svg class="protein vertex-wrapper">' +
+											                '<circle class="core" r="4.5"></circle>' +
 											                smallMoleculeIndicator + '</svg>');
 
 											//// create the protein artefact
 											//
 											var proteinArtefact = new artefacts.Protein({
+												id               : $scope.tile.id + ':' + protein._id,
 												parent           : $scope.tile,
 												element          : element[0],
 												protein          : protein,

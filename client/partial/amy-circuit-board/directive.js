@@ -84,6 +84,9 @@ define(['app/module', 'lodash', 'resource/service', '$bind/service',
 						$scope.graphLayerDeferred = $q.defer();
 						$scope.circuitBoard.graphLayer = $scope.graphLayerDeferred.promise;
 
+						$scope.vascularConnectionsDeferred = $q.defer();
+						$scope.circuitBoard.vascularConnections = $scope.vascularConnectionsDeferred.promise;
+
 					}
 				};
 			}

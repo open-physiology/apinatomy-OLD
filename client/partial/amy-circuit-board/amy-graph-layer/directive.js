@@ -158,9 +158,6 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 											group.vertices.push(vertex);
 											vertex.graphId = group.id + ':' + vertex.id;
 											$scope.vertexArtefacts[vertex.graphId] = vertex;
-
-											console.log('--- adding vertex: ', vertex);
-
 											$scope.updateGraph();
 										},
 										removeVertex: function removeVertex(vertex) {
