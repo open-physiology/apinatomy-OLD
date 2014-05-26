@@ -2,6 +2,7 @@
 @import "partial/amy-circuit-board/amy-tile-map/view";
 @import "partial/amy-circuit-board/amy-tile/view";
 @import "partial/amy-circuit-board/amy-graph-layer/view";
+@import "partial/amy-circuit-board/amy-connections/view";
 
 [amy-circuit-board] {
 	& > .flat-circuit-board {
@@ -24,6 +25,5 @@
 			@include edge-to-edge;
 			z-index: 3 !important;
 		}
-
 	}
 }

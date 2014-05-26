@@ -4,7 +4,7 @@
 define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], function (_, $, ng, app, d3) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	app.directive('amyGraphLayer', ['$bind', '$window', function ($bind, $window) {
+	app.directive('amyGraphLayer', ['$bind', function ($bind) {
 		return {
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -119,7 +119,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 
 					},
 
-					post: function postLink($scope/*, iElement, iAttrs, controller*/) {
+					post: function postLink($scope, iElement/*, iAttrs, controller*/) {
 
 						//////////////////// interfaces to add vertices and edges //////////////////////////////////////
 
@@ -141,7 +141,12 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 										id: _.uniqueId('group'),
 										vertices: [],
 										edges: [],
-										region: null
+										region: { // by default, the whole canvas with a small padding
+											top: 10,
+											left: 10,
+											get width() { return iElement.width() - 20 },
+											get height() { return iElement.height() - 20 }
+										}
 									};
 									return {
 										setRegion: function setRegion(region) {
@@ -153,11 +158,14 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 											group.vertices.push(vertex);
 											vertex.graphId = group.id + ':' + vertex.id;
 											$scope.vertexArtefacts[vertex.graphId] = vertex;
+
+											console.log('--- adding vertex: ', vertex);
+
 											$scope.updateGraph();
 										},
 										removeVertex: function removeVertex(vertex) {
-											_(group.vertices).pull(vertex);
 											delete $scope.vertexArtefacts[vertex.graphId];
+											_(group.vertices).pull(vertex);
 											$scope.updateGraph();
 										},
 										addEdge: function addEdge(edge) {
@@ -168,8 +176,8 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 											$scope.updateGraph();
 										},
 										removeEdge: function removeEdge(edge) {
-											_(group.edges).pull(edge);
 											delete $scope.edgeArtefacts[edge.graphId];
+											_(group.edges).pull(edge);
 											$scope.updateGraph();
 										},
 										removeAllEdgesAndVertices: function removeAllEdgesAndVertices() {
@@ -179,12 +187,12 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 											_(group.vertices).forEach(function (vertex) {
 												delete $scope.vertexArtefacts[vertex.graphId];
 											});
-											group.edges = [];
-											group.vertices = [];
+											_(group.edges).remove();
+											_(group.vertices).remove();
 											$scope.updateGraph();
 										},
-										vertices: function vertices() { return group.vertices; },
-										edges: function edges() { return group.edges; }
+										vertices: function vertices() { return _(group.vertices).clone(); },
+										edges: function edges() { return _(group.edges).clone(); }
 									};
 								}
 							});

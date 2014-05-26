@@ -67,6 +67,22 @@ export class Tile extends Artefact {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+export class VascularTileJunction extends Artefact {
+
+    element: SVGElement;
+    entity: any;
+
+    constructor(properties) {
+        super(_.extend({
+            type        : 'vascularTileJunction',
+            relationType: 'vascular junction'
+        }, properties));
+    }
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 export class Protein extends Artefact {
 
 	element: SVGElement;
@@ -116,7 +132,7 @@ export class Protein extends Artefact {
 	}
 
 	prefLabel(): string {
-		var result: string;
+		var result: string = null;
 		if (this.protein.info) {
 			_(this.protein.info.exactMatch).forEach(function (match: any) {
 				if (match.prefLabel) {
@@ -154,6 +170,5 @@ export class Protein extends Artefact {
 	}
 
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
