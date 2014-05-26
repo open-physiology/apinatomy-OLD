@@ -344,7 +344,7 @@ define(['angular',
 												//
 												graphGroup.addVertex(proteinArtefact);
 
-												//// react to mouse-events on the protein element
+												//// react to mouse hover by giving focus
 												//
 												element.on('mouseover', $bind(function (event) {
 													event.stopPropagation();
@@ -354,10 +354,32 @@ define(['angular',
 													event.stopPropagation();
 													$scope.$root.$broadcast('artefact-unfocus', proteinArtefact, {});
 												}));
-												element.on('click', $bind(function (event) {
-													event.stopPropagation();
-													$scope.$root.$broadcast('artefact-focus-fix', proteinArtefact.focusFixed ? null : proteinArtefact);
+
+												//// react to clicks by fixing focus
+												//
+												element.clickNotDrop($bind(function () {
+													$scope.$root.$broadcast('artefact-focus-fix',
+															proteinArtefact.focusFixed ? null : proteinArtefact);
 												}));
+
+												//// react to dragging by temporarily fixing focus (if not already fixed)
+												//
+												var removeFocusFixOnDrop;
+												element.mouseDragDrop($bind(function () {
+													if (proteinArtefact.focusFixed) {
+														removeFocusFixOnDrop = false;
+													} else {
+														removeFocusFixOnDrop = true;
+														$scope.$root.$broadcast('artefact-focus-fix', proteinArtefact);
+													}
+												}), $bind(function () {
+													if (removeFocusFixOnDrop) {
+														$scope.$root.$broadcast('artefact-focus-fix', null);
+													}
+												}));
+
+												//// how to react when focus is fixed:
+												//
 												$scope.$on('artefact-focus-fix', function (e, artefact) {
 													proteinArtefact.focusFixed = (artefact === proteinArtefact);
 													element.setSvgClass('focus-fixed', proteinArtefact.focusFixed);

@@ -4,7 +4,7 @@
 define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], function (_, $, ng, app, d3) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	app.directive('amyGraphLayer', ['$bind', function ($bind) {
+	app.directive('amyGraphLayer', ['$bind', '$window', function ($bind, $window) {
 		return {
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,7 +69,8 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 							//
 							vertices = svg.selectAll('.vertex').data(_.values($scope.vertexArtefacts), _.property('graphId'));
 							vertices.enter().append(function (d) { return d.element; })
-									.classed('vertex', true).classed('edge', false);
+									.classed('vertex', true).classed('edge', false)
+									.call(force.drag);
 							vertices.exit().remove();
 
 //							//// define a nice visual z-order for the svg elements
@@ -110,13 +111,10 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 						force.drag().on("dragstart", function () {
 							d3.event.sourceEvent.stopPropagation();
 							draggedVertex = $(d3.event.sourceEvent.srcElement);
-							draggedVertex.addSvgClass('dragged');
-							//$scope.dragging = true; // TODO: re-enable this, to disable tile highlighting during dragging (maybe)
+							draggedVertex.addSvgClass('dragging');
 						}).on("dragend", function () {
 							d3.event.sourceEvent.stopPropagation();
-							draggedVertex.removeSvgClass('dragged');
-							draggedVertex = undefined;
-							//$scope.dragging = false;
+							draggedVertex.removeSvgClass('dragging');
 						});
 
 					},
