@@ -1,6 +1,10 @@
 <div>
     <div class="flat-circuit-board">
         <amy-tile-map ng-model="circuitBoard.entity" position="{{ circuitBoard.position }}"></amy-tile-map>
+        <div class="smokescreen" ng-if="
+            $root.connectionsEnabled ||
+            $root.simulationEnabled  ||
+            $root.proteinsEnabled"></div>
         <amy-graph-layer></amy-graph-layer>
     </div>
 </div>
