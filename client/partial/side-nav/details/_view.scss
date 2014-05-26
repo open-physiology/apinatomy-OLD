@@ -4,10 +4,11 @@
 	@include border-radius(5px);
 
 	display : block;
-	border  : solid 1px;
+	border  : dotted 1px;
 	padding : 0;
 
-	&.fixed {
+	&.focus-fixed {
+		border-style: solid;
 		border-width: 2px;
 	}
 

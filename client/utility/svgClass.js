@@ -21,6 +21,13 @@ define(['jquery', 'lodash'], function ($, _) {
 			this.each(function () {
 				$(this).attr('class', _($(this).attr('class').split(/\s+/)).xor(cls.split(/\s+/)).join(" "));
 			});
+		},
+		setSvgClass: function (cls, flag) {
+			if (flag) {
+				this.addSvgClass(cls);
+			} else {
+				this.removeSvgClass(cls);
+			}
 		}
 	});
 

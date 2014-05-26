@@ -22,6 +22,13 @@
 	div.controls, [amy-entity-details] {
 		margin-left   : $amy-spacing;
 		margin-bottom : $amy-spacing / 2;
+
+		&.focus-fixed {
+			margin-left   : $amy-spacing - 1;
+			margin-bottom : $amy-spacing / 2 - 1;
+			margin-top : -1px;
+			margin-right: -1px;
+		}
 	}
 
 	.amy-relation-types {

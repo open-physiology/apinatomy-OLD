@@ -14,31 +14,35 @@ define(['app/module', 'lodash', 'partial/side-nav/details/directive'], function 
 
 				$scope.artefacts = [];
 				$scope.mainArtefact = [];
+				$scope.mainArtefactFixed = false;
 
-				// TODO: Some weird stuff is going on. When a protein artefact is put on top of $scope.artefacts,
-				//     : it appears from the template as though $scope.artefacts is empty, even though
-				//     : it is clearly not empty when measured in this file. This does not happen when
-				//     : a tile artefact is put on top.
+				function setArtefactFocus(artefact) {
+					$scope.mainArtefact = artefact;
+					_($scope.artefacts).remove();
+					while (artefact) {
+						if (artefact.detailTemplateUrl) {
+							$scope.artefacts.unshift(artefact);
+						}
+						artefact = artefact.parent;
+					}
+				}
 
 				$scope.$on('artefact-focus', function (e, artefact) {
-					if ($scope.mainArtefact !== artefact) {
-
-						$scope.mainArtefact = artefact;
-						_($scope.artefacts).remove();
-						while (artefact) {
-							if (artefact.detailTemplateUrl) {
-								$scope.artefacts.unshift(artefact);
-							}
-							artefact = artefact.parent;
-						}
+					if ($scope.mainArtefact !== artefact && !$scope.mainArtefactFixed) {
+						setArtefactFocus(artefact);
 					}
 				});
 
 				$scope.$on('artefact-unfocus', function (e, artefact) {
-					if (artefact === $scope.mainArtefact) {
+					if (artefact === $scope.mainArtefact && !$scope.mainArtefactFixed) {
 						$scope.mainArtefact = null;
 						$scope.artefacts = [];
 					}
+				});
+
+				$scope.$on('artefact-focus-fix', function (e, artefact) {
+					if (artefact) { setArtefactFocus(artefact); }
+					$scope.mainArtefactFixed = !!artefact;
 				});
 
 				$scope.relTypeArray = function relTypeArray(artefact) {

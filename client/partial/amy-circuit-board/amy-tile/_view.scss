@@ -129,16 +129,18 @@
 			cursor: move;
 			fill: lighten(purple, 20);
 			stroke: purple;
-			&.fixed {
-				fill: lighten(green, 20);
-				stroke: green;
-			}
 		}
 		& > circle.small-molecule-indicator {
 			stroke-width: 2px;
 			stroke: purple;
 			fill: none;
-			&.fixed {
+		}
+		&.focus-fixed {
+			& > circle.core {
+				fill: lighten(green, 20);
+				stroke: green;
+			}
+			& > circle.small-molecule-indicator {
 				stroke: green;
 			}
 		}
@@ -148,5 +150,26 @@
 		stroke: purple;
 		stroke-width: 1.5px;
 		stroke-linecap: round;
+	}
+}
+
+[amy-entity-details].protein {
+	border-color: purple;
+	background-color: lighten(purple, 70);
+	.pagination {
+		text-align: center;
+		color: black;
+		font-weight: bold;
+
+		a {
+			cursor: pointer;
+			color: black;
+
+			&.disabled {
+				cursor: not-allowed;
+				color: gray;
+				text-decoration: none;
+			}
+		}
 	}
 }

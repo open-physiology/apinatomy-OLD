@@ -61,13 +61,15 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 							//// edges
 							//
 							edges = svg.selectAll('.edge').data(_.values($scope.edgeArtefacts), _.property('graphId'));
-							edges.enter().append(function (d) { return d.element; }).classed('edge', true).classed('vertex', false);
+							edges.enter().append(function (d) { return d.element; })
+									.classed('edge', true).classed('vertex', false);
 							edges.exit().remove();
 
 							//// vertices
 							//
 							vertices = svg.selectAll('.vertex').data(_.values($scope.vertexArtefacts), _.property('graphId'));
-							vertices.enter().append(function (d) { return d.element; }).classed('vertex', true).classed('edge', false);
+							vertices.enter().append(function (d) { return d.element; })
+									.classed('vertex', true).classed('edge', false);
 							vertices.exit().remove();
 
 //							//// define a nice visual z-order for the svg elements
@@ -139,8 +141,8 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 								newGraphGroup: function newGraphGroup() {
 									var group = {
 										id: _.uniqueId('group'),
-										vertexIds: [],
-										edgeIds: [],
+										vertices: [],
+										edges: [],
 										region: null
 									};
 									return {
@@ -150,39 +152,41 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 										},
 										addVertex: function addVertex(vertex) {
 											vertex.group = group;
-											group.vertexIds.push(vertex.id);
+											group.vertices.push(vertex);
 											vertex.graphId = group.id + ':' + vertex.id;
 											$scope.vertexArtefacts[vertex.graphId] = vertex;
 											$scope.updateGraph();
 										},
 										removeVertex: function removeVertex(vertex) {
-											_(group.vertexIds).pull(vertex.id);
+											_(group.vertices).pull(vertex);
 											delete $scope.vertexArtefacts[vertex.graphId];
 											$scope.updateGraph();
 										},
 										addEdge: function addEdge(edge) {
 											edge.group = group;
-											group.edgeIds.push(edge.id);
+											group.edges.push(edge);
 											edge.graphId = group.id + ':' + edge.id;
 											$scope.edgeArtefacts[edge.graphId] = edge;
 											$scope.updateGraph();
 										},
 										removeEdge: function removeEdge(edge) {
-											_(group.edgeIds).pull(edge.id);
+											_(group.edges).pull(edge);
 											delete $scope.edgeArtefacts[edge.graphId];
 											$scope.updateGraph();
 										},
 										removeAllEdgesAndVertices: function removeAllEdgesAndVertices() {
-											_(group.edgeIds).forEach(function (edgeId) {
-												delete $scope.edgeArtefacts[group.id + ':' + edgeId];
+											_(group.edges).forEach(function (edge) {
+												delete $scope.edgeArtefacts[edge.graphId];
 											});
-											_(group.vertexIds).forEach(function (vertexId) {
-												delete $scope.vertexArtefacts[group.id + ':' + vertexId];
+											_(group.vertices).forEach(function (vertex) {
+												delete $scope.vertexArtefacts[vertex.graphId];
 											});
-											group.edgeIds = [];
-											group.vertexIds = [];
+											group.edges = [];
+											group.vertices = [];
 											$scope.updateGraph();
-										}
+										},
+										vertices: function vertices() { return group.vertices; },
+										edges: function edges() { return group.edges; }
 									};
 								}
 							});

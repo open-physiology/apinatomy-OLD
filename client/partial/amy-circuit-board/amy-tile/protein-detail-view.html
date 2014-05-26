@@ -17,11 +17,11 @@
 </a>
 
 <div ng-init="artefact.initializeSmPagination()"
-     ng-if="artefact.protein.smallMoleculeCount > 0"
+     ng-if="artefact.protein.smallMoleculeInteractions.length > 0"
      style="margin: 0; padding: 0;">
 	<dl>
 		<dt title="Small Molecule Interactions">S.M. Interactions:</dt>
-		<dd>{{ artefact.protein.smallMoleculeCount }}</dd>
+		<dd>{{ artefact.protein.smallMoleculeInteractions.length }}</dd>
 	</dl>
 	<ul style="padding-left: 27px; margin-top: -4px;">
 		<li ng-repeat="sm in artefact.visibleSmallMolecules">

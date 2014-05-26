@@ -326,10 +326,8 @@ define(['angular',
 												if (!_(protein.smallMoleculeInteractions).isUndefined() && protein.smallMoleculeInteractions.length > 0) {
 													smallMoleculeIndicator = '<circle class="small-molecule-indicator" r="9"></circle>';
 												}
-												var element = $('<svg class="protein vertex-wrapper">' +
-												                '    <circle class="core" r="4.5"></circle>' +
-												                smallMoleculeIndicator +
-												                '</svg>');
+												var element = $('<svg class="protein vertex-wrapper">' + '<circle class="core" r="4.5"></circle>' +
+												                smallMoleculeIndicator + '</svg>');
 
 												//// create the protein artefact
 												//
@@ -358,8 +356,12 @@ define(['angular',
 												}));
 												element.on('click', $bind(function (event) {
 													event.stopPropagation();
-													// TODO: fixed focus on/off
+													$scope.$root.$broadcast('artefact-focus-fix', proteinArtefact.focusFixed ? null : proteinArtefact);
 												}));
+												$scope.$on('artefact-focus-fix', function (e, artefact) {
+													proteinArtefact.focusFixed = (artefact === proteinArtefact);
+													element.setSvgClass('focus-fixed', proteinArtefact.focusFixed);
+												});
 											});
 
 											_($scope.entity.proteinInteractions).forEach(function (interaction) {
@@ -377,7 +379,17 @@ define(['angular',
 										});
 									}
 
-									$scope.$watch('tile.position', function (newPosition, oldPosition) {
+									function removeAllEdgesAndVertices() {
+										_(graphGroup.vertices()).forEach(function (proteinArtefact) {
+											if (proteinArtefact.focusFixed) {
+												$scope.$root.$broadcast('artefact-focus-fix', null);
+											}
+											proteinArtefact.destructor();
+										});
+										graphGroup.removeAllEdgesAndVertices();
+									}
+
+									$scope.$watch('tile.position', function (newPosition) {
 										if (newPosition) { setRegion(); }
 									});
 
@@ -385,16 +397,16 @@ define(['angular',
 										if (wasOpen !== isOpen) { setRegion(); }
 									});
 
-									$scope.$watch('tile.active', function (isActive) {
-										if (isActive) {
+									$scope.$watch('tile.active && $root.proteinsEnabled', function (showProteins) {
+										if (showProteins) {
 											addAllEdgesAndVertices();
 										} else {
-											graphGroup.removeAllEdgesAndVertices();
+											removeAllEdgesAndVertices();
 										}
 									});
 
 									$scope.$on('$destroy', function () {
-										graphGroup.removeAllEdgesAndVertices();
+										removeAllEdgesAndVertices();
 									});
 
 								});

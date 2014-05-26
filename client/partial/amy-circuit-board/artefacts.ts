@@ -94,24 +94,20 @@ export class Protein extends Artefact {
 		this.smPagination = {
 			pageSize: 10,
 			page    : 1,
-			lastPage: Math.ceil(this.protein.smallMoleculeCount / 10)
+			lastPage: Math.ceil(this.protein.smallMoleculeInteractions.length / 10)
 		};
 		this.fetchSmPage();
 	}
 
 	fetchSmPage() {
-
-		console.log(this.protein);
+        var that = this;
 
 		var ids = this.protein.smallMoleculeInteractions.slice(
-						(this.smPagination.page - 1) * this.smPagination.pageSize,
-						this.smPagination.page * this.smPagination.pageSize
+            ((this.smPagination.page - 1) * this.smPagination.pageSize),
+            (this.smPagination.page * this.smPagination.pageSize)
 		);
 
-		console.log(ids);
-
 		this.ResourceService.smallMolecules(ids).then(function (smallMolecules) {
-			var that = this;
 			_.remove(that.visibleSmallMolecules);
 			_(smallMolecules).forEach(function (smallMolecule) {
 				that.visibleSmallMolecules.push(smallMolecule);
