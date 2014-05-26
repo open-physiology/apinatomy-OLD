@@ -11,8 +11,11 @@ amy-graph {
 			stroke-width: 2px;
 			stroke-linecap: round;
 
-			&.vascular { stroke: red; }
-			&.neural { stroke: blue; }
+			&.vascular {
+				&.arterial { stroke: red; }
+				&.venous { stroke: darkblue; }
+			}
+			&.neural { stroke: aqua; }
 		}
 
 		circle {
@@ -25,8 +28,8 @@ amy-graph {
 					stroke: darkred;
 				}
 				&.junctionPoint {
-					fill: red;
-					stroke: red;
+					&.arterial { stroke: red; fill: red; }
+					&.venous { stroke: darkblue; fill: darkblue; }
 				}
 				&.junctionArea {
 					fill: red;

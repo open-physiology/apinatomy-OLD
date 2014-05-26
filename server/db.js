@@ -129,9 +129,11 @@ var pathSchema = new mongoose.Schema({
 	from: EntityReference(),
 	to:   EntityReference(),
 	path: [EntityReference()],
-	type: StringType()
+	type: StringType(),
+	subtype: StringType()
 });
-pathSchema.index({ from: 1, to: 1 }, { unique: true });
+pathSchema.index({ type: 1, from: 1, to: 1 });
+pathSchema.index({ from: 1, to: 1 });
 pathSchema.index({ type: 1 });
 
 var metadataSchema = new mongoose.Schema({

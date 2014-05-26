@@ -65,6 +65,8 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 							junctionPoints = svg.selectAll('.tilePoint, .junctionPoint').data(junctions, function (d) { return d.id; });
 							junctionPoints.enter().append("circle")
 									.attr('class', function (d) { return (d.isTileJunction ? 'tilePoint ' : 'junctionPoint ') + d.type; }) // vascular, neural
+									.classed('arterial', function (d) { return d.subtype === 'arterial'; })
+									.classed('venous', function (d) { return d.subtype === 'venous'; })
 									.attr("r", function (d) { return (d.isTileJunction ? 4 : 2); });
 							junctionPoints
 									.attr("cx", function (junction) { return junction.x = (junction.bindX ? junction.bindX(junction.x) : junction.x); })
@@ -88,6 +90,8 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 							connectionLines = svg.selectAll('line').data(connections,
 									function (d) { return d.source.id + ' - ' + d.target.id; });
 							connectionLines.enter().append("line").attr('class', function (d) { return d.type; }) // vascular, neural
+									.classed('arterial', function (d) { return d.subtype === 'arterial'; })
+									.classed('venous', function (d) { return d.subtype === 'venous'; })
 									.on('mouseover', $bind(function (d) {
 										$scope.$root.$broadcast('vascular-segment-focus', d)
 									}))
@@ -226,8 +230,9 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 											if (_(innerJunctionMap[pathArray[i]]).isUndefined()) {
 												innerJunctionMap[pathArray[i]] = {
 													id: pathArray[i],
-													x : (tile1.x + tile2.x) / 2, // right in between; good enough
-													y : (tile1.y + tile2.y) / 2
+													x : (tile1.x + tile2.x) / 2, // initially right in between; good enough
+													y : (tile1.y + tile2.y) / 2,
+													subtype: path.subtype
 												};
 												junctions.push(innerJunctionMap[pathArray[i]]);
 											}
@@ -240,6 +245,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 												source: sourceJunction,
 												target: innerJunctionMap[pathArray[i]],
 												type  : path.type,
+												subtype: path.subtype,
 												hiddenJunctions: hiddenJunctions
 											});
 											sourceJunction = innerJunctionMap[pathArray[i]];
@@ -256,6 +262,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 										source: sourceJunction,
 										target: tileJunctionMap[path.to],
 										type  : path.type,
+										subtype: path.subtype,
 										hiddenJunctions: hiddenJunctions
 									});
 								});
