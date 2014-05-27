@@ -225,7 +225,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 									var sourceJunction = tileJunctionMap[path.from];
 									for (var i = 1; i < pathArray.length - 1; ++i) {
 										if (_(junctionDirectConnections[pathArray[i]]).size() === 2) {
-											hiddenJunctions.push(pathArray[i]);
+											hiddenJunctions.push(_(pathArray[i]).clone());
 										} else {
 											if (_(innerJunctionMap[pathArray[i]]).isUndefined()) {
 												innerJunctionMap[pathArray[i]] = {
@@ -246,7 +246,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 												target: innerJunctionMap[pathArray[i]],
 												type  : path.type,
 												subtype: path.subtype,
-												hiddenJunctions: hiddenJunctions
+												hiddenJunctions: _(hiddenJunctions).clone()
 											});
 											sourceJunction = innerJunctionMap[pathArray[i]];
 											hiddenJunctions = [];
@@ -263,8 +263,9 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'resource/service'], 
 										target: tileJunctionMap[path.to],
 										type  : path.type,
 										subtype: path.subtype,
-										hiddenJunctions: hiddenJunctions
+										hiddenJunctions: _(hiddenJunctions).clone()
 									});
+
 								});
 
 								//// OK; update the graph

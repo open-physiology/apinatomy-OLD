@@ -18,26 +18,19 @@ define(['app/module', 'chroma', 'lodash', 'resource/service'], function (app, co
 
 			controller: function ($scope) {
 
-
-
-				console.log('controller...');
-
 				$scope.$watch('segment', function (segment) {
 
 					$scope.subSegments = [];
 
-					var allJunctions = segment.hiddenJunctions;
+					var allJunctions = _(segment.hiddenJunctions).clone();
 					allJunctions.push(segment.source.id);
 					allJunctions.push(segment.target.id);
 
-
 					ResourceService.connections(allJunctions).then(function (data) {
-
-						console.log('data:', data);
-
 						var subSegmentsDone = {};
 
 						function addSegment(from, to) {
+							console.log(from + ' - ' + to);
 
 							_(data).forEach(function (segmentData) {
 
@@ -53,6 +46,7 @@ define(['app/module', 'chroma', 'lodash', 'resource/service'], function (app, co
 							});
 						}
 
+						console.log('----------', segment);
 
 						var lastJunction = segment.source.id;
 						_(segment.hiddenJunctions).forEach(function (hiddenJunction) {
@@ -61,6 +55,7 @@ define(['app/module', 'chroma', 'lodash', 'resource/service'], function (app, co
 						});
 						addSegment(lastJunction, segment.target.id);
 
+						console.log('----------');
 
 					}, function (err) {
 						console.error(err);

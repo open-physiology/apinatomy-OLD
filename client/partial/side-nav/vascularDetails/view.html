@@ -4,7 +4,8 @@
 
 	<div ng-repeat="seg in subSegments" style="border-top: dotted 1px red; padding: 2px;">
 		<b>At:</b> {{ seg.entity._id }} - {{ seg.entity.name }}<br />
-		<b>Name:</b> {{ seg.name }}
+		<b>Name:</b> {{ seg.name }}<br />
+        <b>Nodes:</b> {{seg.from}} - {{seg.to}}
 	</div>
 
 </div>
