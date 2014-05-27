@@ -24,6 +24,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 
 						//// initialize the data
 						//
+//						$scope.hiddenVertexArtefacts = {};
 						$scope.vertexArtefacts = {};
 						$scope.edgeArtefacts = {};
 
@@ -38,8 +39,9 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 									return -0.00025 * d.group.region.width * d.group.region.height;
 								})
 								.linkDistance(function (d) {
-									return 0.0001 * d.group.region.width * d.group.region.height;
-								});
+									return 0.0001 * d.group.region.width * d.group.region.height * (d.linkDistanceFactor || 1);
+								})
+								.linkStrength(0.8);
 
 						//// create corresponding svg elements
 						//
@@ -47,6 +49,9 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 						var edges = svg.selectAll('.edge');
 						var vertices = svg.selectAll('.vertex');
 
+						//// visible vertices and edges
+						//
+						var visibleVertices, visibleEdges;
 
 						//////////////////// updating the graph ////////////////////////////////////////////////////////
 
@@ -54,36 +59,39 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 							// using the d3 general update pattern:
 							// http://bl.ocks.org/mbostock/3808218
 
+							visibleVertices = _($scope.vertexArtefacts).values().filter(function (artefact) { return artefact.showVertex; }).value();
+							visibleEdges = _.values($scope.edgeArtefacts);
+
 							//// restart the force
 							//
-							force.nodes(_.values($scope.vertexArtefacts)).links(_.values($scope.edgeArtefacts)).start();
-
-							//// edges
-							//
-							edges = svg.selectAll('.edge').data(_.values($scope.edgeArtefacts), _.property('graphId'));
-							edges.enter().append(function (d) { return d.element; })
-									.classed('edge', true).classed('vertex', false);
-							edges.exit().remove();
+							force.nodes(visibleVertices).links(visibleEdges).start();
 
 							//// vertices
 							//
-							vertices = svg.selectAll('.vertex').data(_.values($scope.vertexArtefacts), _.property('graphId'));
-							vertices.enter().append(function (d) { return d.element; })
+							vertices = svg.selectAll('.vertex').data(visibleVertices, _.property('graphId'));
+							vertices.enter().append(function (d) { return d.element(); })
 									.classed('vertex', true).classed('edge', false)
-									.call(force.drag);
+									.call(force.drag); // all vertices can be dragged around
 							vertices.exit().remove();
 
-//							//// define a nice visual z-order for the svg elements
-//							//
-//							svg.selectAll('*').sort(function (a, b) {
-//								return (!!a.id < !!b.id) ? -1 : (!!a.id === !!b.id ? 0 : 1);
-//							});
+							//// edges
+							//
+							edges = svg.selectAll('.edge').data(visibleEdges, _.property('graphId'));
+							edges.enter().append(function (d) { return d.element(); })
+									.classed('edge', true).classed('vertex', false);
+							edges.exit().remove();
+
+							//// define a nice visual z-order for the svg elements
+							//
+							svg.selectAll('.vertex, .edge').sort(function (a, b) {
+								return (a.graphZIndex < b.graphZIndex) ? -1 : ((a.graphZIndex === b.graphZIndex) ? 0 : 1);
+							});
 						}), 200);
 
 						force.on("tick", function tick(e) {
 							var k = .1 * e.alpha;
 
-							_($scope.vertexArtefacts).forEach(function (d) {
+							_(visibleVertices).forEach(function (d) {
 								//// gravitate towards the center of the region
 								d.x += (d.group.region.left + .5 * d.group.region.width - d.x) * k;
 								d.y += (d.group.region.top + .5 * d.group.region.height - d.y) * k;
@@ -102,21 +110,6 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 									.attr("x2", function (d) { return d.target.x; })
 									.attr("y2", function (d) { return d.target.y; });
 						});
-
-//						//////////////////// dragging vertices /////////////////////////////////////////////////////////
-//                      // TODO: Remove or reintroduce this?
-//
-//						//// when a vertex is dragged
-//						//
-//						var draggedVertex;
-//						$scope.dragging = false;
-//						force.drag().on("dragstart", function () {
-//							d3.event.sourceEvent.stopPropagation();
-//							draggedVertex = $(d3.event.sourceEvent.srcElement);
-//						}).on("dragend", function () {
-//							d3.event.sourceEvent.stopPropagation();
-//						});
-
 					},
 
 					post: function postLink($scope, iElement/*, iAttrs, controller*/) {

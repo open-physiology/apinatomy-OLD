@@ -70,11 +70,25 @@ export class Tile extends Artefact {
 export class VascularTileJunction extends Artefact {
 
     element: SVGElement;
-    entity: any;
 
     constructor(properties) {
         super(_.extend({
             type        : 'vascularTileJunction',
+            relationType: 'vascular junction'
+        }, properties));
+    }
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+export class VascularBranchingJunction extends Artefact {
+
+    element: SVGElement;
+
+    constructor(properties) {
+        super(_.extend({
+            type        : 'vascularBranchingJunction',
             relationType: 'vascular junction'
         }, properties));
     }

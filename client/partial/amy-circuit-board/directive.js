@@ -4,7 +4,8 @@
 define(['app/module', 'lodash', 'resource/service', '$bind/service',
         'partial/amy-circuit-board/amy-tile-map/directive',
         'partial/amy-circuit-board/amy-tile/directive',
-        'partial/amy-circuit-board/amy-graph-layer/directive'], function (app, _) {
+        'partial/amy-circuit-board/amy-graph-layer/directive',
+        'partial/amy-circuit-board/amy-connections/directive'], function (app, _) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
