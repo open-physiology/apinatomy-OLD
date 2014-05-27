@@ -1,20 +1,26 @@
 @import "base";
 
 [amy-graph-layer] {
-	svg.vascular-tile-junction.vertex-wrapper > circle {
-		pointer-events: visiblePainted;
-		cursor: move;
-		stroke-width : 1.5px;
-		fill: darkred;
-		stroke: darkred;
+	svg.vascular-tile-junction.vertex-wrapper {
+		& > circle {
+			pointer-events: visiblePainted;
+			stroke-width : 1.5px;
+			stroke: darkred;
+			fill: darkred;
+			cursor: pointer;
+		}
+		&.dragging > circle { @include experimental-value(cursor, grabbing); }
 	}
 
-	svg.vascular-tile-junction.vertex-wrapper > circle {
-		pointer-events: visiblePainted;
-		cursor: move;
-		stroke-width : 1.5px;
-		&.arterial { stroke: red; fill: red; }
-		&.venous { stroke: darkblue; fill: darkblue; }
+	svg.vascular-branching-junction.vertex-wrapper {
+		& > circle {
+			pointer-events: visiblePainted;
+			stroke-width : 1.5px;
+			&.arterial { stroke: red; fill: red; }
+			&.venous { stroke: darkblue; fill: darkblue; }
+			cursor: pointer;
+		}
+		&.dragging > circle { @include experimental-value(cursor, grabbing); }
 	}
 
 	line.vascular-connection {

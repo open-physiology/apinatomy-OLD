@@ -126,10 +126,12 @@
 	svg.protein.vertex-wrapper {
 		& > circle.core {
 			pointer-events: visiblePainted;
-			cursor: move;
 			fill: lighten(purple, 20);
 			stroke: purple;
+			cursor: pointer;
 		}
+		&.dragging > circle.core { @include experimental-value(cursor, grabbing); }
+
 		& > circle.small-molecule-indicator {
 			stroke-width: 2px;
 			stroke: purple;

@@ -2,6 +2,10 @@
 
 [amy-graph-layer] {
 	pointer-events: none;
+	&.dragging {
+		pointer-events: all;
+		@include experimental-value(cursor, grabbing);
+	}
 
 	svg.vertex-wrapper {
 		overflow: visible;

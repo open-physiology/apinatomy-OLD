@@ -10,7 +10,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			restrict: 'E',
-			template: '<svg amy-graph-layer></svg>',
+			template: '<svg amy-graph-layer ng-class="{ dragging: circuitBoard.draggingVertex }"></svg>',
 			replace:  true,
 			scope:    true,
 
@@ -103,19 +103,19 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 									.attr("y2", function (d) { return d.target.y; });
 						});
 
-						//////////////////// dragging vertices /////////////////////////////////////////////////////////
-
-						//// when a vertex is dragged
-						//
-						var draggedVertex;
-						force.drag().on("dragstart", function () {
-							d3.event.sourceEvent.stopPropagation();
-							draggedVertex = $(d3.event.sourceEvent.srcElement);
-							draggedVertex.addSvgClass('dragging');
-						}).on("dragend", function () {
-							d3.event.sourceEvent.stopPropagation();
-							draggedVertex.removeSvgClass('dragging');
-						});
+//						//////////////////// dragging vertices /////////////////////////////////////////////////////////
+//                      // TODO: Remove or reintroduce this?
+//
+//						//// when a vertex is dragged
+//						//
+//						var draggedVertex;
+//						$scope.dragging = false;
+//						force.drag().on("dragstart", function () {
+//							d3.event.sourceEvent.stopPropagation();
+//							draggedVertex = $(d3.event.sourceEvent.srcElement);
+//						}).on("dragend", function () {
+//							d3.event.sourceEvent.stopPropagation();
+//						});
 
 					},
 

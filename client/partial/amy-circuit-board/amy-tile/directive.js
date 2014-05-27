@@ -324,6 +324,8 @@ define(['angular',
 									var junctionArtefact;
 
 									function addVascularJunction() {
+										//// add the artefact and vertex
+										//
 										var element = $('<svg class="vascular-tile-junction vertex-wrapper">' +
 										                '<circle class="core" r="5"></circle></svg>');
 										junctionArtefact = new artefacts.VascularTileJunction({
@@ -332,6 +334,34 @@ define(['angular',
 											entity : $scope.tile.entity
 										});
 										graphGroup.addVertex(junctionArtefact);
+
+										//// react to clicks by fixing focus
+										//
+										element.clickNotDrop($bind(function () {
+											$scope.$root.$broadcast('artefact-focus-fix',
+													junctionArtefact.focusFixed ? null : junctionArtefact);
+										}));
+
+										//// react to dragging by temporarily fixing focus (if not already fixed)
+										//
+										var removeFocusFixOnDrop;
+										element.mouseDragDrop($bind(function () {
+											element.addSvgClass('dragging');
+											$scope.circuitBoard.draggingVertex = true;
+											if (junctionArtefact.focusFixed) {
+												removeFocusFixOnDrop = false;
+											} else {
+												removeFocusFixOnDrop = true;
+												$scope.$root.$broadcast('artefact-focus-fix', junctionArtefact);
+											}
+										}), $bind(function () {
+											element.removeSvgClass('dragging');
+											$scope.circuitBoard.draggingVertex = false;
+											$('svg[amy-graph-layer]').removeSvgClass('dragging');
+											if (removeFocusFixOnDrop) {
+												$scope.$root.$broadcast('artefact-focus-fix', null);
+											}
+										}));
 									}
 
 									function removeVascularJunction() {
@@ -358,7 +388,7 @@ define(['angular',
 									function addAllProteinEdgesAndVertices() {
 										var proteinArtefactMap = {};
 										_($scope.entity.proteins).forEach(function (protein) {
-											//// generate the svg element for the protein
+											//// add the artefact and vertex
 											//
 											var smallMoleculeIndicator = '';
 											if (!_(protein.smallMoleculeInteractions).isUndefined() && protein.smallMoleculeInteractions.length > 0) {
@@ -367,9 +397,6 @@ define(['angular',
 											var element = $('<svg class="protein vertex-wrapper">' +
 											                '<circle class="core" r="4.5"></circle>' +
 											                smallMoleculeIndicator + '</svg>');
-
-											//// create the protein artefact
-											//
 											var proteinArtefact = new artefacts.Protein({
 												id               : $scope.tile.id + ':' + protein._id,
 												parent           : $scope.tile,
@@ -379,9 +406,6 @@ define(['angular',
 												ResourceService  : ResourceService
 											});
 											proteinArtefactMap[protein._id] = proteinArtefact;
-
-											//// add the protein artefact to the graph group
-											//
 											graphGroup.addVertex(proteinArtefact);
 
 											//// react to mouse hover by giving focus
@@ -406,6 +430,8 @@ define(['angular',
 											//
 											var removeFocusFixOnDrop;
 											element.mouseDragDrop($bind(function () {
+												element.addSvgClass('dragging');
+												$scope.circuitBoard.draggingVertex = true;
 												if (proteinArtefact.focusFixed) {
 													removeFocusFixOnDrop = false;
 												} else {
@@ -413,6 +439,9 @@ define(['angular',
 													$scope.$root.$broadcast('artefact-focus-fix', proteinArtefact);
 												}
 											}), $bind(function () {
+												element.removeSvgClass('dragging');
+												$scope.circuitBoard.draggingVertex = false;
+												$('svg[amy-graph-layer]').removeSvgClass('dragging');
 												if (removeFocusFixOnDrop) {
 													$scope.$root.$broadcast('artefact-focus-fix', null);
 												}
