@@ -6,6 +6,7 @@
 	display : block;
 	border  : dotted 1px;
 	padding : 0;
+	overflow: none;
 
 	&.focus-fixed {
 		border-style: solid;

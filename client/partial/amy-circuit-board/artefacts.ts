@@ -92,11 +92,13 @@ export class VascularBranchingJunction extends Artefact {
 }
 
 export class VascularConnection extends Artefact {
+
 	element: SVGElement;
 	ResourceService: any;
 	source: any;
 	target: any;
 	hiddenJunctions: any[];
+	subtype: string;
 
 	constructor(properties) {
 		super(_.extend({
@@ -115,44 +117,50 @@ export class VascularConnection extends Artefact {
 
 		that.segments = [];
 
-		var allJunctions = _.clone(that.hiddenJunctions);
-		allJunctions.push(that.source.id);
-		allJunctions.push(that.target.id);
+		var source, target;
 
-		that.ResourceService.connections(allJunctions).then(function (data) {
-			var subSegmentsDone = {};
+		var innerJunctions = _.clone(that.hiddenJunctions);
+
+		if (that.subtype === 'arterial') {
+			source = that.target;
+			target = that.source;
+			innerJunctions.reverse();
+		} else { // 'venous'
+			source = that.source;
+			target = that.target;
+		}
+
+		var sourceId = source.entity ? source.entity._id : source.id;
+		var targetId = target.entity ? target.entity._id : target.id;
+
+		that.ResourceService.connections(_.union(innerJunctions, [sourceId, targetId])).then(function (data) {
 
 			//// how to add a segment to the list (quite crude; a linear search)
 			//
 			function addSegment(from, to) {
 				_(data).forEach(function (segmentData: any) {
-					if (segmentData.from === from && segmentData.to === to || segmentData.from === to && segmentData.to === from) {
-						if (!subSegmentsDone[segmentData.from + '-' + segmentData.to]) {
-							subSegmentsDone[segmentData.from + '-' + segmentData.to] = true;
-							that.segments.push(segmentData);
-							return false; // break the loop
-						}
+					if ((segmentData.from === from && segmentData.to === to) || (segmentData.from === to && segmentData.to === from)) {
+						that.segments.push(segmentData);
+						return false; // break the loop
 					}
 				});
 			}
 
 			//// adding the segments
 			//
-			var lastJunction = that.source.id;
-
-			console.log(that, data);
-
-			_(that.hiddenJunctions).forEach(function (hiddenJunction) {
-				addSegment(lastJunction, hiddenJunction);
-				lastJunction = hiddenJunction;
+			var lastJunction = sourceId;
+			_(innerJunctions).forEach(function (innerJunction) {
+				addSegment(lastJunction, innerJunction);
+				lastJunction = innerJunction;
 			});
-			addSegment(lastJunction, that.target.id);
+			addSegment(lastJunction, targetId);
+
+			if (source.entity) { _.first(that.segments).from = source.entity; }
+			if (target.entity) { _.last(that.segments).to = target.entity; }
 
 		}, function (err) {
 			console.error(err);
 		});
-
-
 	}
 
 }

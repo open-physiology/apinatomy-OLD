@@ -21,14 +21,14 @@ define(['angular',
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		var generateTileDefaults = defaults({
-			normal     : {
+			normal:      {
 				css: {
-					'&'           : {
+					'&':            {
 						backgroundColor: " bgColor                                                                           ",
-						borderColor    : " color(`.normal.css['&'].backgroundColor`).brighten(20).css()                      ",
-						color          : " color(`.normal.css['&'].backgroundColor`).luminance() > 0.5 && 'black' || 'white' "
+						borderColor:     " color(`.normal.css['&'].backgroundColor`).brighten(20).css()                      ",
+						color:           " color(`.normal.css['&'].backgroundColor`).luminance() > 0.5 && 'black' || 'white' "
 					},
-					'& > header'  : {
+					'& > header':   {
 						borderColor: " `.normal.css['&'].borderColor` "
 					},
 					'& > icon-btn': {
@@ -36,14 +36,14 @@ define(['angular',
 					}
 				}
 			},
-			focus      : {
+			focus:       {
 				css: {
-					'&'           : {
+					'&':            {
 						backgroundColor: " color(`.normal.css['&'].backgroundColor`).brighten(40).css()                      ",
-						borderColor    : " color(`.normal.css['&'].borderColor`).darken(40).css()                            ",
-						color          : " color(`.focus .css['&'].backgroundColor`).luminance() > 0.5 && 'black' || 'white' "
+						borderColor:     " color(`.normal.css['&'].borderColor`).darken(40).css()                            ",
+						color:           " color(`.focus .css['&'].backgroundColor`).luminance() > 0.5 && 'black' || 'white' "
 					},
-					'& > header'  : {
+					'& > header':   {
 						borderColor: " `.focus.css['&'].borderColor` "
 					},
 					'& > icon-btn': {
@@ -58,11 +58,11 @@ define(['angular',
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		return {
-			restrict   : 'E',
-			replace    : true,
+			restrict:    'E',
+			replace:     true,
 			templateUrl: 'partial/amy-circuit-board/amy-tile/view.html',
-			require    : 'ngModel',
-			scope      : true,
+			require:     'ngModel',
+			scope:       true,
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,11 +87,11 @@ define(['angular',
 
 							$scope.tile =
 							$scope.artefact = new artefacts.Tile({
-								id               : $scope.$id,
-								parent           : $scope.$parent.artefact,
-								relationType     : $scope.subEntity.type,
+								id:                $scope.$id,
+								parent:            $scope.$parent.artefact,
+								relationType:      $scope.subEntity.type,
 								detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/detail-view.html',
-								entity           : $scope.entity
+								entity:            $scope.entity
 							});
 							$scope.$on('$destroy', function () { $scope.tile.destructor(); });
 
@@ -270,7 +270,9 @@ define(['angular',
 								if (artefact.type === 'protein') {
 									artefact = artefact.ancestor('tile');
 								}
-								$scope.tile.highlighted = (artefact.entity && artefact.entity === $scope.entity && !_(options.excludeHighlighting).contains($scope.tile));
+								$scope.tile.highlighted = !!(artefact && artefact.entity &&
+								                             artefact.entity === $scope.entity &&
+								                             !_(options.excludeHighlighting).contains($scope.tile));
 							});
 
 							$scope.$on('artefact-unfocus', function (event, artefact/*, options*/) {
@@ -285,10 +287,10 @@ define(['angular',
 							// Using ng-class doesn't seem to always work, so we're setting classes manually.
 							// (Report Angular bug?)
 
-							$scope.$watch('tile.open', function (v) { iElement.toggleClass('open', v); });
-							$scope.$watch('tile.maximized', function (v) { iElement.toggleClass('maximized', v); });
-							$scope.$watch('tile.highlighted', function (v) { iElement.toggleClass('highlighted', v); });
-							$scope.$watch('tile.active', function (v) { iElement.toggleClass('active', v); });
+							$scope.$watch('tile.open', function (v) { iElement.toggleClass('open', !!v); });
+							$scope.$watch('tile.maximized', function (v) { iElement.toggleClass('maximized', !!v); });
+							$scope.$watch('tile.highlighted', function (v) { iElement.toggleClass('highlighted', !!v); });
+							$scope.$watch('tile.active', function (v) { iElement.toggleClass('active', !!v); });
 
 
 							//////////////////// Graph Elements ////////////////////////////////////////////////////////
@@ -303,10 +305,10 @@ define(['angular',
 									var heightPadding = Math.min(TILE_HEADER_HEIGHT, $scope.tile.position.height) / 2;
 									var height = ($scope.tile.open ? TILE_HEADER_HEIGHT : $scope.tile.position.height);
 									graphGroup.setRegion({
-										top   : $scope.tile.position.top + heightPadding,
-										left  : $scope.tile.position.left + widthPadding,
+										top: $scope.tile.position.top + heightPadding,
+										left: $scope.tile.position.left + widthPadding,
 										height: height - 2 * heightPadding,
-										width : $scope.tile.position.width - 2 * widthPadding
+										width: $scope.tile.position.width - 2 * widthPadding
 									});
 								}
 
@@ -331,6 +333,17 @@ define(['angular',
 												function setUpElement() {
 													element = $('<svg class="' + typeName + ' tile-junction vertex-wrapper">' +
 													            '<circle class="core" r="5"></circle></svg>');
+
+													//// react to mouse hover by giving focus
+													//
+													element.on('mouseover', $bind(function (event) {
+														event.stopPropagation();
+														$scope.$root.$broadcast('artefact-focus', junctionArtefact, {});
+													}));
+													element.on('mouseout', $bind(function (event) {
+														event.stopPropagation();
+														$scope.$root.$broadcast('artefact-unfocus', junctionArtefact, {});
+													}));
 
 													//// react to clicks by fixing focus
 													//
@@ -371,15 +384,16 @@ define(['angular',
 												//// create the junction artefact
 												//
 												junctionArtefact = new artefacts[type.tileJunctionType]({
-													id         : $scope.tile.id + ':' + typeName + 'Junction',
-													parent     : $scope.tile,
-													element    : function () {
+													id: $scope.tile.id + ':' + typeName + 'Junction',
+													parent:      $scope.tile,
+													element:     function () {
 														if (!element) { setUpElement(); }
 														return element[0];
 													},
-													entity     : $scope.tile.entity,
-													showVertex : false,
-													graphZIndex: 200
+													entity:      $scope.tile.entity,
+													showVertex:  false,
+													graphZIndex: 200,
+													detailTemplateUrl: type.junctionDetailTemplateUrl
 												});
 												graphGroup.addVertex(junctionArtefact);
 												connections.registerTileJunction(junctionArtefact);
@@ -400,7 +414,6 @@ define(['angular',
 												else { removeJunction(); }
 											});
 											$scope.$on('$destroy', removeJunction);
-
 
 
 										});
@@ -424,14 +437,14 @@ define(['angular',
 											                '<circle class="core" r="4.5"></circle>' +
 											                smallMoleculeIndicator + '</svg>');
 											var proteinArtefact = new artefacts.Protein({
-												id               : $scope.tile.id + ':' + protein._id,
-												parent           : $scope.tile,
-												element          : function () { return element[0] },
-												protein          : protein,
+												id: $scope.tile.id + ':' + protein._id,
+												parent:            $scope.tile,
+												element:           function () { return element[0] },
+												protein:           protein,
 												detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/protein-detail-view.html',
-												ResourceService  : ResourceService,
-												showVertex       : true,
-												graphZIndex      : 200
+												ResourceService:   ResourceService,
+												showVertex:        true,
+												graphZIndex:       200
 											});
 											proteinArtefactMap[protein._id] = proteinArtefact;
 											graphGroup.addVertex(proteinArtefact);
@@ -488,11 +501,11 @@ define(['angular',
 											//       to fix a strange bug that otherwise leaves edges invisible
 											var element = $('<svg><line class="protein-interaction"></line></svg>').children();
 											graphGroup.addEdge({
-												id         : 'ppi:(' + interaction.interaction[0] + ',' + interaction.interaction[1] + ')',
-												source     : proteinArtefactMap[interaction.interaction[0]],
-												target     : proteinArtefactMap[interaction.interaction[1]],
-												element    : function () { return element[0]; },
-												type       : 'proteinInteraction',
+												id: 'ppi:(' + interaction.interaction[0] + ',' + interaction.interaction[1] + ')',
+												source:      proteinArtefactMap[interaction.interaction[0]],
+												target:      proteinArtefactMap[interaction.interaction[1]],
+												element:     function () { return element[0]; },
+												type:        'proteinInteraction',
 												graphZIndex: 100
 											});
 										});

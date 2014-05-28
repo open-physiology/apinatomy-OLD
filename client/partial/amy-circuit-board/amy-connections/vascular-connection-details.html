@@ -5,10 +5,10 @@
     <div ng-repeat="seg in artefact.segments">
 
         <!-- junction id -->
-        <div style="border-bottom: dotted 1px red; padding: 2px; text-align: center;">{{ seg.from }}</div>
+	    <div style="border-bottom-style: dotted; border-bottom-width: 1px; padding: 2px; text-align: center;">{{ _(seg.from).isString() ? seg.from : (seg.from.name + ' (' + seg.from._id + ')') }}</div>
 
         <!-- segment info -->
-        <div style="border-bottom: dotted 1px red; padding: 2px;">
+        <div style="border-bottom-style: dotted; border-bottom-width: 1px; padding: 2px;">
             <b>ID:</b>    {{ seg.segmentId }} <br />
             <b>Name:</b>  {{ seg.name }}      <br />
             <span ng-if="seg.entity">
@@ -17,7 +17,7 @@
         </div>
 
         <!-- last junction id -->
-        <div ng-if="$last" style="text-align: center;">{{ seg.to }}</div>
+	    <div ng-if="$last" style="text-align: center;">{{ _(seg.to).isString() ? seg.to : (seg.to.name + ' (' + seg.to._id + ')') }}</div>
 
     </div>
 

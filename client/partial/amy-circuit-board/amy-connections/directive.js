@@ -32,7 +32,8 @@ define(['angular', 'app/module', 'partial/amy-circuit-board/artefacts', 'resourc
 								tileJunctionType     : 'VascularTileJunction',
 								branchingJunctionType: 'VascularBranchingJunction',
 								connectionType: 'VascularConnection',
-								connectionDetailTemplateUrl: 'partial/amy-circuit-board/amy-connections/vascular-connection-details.html'
+								connectionDetailTemplateUrl: 'partial/amy-circuit-board/amy-connections/vascular-connection-details.html',
+								junctionDetailTemplateUrl: 'partial/amy-circuit-board/amy-connections/vascular-junction-details.html'
 							},
 							neural  : {
 								tileJunctionType     : 'NeuralTileJunction',
@@ -113,9 +114,21 @@ define(['angular', 'app/module', 'partial/amy-circuit-board/artefacts', 'resourc
 												x          : (tileJunction1.x + tileJunction2.x) / 2, // initially right in between;
 												y          : (tileJunction1.y + tileJunction2.y) / 2, // good enough
 												subtype    : path.subtype,
-												graphZIndex: 400
+												graphZIndex: 400,
+												detailTemplateUrl: type.junctionDetailTemplateUrl
 											});
 											graphGroup.addVertex(branchingJunction);
+
+											//// react to mouse hover by giving focus
+											//
+											element.on('mouseover', $bind(function (event) {
+												event.stopPropagation();
+												$scope.$root.$broadcast('artefact-focus', branchingJunction, {});
+											}));
+											element.on('mouseout', $bind(function (event) {
+												event.stopPropagation();
+												$scope.$root.$broadcast('artefact-unfocus', branchingJunction, {});
+											}));
 
 											//// react to clicks by fixing focus
 											//
@@ -164,7 +177,7 @@ define(['angular', 'app/module', 'partial/amy-circuit-board/artefacts', 'resourc
 											source            : sourceJunction,
 											target            : targetJunction,
 											subtype           : path.subtype,
-											hiddenJunctions   : hiddenJunctions,
+											hiddenJunctions   : _.clone(hiddenJunctions),
 											element           : function () { return element[0] },
 											linkDistanceFactor: (hiddenJunctions.length + 1) / 10,
 											graphZIndex       : ((sourceJunction.type === path.type + 'TileJunction' ||
@@ -210,7 +223,7 @@ define(['angular', 'app/module', 'partial/amy-circuit-board/artefacts', 'resourc
 											hiddenJunctions.push(pathArray[i]);
 										} else {
 											ensureJunction(pathArray[i]);
-											addConnection(sourceJunction, branchingJunctionMap[pathArray[i]], _.clone(hiddenJunctions));
+											addConnection(sourceJunction, branchingJunctionMap[pathArray[i]], hiddenJunctions);
 											sourceJunction = branchingJunctionMap[pathArray[i]];
 											hiddenJunctions = [];
 										}

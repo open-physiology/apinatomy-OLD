@@ -120,7 +120,8 @@ var connectionSchema = new mongoose.Schema({
 	type: StringType(),
 	subtype: StringType(),
 	entity: EntityReference(),
-	name: StringType()
+	name: StringType(),
+	segmentId: StringType()
 });
 connectionSchema.index({ from: 1, to: 1 }, { unique: true });
 connectionSchema.index({ type: 1 });

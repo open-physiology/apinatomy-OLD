@@ -1,72 +1,95 @@
 @import "base";
 
+
+//////////////////// Graph Layer ///////////////////////////////////////////////
+
 [amy-graph-layer] {
 
+	//// General styles
 
+	.vertex-wrapper > circle.core {
+		pointer-events: visiblePainted;
+		cursor: pointer;
+		stroke-width : 1.5px;
+		&.dragging > circle.core {
+			@include experimental-value(cursor, grabbing);
+		}
+	}
+
+	.focus-fixed > circle.core {
+		stroke: darkgreen !important;
+		fill: darkgreen !important;
+	}
+
+	.connection {
+		pointer-events: visiblePainted;
+		cursor: pointer;
+		stroke-width: 2px;
+		stroke-linecap: round;
+	}
+
+
+	//// Artefact-specific styles
 
 	.vascular {
 		&.tile-junction.vertex-wrapper {
-			& > circle.core {
-				pointer-events: visiblePainted;
-				stroke-width : 1.5px;
-				stroke: darkred;
-				fill: darkred;
-				cursor: pointer;
-			}
-			&.focus-fixed > circle.core { stroke: darkgreen; fill: darkgreen }
-			&.dragging > circle.core { @include experimental-value(cursor, grabbing); }
+			& > circle.core { stroke: darkred; fill: darkred; }
 		}
 		&.branching-junction.vertex-wrapper {
-			& > circle.core {
-				pointer-events: visiblePainted;
-				stroke-width : 1.5px;
-				cursor: pointer;
-			}
 			&.arterial > circle.core { stroke: red; fill: red; }
 			&.venous > circle.core { stroke: darkblue; fill: darkblue; }
-			&.focus-fixed > circle.core { stroke: darkgreen; fill: darkgreen }
-			&.dragging > circle.core { @include experimental-value(cursor, grabbing); }
 		}
 		&.connection {
-			pointer-events: visiblePainted;
-			stroke-width: 2px;
-			stroke-linecap: round;
 			&.arterial { stroke: red; }
 			&.venous { stroke: darkblue; }
-			&.focus-fixed { stroke: darkgreen; }
 		}
 	}
 
 	.neural {
 		&.tile-junction.vertex-wrapper {
 			& > circle.core {
-				pointer-events: visiblePainted;
-				stroke-width : 1.5px;
 				stroke: darken(aqua, 20);
 				fill: darken(aqua, 20);
-				cursor: pointer;
 			}
-			&.focus-fixed > circle.core { stroke: darkgreen; fill: darkgreen }
-			&.dragging > circle.core { @include experimental-value(cursor, grabbing); }
 		}
 		&.branching-junction.vertex-wrapper {
 			& > circle.core {
-				pointer-events: visiblePainted;
-				stroke-width : 1.5px;
-				cursor: pointer;
 				stroke: aqua;
 				fill: aqua;
 			}
-			&.focus-fixed > circle.core { stroke: darkgreen; fill: darkgreen }
-			&.dragging > circle.core { @include experimental-value(cursor, grabbing); }
 		}
 		&.connection {
-			pointer-events: visiblePainted;
-			stroke-width: 2px;
-			stroke-linecap: round;
 			stroke: aqua;
 		}
 	}
 
-
 }
+
+
+//////////////////// Detail Panels /////////////////////////////////////////////
+
+[amy-entity-details] {
+	&.arterial {
+		&, & * {
+			border-color: red;
+			background-color: lightpink;
+		}
+	}
+	&.vascularTileJunction {
+		&, & * {
+			border-color: red;
+			background-color: lightpink;
+		}
+	}
+	&.venous {
+		&, & * {
+			border-color: blue;
+			background-color: lightblue;
+		}
+	}
+}
+
+
+
+
+

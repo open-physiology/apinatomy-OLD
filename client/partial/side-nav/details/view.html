@@ -1,4 +1,4 @@
-<div amy-entity-details ng-class="{ 'focus-fixed': focusFixed }" class="{{ artefact.type }}">
+<div amy-entity-details ng-class="{ 'focus-fixed': focusFixed }" class="{{ artefact.type }} {{ artefact.subtype || '' }}">
 
     <ng-include src="artefact.detailTemplateUrl"></ng-include>
 
