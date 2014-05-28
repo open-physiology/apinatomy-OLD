@@ -117,7 +117,10 @@ var unitSchema = new mongoose.Schema({
 var connectionSchema = new mongoose.Schema({
 	from: EntityReference(),
 	to:   EntityReference(),
-	type: StringType()
+	type: StringType(),
+	subtype: StringType(),
+	entity: EntityReference(),
+	name: StringType()
 });
 connectionSchema.index({ from: 1, to: 1 }, { unique: true });
 connectionSchema.index({ type: 1 });
@@ -126,9 +129,11 @@ var pathSchema = new mongoose.Schema({
 	from: EntityReference(),
 	to:   EntityReference(),
 	path: [EntityReference()],
-	type: StringType()
+	type: StringType(),
+	subtype: StringType()
 });
-pathSchema.index({ from: 1, to: 1 }, { unique: true });
+pathSchema.index({ type: 1, from: 1, to: 1 });
+pathSchema.index({ from: 1, to: 1 });
 pathSchema.index({ type: 1 });
 
 var metadataSchema = new mongoose.Schema({

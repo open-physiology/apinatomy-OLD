@@ -93,6 +93,10 @@ export class VascularBranchingJunction extends Artefact {
 
 export class VascularConnection extends Artefact {
 	element: SVGElement;
+	ResourceService: any;
+	source: any;
+	target: any;
+	hiddenJunctions: any[];
 
 	constructor(properties) {
 		super(_.extend({
@@ -101,12 +105,61 @@ export class VascularConnection extends Artefact {
 			connectionType: 'vascular'
 		}, properties));
 	}
+
+	//// //// //// //// //// //// //// //// //// //// //// //// //// //// ////
+
+	segments: any[] = [];
+
+	initializeSegmentData(): void {
+		var that = this;
+
+		that.segments = [];
+
+		var allJunctions = _.clone(that.hiddenJunctions);
+		allJunctions.push(that.source.id);
+		allJunctions.push(that.target.id);
+
+		that.ResourceService.connections(allJunctions).then(function (data) {
+			var subSegmentsDone = {};
+
+			//// how to add a segment to the list (quite crude; a linear search)
+			//
+			function addSegment(from, to) {
+				_(data).forEach(function (segmentData: any) {
+					if (segmentData.from === from && segmentData.to === to || segmentData.from === to && segmentData.to === from) {
+						if (!subSegmentsDone[segmentData.from + '-' + segmentData.to]) {
+							subSegmentsDone[segmentData.from + '-' + segmentData.to] = true;
+							that.segments.push(segmentData);
+							return false; // break the loop
+						}
+					}
+				});
+			}
+
+			//// adding the segments
+			//
+			var lastJunction = that.source.id;
+
+			console.log(that, data);
+
+			_(that.hiddenJunctions).forEach(function (hiddenJunction) {
+				addSegment(lastJunction, hiddenJunction);
+				lastJunction = hiddenJunction;
+			});
+			addSegment(lastJunction, that.target.id);
+
+		}, function (err) {
+			console.error(err);
+		});
+
+
+	}
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 export class NeuralTileJunction extends Artefact {
-
 	element: SVGElement;
 
 	constructor(properties) {
@@ -116,11 +169,9 @@ export class NeuralTileJunction extends Artefact {
 			connectionType: 'neural'
 		}, properties));
 	}
-
 }
 
 export class NeuralBranchingJunction extends Artefact {
-
 	element: SVGElement;
 
 	constructor(properties) {
@@ -130,7 +181,6 @@ export class NeuralBranchingJunction extends Artefact {
 			connectionType: 'neural'
 		}, properties));
 	}
-
 }
 
 export class NeuralConnection extends Artefact {
@@ -160,7 +210,7 @@ export class Protein extends Artefact {
 		}, properties));
 	}
 
-	////////////////////////////////////////////////////////////////////////////
+	//// //// //// //// //// //// //// //// //// //// //// //// //// //// ////
 
 	visibleSmallMolecules: any[] = [];
 

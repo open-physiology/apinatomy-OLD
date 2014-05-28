@@ -48,6 +48,11 @@
 
 	}
 
+	overflow: scroll;
+}
+
+::-webkit-scrollbar {
+	display: none;
 }
 
 @import "partial/side-nav/details/view";

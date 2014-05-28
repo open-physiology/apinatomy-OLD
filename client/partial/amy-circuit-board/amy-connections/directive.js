@@ -31,7 +31,8 @@ define(['angular', 'app/module', 'partial/amy-circuit-board/artefacts', 'resourc
 							vascular: {
 								tileJunctionType     : 'VascularTileJunction',
 								branchingJunctionType: 'VascularBranchingJunction',
-								connectionType: 'VascularConnection'
+								connectionType: 'VascularConnection',
+								connectionDetailTemplateUrl: 'partial/amy-circuit-board/amy-connections/vascular-connection-details.html'
 							},
 							neural  : {
 								tileJunctionType     : 'NeuralTileJunction',
@@ -157,8 +158,9 @@ define(['angular', 'app/module', 'partial/amy-circuit-board/artefacts', 'resourc
 									//
 									function addConnection(sourceJunction, targetJunction, hiddenJunctions) {
 										var element = $('<svg><line class="' + path.type + ' ' + path.subtype + ' connection"></line></svg>').children();
-										graphGroup.addEdge(new artefacts[type.connectionType]({
+										var edgeArtefact = new artefacts[type.connectionType]({
 											id                : path.type + 'Connection:(' + sourceJunction.id + ',' + targetJunction.id + ')',
+											parent            : $scope.circuitBoard,
 											source            : sourceJunction,
 											target            : targetJunction,
 											subtype           : path.subtype,
@@ -167,8 +169,38 @@ define(['angular', 'app/module', 'partial/amy-circuit-board/artefacts', 'resourc
 											linkDistanceFactor: (hiddenJunctions.length + 1) / 10,
 											graphZIndex       : ((sourceJunction.type === path.type + 'TileJunction' ||
 											                      targetJunction.type === path.type + 'TileJunction') ?
-											                     100 : 300)
-										}));
+											                     100 : 300),
+											detailTemplateUrl: type.connectionDetailTemplateUrl,
+											ResourceService: ResourceService
+										});
+										graphGroup.addEdge(edgeArtefact);
+
+										if (type.connectionDetailTemplateUrl) {
+											//// react to mouse hover by giving focus
+											//
+											element.on('mouseover', $bind(function (event) {
+												event.stopPropagation();
+												$scope.$root.$broadcast('artefact-focus', edgeArtefact, {});
+											}));
+											element.on('mouseout', $bind(function (event) {
+												event.stopPropagation();
+												$scope.$root.$broadcast('artefact-unfocus', edgeArtefact, {});
+											}));
+
+											//// react to clicks by fixing focus
+											//
+											element.clickNotDrop($bind(function () {
+												$scope.$root.$broadcast('artefact-focus-fix',
+														edgeArtefact.focusFixed ? null : edgeArtefact);
+											}));
+
+											//// how to react when focus is fixed:
+											//
+											$scope.$on('artefact-focus-fix', function (e, artefact) {
+												edgeArtefact.focusFixed = (artefact === edgeArtefact);
+												element.setSvgClass('focus-fixed', edgeArtefact.focusFixed);
+											});
+										}
 									}
 
 									var hiddenJunctions = [];
@@ -178,7 +210,7 @@ define(['angular', 'app/module', 'partial/amy-circuit-board/artefacts', 'resourc
 											hiddenJunctions.push(pathArray[i]);
 										} else {
 											ensureJunction(pathArray[i]);
-											addConnection(sourceJunction, branchingJunctionMap[pathArray[i]], hiddenJunctions);
+											addConnection(sourceJunction, branchingJunctionMap[pathArray[i]], _.clone(hiddenJunctions));
 											sourceJunction = branchingJunctionMap[pathArray[i]];
 											hiddenJunctions = [];
 										}

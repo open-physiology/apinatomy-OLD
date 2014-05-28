@@ -33,6 +33,7 @@
 			stroke-linecap: round;
 			&.arterial { stroke: red; }
 			&.venous { stroke: darkblue; }
+			&.focus-fixed { stroke: darkgreen; }
 		}
 	}
 
