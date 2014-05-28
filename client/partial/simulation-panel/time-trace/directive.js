@@ -5,7 +5,7 @@ define(['app/module', 'd3', 'lodash', 'partial/simulation-panel/stream/service']
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	app.directive('amyTimeTrace', ['$window', 'TimerService', 'StreamService', function ($window, TimerService, StreamService) {
+	app.directive('amyTimeTrace', ['$window', 'TimerService', 'StreamService', '$bind', function ($window, TimerService, StreamService, $bind) {
 		return {
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -32,8 +32,7 @@ define(['app/module', 'd3', 'lodash', 'partial/simulation-panel/stream/service']
 					data: []
 				};
 
-//				var stream = StreamService.newRandomDataStream($scope.stream, 'data', $scope.timer.timeInterval);
-				var stream = StreamService.newCellMLDataStream('i_Na', $scope.stream, 'data', $scope.timer.timeInterval);
+				var stream = StreamService.newRandomDataStream($scope.stream, 'data', $scope.timer.timeInterval);
 
 				var maxTimeWithData = 0;
 
@@ -41,7 +40,7 @@ define(['app/module', 'd3', 'lodash', 'partial/simulation-panel/stream/service']
 					// TODO: more flexible conditions for preloading data (now it's done exactly when needed)
 					if (maxTimeWithData < t) {
 						maxTimeWithData += 10 * $scope.timer.timeInterval;
-						stream.loadMoreEntries(10, $scope.timer.currentTime);
+						stream.loadMoreEntries(10);
 					}
 				});
 
@@ -164,7 +163,8 @@ define(['app/module', 'd3', 'lodash', 'partial/simulation-panel/stream/service']
 							if (iElement.width() > margin.left + margin.right &&
 							    iElement.height() > margin.top + margin.bottom) {
 								width = iElement.width() - margin.left - margin.right;
-								height = iElement.height() - margin.top - margin.bottom;
+								//height = iElement.height() - margin.top - margin.bottom;
+								height = 160;
 
 								svgCanvas.select('rect.border').attr({ width: width, height: height });
 								svgCanvas.select('#dataArea > rect').attr({ width: width, height: height });

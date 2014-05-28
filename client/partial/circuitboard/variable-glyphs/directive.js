@@ -107,6 +107,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', 'chroma', 'resource/s
 						function onGlyphClick(d/*, i*/) {
 							d.variable.selected = !d.variable.selected;
 							updateGlyphs();
+							$($window).trigger('resize');
 						}
 
 						force.on("tick", function tick() {

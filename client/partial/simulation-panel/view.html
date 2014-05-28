@@ -1,25 +1,25 @@
 <div class="controls">
-	<icon-btn class="run-pause-btn"
-	          states ="{ stopped: 'running', paused: 'running', running: 'paused'   }"
-	          classes="{ stopped: 'action-run',  paused: 'action-run',  running: 'action-pause' }"
-	          ng-model="timer.state"></icon-btn>
-	<icon-btn class="stop-btn action-stop"
-	          states ="{ stopped: 'stopped', paused: 'stopped', running: 'stopped'  }"
-	          ng-model="timer.state"></icon-btn>
-	<slider ng-class="{ disabled: timer.state === 'running' }"
-			ng-model="timer.currentTime"
-	        floor="0"
-	        ceiling="{{timer.maxTime}}"
-	        step="{{timer.timeInterval}}"
-	        translate="timeFormat">
-	</slider>
+    <icon-btn class="run-pause-btn"
+              states ="{ stopped: 'running', paused: 'running', running: 'paused'   }"
+              classes="{ stopped: 'action-run',  paused: 'action-run',  running: 'action-pause' }"
+              ng-model="timer.state"></icon-btn>
+    <icon-btn class="stop-btn action-stop"
+              states ="{ stopped: 'stopped', paused: 'stopped', running: 'stopped'  }"
+              ng-model="timer.state"></icon-btn>
+    <slider ng-class="{ disabled: timer.state === 'running' }"
+            ng-model="timer.currentTime"
+            floor="0"
+            ceiling="{{timer.maxTime}}"
+            step="{{timer.timeInterval}}"
+            translate="timeFormat">
+    </slider>
 </div>
 
 <section>
-	<amy-time-trace ng-repeat="variable in $root.selectedVariables"
-	                amy-variable="variable"
-	                amy-timer="timer"
-	                ng-show="variable.selected">
-	</amy-time-trace>
-	<!--amy-stream="stream"-->
+    <amy-time-trace ng-repeat="variable in $root.selectedVariables"
+                    amy-variable="variable"
+                    amy-timer="timer"
+                    ng-show="variable.selected">
+    </amy-time-trace>
+    <!--amy-stream="stream"-->
 </section>
