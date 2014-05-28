@@ -86,7 +86,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 							svg.selectAll('.vertex, .edge').sort(function (a, b) {
 								return (a.graphZIndex < b.graphZIndex) ? -1 : ((a.graphZIndex === b.graphZIndex) ? 0 : 1);
 							});
-						}), 200);
+						}), 50);
 
 						force.on("tick", function tick(e) {
 							var k = .1 * e.alpha;

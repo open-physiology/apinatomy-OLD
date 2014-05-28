@@ -1,35 +1,71 @@
 @import "base";
 
 [amy-graph-layer] {
-	svg.vascular-tile-junction.vertex-wrapper {
-		& > circle.core {
-			pointer-events: visiblePainted;
-			stroke-width : 1.5px;
-			stroke: darkred;
-			fill: darkred;
-			cursor: pointer;
+
+
+
+	.vascular {
+		&.tile-junction.vertex-wrapper {
+			& > circle.core {
+				pointer-events: visiblePainted;
+				stroke-width : 1.5px;
+				stroke: darkred;
+				fill: darkred;
+				cursor: pointer;
+			}
+			&.focus-fixed > circle.core { stroke: darkgreen; fill: darkgreen }
+			&.dragging > circle.core { @include experimental-value(cursor, grabbing); }
 		}
-		&.focus-fixed > circle.core { stroke: darkgreen; fill: darkgreen }
-		&.dragging > circle.core { @include experimental-value(cursor, grabbing); }
+		&.branching-junction.vertex-wrapper {
+			& > circle.core {
+				pointer-events: visiblePainted;
+				stroke-width : 1.5px;
+				cursor: pointer;
+			}
+			&.arterial > circle.core { stroke: red; fill: red; }
+			&.venous > circle.core { stroke: darkblue; fill: darkblue; }
+			&.focus-fixed > circle.core { stroke: darkgreen; fill: darkgreen }
+			&.dragging > circle.core { @include experimental-value(cursor, grabbing); }
+		}
+		&.connection {
+			pointer-events: visiblePainted;
+			stroke-width: 2px;
+			stroke-linecap: round;
+			&.arterial { stroke: red; }
+			&.venous { stroke: darkblue; }
+		}
 	}
 
-	svg.vascular-branching-junction.vertex-wrapper {
-		& > circle.core {
-			pointer-events: visiblePainted;
-			stroke-width : 1.5px;
-			cursor: pointer;
+	.neural {
+		&.tile-junction.vertex-wrapper {
+			& > circle.core {
+				pointer-events: visiblePainted;
+				stroke-width : 1.5px;
+				stroke: darken(aqua, 20);
+				fill: darken(aqua, 20);
+				cursor: pointer;
+			}
+			&.focus-fixed > circle.core { stroke: darkgreen; fill: darkgreen }
+			&.dragging > circle.core { @include experimental-value(cursor, grabbing); }
 		}
-		&.arterial > circle.core { stroke: red; fill: red; }
-		&.venous > circle.core { stroke: darkblue; fill: darkblue; }
-		&.focus-fixed > circle.core { stroke: darkgreen; fill: darkgreen }
-		&.dragging > circle.core { @include experimental-value(cursor, grabbing); }
+		&.branching-junction.vertex-wrapper {
+			& > circle.core {
+				pointer-events: visiblePainted;
+				stroke-width : 1.5px;
+				cursor: pointer;
+				stroke: aqua;
+				fill: aqua;
+			}
+			&.focus-fixed > circle.core { stroke: darkgreen; fill: darkgreen }
+			&.dragging > circle.core { @include experimental-value(cursor, grabbing); }
+		}
+		&.connection {
+			pointer-events: visiblePainted;
+			stroke-width: 2px;
+			stroke-linecap: round;
+			stroke: aqua;
+		}
 	}
 
-	line.vascular.edge {
-		pointer-events: visiblePainted;
-		stroke-width: 2px;
-		stroke-linecap: round;
-		&.arterial { stroke: red; }
-		&.venous { stroke: darkblue; }
-	}
+
 }

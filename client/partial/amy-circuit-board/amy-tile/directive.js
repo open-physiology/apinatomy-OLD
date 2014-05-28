@@ -321,86 +321,88 @@ define(['angular',
 								//////////////////// Vascular Junctions ////////////////////////////////////////////////
 
 								$scope.entity._promise.then(function () {
-									$scope.circuitBoard.vascularConnections.then(function (vascularConnections) {
-										var junctionArtefact;
-										var deregistrationFunction = _.noop;
-
-										function addVascularJunction() {
-											function setUpElement() {
-												element = $('<svg class="vascular-tile-junction vertex-wrapper">' +
-												            '<circle class="core" r="5"></circle></svg>');
-
-												//// react to clicks by fixing focus
-												//
-												element.clickNotDrop($bind(function () {
-													$scope.$root.$broadcast('artefact-focus-fix',
-															junctionArtefact.focusFixed ? null : junctionArtefact);
-												}));
-
-												//// react to dragging by temporarily fixing focus (if not already fixed)
-												//
-												var removeFocusFixOnDrop;
-												element.mouseDragDrop($bind(function () {
-													element.addSvgClass('dragging');
-													$scope.circuitBoard.draggingVertex = true;
-													if (junctionArtefact.focusFixed) {
-														removeFocusFixOnDrop = false;
-													} else {
-														removeFocusFixOnDrop = true;
-														$scope.$root.$broadcast('artefact-focus-fix', junctionArtefact);
-													}
-												}), $bind(function () {
-													element.removeSvgClass('dragging');
-													$scope.circuitBoard.draggingVertex = false;
-													$('svg[amy-graph-layer]').removeSvgClass('dragging');
-													if (removeFocusFixOnDrop) {
-														$scope.$root.$broadcast('artefact-focus-fix', null);
-													}
-												}));
-
-												//// how to react when focus is fixed:
-												//
-												deregistrationFunction = $scope.$on('artefact-focus-fix', function (e, artefact) {
-													junctionArtefact.focusFixed = (artefact === junctionArtefact);
-													element.setSvgClass('focus-fixed', junctionArtefact.focusFixed);
-												});
-											}
-
-											//// create the junction artefact
-											//
+									$scope.circuitBoard.connections.then(function (connections) {
+										_(connections.types).forEach(function (type, typeName) {
+											var junctionArtefact;
+											var deregistrationFunction;
 											var element;
-											junctionArtefact = new artefacts.VascularTileJunction({
-												id         : $scope.tile.id + ':vascularJunction:' + $scope.tile.entity._id,
-												parent     : $scope.tile,
-												element    : function () {
-													if (!element) { setUpElement(); }
-													return element[0];
-												},
-												entity     : $scope.tile.entity,
-												showVertex : false,
-												graphZIndex: 200
-											});
-											graphGroup.addVertex(junctionArtefact);
-											vascularConnections.registerTileJunction(junctionArtefact);
-										}
 
-										function removeVascularJunction() {
-											deregistrationFunction();
-											deregistrationFunction = _.noop;
-											if (junctionArtefact) {
-												graphGroup.removeVertex(junctionArtefact);
-												vascularConnections.deregisterTileJunction(junctionArtefact);
-												junctionArtefact.destructor();
-												junctionArtefact = null;
+											function addJunction() {
+												function setUpElement() {
+													element = $('<svg class="' + typeName + ' tile-junction vertex-wrapper">' +
+													            '<circle class="core" r="5"></circle></svg>');
+
+													//// react to clicks by fixing focus
+													//
+													element.clickNotDrop($bind(function () {
+														$scope.$root.$broadcast('artefact-focus-fix',
+																junctionArtefact.focusFixed ? null : junctionArtefact);
+													}));
+
+													//// react to dragging by temporarily fixing focus (if not already fixed)
+													//
+													var removeFocusFixOnDrop;
+													element.mouseDragDrop($bind(function () {
+														element.addSvgClass('dragging');
+														$scope.circuitBoard.draggingVertex = true;
+														if (junctionArtefact.focusFixed) {
+															removeFocusFixOnDrop = false;
+														} else {
+															removeFocusFixOnDrop = true;
+															$scope.$root.$broadcast('artefact-focus-fix', junctionArtefact);
+														}
+													}), $bind(function () {
+														element.removeSvgClass('dragging');
+														$scope.circuitBoard.draggingVertex = false;
+														$('svg[amy-graph-layer]').removeSvgClass('dragging');
+														if (removeFocusFixOnDrop) {
+															$scope.$root.$broadcast('artefact-focus-fix', null);
+														}
+													}));
+
+													//// how to react when focus is fixed:
+													//
+													deregistrationFunction = $scope.$on('artefact-focus-fix', function (e, artefact) {
+														junctionArtefact.focusFixed = (artefact === junctionArtefact);
+														element.setSvgClass('focus-fixed', junctionArtefact.focusFixed);
+													});
+												}
+
+												//// create the junction artefact
+												//
+												junctionArtefact = new artefacts[type.tileJunctionType]({
+													id         : $scope.tile.id + ':' + typeName + 'Junction',
+													parent     : $scope.tile,
+													element    : function () {
+														if (!element) { setUpElement(); }
+														return element[0];
+													},
+													entity     : $scope.tile.entity,
+													showVertex : false,
+													graphZIndex: 200
+												});
+												graphGroup.addVertex(junctionArtefact);
+												connections.registerTileJunction(junctionArtefact);
 											}
-										}
 
-										$scope.$watch('tile.active && $root.connectionsEnabled', function (showJunction) {
-											if (showJunction) { addVascularJunction(); }
-											else { removeVascularJunction(); }
-										});
-										$scope.$on('$destroy', function () {
-											removeVascularJunction();
+											function removeJunction() {
+												if (junctionArtefact) {
+													if (deregistrationFunction) { deregistrationFunction(); }
+													graphGroup.removeVertex(junctionArtefact);
+													connections.deregisterTileJunction(junctionArtefact);
+													junctionArtefact.destructor();
+													junctionArtefact = null;
+												}
+											}
+
+											$scope.$watch('tile.active && $root.connectionsEnabled', function (showJunction) {
+												if (showJunction) { addJunction(); }
+												else { removeJunction(); }
+											});
+											$scope.$on('$destroy', removeJunction);
+
+
+
 										});
 									});
 								});

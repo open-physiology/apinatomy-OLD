@@ -68,31 +68,81 @@ export class Tile extends Artefact {
 ////////////////////////////////////////////////////////////////////////////////
 
 export class VascularTileJunction extends Artefact {
+	element: SVGElement;
 
-    element: SVGElement;
+	constructor(properties) {
+		super(_.extend({
+			type: 'vascularTileJunction',
+			relationType: 'vascular junction',
+			connectionType: 'vascular'
+		}, properties));
+	}
+}
 
-    constructor(properties) {
-        super(_.extend({
-            type        : 'vascularTileJunction',
-            relationType: 'vascular junction'
-        }, properties));
-    }
+export class VascularBranchingJunction extends Artefact {
+	element: SVGElement;
 
+	constructor(properties) {
+		super(_.extend({
+			type: 'vascularBranchingJunction',
+			relationType: 'vascular junction',
+			connectionType: 'vascular'
+		}, properties));
+	}
+}
+
+export class VascularConnection extends Artefact {
+	element: SVGElement;
+
+	constructor(properties) {
+		super(_.extend({
+			type: 'vascularConnection',
+			relationType: 'vascular connection',
+			connectionType: 'vascular'
+		}, properties));
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-export class VascularBranchingJunction extends Artefact {
+export class NeuralTileJunction extends Artefact {
 
-    element: SVGElement;
+	element: SVGElement;
 
-    constructor(properties) {
-        super(_.extend({
-            type        : 'vascularBranchingJunction',
-            relationType: 'vascular junction'
-        }, properties));
-    }
+	constructor(properties) {
+		super(_.extend({
+			type: 'neuralTileJunction',
+			relationType: 'neural junction',
+			connectionType: 'neural'
+		}, properties));
+	}
 
+}
+
+export class NeuralBranchingJunction extends Artefact {
+
+	element: SVGElement;
+
+	constructor(properties) {
+		super(_.extend({
+			type: 'neuralBranchingJunction',
+			relationType: 'neural junction',
+			connectionType: 'neural'
+		}, properties));
+	}
+
+}
+
+export class NeuralConnection extends Artefact {
+	element: SVGElement;
+
+	constructor(properties) {
+		super(_.extend({
+			type: 'neuralConnection',
+			relationType: 'neural connection',
+			connectionType: 'neural'
+		}, properties));
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -105,7 +155,7 @@ export class Protein extends Artefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type        : 'protein',
+			type: 'protein',
 			relationType: 'protein expression'
 		}, properties));
 	}
@@ -123,18 +173,18 @@ export class Protein extends Artefact {
 	initializeSmPagination() {
 		this.smPagination = {
 			pageSize: 10,
-			page    : 1,
+			page: 1,
 			lastPage: Math.ceil(this.protein.smallMoleculeInteractions.length / 10)
 		};
 		this.fetchSmPage();
 	}
 
 	fetchSmPage() {
-        var that = this;
+		var that = this;
 
 		var ids = this.protein.smallMoleculeInteractions.slice(
-            ((this.smPagination.page - 1) * this.smPagination.pageSize),
-            (this.smPagination.page * this.smPagination.pageSize)
+				((this.smPagination.page - 1) * this.smPagination.pageSize),
+				(this.smPagination.page * this.smPagination.pageSize)
 		);
 
 		this.ResourceService.smallMolecules(ids).then(function (smallMolecules) {
@@ -178,7 +228,9 @@ export class Protein extends Artefact {
 			});
 		}
 
-		if (!result) { result = this.smChemblID(sm); }
+		if (!result) {
+			result = this.smChemblID(sm);
+		}
 
 		return result;
 	}
