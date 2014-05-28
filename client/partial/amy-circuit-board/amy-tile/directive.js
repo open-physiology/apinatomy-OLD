@@ -323,6 +323,7 @@ define(['angular',
 								$scope.entity._promise.then(function () {
 									$scope.circuitBoard.vascularConnections.then(function (vascularConnections) {
 										var junctionArtefact;
+										var deregistrationFunction = _.noop;
 
 										function addVascularJunction() {
 											function setUpElement() {
@@ -359,7 +360,7 @@ define(['angular',
 
 												//// how to react when focus is fixed:
 												//
-												$scope.$on('artefact-focus-fix', function (e, artefact) {
+												deregistrationFunction = $scope.$on('artefact-focus-fix', function (e, artefact) {
 													junctionArtefact.focusFixed = (artefact === junctionArtefact);
 													element.setSvgClass('focus-fixed', junctionArtefact.focusFixed);
 												});
@@ -384,6 +385,8 @@ define(['angular',
 										}
 
 										function removeVascularJunction() {
+											deregistrationFunction();
+											deregistrationFunction = _.noop;
 											if (junctionArtefact) {
 												graphGroup.removeVertex(junctionArtefact);
 												vascularConnections.deregisterTileJunction(junctionArtefact);
