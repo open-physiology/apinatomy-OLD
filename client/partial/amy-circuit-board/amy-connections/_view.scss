@@ -16,7 +16,7 @@
 		}
 	}
 
-	.focus-fixed > circle.core {
+	.focus-fixed, .focus-fixed > circle.core {
 		stroke: darkgreen !important;
 		fill: darkgreen !important;
 	}
