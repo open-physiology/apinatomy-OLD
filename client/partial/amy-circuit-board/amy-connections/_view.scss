@@ -69,22 +69,28 @@
 //////////////////// Detail Panels /////////////////////////////////////////////
 
 [amy-entity-details] {
-	&.arterial {
-		&, & * {
-			border-color: red;
-			background-color: lightpink;
-		}
-	}
 	&.vascularTileJunction {
 		&, & * {
 			border-color: red;
 			background-color: lightpink;
 		}
 	}
-	&.venous {
+	&.arterial { // connections and branching junctions
+		&, & * {
+			border-color: red;
+			background-color: lightpink;
+		}
+	}
+	&.venous { // connections and branching junctions
 		&, & * {
 			border-color: blue;
 			background-color: lightblue;
+		}
+	}
+	&.neuralTileJunction, &.neuralConnection {
+		&, & * {
+			border-color: darken(aqua, 20);
+			background-color: lighten(aqua, 40);
 		}
 	}
 }

@@ -402,6 +402,9 @@ define(['angular',
 											function removeJunction() {
 												if (junctionArtefact) {
 													if (deregistrationFunction) { deregistrationFunction(); }
+													if (junctionArtefact.focusFixed) {
+														$scope.$root.$broadcast('artefact-focus-fix', null);
+													}
 													graphGroup.removeVertex(junctionArtefact);
 													connections.deregisterTileJunction(junctionArtefact);
 													junctionArtefact.destructor();

@@ -38,7 +38,9 @@ define(['angular', 'app/module', 'partial/amy-circuit-board/artefacts', 'resourc
 							neural  : {
 								tileJunctionType     : 'NeuralTileJunction',
 								branchingJunctionType: 'NeuralBranchingJunction',
-								connectionType: 'NeuralConnection'
+								connectionType: 'NeuralConnection',
+								connectionDetailTemplateUrl: 'partial/amy-circuit-board/amy-connections/neural-connection-details.html',
+								junctionDetailTemplateUrl: 'partial/amy-circuit-board/amy-connections/neural-junction-details.html'
 							}
 						}
 					};
