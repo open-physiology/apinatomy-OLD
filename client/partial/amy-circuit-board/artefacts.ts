@@ -193,6 +193,8 @@ export class NeuralBranchingJunction extends Artefact {
 
 export class NeuralConnection extends Artefact {
 	element: SVGElement;
+	source: any;
+	target: any;
 
 	constructor(properties) {
 		super(_.extend({
@@ -293,6 +295,20 @@ export class Protein extends Artefact {
 		return result;
 	}
 
+}
+
+export class ProteinInteraction extends Artefact {
+	element: SVGElement;
+	source: any;
+	target: any;
+
+	constructor(properties) {
+		super(_.extend({
+			type: 'proteinInteraction',
+			relationType: 'protein interaction',
+			connectionType: 'proteinInteraction'
+		}, properties));
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////

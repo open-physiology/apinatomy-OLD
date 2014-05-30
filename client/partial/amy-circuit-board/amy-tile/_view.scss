@@ -60,7 +60,7 @@
 	////////// The Content Section //////////
 
 	& > section {
-		@include user-select(auto);
+		@include user-select(text);
 		@include box-sizing(border-box);
 		@include edge-to-edge;
 		top : $amy-tile-header-height + 1px;
@@ -149,15 +149,15 @@
 	}
 
 	line.protein-interaction {
+		pointer-events: visiblePainted;
+		cursor: pointer;
 		stroke: purple;
-		stroke-width: 1.5px;
+		stroke-width: 2px;
 		stroke-linecap: round;
 	}
 }
 
 [amy-entity-details].protein {
-	border-color: purple;
-	background-color: lighten(purple, 70);
 	.pagination {
 		text-align: center;
 		color: black;

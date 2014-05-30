@@ -2,6 +2,7 @@
 
 [amy-entity-details] {
 	@include border-radius(5px);
+	@include user-select(text);
 
 	display : block;
 	border  : dotted 1px;

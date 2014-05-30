@@ -89,8 +89,14 @@
 	}
 	&.neuralTileJunction, &.neuralConnection {
 		&, & * {
-			border-color: darken(aqua, 20);
-			background-color: lighten(aqua, 40);
+			border-color     : darken(aqua, 20);
+			background-color : lighten(aqua, 40);
+		}
+	}
+	&.protein, &.proteinInteraction {
+		&, & * {
+			border-color: purple;
+			background-color: lighten(purple, 70);
 		}
 	}
 }

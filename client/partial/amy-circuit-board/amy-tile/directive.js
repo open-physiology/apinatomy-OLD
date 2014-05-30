@@ -503,14 +503,45 @@ define(['angular',
 											// NOTE: an svg element is added and immediately discarded
 											//       to fix a strange bug that otherwise leaves edges invisible
 											var element = $('<svg><line class="protein-interaction"></line></svg>').children();
-											graphGroup.addEdge({
+											var proteinInteractionArtefact = new artefacts.ProteinInteraction({
 												id: 'ppi:(' + interaction.interaction[0] + ',' + interaction.interaction[1] + ')',
+												parent:      $scope.tile,
 												source:      proteinArtefactMap[interaction.interaction[0]],
 												target:      proteinArtefactMap[interaction.interaction[1]],
 												element:     function () { return element[0]; },
-												type:        'proteinInteraction',
-												graphZIndex: 100
+												graphZIndex: 100,
+												detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/protein-interaction-details.html'
 											});
+											graphGroup.addEdge(proteinInteractionArtefact);
+
+											//// react to mouse hover by giving focus
+											//
+											element.on('mouseover', $bind(function (event) {
+												event.stopPropagation();
+												$scope.$root.$broadcast('artefact-focus', proteinInteractionArtefact, {});
+											}));
+											element.on('mouseout', $bind(function (event) {
+												event.stopPropagation();
+												$scope.$root.$broadcast('artefact-unfocus', proteinInteractionArtefact, {});
+											}));
+
+											//// react to clicks by fixing focus
+											//
+											element.clickNotDrop($bind(function () {
+												$scope.$root.$broadcast('artefact-focus-fix',
+														proteinInteractionArtefact.focusFixed ? null : proteinInteractionArtefact);
+											}));
+
+											//// how to react when focus is fixed:
+											//
+											$scope.$on('artefact-focus-fix', function (e, artefact) {
+												proteinInteractionArtefact.focusFixed = (artefact === proteinInteractionArtefact);
+												element.setSvgClass('focus-fixed', proteinInteractionArtefact.focusFixed);
+											});
+
+
+
+
 										});
 									}
 

@@ -190,7 +190,7 @@ define(['angular', 'app/module', 'partial/amy-circuit-board/artefacts', 'resourc
 										});
 										graphGroup.addEdge(edgeArtefact);
 
-										if (type.connectionDetailTemplateUrl) {
+										if (edgeArtefact.detailTemplateUrl) {
 											//// react to mouse hover by giving focus
 											//
 											element.on('mouseover', $bind(function (event) {
