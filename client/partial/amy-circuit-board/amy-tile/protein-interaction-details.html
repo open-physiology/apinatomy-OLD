@@ -1,7 +1,21 @@
 <header><h2>Protein Interaction</h2></header>
 
 <div style="text-align: center">
-	{{ artefact.source.protein.ensembl }} <br/>
-	↕                                     <br/>
-	{{ artefact.target.protein.ensembl }}
+
+	<a ng-click="$root.$broadcast('artefact-focus-fix', artefact.source)" style="display: block; padding: 3px; cursor: pointer; text-decoration: none;">
+		<div style="overflow: hidden;
+		            text-overflow: ellipsis;
+		            white-space: nowrap;">{{ artefact.source.prefLabel() }}</div>
+		<div style="margin: 0;">({{ artefact.source.protein.ensembl }})</div>
+	</a>
+
+	↕
+
+	<a ng-click="$root.$broadcast('artefact-focus-fix', artefact.target)" style="display: block; padding: 3px; cursor: pointer; text-decoration: none;">
+		<div style="overflow: hidden;
+		            text-overflow: ellipsis;
+		            white-space: nowrap;">{{ artefact.target.prefLabel() }}</div>
+		<div style="margin: 0;">({{ artefact.target.protein.ensembl }})</div>
+	</a>
+
 </div>

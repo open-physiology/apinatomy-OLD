@@ -100,6 +100,9 @@ export class VascularConnection extends Artefact {
 	hiddenJunctions: any[];
 	subtype: string;
 
+	trueSource: any;
+	trueTarget: any;
+
 	constructor(properties) {
 		super(_.extend({
 			type: 'vascularConnection',
@@ -117,21 +120,19 @@ export class VascularConnection extends Artefact {
 
 		that.segments = [];
 
-		var source, target;
-
 		var innerJunctions = _.clone(that.hiddenJunctions);
 
 		if (that.subtype === 'arterial') {
-			source = that.target;
-			target = that.source;
+			that.trueSource = that.target;
+			that.trueTarget = that.source;
 			innerJunctions.reverse();
 		} else { // 'venous'
-			source = that.source;
-			target = that.target;
+			that.trueSource = that.source;
+			that.trueTarget = that.target;
 		}
 
-		var sourceId = source.entity ? source.entity._id : source.id;
-		var targetId = target.entity ? target.entity._id : target.id;
+		var sourceId = that.trueSource.entity ? that.trueSource.entity._id : that.trueSource.id;
+		var targetId = that.trueTarget.entity ? that.trueTarget.entity._id : that.trueTarget.id;
 
 		that.ResourceService.connections(_.union(innerJunctions, [sourceId, targetId])).then(function (data) {
 
@@ -155,8 +156,8 @@ export class VascularConnection extends Artefact {
 			});
 			addSegment(lastJunction, targetId);
 
-			if (source.entity) { _.first(that.segments).from = source.entity; }
-			if (target.entity) { _.last(that.segments).to = target.entity; }
+			if (that.trueSource.entity) { _.first(that.segments).from = that.trueSource.entity; }
+			if (that.trueTarget.entity) { _.last(that.segments).to = that.trueTarget.entity; }
 
 		}, function (err) {
 			console.error(err);

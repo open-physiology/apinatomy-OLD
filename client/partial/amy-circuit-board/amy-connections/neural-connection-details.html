@@ -1,7 +1,15 @@
 <header><h2>Neural Connection</h2></header>
 
 <div style="text-align: center">
-	{{ artefact.source.entity ? artefact.source.entity._id : artefact.source.id }} <br/>
-	↓                                                                              <br/>
-	{{ artefact.target.entity ? artefact.target.entity._id : artefact.target.id }}
+
+	<a ng-click="$root.$broadcast('artefact-focus-fix', artefact.source)" style="display: block; padding: 3px; cursor: pointer; text-decoration: none;">
+		{{ artefact.source.entity ? artefact.source.entity._id : artefact.source.id }}
+	</a>
+
+	↕
+
+	<a ng-click="$root.$broadcast('artefact-focus-fix', artefact.target)" style="display: block; padding: 3px; cursor: pointer; text-decoration: none;">
+		{{ artefact.target.entity ? artefact.target.entity._id : artefact.target.id }}
+	</a>
+
 </div>
