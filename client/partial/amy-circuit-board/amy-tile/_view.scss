@@ -64,6 +64,7 @@
 		@include box-sizing(border-box);
 		@include edge-to-edge;
 		top : $amy-tile-header-height + 1px;
+		z-index: 1; // in front of &::after
 	}
 	&:not(.open) > section { display : none; }
 
@@ -118,6 +119,15 @@
 	}
 	@include no-white-font-icon-btn(action-hide-3d) {
 		background-image : url(data:image/png;base64,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);
+	}
+
+
+	////////// Attention State //////////
+
+	&.searchResult > header {
+		background-image: url(partial/amy-circuit-board/amy-tile/icons/search.png);
+		background-repeat: no-repeat;
+		background-position: 3px 3px;
 	}
 
 }

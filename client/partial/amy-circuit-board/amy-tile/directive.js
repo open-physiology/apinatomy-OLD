@@ -282,6 +282,11 @@ define(['angular',
 							});
 
 
+							//////////////////// Reacting to Attention value ///////////////////////////////////////////
+
+
+
+
 							//////////////////// CSS Classes ///////////////////////////////////////////////////////////
 
 							// Using ng-class doesn't seem to always work, so we're setting classes manually.
@@ -291,6 +296,7 @@ define(['angular',
 							$scope.$watch('tile.maximized', function (v) { iElement.toggleClass('maximized', !!v); });
 							$scope.$watch('tile.highlighted', function (v) { iElement.toggleClass('highlighted', !!v); });
 							$scope.$watch('tile.active', function (v) { iElement.toggleClass('active', !!v); });
+							$scope.$watch('entity._searchResult', function (v) { iElement.toggleClass('searchResult', !!v); });
 
 
 							//////////////////// Graph Elements ////////////////////////////////////////////////////////
