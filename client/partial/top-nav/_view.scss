@@ -48,4 +48,9 @@
 		}
 	}
 
+	.search-in-progress {
+		padding-right: 4px;
+		background: url(partial/top-nav/icons/spinner.gif) no-repeat content-box center right;
+	}
+
 }

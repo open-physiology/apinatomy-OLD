@@ -15,8 +15,9 @@ define(['app/module'], function (app) {
 
 				//////////////////// Search ////////////////////////////////////////////////////////////////////////////
 
-//				$scope.getSearchResults = ResourceService.getSearchResults;
-
+				$scope.getSearchResults = function getSearchResults($viewValue) {
+					return ResourceService.search($viewValue);
+				};
 
 				var entitiesUnderAttention = [];
 
@@ -27,15 +28,14 @@ define(['app/module'], function (app) {
 					entitiesUnderAttention = [];
 				}
 
-				$scope.$root.$watch('searchID', function (id) {
+				$scope.$watch('entitySearch', function (entity) {
 					clearAttention();
-					if (!_(id).isEmpty()) {
-						ResourceService.ancestors(id).then(function (ancestors) {
-							var entities = ancestors;
-							entities.push(id);
-							entitiesUnderAttention = ResourceService.entities(entities);
-							_(entitiesUnderAttention).forEach(function (entity) {
-								entity._searchResult = true;
+					if (entity && entity._id) {
+						ResourceService.ancestors(entity._id).then(function (ancestors) {
+							ancestors.push(entity._id);
+							entitiesUnderAttention = ResourceService.entities(ancestors);
+							_(entitiesUnderAttention).forEach(function (e) {
+								e._searchResult = true;
 							});
 						}).catch(function (err) {
 							console.error(err);

@@ -384,6 +384,30 @@ app.get('/resources/ancestors/:id', function (req, res) {
 });
 
 
+///////////////////////  //  //  /  /  /
+///// Text Search ////  //  //  /  /  /
+/////////////////////  //  //  /  /  /
+
+
+app.get('/resources/search/:query', function (req, res) {
+
+	db.Entity.aggregate([
+		{ $match: { $text: { $search: req.params.query }, descendantCount: { $gt: -1 } } },
+		{ $project: { _id: 1, name: 1, score: { $meta: 'textScore' } } },
+		{ $sort: { score: { $meta: 'textScore' } } },
+		{ $limit: 10 }
+	]).exec(function (err, result) {
+		if (err) {
+			console.error(err);
+			res.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
+		} else {
+			res.status(HTTP_OK).json(result);
+		}
+	});
+
+});
+
+
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////// Special Exceptions ///////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

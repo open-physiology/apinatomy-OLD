@@ -47,22 +47,15 @@
 		<ul class="nav navbar-nav navbar-right">
 			<li>
 				<form class="navbar-form">
-					<div class="input-group" style="width: 200px;">
-						<input type="text" class="form-control" placeholder="Search" ng-model="$root.searchID">
-						<!--<input type="text" class="form-control" placeholder="Search"-->
-						       <!--ng-model="asyncSearch"-->
-						       <!--typeahead="entity for entity in getSearchResults($viewValue)">-->
-						<!--<span class="input-group-btn">-->
-					        <!--<button class="btn btn-default" type="button">-->
-						        <!--<span class="glyphicon glyphicon-search"></span>-->
-					        <!--</button>-->
-						<!--</span>-->
-					</div>
+					<input type="text" placeholder="Search"
+					       class="form-control amy-search-box" style="width: 250px;"
+					       ng-model="entitySearch"
+					       typeahead="entity as entity.name for entity in getSearchResults($viewValue)"
+					       typeahead-template-url="partial/top-nav/entity-search-result.html"
+					       typeahead-loading="searchInProgress"
+					       ng-class="{ 'search-in-progress': searchInProgress }">
 				</form>
 			</li>
-			<!--<li><a class="amy-account-button" href="#">-->
-				<!--<span class="glyphicon glyphicon-cog"></span><span>Account</span>-->
-			<!--</a></li>-->
 		</ul>
 	</div>
 

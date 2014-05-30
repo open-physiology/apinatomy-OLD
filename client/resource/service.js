@@ -22,6 +22,8 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 		}
 
 		iface.entities = function (ids) {
+			if (_(ids).isEmpty() || _(ids[0]).isUndefined()) { return []; }
+
 			var request = [];
 
 			_(ids).forEach(function (id) {
@@ -94,12 +96,21 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 					.then(function (data) { return data.data; });
 		};
 
-		//////////////////// Tree Walks ////////////////////////////////////////////////////////////////////////////////
+		//////////////////// Ancestors /////////////////////////////////////////////////////////////////////////////////
 
 		iface.ancestors = function (id) {
 			return $http.get('/resources/ancestors/' + id)
 					.then(function (data) { return data.data; });
 		};
+
+		//////////////////// Text Search ///////////////////////////////////////////////////////////////////////////////
+
+		iface.search = function (query) {
+			return $http.get('/resources/search/' + query)
+					.then(function (data) { return data.data; });
+		};
+
+
 
 		//////////////////// 3D Models /////////////////////////////////////////////////////////////////////////////////
 
