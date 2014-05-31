@@ -24,7 +24,6 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 
 						//// initialize the data
 						//
-//						$scope.hiddenVertexArtefacts = {};
 						$scope.vertexArtefacts = {};
 						$scope.edgeArtefacts = {};
 
@@ -116,78 +115,68 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 
 						//////////////////// interfaces to add vertices and edges //////////////////////////////////////
 
-						(function addInterfaceCreator() {
-
-							//// Find the circuit-board:
-							//
-							var circuitBoard = $scope;
-							while (!circuitBoard.hasOwnProperty('artefact') || circuitBoard.artefact.type !== 'circuitBoard') {
-								circuitBoard = circuitBoard.$parent;
-							}
-
-							//// Then give it a function for creating new interfaces,
-							//// used to create vertices and edges and such:
-							//
-							circuitBoard.graphLayerDeferred.resolve({
-								newGraphGroup: function newGraphGroup() {
-									var group = {
-										id: _.uniqueId('group'),
-										vertices: [],
-										edges: [],
-										region: { // by default, the whole canvas with a small padding
-											top: 10,
-											left: 10,
-											get width() { return iElement.width() - 20 },
-											get height() { return iElement.height() - 20 }
-										}
-									};
-									return {
-										setRegion: function setRegion(region) {
-											group.region = region;
-											$scope.updateGraph();
-										},
-										addVertex: function addVertex(vertex) {
-											vertex.group = group;
-											group.vertices.push(vertex);
-											vertex.graphId = group.id + ':' + vertex.id;
-											$scope.vertexArtefacts[vertex.graphId] = vertex;
-											$scope.updateGraph();
-										},
-										removeVertex: function removeVertex(vertex) {
-											delete $scope.vertexArtefacts[vertex.graphId];
-											_(group.vertices).pull(vertex);
-											$scope.updateGraph();
-										},
-										addEdge: function addEdge(edge) {
-											edge.group = group;
-											group.edges.push(edge);
-											edge.graphId = group.id + ':' + edge.id;
-											$scope.edgeArtefacts[edge.graphId] = edge;
-											$scope.updateGraph();
-										},
-										removeEdge: function removeEdge(edge) {
+						//// Give the circuitboard a function for creating new interfaces,
+						//// used to create vertices and edges and such:
+						//
+						$scope.graphLayerDeferred.resolve({
+							newGraphGroup: function newGraphGroup() {
+								var group = {
+									id: _.uniqueId('group'),
+									vertices: [],
+									edges: [],
+									region: { // by default, the whole canvas with a small padding
+										top: 10,
+										left: 10,
+										get width() { return iElement.width() - 20 },
+										get height() { return iElement.height() - 20 }
+									}
+								};
+								return {
+									setRegion: function setRegion(region) {
+										group.region = region;
+										$scope.updateGraph();
+									},
+									addVertex: function addVertex(vertex) {
+										vertex.group = group;
+										group.vertices.push(vertex);
+										vertex.graphId = group.id + ':' + vertex.id;
+										$scope.vertexArtefacts[vertex.graphId] = vertex;
+										$scope.updateGraph();
+									},
+									removeVertex: function removeVertex(vertex) {
+										delete $scope.vertexArtefacts[vertex.graphId];
+										_(group.vertices).pull(vertex);
+										$scope.updateGraph();
+									},
+									addEdge: function addEdge(edge) {
+										edge.group = group;
+										group.edges.push(edge);
+										edge.graphId = group.id + ':' + edge.id;
+										$scope.edgeArtefacts[edge.graphId] = edge;
+										$scope.updateGraph();
+									},
+									removeEdge: function removeEdge(edge) {
+										delete $scope.edgeArtefacts[edge.graphId];
+										_(group.edges).pull(edge);
+										$scope.updateGraph();
+									},
+									removeAllEdgesAndVertices: function removeAllEdgesAndVertices() {
+										_(group.edges).forEach(function (edge) {
 											delete $scope.edgeArtefacts[edge.graphId];
-											_(group.edges).pull(edge);
-											$scope.updateGraph();
-										},
-										removeAllEdgesAndVertices: function removeAllEdgesAndVertices() {
-											_(group.edges).forEach(function (edge) {
-												delete $scope.edgeArtefacts[edge.graphId];
-											});
-											_(group.vertices).forEach(function (vertex) {
-												delete $scope.vertexArtefacts[vertex.graphId];
-											});
-											_(group.edges).remove();
-											_(group.vertices).remove();
-											$scope.updateGraph();
-										},
-										vertices: function vertices() { return _(group.vertices).clone(); },
-										edges: function edges() { return _(group.edges).clone(); }
-									};
-								}
-							});
+										});
+										_(group.vertices).forEach(function (vertex) {
+											delete $scope.vertexArtefacts[vertex.graphId];
+										});
+										_(group.edges).remove();
+										_(group.vertices).remove();
+										$scope.updateGraph();
+									},
+									vertices: function vertices() { return _(group.vertices).clone(); },
+									edges: function edges() { return _(group.edges).clone(); }
+								};
+							}
+						});
 
-						}());
 					}
 				};
 			}

@@ -5,7 +5,8 @@ define(['app/module', 'lodash', 'resource/service', '$bind/service',
         'partial/amy-circuit-board/amy-tile-map/directive',
         'partial/amy-circuit-board/amy-tile/directive',
         'partial/amy-circuit-board/amy-graph-layer/directive',
-        'partial/amy-circuit-board/amy-connections/directive'], function (app, _) {
+        'partial/amy-circuit-board/amy-connections/directive',
+        'partial/amy-circuit-board/amy-3d-layer/directive'], function (app, _) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -80,13 +81,18 @@ define(['app/module', 'lodash', 'resource/service', '$bind/service',
 						};
 
 
-						//////////////////// Graph Layer ///////////////////////////////////////////////////////////////
+						//////////////////// Modules ///////////////////////////////////////////////////////////////////
+
+						$scope.flatCircuitBoardElement = iElement.children('.flat-circuit-board');
 
 						$scope.graphLayerDeferred = $q.defer();
 						$scope.circuitBoard.graphLayer = $scope.graphLayerDeferred.promise;
 
 						$scope.connectionsDeferred = $q.defer();
 						$scope.circuitBoard.connections = $scope.connectionsDeferred.promise;
+
+						$scope.threeDLayerDeferred = $q.defer();
+						$scope.circuitBoard.threeDLayer = $scope.threeDLayerDeferred.promise;
 
 					}
 				};

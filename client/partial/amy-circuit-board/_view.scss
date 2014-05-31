@@ -5,9 +5,8 @@
 @import "partial/amy-circuit-board/amy-connections/view";
 
 [amy-circuit-board] {
-	& > .flat-circuit-board {
-		@include edge-to-edge;
-		position: absolute;
+
+	& .flat-circuit-board {
 
 		& > [amy-tile-map] {
 			@include edge-to-edge;
@@ -26,4 +25,9 @@
 			z-index: 3 !important;
 		}
 	}
+
+	& > [amy-3d-layer] {
+		@include edge-to-edge;
+	}
+
 }

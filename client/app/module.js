@@ -61,14 +61,26 @@ define(['jquery',
 		$scope.artefact.root = $scope.artefact;
 
 
+		//////////////////// the margins of the circuitboard ///////////////////////////////////////////////////////////
+
+		var AMY_SPACING = 15;         // $amy-spacing; TODO: automatically extract sass variables
+		var AMY_SIDE_NAV_WIDTH = 200; // $amy-side-nav-width
+
+		$scope.circuitBoardMargins = {
+			top:    AMY_SPACING,
+			left:   AMY_SIDE_NAV_WIDTH + AMY_SPACING,
+			bottom: AMY_SPACING,
+			right:  AMY_SPACING
+		};
+
+
 		//////////////////// Manage bottom sliding panels //////////////////////////////////////////////////////////////
 
-		var amySpacing = 15;      // $amy-spacing; TODO: automatically extract sass variables
-		var amyPanelHeight = 250; // $amy-panel-height
+		var AMY_PANEL_HEIGHT = 250;   // $amy-panel-height
 
 		$scope.$root.$watch('simulationEnabled', function (enabled) {
 			if (enabled) {
-				$('main').css('bottom', amyPanelHeight);
+				$('main').css('bottom', AMY_PANEL_HEIGHT);
 			} else {
 				$('main').css('bottom', 0);
 			}

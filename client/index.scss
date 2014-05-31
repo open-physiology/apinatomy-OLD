@@ -44,11 +44,15 @@ html, body {
 		@include edge-to-edge;
 		top: $amy-top-nav-height;
 		[amy-circuit-board] {
-			position: absolute;
-			top: $amy-spacing;
-			bottom: $amy-spacing;
-			left: $amy-spacing + $amy-side-nav-width;
-			right: $amy-spacing;
+			@include edge-to-edge;
+
+			& .flat-circuit-board {
+				@include edge-to-edge;
+				top: $amy-spacing;
+				bottom: $amy-spacing;
+				left: $amy-spacing + $amy-side-nav-width;
+				right: $amy-spacing;
+			}
 		}
 	}
 
