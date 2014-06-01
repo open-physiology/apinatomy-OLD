@@ -621,7 +621,12 @@ define(['angular',
 								if (!_(models).isUndefined()) {
 									var filename = models[0]; //// TODO: options to switch; now getting only the first model
 
-									$scope.tile.has3DModel = true;
+									//// control the appearance of the 3D-model button
+									//
+									$scope.$watch('$root.threeDEnabled', function (threeDEnabled) {
+										$scope.tile.has3DModel = threeDEnabled;
+										if (!threeDEnabled) { $scope.tile.show3DModel = false; }
+									});
 
 
 									//// determine the proper loader for the 3d model of this tile
