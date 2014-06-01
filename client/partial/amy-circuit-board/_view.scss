@@ -3,6 +3,7 @@
 @import "partial/amy-circuit-board/amy-tile/view";
 @import "partial/amy-circuit-board/amy-graph-layer/view";
 @import "partial/amy-circuit-board/amy-connections/view";
+@import "partial/amy-circuit-board/amy-3d-layer/view";
 
 [amy-circuit-board] {
 
@@ -26,7 +27,7 @@
 		}
 	}
 
-	& > [amy-3d-layer] {
+	& [amy-3d-layer] {
 		@include edge-to-edge;
 	}
 

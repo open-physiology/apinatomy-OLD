@@ -73,12 +73,14 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 			return result;
 		};
 
+
 		//////////////////// Connections ///////////////////////////////////////////////////////////////////////////////
 
 		iface.connections = function (ids) {
 			return $http.get('/resources/connections/' + ids.join(','))
 					.then(function (data) { return data.data; });
 		};
+
 
 		//////////////////// Paths /////////////////////////////////////////////////////////////////////////////////////
 
@@ -88,6 +90,7 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 					.then(function (data) { return data.data; });
 		};
 
+
 		//////////////////// Small Molecules ///////////////////////////////////////////////////////////////////////////
 
 		iface.smallMolecules = function (ids) {
@@ -96,6 +99,7 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 					.then(function (data) { return data.data; });
 		};
 
+
 		//////////////////// Ancestors /////////////////////////////////////////////////////////////////////////////////
 
 		iface.ancestors = function (id) {
@@ -103,13 +107,13 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 					.then(function (data) { return data.data; });
 		};
 
+
 		//////////////////// Text Search ///////////////////////////////////////////////////////////////////////////////
 
 		iface.search = function (query) {
 			return $http.get('/resources/search/' + query)
 					.then(function (data) { return data.data; });
 		};
-
 
 
 		//////////////////// 3D Models /////////////////////////////////////////////////////////////////////////////////
@@ -142,10 +146,8 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 			'fma:84013': ['3d-models/FMA84013_Basal_ganglia_D2OE-AAV-GFP-14.CNG.swc']
 		};
 
-		iface.threeDModels = function (ids) {
-			var result = _.at(URI_TO_MODEL, ids);
-
-			return $q.when(_(URI_TO_MODEL).pick(_.intersection(ids, _.keys(URI_TO_MODEL))).value());
+		iface.threeDModels = function (id) {
+			return $q.when(URI_TO_MODEL[id]);
 		};
 
 		return iface;

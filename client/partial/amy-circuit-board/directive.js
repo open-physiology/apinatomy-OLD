@@ -81,7 +81,7 @@ define(['app/module', 'lodash', 'resource/service', '$bind/service',
 						};
 
 
-						//////////////////// Modules ///////////////////////////////////////////////////////////////////
+						//////////////////// Inter-module communication ////////////////////////////////////////////////
 
 						$scope.flatCircuitBoardElement = iElement.children('.flat-circuit-board');
 
@@ -91,8 +91,7 @@ define(['app/module', 'lodash', 'resource/service', '$bind/service',
 						$scope.connectionsDeferred = $q.defer();
 						$scope.circuitBoard.connections = $scope.connectionsDeferred.promise;
 
-						$scope.threeDLayerDeferred = $q.defer();
-						$scope.circuitBoard.threeDLayer = $scope.threeDLayerDeferred.promise;
+						$scope.threeDLayer = null;
 
 					}
 				};

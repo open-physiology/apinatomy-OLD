@@ -5,14 +5,13 @@ define(['jquery',
         'lodash',
         'angular',
         'app/module',
+        'stats',
         'threejs',
-        'threejs-obj-loader',
-        'threejs-swc-loader',
         'threejs-css-3d-renderer',
         'threejs-trackball-controls',
-        '$bind/service',
-        'defaults/service'
-], function ($, _, ng, app, THREE) {
+        'threejs-obj-loader',
+        'threejs-swc-loader'
+], function ($, _, ng, app, Stats, THREE) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -38,7 +37,7 @@ define(['jquery',
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	app.directive('amy3dLayer', ['$window', '$bind', 'ResourceService', function ($window, $bind, Resources) {
+	app.directive('amy3dLayer', ['$window', function ($window) {
 		return {
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +52,7 @@ define(['jquery',
 			compile: function () {
 				return {
 
-					pre: function preLink($scope, iElement, iAttrs/*, controller*/) {
+					pre: function preLink($scope, iElement/*, iAttrs, controller*/) {
 
 						//////////////////// maintenance functions ////////////////////
 
@@ -111,15 +110,15 @@ define(['jquery',
 						$(cssRenderer.domElement).append(renderer.domElement);
 						iElement.append(cssRenderer.domElement);
 
+
 						//// rendering
 						//
-						function render() {
+						function innerRender() {
 							renderer.render(scene, camera);
 							cssRenderer.render(scene, camera);
 						}
-						$scope.$on('$destroy', function () {
-							render = _.noop;
-						});
+						var render = _.throttle(function render() { innerRender() }, 1000 / 30); // max 30 fps
+						$scope.$on('$destroy', function () { innerRender = _.noop; }); // immediately stop rendering at $destroy
 						onResizeAndNow(function () {
 							renderer.setSize(iElement.width(), iElement.height());
 							cssRenderer.setSize(iElement.width(), iElement.height());
@@ -128,12 +127,6 @@ define(['jquery',
 
 
 						//////////////////// circuit-board ///////////////////
-
-//						// circuit-board surface wireframe for debugging purposes
-//						var material = new THREE.MeshBasicMaterial({ color: '#000000', wireframe: true });
-//						var geometry = new THREE.PlaneGeometry(iElement.width(), iElement.height(), 30, 30);
-//						var planeMesh= new THREE.Mesh( geometry, material );
-//						scene.add(planeMesh);
 
 						//// the circuit-board itself
 						//
@@ -177,8 +170,8 @@ define(['jquery',
 							//// sizing and positioning of the circuit-board and backface
 							//
 							var size = {
-								width : iElement.width()  -(margin.left + margin.right),
-								height: iElement.height() -(margin.top + margin.bottom)
+								width : iElement.width()  - (margin.left + margin.right),
+								height: iElement.height() - (margin.top + margin.bottom)
 							};
 
 							flatCircuitBoardElement.css(size);
@@ -214,24 +207,39 @@ define(['jquery',
 						onResize(function () { controls.handleResize(); });
 
 
-						//////////////////// the animation loop ////////////////////
+						//////////////////// the 3D animation loop ////////////////////
 
+						//// keeping track of frame-rate
+						//
+						var stats = new Stats();
+						stats.setMode(0);
+						$(stats.domElement).appendTo($('[amy-side-nav]')).css({
+							position: 'absolute', bottom: 5, left: 5
+						});
+						$scope.$on('$destroy', function () { $(stats.domElement).remove(); });
+
+						//// the loop
+						//
 						(function animate() {
+							stats.begin();
 							$window.requestAnimationFrame(animate);
 							controls.update();
 							render();
+							stats.end();
 						}());
 
 
 						//////////////////// loading manager ////////////////////
 
 						var loadingManager = new THREE.LoadingManager();
+						var objLoader = new THREE.OBJLoader(loadingManager);
+						var swcLoader = new THREE.SWCLoader(loadingManager);
 
 
 						//////////////////// tile interfaces ////////////////////
 
 						var tileObjects = {};
-						$scope.threeDLayerDeferred.resolve({
+						$scope.circuitBoard.threeDLayer = {
 							new3dGroup: function new3dGroup() {
 								var id = _.uniqueId('position');
 								var obj3d = new THREE.Object3D();
@@ -246,241 +254,17 @@ define(['jquery',
 									setRegion: function setRegion(region) {
 										obj3d.position.x = baseX + (region.left + 0.5 * region.width);
 										obj3d.position.y = baseY - (region.top  + 0.5 * region.height);
+										render();
 										// TODO: call some update function
 									},
-									get object() { return obj3d; },
-									get loadingManager() { return loadingManager; }
+									get object() { return obj3d; }
 								};
-							}
-						});
+							},
+				            get getCompoundBoundingBox() { return getCompoundBoundingBox },
+							loadObjFile: function loadObjFile(filename, fn) { objLoader.load(filename, fn) },
+							loadSwcFile: function loadSwcFile(filename, fn) { swcLoader.load(filename, fn) }
+						};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//						//////////////////// loading the .obj files ////////////////////
-//
-//						var objLoader = new THREE.OBJLoader(loadingManager);
-//						var swcLoader = new THREE.SWCLoader(loadingManager);
-//
-//						$scope.entityObjects = {};
-//
-//						$scope.$watchCollection('activeTiles', function (activeTiles) {
-//							Resources.threeDModels(_.keys(activeTiles)).then(function (modelMap) {
-//								var idsWithObjects = [];
-//								_(modelMap).forEach(function (models, id) {
-//									if (!_(models).isEmpty()) {
-//										idsWithObjects.push(id);
-//										if (_($scope.entityObjects[id]).isUndefined()) {
-//											var filename = models[0]; //// TODO: options to switch; now getting only the first
-//
-//											var loader;
-//											if (/\.swc$/.test(filename)) {
-//												loader = swcLoader;
-//											} else if (/\.obj$/.test(filename)) {
-//												loader = objLoader;
-//											} else {
-//												console.error('The file "' + filename + '" is not supported.');
-//												return;
-//											}
-//
-//											loader.load(filename, $bind(function (obj) {
-//
-//												var boundingBox = getCompoundBoundingBox(obj);
-//
-//												//// Normalize position
-//
-//												var translation = boundingBox.center().negate();
-//												obj.children[0].geometry.applyMatrix(new THREE.Matrix4().setPosition(translation));
-//
-//												//// Model position/size + reposition when tile position changes
-//
-//												var deregisterPos = $scope.$watch('activeTiles["' + id + '"].position', function (pos) {
-//													if (!_(pos).isUndefined()) {
-//														var ratio = Math.min(pos.width / boundingBox.size().x, pos.height / boundingBox.size().y) * .7;
-//														if (/\.swc/.test(filename)) {
-//															ratio *= 2;
-//														}
-//														obj.position.x = baseX + pos.left + pos.width / 2;
-//														obj.position.y = baseY - pos.top - pos.height / 2;
-//														obj.position.z = 0.5 * ratio * boundingBox.size().z + 30;
-//														obj.scale.set(ratio, ratio, ratio);
-//
-//														if (/\.swc/.test(filename)) {
-//															obj.regenerateMaterial(iElement.height(), camera.fov);
-//														}
-//
-//														render();
-//													}
-//												}, true);
-//
-//												var deregisterShow = $scope.$watch('activeTiles["' + id + '"].show', function (showNow, showBefore) {
-//													if (!_(showNow).isUndefined()) {
-//														if (showNow === 'true') {
-//															scene.add(obj);
-//														} else if (!_(showBefore).isUndefined()) {
-//															scene.remove(obj);
-//														}
-//														render();
-//													}
-//												});
-//
-//												//// Store object
-//
-//												$scope.entityObjects[id] = obj;
-//												$scope.entityObjects[id].deregisterNgWatch = _.compose(deregisterPos, deregisterShow);
-//											}));
-//										}
-//									}
-//								});
-//
-//								_($scope.entityObjects).keys().difference(idsWithObjects).forEach(function (id) {
-//									$scope.entityObjects[id].deregisterNgWatch();
-//									scene.remove($scope.entityObjects[id]);
-//									delete $scope.entityObjects[id];
-//								});
-//								render();
-//							});
-//						});
-
-
-//						///////////////////////// proteins ////////////////////////////////
-//
-//						$scope.proteinKebabData = {};
-//
-//						var COLORS = [
-//							'red',
-//							'blue',
-//							'green',
-//							'purple',
-//							'yellow',
-//							'gray'
-//						];
-//
-//						function generateRandomKebabData() {
-//							var length = _.random(100, 1000);
-//
-//							var domainCount = _.random(2, 7);
-//							var domainBoundaries = [];
-//
-//							for (var i = 0; i < 2 * domainCount; ++i) {
-//								domainBoundaries.push(_.random(1, 1000));
-//							}
-//							domainBoundaries = _.sortBy(domainBoundaries);
-//
-//							var domains = [];
-//							for (var j = 0; j < 2 * domainCount; j += 2) {
-//								var domainLength = domainBoundaries[j + 1] - domainBoundaries[j];
-//								if (10 <= domainLength && domainLength <= 100 && domainBoundaries[j + 1] <= length) {
-//									domains.push({
-//										from : domainBoundaries[j],
-//										to   : domainBoundaries[j + 1],
-//										color: COLORS[_.random(0, 5)]
-//									});
-//								}
-//							}
-//
-//							return {
-//								length : length,
-//								domains: domains
-//							};
-//						}
-//
-//						$scope.proteinKebabObjects = {};
-//
-//						var deregisterProteinWatch;
-//						$scope.$watch('showProteins', function (showProteins) {
-//							if (showProteins) {
-//								deregisterProteinWatch = $scope.$watchCollection('visibleProteins', function (visibleProteins) {
-//									var idsWithObjects = [];
-//									_(visibleProteins).forEach(function (protein, id) {
-//										idsWithObjects.push(id);
-//										if (_($scope.proteinKebabObjects[id]).isUndefined()) {
-//
-//											if (_($scope.proteinKebabData[id]).isUndefined()) {
-//												$scope.proteinKebabData[id] = generateRandomKebabData();
-//											}
-//											var kebabData = $scope.proteinKebabData[id];
-//
-//											var kebab = new THREE.Object3D();
-//
-//											var stickMaterial = new THREE.MeshLambertMaterial({ color: 0xaaaaaa });
-//
-//											var stickGeometry = new THREE.CylinderGeometry(1, 1, kebabData.length, 32);
-//
-//											var domainGeometry = new THREE.CylinderGeometry(6, 6, 1, 32);
-//											_(kebabData.domains).forEach(function (domain) {
-//												var domainMaterial = new THREE.MeshLambertMaterial({color: domain.color});
-//												var domainObj = new THREE.Mesh(domainGeometry, domainMaterial);
-//												domainObj.translateY(.5 * domain.from + .5 * domain.to);
-//												domainObj.scale.y = (domain.to - domain.from);
-//												kebab.add(domainObj);
-//											});
-//
-//											var stick = new THREE.Mesh(stickGeometry, stickMaterial);
-//											stick.translateY(kebabData.length / 2);
-//											kebab.add(stick);
-//
-//											kebab.rotation.x = 90 * DEG_TO_RAD;
-//											kebab.scale.y = .3;
-//
-//											$scope.proteinKebabObjects[id] = kebab;
-//
-//											scene.add(kebab);
-//
-//											var deregisterProteinWatchX = $scope.$watch('visibleProteins["' + id + '"].x', function (x) {
-//												kebab.position.x = baseX + x;
-//											});
-//
-//											var deregisterProteinWatchY = $scope.$watch('visibleProteins["' + id + '"].y', function (y) {
-//												kebab.position.y = baseY - y;
-//											});
-//
-//											$scope.proteinKebabObjects[id].deregisterNgWatch = _.compose(deregisterProteinWatchX, deregisterProteinWatchY);
-//										}
-//									});
-//
-//									_($scope.proteinKebabObjects).keys().difference(idsWithObjects).forEach(function (id) {
-//										$scope.proteinKebabObjects[id].deregisterNgWatch();
-//										scene.remove($scope.proteinKebabObjects[id]);
-//										delete $scope.proteinKebabObjects[id];
-//									});
-//
-//									render();
-//								});
-//							} else if (_(deregisterProteinWatch).isFunction()) {
-//								_($scope.proteinKebabObjects).forEach(function (kebab, id) {
-//									$scope.proteinKebabObjects[id].deregisterNgWatch();
-//									scene.remove($scope.proteinKebabObjects[id]);
-//									delete $scope.proteinKebabObjects[id];
-//								});
-//								deregisterProteinWatch();
-//							}
-//						});
-
-
-
-
-
-
-
-
-
-
-
-					},
-
-					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {
 					}
 
 				};

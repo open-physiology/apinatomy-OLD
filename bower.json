@@ -35,5 +35,8 @@
     "require-css": "~0.1.2",
     "venturocket-angular-slider": "~0.2.5",
     "threejs": "*"
+  },
+  "devDependencies": {
+    "stats.js": "*"
   }
 }

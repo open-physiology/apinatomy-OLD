@@ -5,12 +5,13 @@ define(['angular',
         'app/module',
         'chroma',
         'lodash',
+        'threejs',
         'partial/amy-circuit-board/artefacts',
         'partial/icon-btn/directive',
         'partial/font-fit/directive',
         'resource/service',
         '$bind/service',
-        'resource/service'], function (ng, app, color, _, artefacts) {
+        'resource/service'], function (ng, app, color, _, THREE, artefacts) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	var TILE_HEADER_HEIGHT = 26;
@@ -79,7 +80,7 @@ define(['angular',
 
 						//////////////////// Getting the model value ///////////////////////////////////////////////////
 
-						ngModel.$render = function () {
+						ngModel.$render = function onNgModelRender() {
 							$scope.subEntity = ngModel.$modelValue;
 							$scope.entity = $scope.subEntity.entity;
 
@@ -282,11 +283,6 @@ define(['angular',
 							});
 
 
-							//////////////////// Reacting to Attention value ///////////////////////////////////////////
-
-
-
-
 							//////////////////// CSS Classes ///////////////////////////////////////////////////////////
 
 							// Using ng-class doesn't seem to always work, so we're setting classes manually.
@@ -297,6 +293,47 @@ define(['angular',
 							$scope.$watch('tile.highlighted', function (v) { iElement.toggleClass('highlighted', !!v); });
 							$scope.$watch('tile.active', function (v) { iElement.toggleClass('active', !!v); });
 							$scope.$watch('entity._searchResult', function (v) { iElement.toggleClass('searchResult', !!v); });
+
+
+							//////////////////// Tile Styling //////////////////////////////////////////////////////////
+
+							$scope.entity._promise.then(function () {
+
+								//// calculate styling, possibly based on parent tile background
+								//
+								if (($scope.tile.parent.parent.type === 'tile')) {
+									var parentBgColor = $scope.tile.parent.parent.styling.normal.css['&'].backgroundColor;
+									$scope.tile.styling = generateTileDefaults($scope.entity.tile, {
+										bgColor: (color(parentBgColor).luminance() < .5 ?
+										          color(parentBgColor).brighten(30).css() :
+										          color(parentBgColor).darken(30).css() )
+									});
+								} else {
+									$scope.tile.styling = generateTileDefaults($scope.entity.tile, {
+										bgColor: '#eeeeee'
+									});
+								}
+
+								//// applying styling to the tile
+								//
+								function applyTileStyling() {
+									iElement.putCSS($scope.tile.styling[$scope.tile.highlighted ? 'highlighted' : 'normal'].css);
+								}
+
+								//// do it now
+								//
+								applyTileStyling();
+
+								//// dynamically applying the right CSS to the tile
+								//
+								$scope.$watch("tile.open", function (isOpen, wasOpen) {
+									if (isOpen !== wasOpen) { applyTileStyling(); }
+								});
+								$scope.$watch('tile.highlighted', function (isHighlighted, wasHighlighted) {
+									if (isHighlighted !== wasHighlighted) { applyTileStyling(); }
+								});
+
+							}); // $scope.entity._promise.then
 
 
 							//////////////////// Graph Elements ////////////////////////////////////////////////////////
@@ -506,6 +543,7 @@ define(['angular',
 										});
 
 										_($scope.entity.proteinInteractions).forEach(function (interaction) {
+
 											// NOTE: an svg element is added and immediately discarded
 											//       to fix a strange bug that otherwise leaves edges invisible
 											var element = $('<svg><line class="protein-interaction"></line></svg>').children();
@@ -545,9 +583,6 @@ define(['angular',
 												element.setSvgClass('focus-fixed', proteinInteractionArtefact.focusFixed);
 											});
 
-
-
-
 										});
 									}
 
@@ -579,47 +614,107 @@ define(['angular',
 
 							});
 
-							//////////////////// Tile Styling //////////////////////////////////////////////////////////
 
-							$scope.entity._promise.then(function () {
+							//////////////////// 3D models /////////////////////////////////////////////////////////////
 
-								//// calculate styling, possibly based on parent tile background
-								//
-								if (($scope.tile.parent.parent.type === 'tile')) {
-									var parentBgColor = $scope.tile.parent.parent.styling.normal.css['&'].backgroundColor;
-									$scope.tile.styling = generateTileDefaults($scope.entity.tile, {
-										bgColor: (color(parentBgColor).luminance() < .5 ?
-										          color(parentBgColor).brighten(30).css() :
-										          color(parentBgColor).darken(30).css() )
+							ResourceService.threeDModels($scope.tile.entity._id).then(function (models) {
+								if (!_(models).isUndefined()) {
+									var filename = models[0]; //// TODO: options to switch; now getting only the first model
+
+									$scope.tile.has3DModel = true;
+
+
+									//// determine the proper loader for the 3d model of this tile
+									//
+									var loader;
+									if (/\.swc$/.test(filename)) { loader = 'loadSwcFile'; }
+									else if (/\.obj$/.test(filename)) { loader = 'loadObjFile'; }
+									else { console.error('The file "' + filename + '" is not supported.'); return; }
+
+
+									//// to register handlers for the construction and destruction of 3d models
+									//
+									var threeDLayer;
+									var on3d = (function () {
+										var threeDD = $q.defer();
+										var threeDQ = threeDD.promise;
+										$scope.$watch('tile.active && $root.threeDEnabled && tile.show3DModel', function (show3d) {
+											threeDLayer = $scope.circuitBoard.threeDLayer;
+											threeDD.notify(show3d ? 'construct' : 'destruct');
+										});
+										$scope.$on('$destroy', function () { threeDD.notify('destruct'); });
+										return function on3d(requiredSignal, fn) {
+											//// assuming all destruct callbacks are added from a construct callback
+											if (requiredSignal === 'destruct') { fn = _.once(fn); }
+											threeDQ.then(null, null, function (receivedSignal) {
+												if (requiredSignal === receivedSignal) { fn(); }
+											});
+										}
+									}());
+
+
+									//// adding the model; takes care of its own cleanup
+									//
+									on3d('construct', function on3dConstruct() {
+										threeDLayer[loader](filename, $bind(function (obj) {
+
+											//// get an interface to the 3d layer
+											//
+											var threeDGroup = threeDLayer.new3dGroup();
+											on3d('destruct', function () { threeDGroup.remove(); });
+
+											//// keep region up to date
+											//
+											threeDGroup.setRegion($scope.tile.position);
+											on3d('destruct', $scope.$watch('tile.position', function (newPosition, oldPosition) {
+												if (newPosition) {
+													threeDGroup.setRegion($scope.tile.position);
+												}
+											}));
+
+											//// calculate bounding box of object; used for several purposes
+											//
+											var boundingBox = threeDLayer.getCompoundBoundingBox(obj);
+
+											//// normalize position
+											//
+											var translation = boundingBox.center().negate();
+											obj.children[0].geometry.applyMatrix(new THREE.Matrix4().setPosition(translation));
+
+											//// adjust to new tile position
+											//
+											on3d('destruct', $scope.$watch('tile.position', function (newPosition) {
+												if (newPosition) {
+													//// adjust size
+													//
+													var ratio = Math.min($scope.tile.position.width / boundingBox.size().x,
+																	$scope.tile.position.height / boundingBox.size().y) * .7;
+													if (/\.swc/.test(filename)) { ratio *= 2; } // neurons may take more space
+													obj.scale.set(ratio, ratio, ratio);
+
+													//// adjust 'altitude'
+													//
+													obj.position.z = 0.5 * ratio * boundingBox.size().z + 30;
+												}
+											}));
+
+											//// add the object to the scene
+											//
+											threeDGroup.object.add(obj);
+											on3d('destruct', function () {
+												threeDGroup.object.remove(obj);
+											});
+										}));
 									});
-								} else {
-									$scope.tile.styling = generateTileDefaults($scope.entity.tile, {
-										bgColor: '#eeeeee'
-									});
+
+
+
+
 								}
+							});// ResourceService.threeDModels().then()
 
-								//// applying styling to the tile
-								//
-								function applyTileStyling() {
-									iElement.putCSS($scope.tile.styling[$scope.tile.highlighted ? 'highlighted' : 'normal'].css);
-								}
-
-								//// do it now
-								//
-								applyTileStyling();
-
-								//// dynamically applying the right CSS to the tile
-								//
-								$scope.$watch("tile.open", function (isOpen, wasOpen) {
-									if (isOpen !== wasOpen) { applyTileStyling(); }
-								});
-								$scope.$watch('tile.highlighted', function (isHighlighted, wasHighlighted) {
-									if (isHighlighted !== wasHighlighted) { applyTileStyling(); }
-								});
-
-							}); // $scope.entity._promise.then
-						}
-					},
+						};//function onNgModelRender
+					},//function preLink
 
 					post: function () { dAtPostLink.resolve(); }
 				});
@@ -636,3 +731,123 @@ define(['angular',
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 });/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+// TODO: protein kebabs
+
+//						///////////////////////// proteins ////////////////////////////////
+//
+//						$scope.proteinKebabData = {};
+//
+//						var COLORS = [
+//							'red',
+//							'blue',
+//							'green',
+//							'purple',
+//							'yellow',
+//							'gray'
+//						];
+//
+//						function generateRandomKebabData() {
+//							var length = _.random(100, 1000);
+//
+//							var domainCount = _.random(2, 7);
+//							var domainBoundaries = [];
+//
+//							for (var i = 0; i < 2 * domainCount; ++i) {
+//								domainBoundaries.push(_.random(1, 1000));
+//							}
+//							domainBoundaries = _.sortBy(domainBoundaries);
+//
+//							var domains = [];
+//							for (var j = 0; j < 2 * domainCount; j += 2) {
+//								var domainLength = domainBoundaries[j + 1] - domainBoundaries[j];
+//								if (10 <= domainLength && domainLength <= 100 && domainBoundaries[j + 1] <= length) {
+//									domains.push({
+//										from : domainBoundaries[j],
+//										to   : domainBoundaries[j + 1],
+//										color: COLORS[_.random(0, 5)]
+//									});
+//								}
+//							}
+//
+//							return {
+//								length : length,
+//								domains: domains
+//							};
+//						}
+//
+//						$scope.proteinKebabObjects = {};
+//
+//						var deregisterProteinWatch;
+//						$scope.$watch('showProteins', function (showProteins) {
+//							if (showProteins) {
+//								deregisterProteinWatch = $scope.$watchCollection('visibleProteins', function (visibleProteins) {
+//									var idsWithObjects = [];
+//									_(visibleProteins).forEach(function (protein, id) {
+//										idsWithObjects.push(id);
+//										if (_($scope.proteinKebabObjects[id]).isUndefined()) {
+//
+//											if (_($scope.proteinKebabData[id]).isUndefined()) {
+//												$scope.proteinKebabData[id] = generateRandomKebabData();
+//											}
+//											var kebabData = $scope.proteinKebabData[id];
+//
+//											var kebab = new THREE.Object3D();
+//
+//											var stickMaterial = new THREE.MeshLambertMaterial({ color: 0xaaaaaa });
+//
+//											var stickGeometry = new THREE.CylinderGeometry(1, 1, kebabData.length, 32);
+//
+//											var domainGeometry = new THREE.CylinderGeometry(6, 6, 1, 32);
+//											_(kebabData.domains).forEach(function (domain) {
+//												var domainMaterial = new THREE.MeshLambertMaterial({color: domain.color});
+//												var domainObj = new THREE.Mesh(domainGeometry, domainMaterial);
+//												domainObj.translateY(.5 * domain.from + .5 * domain.to);
+//												domainObj.scale.y = (domain.to - domain.from);
+//												kebab.add(domainObj);
+//											});
+//
+//											var stick = new THREE.Mesh(stickGeometry, stickMaterial);
+//											stick.translateY(kebabData.length / 2);
+//											kebab.add(stick);
+//
+//											kebab.rotation.x = 90 * DEG_TO_RAD;
+//											kebab.scale.y = .3;
+//
+//											$scope.proteinKebabObjects[id] = kebab;
+//
+//											scene.add(kebab);
+//
+//											var deregisterProteinWatchX = $scope.$watch('visibleProteins["' + id + '"].x', function (x) {
+//												kebab.position.x = baseX + x;
+//											});
+//
+//											var deregisterProteinWatchY = $scope.$watch('visibleProteins["' + id + '"].y', function (y) {
+//												kebab.position.y = baseY - y;
+//											});
+//
+//											$scope.proteinKebabObjects[id].deregisterNgWatch = _.compose(deregisterProteinWatchX, deregisterProteinWatchY);
+//										}
+//									});
+//
+//									_($scope.proteinKebabObjects).keys().difference(idsWithObjects).forEach(function (id) {
+//										$scope.proteinKebabObjects[id].deregisterNgWatch();
+//										scene.remove($scope.proteinKebabObjects[id]);
+//										delete $scope.proteinKebabObjects[id];
+//									});
+//
+//									render();
+//								});
+//							} else if (_(deregisterProteinWatch).isFunction()) {
+//								_($scope.proteinKebabObjects).forEach(function (kebab, id) {
+//									$scope.proteinKebabObjects[id].deregisterNgWatch();
+//									scene.remove($scope.proteinKebabObjects[id]);
+//									delete $scope.proteinKebabObjects[id];
+//								});
+//								deregisterProteinWatch();
+//							}
+//						});
