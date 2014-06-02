@@ -43,6 +43,13 @@ define(['jquery'], function ($) {
 					}
 				});
 			});
+		},
+		// TODO: these event-handler removers cast way too wide a net; make them more specific
+		offClickNotDrop: function offClickNotDrop() {
+			return $(this).off('mousedown');
+		},
+		offMouseDragDrop: function offMouseDragDrop() {
+			return $(this).off('mousedown');
 		}
 	});
 

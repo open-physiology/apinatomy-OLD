@@ -52,13 +52,16 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 						//
 						var visibleVertices, visibleEdges;
 
+
 						//////////////////// updating the graph ////////////////////////////////////////////////////////
 
 						$scope.updateGraph = _.debounce($bind(function updateGraph() {
+
 							// using the d3 general update pattern:
 							// http://bl.ocks.org/mbostock/3808218
 
-							visibleVertices = _($scope.vertexArtefacts).values().filter(function (artefact) { return artefact.showVertex; }).value();
+							visibleVertices = _($scope.vertexArtefacts)
+									.values().filter(function (artefact) { return artefact.showVertex; }).value();
 							visibleEdges = _.values($scope.edgeArtefacts);
 
 							//// restart the force
@@ -68,7 +71,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 							//// vertices
 							//
 							vertices = svg.selectAll('.vertex').data(visibleVertices, _.property('graphId'));
-							vertices.enter().append(function (d) { return d.element(); })
+							vertices.enter().append(function (d) { return d.element; })
 									.classed('vertex', true).classed('edge', false)
 									.call(force.drag); // all vertices can be dragged around
 							vertices.exit().remove();
@@ -76,7 +79,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 							//// edges
 							//
 							edges = svg.selectAll('.edge').data(visibleEdges, _.property('graphId'));
-							edges.enter().append(function (d) { return d.element(); })
+							edges.enter().append(function (d) { return d.element; })
 									.classed('edge', true).classed('vertex', false);
 							edges.exit().remove();
 
@@ -85,15 +88,19 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 							svg.selectAll('.vertex, .edge').sort(function (a, b) {
 								return (a.graphZIndex < b.graphZIndex) ? -1 : ((a.graphZIndex === b.graphZIndex) ? 0 : 1);
 							});
-						}), 50);
+
+						}), 200); // TODO: when set too low, x="NaN"-like errors occur (though they don't break anything)
+
+
+						//////////////////// animation tick ////////////////////////////////////////////////////////////
 
 						force.on("tick", function tick(e) {
 							var k = .1 * e.alpha;
 
 							_(visibleVertices).forEach(function (d) {
 								//// gravitate towards the center of the region
-								d.x += (d.group.region.left + .5 * d.group.region.width - d.x) * k;
-								d.y += (d.group.region.top + .5 * d.group.region.height - d.y) * k;
+								d.x += d.group.gravityFactor * (d.group.region.left + .5 * d.group.region.width - d.x) * k;
+								d.y += d.group.gravityFactor * (d.group.region.top + .5 * d.group.region.height - d.y) * k;
 
 								//// and always stay within the region
 								d.x = Math.max(d.x, d.group.region.left);
@@ -109,9 +116,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 									.attr("x2", function (d) { return d.target.x; })
 									.attr("y2", function (d) { return d.target.y; });
 						});
-					},
 
-					post: function postLink($scope, iElement/*, iAttrs, controller*/) {
 
 						//////////////////// interfaces to add vertices and edges //////////////////////////////////////
 
@@ -124,6 +129,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 									id: _.uniqueId('group'),
 									vertices: [],
 									edges: [],
+									gravityFactor: 1,
 									region: { // by default, the whole canvas with a small padding
 										top: 10,
 										left: 10,
@@ -132,6 +138,13 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 									}
 								};
 								return {
+									remove: function remove() {
+										// called when a graph group is discarded;
+										// may do stuff in the future
+									},
+									setGravityFactor: function (factor) {
+										group.gravityFactor = factor;
+									},
 									setRegion: function setRegion(region) {
 										group.region = region;
 										$scope.updateGraph();

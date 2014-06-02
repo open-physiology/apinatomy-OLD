@@ -4,11 +4,12 @@
 define(['jquery',
         'lodash',
         'angular',
+        'partial/amy-circuit-board/artefacts',
         'angular-animate',
         'angular-bootstrap',
         'angular-recursion',
         'angular-once',
-        'angular-slider'], function ($, _, ng) {
+        'angular-slider'], function ($, _, ng, artefacts) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -44,21 +45,11 @@ define(['jquery',
 		//// The web-page:
 		//
 		$scope.webPage =
-		$scope.artefact = {
+		$scope.artefact = new artefacts.WebPage({
 			id:       $scope.$id,
-			type:     'webPage',
-
-			//// artefact hierarchy:
-			parent:   null,
-			children: [],
-
-			//// root entity:
-			entity:   ResourceService.entities(['24tile:60000000'])[0]
-		};
-
-		//// It is the root artefact:
-		//
-		$scope.artefact.root = $scope.artefact;
+			entity:   ResourceService.entities(['24tile:60000000'])[0],
+			$scope:   $scope
+		});
 
 
 		//////////////////// the margins of the circuitboard ///////////////////////////////////////////////////////////

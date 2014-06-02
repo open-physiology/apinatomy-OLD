@@ -4,29 +4,35 @@
 define(['jquery', 'lodash'], function ($, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	function oldClasses(e) {
+		var csl = $(e).attr('class');
+		return csl ? csl.split(/\s+/) : [];
+	}
 
 	$.fn.extend({
 		addSvgClass: function (cls) {
 			this.each(function () {
-				$(this).attr('class', _($(this).attr('class').split(/\s+/)).union(cls.split(/\s+/)).join(" "));
+				$(this).attr('class', _(oldClasses(this)).union(cls.split(/\s+/)).join(" "));
 			});
+			return $(this);
 		},
 		removeSvgClass: function (cls) {
 			this.each(function () {
-				$(this).attr('class', _($(this).attr('class').split(/\s+/)).difference(cls.split(/\s+/)).join(" "));
-
+				$(this).attr('class', _(oldClasses(this)).difference(cls.split(/\s+/)).join(" "));
 			});
+			return $(this);
 		},
 		toggleSvgClass: function (cls) {
 			this.each(function () {
-				$(this).attr('class', _($(this).attr('class').split(/\s+/)).xor(cls.split(/\s+/)).join(" "));
+				$(this).attr('class', _(oldClasses(this)).xor(cls.split(/\s+/)).join(" "));
 			});
+			return $(this);
 		},
 		setSvgClass: function (cls, flag) {
 			if (flag) {
-				this.addSvgClass(cls);
+				return this.addSvgClass(cls);
 			} else {
-				this.removeSvgClass(cls);
+				return this.removeSvgClass(cls);
 			}
 		}
 	});

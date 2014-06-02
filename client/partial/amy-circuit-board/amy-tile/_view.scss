@@ -133,7 +133,7 @@
 }
 
 [amy-graph-layer] {
-	svg.protein.vertex-wrapper {
+	svg.protein.vertex {
 		& > circle.core {
 			pointer-events: visiblePainted;
 			fill: lighten(purple, 20);

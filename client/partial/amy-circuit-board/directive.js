@@ -1,12 +1,14 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'lodash', 'resource/service', '$bind/service',
+define(['app/module', 'lodash',
+        'partial/amy-circuit-board/artefacts',
+        'resource/service', '$bind/service',
         'partial/amy-circuit-board/amy-tile-map/directive',
         'partial/amy-circuit-board/amy-tile/directive',
         'partial/amy-circuit-board/amy-graph-layer/directive',
         'partial/amy-circuit-board/amy-connections/directive',
-        'partial/amy-circuit-board/amy-3d-layer/directive'], function (app, _) {
+        'partial/amy-circuit-board/amy-3d-layer/directive'], function (app, _, artefacts) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -30,35 +32,17 @@ define(['app/module', 'lodash', 'resource/service', '$bind/service',
 						//////////////////// Artefact Hierarchy ////////////////////////////////////////////////////
 
 						$scope.circuitBoard =
-						$scope.artefact = {
+						$scope.artefact = new artefacts.CircuitBoard({
 							id:       $scope.$id,
-							type:     'circuitBoard',
-							show:     false,
-
-							//// artefact hierarchy:
 							parent:   $scope.$parent.artefact,
-							children: [],
-
-							//// root entity:
 							entity: null, // to be set
-
-							//// position:
+							$scope: $scope,
 							position: {
 								top: 0,
 								left: 0,
 								height: null, // to be set
 								width:  null  // to be set
 							}
-						};
-
-						//// Announce this artefact to its parent.
-						//
-						$scope.artefact.parent.children.push($scope.artefact);
-
-						//// Remove references to this tile when it is destroyed.
-						//
-						$scope.$on('$destroy', function () {
-							_($scope.artefact.parent).pull($scope.artefact); // TODO: integrate into Artefact class
 						});
 
 

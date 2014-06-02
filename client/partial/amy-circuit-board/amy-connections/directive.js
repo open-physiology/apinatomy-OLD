@@ -10,40 +10,16 @@ define(['angular', 'app/module', 'partial/amy-circuit-board/artefacts', 'resourc
 
 	app.directive('amyConnections', ['$bind', 'ResourceService', function ($bind, ResourceService) {
 		return {
-			restrict  : 'A',
-			scope     : true,
+			restrict:   'A',
+			scope:      true,
 			controller: ['$scope', function ($scope) {
 				$scope.circuitBoard.graphLayer.then(function (graphLayer) {
+
 					var graphGroup = graphLayer.newGraphGroup();
+					graphGroup.setGravityFactor(0);
+
 					var registeredTileJunctions = { vascular: {}, neural: {} };
 					var visibleTileJunctions = { vascular: {}, neural: {} };
-
-					var iface = {
-						registerTileJunction  : function registerTileJunction(tileJunction) {
-							registeredTileJunctions[tileJunction.connectionType][tileJunction.entity._id] = tileJunction;
-							updateGraph();
-						},
-						deregisterTileJunction: function registerTileJunction(tileJunction) {
-							delete registeredTileJunctions[tileJunction.connectionType][tileJunction.entity._id];
-							updateGraph();
-						},
-						types                 : {
-							vascular: {
-								tileJunctionType     : 'VascularTileJunction',
-								branchingJunctionType: 'VascularBranchingJunction',
-								connectionType: 'VascularConnection',
-								connectionDetailTemplateUrl: 'partial/amy-circuit-board/amy-connections/vascular-connection-details.html',
-								junctionDetailTemplateUrl: 'partial/amy-circuit-board/amy-connections/vascular-junction-details.html'
-							},
-							neural  : {
-								tileJunctionType     : 'NeuralTileJunction',
-								branchingJunctionType: 'NeuralBranchingJunction',
-								connectionType: 'NeuralConnection',
-								connectionDetailTemplateUrl: 'partial/amy-circuit-board/amy-connections/neural-connection-details.html',
-								junctionDetailTemplateUrl: 'partial/amy-circuit-board/amy-connections/neural-junction-details.html'
-							}
-						}
-					};
 
 					var updateGraph = _.debounce(function updateGraph() {
 						//// Remove connections and inner junctions (to start again); TODO: keep what can be kept?
@@ -105,117 +81,44 @@ define(['angular', 'app/module', 'partial/amy-circuit-board/artefacts', 'resourc
 									//
 									function ensureJunction(junctionId) {
 										if (_(branchingJunctionMap[junctionId]).isUndefined()) {
-											var element = $('<svg class="branching-junction ' + path.type + ' ' + path.subtype + ' vertex-wrapper">' +
-											                '<circle class="core" r="2"></circle></svg>');
 											var branchingJunction = branchingJunctionMap[junctionId]
 													= new artefacts[iface.types[path.type].branchingJunctionType]({
-												id         : junctionId,
-												parent     : $scope.circuitBoard,
-												element    : function () { return element[0] },
-												showVertex : true,
-												x          : (tileJunction1.x + tileJunction2.x) / 2, // initially right in between;
-												y          : (tileJunction1.y + tileJunction2.y) / 2, // good enough
-												subtype    : path.subtype,
-												graphZIndex: 400,
-												detailTemplateUrl: type.junctionDetailTemplateUrl
+												id:                junctionId,
+												parent:            $scope.circuitBoard,
+												showVertex:        true,
+												x: (tileJunction1.x + tileJunction2.x) / 2, // initially right in between;
+												y: (tileJunction1.y + tileJunction2.y) / 2, // good enough
+												subtype:           path.subtype,
+												graphZIndex:       400,
+												detailTemplateUrl: type.junctionDetailTemplateUrl,
+												ResourceService:   ResourceService,
+												$bind:             $bind,
+												$scope:            $scope
 											});
 											graphGroup.addVertex(branchingJunction);
-
-											//// react to mouse hover by giving focus
-											//
-											element.on('mouseover', $bind(function (event) {
-												event.stopPropagation();
-												$scope.$root.$broadcast('artefact-focus', branchingJunction, {});
-											}));
-											element.on('mouseout', $bind(function (event) {
-												event.stopPropagation();
-												$scope.$root.$broadcast('artefact-unfocus', branchingJunction, {});
-											}));
-
-											//// react to clicks by fixing focus
-											//
-											element.clickNotDrop($bind(function () {
-												$scope.$root.$broadcast('artefact-focus-fix',
-														branchingJunction.focusFixed ? null : branchingJunction);
-											}));
-
-											//// react to dragging by temporarily fixing focus (if not already fixed)
-											//
-											var removeFocusFixOnDrop;
-											element.mouseDragDrop($bind(function () {
-												element.addSvgClass('dragging');
-												$scope.circuitBoard.draggingVertex = true;
-												if (branchingJunction.focusFixed) {
-													removeFocusFixOnDrop = false;
-												} else {
-													removeFocusFixOnDrop = true;
-													$scope.$root.$broadcast('artefact-focus-fix', branchingJunction);
-												}
-											}), $bind(function () {
-												element.removeSvgClass('dragging');
-												$scope.circuitBoard.draggingVertex = false;
-												$('svg[amy-graph-layer]').removeSvgClass('dragging');
-												if (removeFocusFixOnDrop) {
-													$scope.$root.$broadcast('artefact-focus-fix', null);
-												}
-											}));
-
-											//// how to react when focus is fixed:
-											//
-											$scope.$on('artefact-focus-fix', function (e, artefact) {
-												branchingJunction.focusFixed = (artefact === branchingJunction);
-												element.setSvgClass('focus-fixed', branchingJunction.focusFixed);
-											});
 										}
 									}
 
 									//// how to add a new connection
 									//
 									function addConnection(sourceJunction, targetJunction, hiddenJunctions) {
-										var element = $('<svg><line class="' + path.type + ' ' + path.subtype + ' connection"></line></svg>').children();
 										var edgeArtefact = new artefacts[type.connectionType]({
-											id                : path.type + 'Connection:(' + sourceJunction.id + ',' + targetJunction.id + ')',
-											parent            : $scope.circuitBoard,
-											source            : sourceJunction,
-											target            : targetJunction,
-											subtype           : path.subtype,
-											hiddenJunctions   : _.clone(hiddenJunctions),
-											element           : function () { return element[0] },
+											id: path.type + 'Connection:(' + sourceJunction.id + ',' + targetJunction.id + ')',
+											parent:            $scope.circuitBoard,
+											source:            sourceJunction,
+											target:            targetJunction,
+											subtype:           path.subtype,
+											hiddenJunctions:   _.clone(hiddenJunctions),
 											linkDistanceFactor: (hiddenJunctions.length + 1) / 10,
-											graphZIndex       : ((sourceJunction.type === path.type + 'TileJunction' ||
-											                      targetJunction.type === path.type + 'TileJunction') ?
-											                     100 : 300),
+											graphZIndex:       ((sourceJunction.type === path.type + 'TileJunction' ||
+											                     targetJunction.type === path.type + 'TileJunction') ?
+											                    100 : 300),
 											detailTemplateUrl: type.connectionDetailTemplateUrl,
-											ResourceService: ResourceService
+											ResourceService:   ResourceService,
+											$bind:             $bind,
+											$scope:            $scope
 										});
 										graphGroup.addEdge(edgeArtefact);
-
-										if (edgeArtefact.detailTemplateUrl) {
-											//// react to mouse hover by giving focus
-											//
-											element.on('mouseover', $bind(function (event) {
-												event.stopPropagation();
-												$scope.$root.$broadcast('artefact-focus', edgeArtefact, {});
-											}));
-											element.on('mouseout', $bind(function (event) {
-												event.stopPropagation();
-												$scope.$root.$broadcast('artefact-unfocus', edgeArtefact, {});
-											}));
-
-											//// react to clicks by fixing focus
-											//
-											element.clickNotDrop($bind(function () {
-												$scope.$root.$broadcast('artefact-focus-fix',
-														edgeArtefact.focusFixed ? null : edgeArtefact);
-											}));
-
-											//// how to react when focus is fixed:
-											//
-											$scope.$on('artefact-focus-fix', function (e, artefact) {
-												edgeArtefact.focusFixed = (artefact === edgeArtefact);
-												element.setSvgClass('focus-fixed', edgeArtefact.focusFixed);
-											});
-										}
 									}
 
 									var hiddenJunctions = [];
@@ -236,7 +139,34 @@ define(['angular', 'app/module', 'partial/amy-circuit-board/artefacts', 'resourc
 							});
 
 						});
-					}, 50);
+					}, 200);
+
+					var iface = {
+						registerTileJunction:   function registerTileJunction(tileJunction) {
+							registeredTileJunctions[tileJunction.connectionType][tileJunction.entity._id] = tileJunction;
+							updateGraph();
+						},
+						deregisterTileJunction: function registerTileJunction(tileJunction) {
+							delete registeredTileJunctions[tileJunction.connectionType][tileJunction.entity._id];
+							updateGraph();
+						},
+						types:                  {
+							vascular: {
+								tileJunctionType:            'VascularTileJunction',
+								branchingJunctionType:       'VascularBranchingJunction',
+								connectionType:              'VascularConnection',
+								connectionDetailTemplateUrl: 'partial/amy-circuit-board/amy-connections/vascular-connection-details.html',
+								junctionDetailTemplateUrl:   'partial/amy-circuit-board/amy-connections/vascular-junction-details.html'
+							},
+							neural:   {
+								tileJunctionType:            'NeuralTileJunction',
+								branchingJunctionType:       'NeuralBranchingJunction',
+								connectionType:              'NeuralConnection',
+								connectionDetailTemplateUrl: 'partial/amy-circuit-board/amy-connections/neural-connection-details.html',
+								junctionDetailTemplateUrl:   'partial/amy-circuit-board/amy-connections/neural-junction-details.html'
+							}
+						}
+					};
 
 					$scope.connectionsDeferred.resolve(iface);
 

@@ -7,7 +7,7 @@
 
 	//// General styles
 
-	.vertex-wrapper > circle.core {
+	.vertex > circle.core {
 		pointer-events: visiblePainted;
 		cursor: pointer;
 		stroke-width : 1.5px;
@@ -32,10 +32,10 @@
 	//// Artefact-specific styles
 
 	.vascular {
-		&.tile-junction.vertex-wrapper {
+		&.tile-junction.vertex {
 			& > circle.core { stroke: darkred; fill: darkred; }
 		}
-		&.branching-junction.vertex-wrapper {
+		&.branching-junction.vertex {
 			&.arterial > circle.core { stroke: red; fill: red; }
 			&.venous > circle.core { stroke: darkblue; fill: darkblue; }
 		}
@@ -46,13 +46,13 @@
 	}
 
 	.neural {
-		&.tile-junction.vertex-wrapper {
+		&.tile-junction.vertex {
 			& > circle.core {
 				stroke: darken(aqua, 20);
 				fill: darken(aqua, 20);
 			}
 		}
-		&.branching-junction.vertex-wrapper {
+		&.branching-junction.vertex {
 			& > circle.core {
 				stroke: aqua;
 				fill: aqua;

@@ -94,7 +94,6 @@ define(['angular',
 								detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/detail-view.html',
 								entity:            $scope.entity
 							});
-							$scope.$on('$destroy', function () { $scope.tile.destructor(); });
 
 
 							//////////////////// Keeping Track of Tile Position and Size ///////////////////////////////
@@ -339,9 +338,14 @@ define(['angular',
 							//////////////////// Graph Elements ////////////////////////////////////////////////////////
 
 							$scope.circuitBoard.graphLayer.then(function (graphLayer) {
-								var graphGroup = graphLayer.newGraphGroup();
 
-								//////////////////// Keep region up to date ////////////////////////////////////////
+								//////////////////// Get group interface from the graph layer //////////////////////////
+
+								var graphGroup = graphLayer.newGraphGroup();
+								$scope.$on('destroy', function () { graphGroup.remove() });
+
+
+								//////////////////// Keep region up to date ////////////////////////////////////////////
 
 								function setRegion() {
 									var widthPadding = Math.min(TILE_HEADER_HEIGHT, $scope.tile.position.width) / 2;
@@ -368,99 +372,34 @@ define(['angular',
 								$scope.entity._promise.then(function () {
 									$scope.circuitBoard.connections.then(function (connections) {
 										_(connections.types).forEach(function (type, typeName) {
+
 											var junctionArtefact;
-											var deregistrationFunction;
-											var element;
 
 											function addJunction() {
-												function setUpElement() {
-													element = $('<svg class="' + typeName + ' tile-junction vertex-wrapper">' +
-													            '<circle class="core" r="5"></circle></svg>');
-
-													//// react to mouse hover by giving focus
-													//
-													element.on('mouseover', $bind(function (event) {
-														event.stopPropagation();
-														$scope.$root.$broadcast('artefact-focus', junctionArtefact, {});
-													}));
-													element.on('mouseout', $bind(function (event) {
-														event.stopPropagation();
-														$scope.$root.$broadcast('artefact-unfocus', junctionArtefact, {});
-													}));
-
-													//// react to clicks by fixing focus
-													//
-													element.clickNotDrop($bind(function () {
-														$scope.$root.$broadcast('artefact-focus-fix',
-																junctionArtefact.focusFixed ? null : junctionArtefact);
-													}));
-
-													//// react to dragging by temporarily fixing focus (if not already fixed)
-													//
-													var removeFocusFixOnDrop;
-													element.mouseDragDrop($bind(function () {
-														element.addSvgClass('dragging');
-														$scope.circuitBoard.draggingVertex = true;
-														if (junctionArtefact.focusFixed) {
-															removeFocusFixOnDrop = false;
-														} else {
-															removeFocusFixOnDrop = true;
-															$scope.$root.$broadcast('artefact-focus-fix', junctionArtefact);
-														}
-													}), $bind(function () {
-														element.removeSvgClass('dragging');
-														$scope.circuitBoard.draggingVertex = false;
-														$('svg[amy-graph-layer]').removeSvgClass('dragging');
-														if (removeFocusFixOnDrop) {
-															$scope.$root.$broadcast('artefact-focus-fix', null);
-														}
-													}));
-
-													//// how to react when focus is fixed:
-													//
-													deregistrationFunction = $scope.$on('artefact-focus-fix', function (e, artefact) {
-														junctionArtefact.focusFixed = (artefact === junctionArtefact);
-														element.setSvgClass('focus-fixed', junctionArtefact.focusFixed);
-													});
-												}
-
-												//// create the junction artefact
-												//
 												junctionArtefact = new artefacts[type.tileJunctionType]({
 													id: $scope.tile.id + ':' + typeName + 'Junction',
-													parent:      $scope.tile,
-													element:     function () {
-														if (!element) { setUpElement(); }
-														return element[0];
-													},
-													entity:      $scope.tile.entity,
-													showVertex:  false,
-													graphZIndex: 200,
-													detailTemplateUrl: type.junctionDetailTemplateUrl
-												});
-												graphGroup.addVertex(junctionArtefact);
-												connections.registerTileJunction(junctionArtefact);
-											}
+													parent:            $scope.tile,
+													entity:            $scope.tile.entity,
+													showVertex:        false,
+													graphZIndex:       200,
+													detailTemplateUrl: type.junctionDetailTemplateUrl,
 
-											function removeJunction() {
-												if (junctionArtefact) {
-													if (deregistrationFunction) { deregistrationFunction(); }
-													if (junctionArtefact.focusFixed) {
-														$scope.$root.$broadcast('artefact-focus-fix', null);
-													}
+													ResourceService: ResourceService,
+													$bind:           $bind,
+													$scope:          $scope
+												});
+												graphGroup.addVertex(junctionArtefact); // TODO: move responsibility to connections module
+												connections.registerTileJunction(junctionArtefact);
+												junctionArtefact.onDestruct(function () {
 													graphGroup.removeVertex(junctionArtefact);
 													connections.deregisterTileJunction(junctionArtefact);
-													junctionArtefact.destructor();
-													junctionArtefact = null;
-												}
+												})
 											}
 
 											$scope.$watch('tile.active && $root.connectionsEnabled', function (showJunction) {
 												if (showJunction) { addJunction(); }
-												else { removeJunction(); }
+												else if (junctionArtefact) { junctionArtefact.destructor(); }
 											});
-											$scope.$on('$destroy', removeJunction);
-
 
 										});
 									});
@@ -470,146 +409,79 @@ define(['angular',
 								//////////////////// Proteins //////////////////////////////////////////////////////////
 
 								$scope.entity._promise.then(function () {
-									function addAllProteinEdgesAndVertices() {
-										var proteinArtefactMap = {};
-										_($scope.entity.proteins).forEach(function (protein) {
-											//// add the artefact and vertex
-											//
-											var smallMoleculeIndicator = '';
-											if (!_(protein.smallMoleculeInteractions).isUndefined() && protein.smallMoleculeInteractions.length > 0) {
-												smallMoleculeIndicator = '<circle class="small-molecule-indicator" r="9"></circle>';
-											}
-											var element = $('<svg class="protein vertex-wrapper">' +
-											                '<circle class="core" r="4.5"></circle>' +
-											                smallMoleculeIndicator + '</svg>');
-											var proteinArtefact = new artefacts.Protein({
-												id: $scope.tile.id + ':' + protein._id,
-												parent:            $scope.tile,
-												element:           function () { return element[0] },
-												protein:           protein,
-												detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/protein-detail-view.html',
-												ResourceService:   ResourceService,
-												showVertex:        true,
-												graphZIndex:       200
+									if (!_($scope.entity.proteins).isEmpty()) {
+
+										var onProteinToggle = (function () {
+											var proteinToggleD = $q.defer();
+											$scope.$watch('tile.active && $root.proteinsEnabled', function (showProteins) {
+												proteinToggleD.notify(showProteins);
 											});
-											proteinArtefactMap[protein._id] = proteinArtefact;
-											graphGroup.addVertex(proteinArtefact);
+											return function onProteinToggle(fn) {
+												proteinToggleD.promise.then(null, null, fn);
+											}
+										}());
 
-											//// react to mouse hover by giving focus
-											//
-											element.on('mouseover', $bind(function (event) {
-												event.stopPropagation();
-												$scope.$root.$broadcast('artefact-focus', proteinArtefact, {});
-											}));
-											element.on('mouseout', $bind(function (event) {
-												event.stopPropagation();
-												$scope.$root.$broadcast('artefact-unfocus', proteinArtefact, {});
-											}));
+										var proteinArtefactMap = {};
 
-											//// react to clicks by fixing focus
-											//
-											element.clickNotDrop($bind(function () {
-												$scope.$root.$broadcast('artefact-focus-fix',
-														proteinArtefact.focusFixed ? null : proteinArtefact);
-											}));
-
-											//// react to dragging by temporarily fixing focus (if not already fixed)
-											//
-											var removeFocusFixOnDrop;
-											element.mouseDragDrop($bind(function () {
-												element.addSvgClass('dragging');
-												$scope.circuitBoard.draggingVertex = true;
-												if (proteinArtefact.focusFixed) {
-													removeFocusFixOnDrop = false;
-												} else {
-													removeFocusFixOnDrop = true;
-													$scope.$root.$broadcast('artefact-focus-fix', proteinArtefact);
+										_($scope.entity.proteins).forEach(function (protein) {
+											var proteinArtefact;
+											function addProtein() {
+												proteinArtefact = new artefacts.Protein({
+													id: $scope.tile.id + ':' + protein._id,
+													$scope:            $scope,
+													parent:            $scope.tile,
+													protein:           protein,
+													detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/protein-detail-view.html',
+													showVertex:        true,
+													graphZIndex:       200,
+													ResourceService:   ResourceService,
+													$bind:             $bind
+												});
+												proteinArtefactMap[protein._id] = proteinArtefact;
+												graphGroup.addVertex(proteinArtefact);
+												proteinArtefact.onDestruct(function () {
+													delete proteinArtefactMap[protein._id];
+													graphGroup.removeVertex(proteinArtefact);
+												});
+											}
+											onProteinToggle(function (showProteins) {
+												if (showProteins) { addProtein(); }
+												else if (proteinArtefact) {
+													proteinArtefact.destructor();
+													proteinArtefact = null;
 												}
-											}), $bind(function () {
-												element.removeSvgClass('dragging');
-												$scope.circuitBoard.draggingVertex = false;
-												$('svg[amy-graph-layer]').removeSvgClass('dragging');
-												if (removeFocusFixOnDrop) {
-													$scope.$root.$broadcast('artefact-focus-fix', null);
-												}
-											}));
-
-											//// how to react when focus is fixed:
-											//
-											$scope.$on('artefact-focus-fix', function (e, artefact) {
-												proteinArtefact.focusFixed = (artefact === proteinArtefact);
-												element.setSvgClass('focus-fixed', proteinArtefact.focusFixed);
 											});
 										});
 
 										_($scope.entity.proteinInteractions).forEach(function (interaction) {
-
-											// NOTE: an svg element is added and immediately discarded
-											//       to fix a strange bug that otherwise leaves edges invisible
-											var element = $('<svg><line class="protein-interaction"></line></svg>').children();
-											var proteinInteractionArtefact = new artefacts.ProteinInteraction({
-												id: 'ppi:(' + interaction.interaction[0] + ',' + interaction.interaction[1] + ')',
-												parent:      $scope.tile,
-												source:      proteinArtefactMap[interaction.interaction[0]],
-												target:      proteinArtefactMap[interaction.interaction[1]],
-												element:     function () { return element[0]; },
-												graphZIndex: 100,
-												detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/protein-interaction-details.html'
-											});
-											graphGroup.addEdge(proteinInteractionArtefact);
-
-											//// react to mouse hover by giving focus
-											//
-											element.on('mouseover', $bind(function (event) {
-												event.stopPropagation();
-												$scope.$root.$broadcast('artefact-focus', proteinInteractionArtefact, {});
-											}));
-											element.on('mouseout', $bind(function (event) {
-												event.stopPropagation();
-												$scope.$root.$broadcast('artefact-unfocus', proteinInteractionArtefact, {});
-											}));
-
-											//// react to clicks by fixing focus
-											//
-											element.clickNotDrop($bind(function () {
-												$scope.$root.$broadcast('artefact-focus-fix',
-														proteinInteractionArtefact.focusFixed ? null : proteinInteractionArtefact);
-											}));
-
-											//// how to react when focus is fixed:
-											//
-											$scope.$on('artefact-focus-fix', function (e, artefact) {
-												proteinInteractionArtefact.focusFixed = (artefact === proteinInteractionArtefact);
-												element.setSvgClass('focus-fixed', proteinInteractionArtefact.focusFixed);
-											});
-
-										});
-									}
-
-									function removeAllProteinEdgesAndVertices() {
-										_(graphGroup.edges()).forEach(function (edge) {
-											if (edge.type === 'proteinInteraction') {
-												graphGroup.removeEdge(edge);
+											var proteinInteractionArtefact;
+											function addProteinInteraction() {
+												proteinInteractionArtefact = new artefacts.ProteinInteraction({
+													id: 'ppi:(' + interaction.interaction[0] + ',' + interaction.interaction[1] + ')',
+													$scope:            $scope,
+													parent:            $scope.tile,
+													source:            proteinArtefactMap[interaction.interaction[0]],
+													target:            proteinArtefactMap[interaction.interaction[1]],
+													graphZIndex:       100,
+													detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/protein-interaction-details.html',
+													ResourceService:   ResourceService,
+													$bind:             $bind
+												});
+												graphGroup.addEdge(proteinInteractionArtefact);
+												proteinInteractionArtefact.onDestruct(function () {
+													graphGroup.removeEdge(proteinInteractionArtefact);
+												});
 											}
-										});
-										_(graphGroup.vertices()).forEach(function (artefact) {
-											if (artefact.type === 'protein') {
-												if (artefact.focusFixed) {
-													$scope.$root.$broadcast('artefact-focus-fix', null);
+											onProteinToggle(function (showProteins) {
+												if (showProteins) { addProteinInteraction(); }
+												else if (proteinInteractionArtefact) {
+													proteinInteractionArtefact.destructor();
+													proteinInteractionArtefact = null;
 												}
-												graphGroup.removeVertex(artefact);
-												artefact.destructor();
-											}
+											});
 										});
-									}
 
-									$scope.$watch('tile.active && $root.proteinsEnabled', function (showProteins) {
-										if (showProteins) { addAllProteinEdgesAndVertices(); }
-										else { removeAllProteinEdgesAndVertices(); }
-									});
-									$scope.$on('$destroy', function () {
-										removeAllProteinEdgesAndVertices();
-									});
+									}
 								});
 
 							});
@@ -634,7 +506,10 @@ define(['angular',
 									var loader;
 									if (/\.swc$/.test(filename)) { loader = 'loadSwcFile'; }
 									else if (/\.obj$/.test(filename)) { loader = 'loadObjFile'; }
-									else { console.error('The file "' + filename + '" is not supported.'); return; }
+									else {
+										console.error('The file "' + filename + '" is not supported.');
+										return;
+									}
 
 
 									//// to register handlers for the construction and destruction of 3d models
@@ -713,8 +588,6 @@ define(['angular',
 									});
 
 
-
-
 								}
 							});// ResourceService.threeDModels().then()
 
@@ -736,9 +609,6 @@ define(['angular',
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 });/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 
 
 // TODO: protein kebabs
