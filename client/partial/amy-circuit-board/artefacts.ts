@@ -58,12 +58,30 @@ export class Artefact {
 	}
 
 
+	//////////////////// AngularJS Scope Binding ///////////////////////////////
+
+	$scope: any;
+
+	constructor_Artefact1(): void {
+		if (this.$scope) {
+			var that = this;
+
+			//// If no parent has been given, try to find it as
+			//// a property $scope.artefact in the $scope chain:
+			that.parent = that.parent || that.$scope.$parent.artefact || null;
+
+			//// When the $scope is destroyed, destruct this artefact:
+			that.$scope.$on('$destroy', function () { that.destructor(); });
+		}
+	}
+
+
 	//////////////////// Identity //////////////////////////////////////////////
 
 	id: string;
 	type: string;
 
-	constructor_Artefact1(): void {
+	constructor_Artefact2(): void {
 		if (!this.id) { this.id = _.uniqueId(); }
 	}
 
@@ -74,17 +92,13 @@ export class Artefact {
 	root: Artefact;
 	children: Artefact[];
 
-	connectWithParent() {
-		this.root = this.parent.root;
-		this.parent.children.push(this);
-		this.onDestruct(function () {
-			_.pull(this.parent.children, this);
-		});
-	}
-
-	constructor_Artefact2(): void {
+	constructor_Artefact3(): void {
 		if (this.parent) {
-			this.connectWithParent();
+			this.root = this.parent.root;
+			this.parent.children.push(this);
+			this.onDestruct(function () {
+				_.pull(this.parent.children, this);
+			});
 		} else {
 			this.root = this;
 		}
@@ -121,7 +135,7 @@ export class Artefact {
 
 	focusFixed: boolean;
 
-	constructor_Artefact3(): void {
+	constructor_Artefact4(): void {
 		var that = this;
 		that.onDestruct(function () {
 			if (this.focusFixed) {
@@ -134,30 +148,6 @@ export class Artefact {
 	//////////////////// Detail Panel //////////////////////////////////////////
 
 	detailTemplateUrl: string;
-
-
-	//////////////////// AngularJS Scope Binding ///////////////////////////////
-
-	$scope: any;
-
-	constructor_Artefact4(): void {
-		if (this.$scope) {
-			var that = this;
-
-			//// If no parent has been given, try to find it as
-			//// a property $scope.artefact in the $scope chain:
-			//
-			if (!that.parent) {
-				that.parent = that.$scope.$parent.artefact || null;
-			}
-
-			//// When the $scope is destroyed, destruct this artefact:
-			//
-			that.$scope.$on('$destroy', function () {
-				that.destructor();
-			});
-		}
-	}
 
 
 	//////////////////// Resources /////////////////////////////////////////////
@@ -264,9 +254,10 @@ export class Tile extends Artefact {
 	position: Position;
 
 	constructor_Tile1(): void {
-		this.onDestruct(function () {
-			var tileMap = this.parentTileMap();
-			if (tileMap.maximizedChild === this) {
+		var that = this;
+		that.onDestruct(function () {
+			var tileMap = that.parentTileMap();
+			if (tileMap.maximizedChild === that) {
 				tileMap.maximizedChild = null;
 			}
 		})
@@ -380,21 +371,21 @@ export class SvgVertexArtefact extends SvgArtefact {
 
 		//// react to dragging by temporarily fixing focus (if not already fixed)
 		//
-		var removeFocusFixOnDrop;
+		var previousFocusedArtefact; // TODO: restore old focus-fix
 		that._svgElement.mouseDragDrop(that.$bind(function () {
 			that._svgElement.addSvgClass('dragging');
 			that.parentCircuitBoard().draggingVertex = true;
 			if (that.focusFixed) {
-				removeFocusFixOnDrop = false;
+				previousFocusedArtefact = false;
 			} else {
-				removeFocusFixOnDrop = true;
+				previousFocusedArtefact = true;
 				that.$scope.$root.$broadcast('artefact-focus-fix', that);
 			}
 		}), that.$bind(function () {
 			that._svgElement.removeSvgClass('dragging');
 			that.parentCircuitBoard().draggingVertex = false;
 			$('svg[amy-graph-layer]').removeSvgClass('dragging');
-			if (removeFocusFixOnDrop) {
+			if (previousFocusedArtefact) {
 				that.$scope.$root.$broadcast('artefact-focus-fix', null);
 			}
 		}));

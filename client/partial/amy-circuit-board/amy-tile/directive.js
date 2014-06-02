@@ -89,7 +89,7 @@ define(['angular',
 							$scope.tile =
 							$scope.artefact = new artefacts.Tile({
 								id:                $scope.$id,
-								parent:            $scope.$parent.artefact,
+								$scope:            $scope,
 								relationType:      $scope.subEntity.type,
 								detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/detail-view.html',
 								entity:            $scope.entity
@@ -300,8 +300,8 @@ define(['angular',
 
 								//// calculate styling, possibly based on parent tile background
 								//
-								if (($scope.tile.parent.parent.type === 'tile')) {
-									var parentBgColor = $scope.tile.parent.parent.styling.normal.css['&'].backgroundColor;
+								if ($scope.tile.parentTile()) {
+									var parentBgColor = $scope.tile.parentTile().styling.normal.css['&'].backgroundColor;
 									$scope.tile.styling = generateTileDefaults($scope.entity.tile, {
 										bgColor: (color(parentBgColor).luminance() < .5 ?
 										          color(parentBgColor).brighten(30).css() :

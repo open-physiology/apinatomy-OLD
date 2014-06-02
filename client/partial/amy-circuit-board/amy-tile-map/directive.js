@@ -53,9 +53,8 @@ define(['lodash', 'angular', 'app/module', 'partial/amy-circuit-board/artefacts'
 								$scope.tileMap =
 								$scope.artefact = new artefacts.TileMap({
 									id:     $scope.$id,
-									parent: $scope.$parent.artefact
+									$scope: $scope
 								});
-								$scope.$on('$destroy', function () { $scope.artefact.destructor(); });
 
 
 								//////////////////// Keeping Track of Tile-map Position and Size ///////////////////////////

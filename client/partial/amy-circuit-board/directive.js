@@ -34,12 +34,11 @@ define(['app/module', 'lodash',
 						$scope.circuitBoard =
 						$scope.artefact = new artefacts.CircuitBoard({
 							id:       $scope.$id,
-							parent:   $scope.$parent.artefact,
-							entity: null, // to be set
-							$scope: $scope,
+							entity:   null, // to be set
+							$scope:   $scope,
 							position: {
-								top: 0,
-								left: 0,
+								top:    0,
+								left:   0,
 								height: null, // to be set
 								width:  null  // to be set
 							}
@@ -53,7 +52,7 @@ define(['app/module', 'lodash',
 						$($window).on('resize', $bind(function onWindowResize() {
 							_($scope.circuitBoard.position).assign({
 								height: iElement.height(),
-								width: iElement.width()
+								width:  iElement.width()
 							});
 						}, { checkPhase: true })); // because window resize can be triggered synchronously
 
