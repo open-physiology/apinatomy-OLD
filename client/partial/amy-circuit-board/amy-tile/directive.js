@@ -267,7 +267,7 @@ define(['angular',
 							//////////////////// Reacting to Focus Broadcasts //////////////////////////////////////////
 
 							$scope.$on('artefact-focus', function (event, artefact, options) {
-								if (artefact.type === 'protein') {
+								if (artefact.type === 'protein' || artefact.type === 'proteinInteraction') {
 									artefact = artefact.ancestor('tile');
 								}
 								$scope.tile.highlighted = !!(artefact && artefact.entity &&
