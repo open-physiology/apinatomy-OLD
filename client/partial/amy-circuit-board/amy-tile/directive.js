@@ -490,7 +490,28 @@ define(['angular',
 							//////////////////// 3D models /////////////////////////////////////////////////////////////
 
 							ResourceService.threeDModels($scope.tile.entity._id).then(function (models) {
-								if (!_(models).isUndefined()) {
+								if (!_(models).isEmpty()) {
+
+
+
+
+
+
+									var static3DModel = new artefacts.Static3DModel({
+										$scope: $scope,
+										parent: $scope.tile,
+										models: models,
+
+										THREE:  THREE
+									});
+									////////////////// TODO: CONTINUE HERE
+
+
+
+
+
+
+
 									var filename = models[0]; //// TODO: options to switch; now getting only the first model
 
 									//// control the appearance of the 3D-model button
