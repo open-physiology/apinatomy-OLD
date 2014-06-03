@@ -36,6 +36,11 @@ define(['app/module'], function (app) {
 							entitiesUnderAttention = ResourceService.entities(ancestors);
 							_(entitiesUnderAttention).forEach(function (e) {
 								e._searchResult = true;
+
+								// FIXME: debug output requested by Bernard to find the right paths
+								e._promise.then(function (ent) {
+									console.log(ent.name + ' (' + ent._id + ')');
+								});
 							});
 						}).catch(function (err) {
 							console.error(err);
