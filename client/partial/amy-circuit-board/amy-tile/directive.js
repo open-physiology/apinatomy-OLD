@@ -413,7 +413,7 @@ define(['angular',
 
 										var onProteinToggle = (function () {
 											var proteinToggleD = $q.defer();
-											$scope.$watch('tile.active && $root.proteinsEnabled', function (showProteins) {
+											$scope.$watch('tile.active && $root.proteinsEnabled && !tile.open', function (showProteins) {
 												proteinToggleD.notify(showProteins);
 											});
 											return function onProteinToggle(fn) {
