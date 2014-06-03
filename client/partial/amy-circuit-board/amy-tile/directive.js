@@ -105,6 +105,15 @@ define(['angular',
 							});
 
 
+							//////////////////// Showing or hiding the header //////////////////////////////////////////
+							// FIXME: this was requested by Bernard, and includes changes in several places in the code
+
+							_($scope.tile).derivedProperty('hiddenHeader', function () {
+								return $scope.tile.maximized && $scope.tile.open;
+							});
+
+
+
 							//////////////////// Managing Tile Visibility //////////////////////////////////////////////
 
 
@@ -287,11 +296,19 @@ define(['angular',
 							// Using ng-class doesn't seem to always work, so we're setting classes manually.
 							// (Report Angular bug?)
 
-							$scope.$watch('tile.open', function (v) { iElement.toggleClass('open', !!v); });
-							$scope.$watch('tile.maximized', function (v) { iElement.toggleClass('maximized', !!v); });
-							$scope.$watch('tile.highlighted', function (v) { iElement.toggleClass('highlighted', !!v); });
-							$scope.$watch('tile.active', function (v) { iElement.toggleClass('active', !!v); });
-							$scope.$watch('entity._searchResult', function (v) { iElement.toggleClass('searchResult', !!v); });
+							function tilePropertyToClass(prop, cls) {
+								cls = cls || prop;
+								$scope.$watch('tile.' + prop, function (v) { iElement.toggleClass(cls, !!v); });
+							}
+
+							tilePropertyToClass('open');
+							tilePropertyToClass('maximized');
+							tilePropertyToClass('highlighted');
+							tilePropertyToClass('active');
+							tilePropertyToClass('entity._searchResult', 'searchResult');
+
+							// FIXME: this was requested by Bernard, and includes changes in several places in the code
+							tilePropertyToClass('hiddenHeader', 'hidden-header');
 
 
 							//////////////////// Tile Styling //////////////////////////////////////////////////////////
@@ -350,13 +367,23 @@ define(['angular',
 								function setRegion() {
 									var widthPadding = Math.min(TILE_HEADER_HEIGHT, $scope.tile.position.width) / 2;
 									var heightPadding = Math.min(TILE_HEADER_HEIGHT, $scope.tile.position.height) / 2;
-									var height = ($scope.tile.open ? TILE_HEADER_HEIGHT : $scope.tile.position.height);
-									graphGroup.setRegion({
-										top: $scope.tile.position.top + heightPadding,
-										left: $scope.tile.position.left + widthPadding,
-										height: height - 2 * heightPadding,
-										width: $scope.tile.position.width - 2 * widthPadding
-									});
+									if ($scope.tile.hiddenHeader) {
+										// FIXME: this was requested by Bernard, and includes changes in several places in the code
+										graphGroup.setRegion({
+											top: $scope.tile.position.top,
+											left: $scope.tile.position.left + widthPadding,
+											height: 1,
+											width: $scope.tile.position.width - 2 * widthPadding
+										});
+									} else {
+										var height = ($scope.tile.open ? TILE_HEADER_HEIGHT : $scope.tile.position.height);
+										graphGroup.setRegion({
+											top: $scope.tile.position.top + heightPadding,
+											left: $scope.tile.position.left + widthPadding,
+											height: height - 2 * heightPadding,
+											width: $scope.tile.position.width - 2 * widthPadding
+										});
+									}
 								}
 
 								$scope.$watch('tile.position', function (newPosition) {

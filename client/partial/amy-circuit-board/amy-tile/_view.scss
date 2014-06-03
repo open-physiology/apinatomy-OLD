@@ -130,6 +130,14 @@
 		background-position: 3px 3px;
 	}
 
+
+	////////// HACK: hiding the header for open+maximized tiles //////////
+	// FIXME: this was requested by Bernard, and includes changes in several places in the code
+
+	&.hidden-header {
+		& > header { display: none !important; }
+		& > section { top: 0 !important; }
+	}
 }
 
 [amy-graph-layer] {

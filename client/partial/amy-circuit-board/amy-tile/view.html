@@ -32,7 +32,10 @@
 
     <section ng-if="tile.open">
         <amy-tile-map ng-model="tile.entity" position="{{
-            {left: tile.position.left + 1, width: tile.position.width - 2, top: tile.position.top+(26+2), height: tile.position.height-(26+2)}
+            { left: tile.position.left + 1,
+              width: tile.position.width - 2,
+              top: tile.position.top + 1 + (tile.hiddenHeader ? 0 : 26+1),
+              height: tile.position.height - 2 - (tile.hiddenHeader ? 0 : 26+1)}
         }}"></amy-tile-map>
     </section>
 
