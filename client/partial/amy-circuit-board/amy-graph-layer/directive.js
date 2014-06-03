@@ -157,9 +157,11 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 										$scope.updateGraph();
 									},
 									removeVertex: function removeVertex(vertex) {
-										delete $scope.vertexArtefacts[vertex.graphId];
-										_(group.vertices).pull(vertex);
-										$scope.updateGraph();
+										if (vertex) {
+											delete $scope.vertexArtefacts[vertex.graphId];
+											_(group.vertices).pull(vertex);
+											$scope.updateGraph();
+										}
 									},
 									addEdge: function addEdge(edge) {
 										edge.group = group;
@@ -169,16 +171,18 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3', '$bind/service'], fun
 										$scope.updateGraph();
 									},
 									removeEdge: function removeEdge(edge) {
-										delete $scope.edgeArtefacts[edge.graphId];
-										_(group.edges).pull(edge);
-										$scope.updateGraph();
+										if (edge) {
+											delete $scope.edgeArtefacts[edge.graphId];
+											_(group.edges).pull(edge);
+											$scope.updateGraph();
+										}
 									},
 									removeAllEdgesAndVertices: function removeAllEdgesAndVertices() {
 										_(group.edges).forEach(function (edge) {
-											delete $scope.edgeArtefacts[edge.graphId];
+											if (edge) { delete $scope.edgeArtefacts[edge.graphId]; }
 										});
 										_(group.vertices).forEach(function (vertex) {
-											delete $scope.vertexArtefacts[vertex.graphId];
+											if (vertex) { delete $scope.vertexArtefacts[vertex.graphId]; }
 										});
 										_(group.edges).remove();
 										_(group.vertices).remove();
