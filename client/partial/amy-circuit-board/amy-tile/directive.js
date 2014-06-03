@@ -519,28 +519,6 @@ define(['angular',
 							ResourceService.threeDModels($scope.tile.entity._id).then(function (models) {
 								if (!_(models).isEmpty()) {
 
-
-
-
-
-
-									var static3DModel = new artefacts.Static3DModel({
-										$scope: $scope,
-										parent: $scope.tile,
-										models: models,
-
-										THREE:  THREE
-									});
-									////////////////// TODO: CONTINUE HERE
-
-
-
-
-
-
-
-									var filename = models[0]; //// TODO: options to switch; now getting only the first model
-
 									//// control the appearance of the 3D-model button
 									//
 									$scope.$watch('$root.threeDEnabled', function (threeDEnabled) {
@@ -548,19 +526,9 @@ define(['angular',
 										if (!threeDEnabled) { $scope.tile.show3DModel = false; }
 									});
 
-
-									//// determine the proper loader for the 3d model of this tile
-									//
-									var loader;
-									if (/\.swc$/.test(filename)) { loader = 'loadSwcFile'; }
-									else if (/\.obj$/.test(filename)) { loader = 'loadObjFile'; }
-									else {
-										console.error('The file "' + filename + '" is not supported.');
-										return;
-									}
-
-
 									//// to register handlers for the construction and destruction of 3d models
+									// TODO: create a nicer idiom for this kind of situation;
+									//     : both the 3d layer and the 3d object may be on or off
 									//
 									var threeDLayer;
 									var on3d = (function () {
@@ -580,62 +548,42 @@ define(['angular',
 										}
 									}());
 
-
 									//// adding the model; takes care of its own cleanup
 									//
 									on3d('construct', function on3dConstruct() {
-										threeDLayer[loader](filename, $bind(function (obj) {
 
-											//// get an interface to the 3d layer
-											//
-											var threeDGroup = threeDLayer.new3dGroup();
-											on3d('destruct', function () { threeDGroup.remove(); });
+										//// get an interface to the 3d layer
+										//
+										var threeDGroup = threeDLayer.new3dGroup();
+										on3d('destruct', function () { threeDGroup.remove(); });
 
-											//// keep region up to date
-											//
-											threeDGroup.setRegion($scope.tile.position);
-											on3d('destruct', $scope.$watch('tile.position', function (newPosition, oldPosition) {
-												if (newPosition) {
-													threeDGroup.setRegion($scope.tile.position);
-												}
-											}));
+										//// create the artefact
+										//
+										var static3DModel = new artefacts.Static3DModel({
+											$scope: $scope,
+											entity: $scope.tile.entity,
+											parent: $scope.tile,
+											filename: models[0], // TODO: options to switch; now getting only the first model
+											parent3DObject: threeDGroup.object,
+											detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/static-3d-model-details.html',
 
-											//// calculate bounding box of object; used for several purposes
-											//
-											var boundingBox = threeDLayer.getCompoundBoundingBox(obj);
+											threeDGroup: threeDGroup, // TODO: just pass the 3d layer
 
-											//// normalize position
-											//
-											var translation = boundingBox.center().negate();
-											obj.children[0].geometry.applyMatrix(new THREE.Matrix4().setPosition(translation));
+											THREE:  THREE,
+											$q:     $q
+										});
+										on3d('destruct', function () { static3DModel.destructor() });
 
-											//// adjust to new tile position
-											//
-											on3d('destruct', $scope.$watch('tile.position', function (newPosition) {
-												if (newPosition) {
-													//// adjust size
-													//
-													var ratio = Math.min($scope.tile.position.width / boundingBox.size().x,
-																	$scope.tile.position.height / boundingBox.size().y) * .7;
-													if (/\.swc/.test(filename)) { ratio *= 2; } // neurons may take more space
-													obj.scale.set(ratio, ratio, ratio);
-
-													//// adjust 'altitude'
-													//
-													obj.position.z = 0.5 * ratio * boundingBox.size().z + 30;
-												}
-											}));
-
-											//// add the object to the scene
-											//
-											threeDGroup.object.add(obj);
-											on3d('destruct', function () {
-												threeDGroup.object.remove(obj);
-											});
+										//// adjust to new tile positions
+										//
+										on3d('destruct', $scope.$watch('tile.position', function (newPosition) {
+											if (newPosition) {
+												threeDGroup.setRegion($scope.tile.position);
+												static3DModel.adjustToSize($scope.tile.position);
+											}
 										}));
+
 									});
-
-
 								}
 							});// ResourceService.threeDModels().then()
 

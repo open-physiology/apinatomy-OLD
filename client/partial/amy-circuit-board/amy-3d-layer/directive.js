@@ -10,25 +10,11 @@ define(['jquery',
         'threejs-css-3d-renderer',
         'threejs-trackball-controls',
         'threejs-obj-loader',
-        'threejs-swc-loader'
+        'threejs-swc-loader',
+        'threex-domevents',
+        '$bind/service'
 ], function ($, _, ng, app, Stats, THREE) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-	function getCompoundBoundingBox(object3D) {
-		var box = null;
-		object3D.traverse(function (obj3D) {
-			var geometry = obj3D.geometry;
-			if (geometry === undefined) return;
-			geometry.computeBoundingBox();
-			if (box === null) {
-				box = geometry.boundingBox;
-			} else {
-				box.union(geometry.boundingBox);
-			}
-		});
-		return box;
-	}
 
 
 	var DEG_TO_RAD = Math.PI / 180;
@@ -37,7 +23,7 @@ define(['jquery',
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	app.directive('amy3dLayer', ['$window', function ($window) {
+	app.directive('amy3dLayer', ['$window', '$bind', function ($window, $bind) {
 		return {
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -229,40 +215,44 @@ define(['jquery',
 						}());
 
 
-						//////////////////// loading manager ////////////////////
+						//////////////////// mouse events on objects ////////////////////
 
-						var loadingManager = new THREE.LoadingManager();
-						var objLoader = new THREE.OBJLoader(loadingManager);
-						var swcLoader = new THREE.SWCLoader(loadingManager);
+						var domEvents = new THREEx.DomEvents(camera, iElement[0]);
 
 
 						//////////////////// tile interfaces ////////////////////
 
-						var tileObjects = {};
 						$scope.circuitBoard.threeDLayer = {
 							new3dGroup: function new3dGroup() {
-								var id = _.uniqueId('position');
 								var obj3d = new THREE.Object3D();
-								tileObjects[id] = obj3d;
 								scene.add(obj3d);
 
 								return {
 									remove: function remove() {
 										scene.remove(obj3d);
-										delete tileObjects[id];
 									},
 									setRegion: function setRegion(region) {
 										obj3d.position.x = baseX + (region.left + 0.5 * region.width);
 										obj3d.position.y = baseY - (region.top  + 0.5 * region.height);
 										render();
-										// TODO: call some update function
 									},
-									get object() { return obj3d; }
+									on: function on(eventName, fn) {
+										obj3d.traverse(function (thing) {
+											if (thing instanceof THREE.Mesh) {
+												domEvents.addEventListener(thing, eventName, $bind(fn));
+											}
+										});
+									},
+									off: function off(eventName, fn) {
+										obj3d.traverse(function (thing) {
+											if (thing instanceof THREE.Mesh) {
+												domEvents.removeEventListener(thing, eventName, $bind(fn));
+											}
+										});
+									},
+									object: obj3d
 								};
-							},
-				            get getCompoundBoundingBox() { return getCompoundBoundingBox },
-							loadObjFile: function loadObjFile(filename, fn) { objLoader.load(filename, fn) },
-							loadSwcFile: function loadSwcFile(filename, fn) { swcLoader.load(filename, fn) }
+							}
 						};
 
 					}

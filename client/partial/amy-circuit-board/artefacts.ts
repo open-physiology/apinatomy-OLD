@@ -48,7 +48,7 @@ export class Artefact {
 
 	destructor(): void {
 		this.isBeingDestructed = true;
-		_.forEachRight(this._destructCallbacks, function (fn) { fn(); });
+		_.forEachRight(this._destructCallbacks, function (fn) { fn() });
 		this.isBeingDestructed = false;
 		this.wasDestructed = true;
 	}
@@ -135,14 +135,52 @@ export class Artefact {
 
 	focusFixed: boolean;
 
+	private _focusCallbacks: Function[] = [];
+	private _unfocusCallbacks: Function[] = [];
+	private _focusFixCallbacks: Function[] = [];
+	private _focusUnfixCallbacks: Function[] = [];
+
+	private static _somethingHasFocusFix: boolean = false;
+
 	constructor_Artefact4(): void {
 		var that = this;
+
+		//// release focus fix when destructed
+		//
 		that.onDestruct(function () {
-			if (this.focusFixed) {
-				this.$scope.$root.$broadcast('artefact-focus-fix', null);
+			if (that.focusFixed) {
+				that.$scope.$root.$broadcast('artefact-focus-fix', null);
+			}
+		});
+
+		//// watch for focus events
+		//
+		that.$scope.$on('artefact-focus', function (event, artefact/*, options*/) {
+			if (!Artefact._somethingHasFocusFix && that === artefact) {
+				_.forEach(that._focusCallbacks, function (fn) { fn() });
+			}
+		});
+		that.$scope.$on('artefact-unfocus', function (event, artefact/*, options*/) {
+			if (!Artefact._somethingHasFocusFix && that === artefact) {
+				_.forEach(that._unfocusCallbacks, function (fn) { fn() });
+			}
+		});
+		that.$scope.$on('artefact-focus-fix', function (event, newFocusFixInstance/*, options*/) {
+			Artefact._somethingHasFocusFix = !!newFocusFixInstance;
+			if (that.focusFixed && newFocusFixInstance !== that) {
+				that.focusFixed = false;
+				_.forEach(that._focusUnfixCallbacks, function (fn) { fn() });
+			} else if (!that.focusFixed && newFocusFixInstance === that) {
+				that.focusFixed = true;
+				_.forEach(that._focusFixCallbacks, function (fn) { fn() });
 			}
 		});
 	}
+
+	onFocus(fn: Function): void { this._focusCallbacks.push(fn); }
+	onUnfocus(fn: Function): void { this._unfocusCallbacks.push(fn); }
+	onFocusFix(fn: Function): void { this._focusFixCallbacks.push(fn); }
+	onFocusUnfix(fn: Function): void { this._focusUnfixCallbacks.push(fn); }
 
 
 	//////////////////// Detail Panel //////////////////////////////////////////
@@ -155,6 +193,7 @@ export class Artefact {
 
 	$bind: any;
 	ResourceService: any;
+	$q: any;
 
 }
 
@@ -334,11 +373,8 @@ export class SvgArtefact extends Artefact {
 
 		//// how to react when focus is fixed:
 		//
-		var deregisterFocusWatch = that.$scope.$on('artefact-focus-fix', function (e, artefact) {
-			that.focusFixed = (artefact === that);
-			that._svgElement.setSvgClass('focus-fixed', that.focusFixed);
-		});
-		that.onDestruct(deregisterFocusWatch);
+		that.onFocusFix(function () { that._svgElement.setSvgClass('focus-fixed', true); });
+		that.onFocusUnfix(function () { that._svgElement.setSvgClass('focus-fixed', false); });
 	}
 
 }
@@ -796,16 +832,155 @@ export class Static3DModel extends Artefact {
 			type          : 'static3DModel',
 			relationType  : '3d model'
 		}, properties));
+
+		this.constructor_Static3DModel1();
+		this.constructor_Static3DModel2();
 	}
 
 
 	//////////////////// Model /////////////////////////////////////////////////
 
-	models: string[];
+	threeDGroup: any;
+	filename: string;
+	parent3DObject: any;
+
+	private object3DQ: any;
+
+	constructor_Static3DModel1() {
+		var that = this;
+
+		//// set a promise for the 3D object
+		//
+		var deferred = this.$q.defer();
+		that.object3DQ = deferred.promise;
+
+		//// determine the proper loader for the 3d model
+		//
+		var loader;
+		if (/\.swc$/.test(that.filename)) { loader = new that.THREE.SWCLoader(); }
+		else if (/\.obj$/.test(that.filename)) { loader = new that.THREE.OBJLoader(); }
+		else {
+			deferred.reject('The file "' + that.filename + '" is not supported.');
+			return;
+		}
+
+		//// load the object
+		//
+		loader.load(that.filename, function (obj) {
+
+			//// add this object to the parent object
+			that.parent3DObject.add(obj);
+			that.onDestruct(function () { that.parent3DObject.remove(obj) });
+
+			//// process initial size and position
+			that.processInitialSizeAndPosition(obj);
+
+			//// resolve the promise for the object
+			deferred.resolve(obj);
+
+		});
+	}
 
 
-	////////////////// TODO: CONTINUE HERE
+	//////////////////// Size and Position /////////////////////////////////////
 
+	private object3DBoundingBox: any;
+
+	private getCompoundBoundingBox(object3D) {
+		var box = null;
+		object3D.traverse(function (obj) {
+			var geometry = obj.geometry;
+			if (_.isUndefined(geometry)) { return }
+			geometry.computeBoundingBox();
+			if (_.isNull(box)) {
+				box = geometry.boundingBox;
+			} else {
+				box.union(geometry.boundingBox);
+			}
+		});
+		return box;
+	}
+
+	processInitialSizeAndPosition(obj) {
+		//// calculate bounding box of object; used for several purposes
+		this.object3DBoundingBox = this.getCompoundBoundingBox(obj);
+
+		//// normalize position
+		var translation = this.object3DBoundingBox.center().negate();
+		obj.children[0].geometry.applyMatrix(new this.THREE.Matrix4().setPosition(translation));
+	}
+
+	adjustToSize(size: { width: number; height: number; }) {
+		var that = this;
+
+		that.object3DQ.then(function (obj) {
+			//// adjust size
+			var ratio = Math.min(size.width / that.object3DBoundingBox.size().x,
+							size.height / that.object3DBoundingBox.size().y) * .7;
+			if (/\.swc/.test(that.filename)) { ratio *= 2; } // neurons may take more space
+			obj.scale.set(ratio, ratio, ratio);
+
+			//// adjust 'altitude'
+			obj.position.z = 0.5 * ratio * that.object3DBoundingBox.size().z + 30;
+		});
+	}
+
+
+	//////////////////// Focus /////////////////////////////////////////////////
+
+	private forEachMesh(fn) {
+		var that = this;
+		that.object3DQ.then(function (obj) {
+			obj.traverse(function (thing) {
+				if (thing instanceof that.THREE.Mesh) {
+					fn(thing);
+				}
+			});
+		});
+	}
+
+	constructor_Static3DModel2() {
+		var that = this;
+		that.object3DQ.then(function (/*obj*/) {
+
+			//// translate mouse events to focus events
+			//
+			function onMouseOver() {
+				that.$scope.$root.$broadcast('artefact-focus', that, {});
+			}
+			function onMouseOut() {
+				that.$scope.$root.$broadcast('artefact-unfocus', that, {});
+			}
+			function onClick() {
+				that.$scope.$root.$broadcast('artefact-focus-fix', that.focusFixed ? null : that, {});
+			}
+			that.threeDGroup.on('mouseover', onMouseOver);
+			that.threeDGroup.on('mouseout', onMouseOut);
+			that.threeDGroup.on('click', onClick);
+			that.onDestruct(function () {
+				that.threeDGroup.off('mouseover', onMouseOver);
+				that.threeDGroup.off('mouseout', onMouseOut);
+				that.threeDGroup.off('click', onClick);
+			});
+
+			//// change color based on focus-events
+			//
+			that.forEachMesh(function (thing) { thing.userData.initialColor = thing.material.color; });
+			that.onFocus(function () {
+				that.forEachMesh(function (thing) { thing.material.color = new that.THREE.Color('#ccffff'); });
+			});
+			that.onUnfocus(function () {
+				that.forEachMesh(function (thing) { thing.material.color = thing.userData.initialColor; });
+			});
+			that.onFocusFix(function () {
+				that.forEachMesh(function (thing) { thing.material.color = new that.THREE.Color('#00cc00'); });
+			});
+			that.onFocusUnfix(function () {
+				that.forEachMesh(function (thing) { thing.material.color = thing.userData.initialColor; });
+			});
+
+		});
+	}
 
 
 	//////////////////// Resources /////////////////////////////////////////////
