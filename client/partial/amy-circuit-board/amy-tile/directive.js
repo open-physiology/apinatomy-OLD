@@ -242,53 +242,55 @@ define(['angular',
 
 							//// Mouse-over events
 							//
-							function broadcastFocusEvent(eventName, options) {
+							function broadcastFocusEvent(flag) {
 								var deepestFocusedTile = $scope.tile;
 								while (deepestFocusedTile.children[0] && deepestFocusedTile.children[0].maximizedChild) {
 									deepestFocusedTile = deepestFocusedTile.children[0].maximizedChild;
 								}
 								if (deepestFocusedTile.entity._resolved) {
-									$scope.$root.$broadcast(eventName, deepestFocusedTile, options);
+									deepestFocusedTile.focus = flag;
 								}
 							}
 
 							$scope.onTileMouseOver = function ($event) {
 								$event.stopPropagation();
-								broadcastFocusEvent('artefact-focus', { excludeHighlighting: [$scope.tile] });
+								broadcastFocusEvent(true); // TODO: prevent highlighting of this tile
 							};
 
 							$scope.onTileMouseOut = function ($event) {
 								$event.stopPropagation();
-								broadcastFocusEvent('artefact-unfocus', { excludeHighlighting: [$scope.tile] });
+								broadcastFocusEvent(false); // TODO: re-enable possible highlighting of this tile
 							};
 
 							$scope.onHeaderMouseOver = function ($event) {
 								$event.stopPropagation();
-								broadcastFocusEvent('artefact-focus', {});
+								broadcastFocusEvent(true, {});
 							};
 
 							$scope.onHeaderMouseOut = function ($event) {
 								$event.stopPropagation();
-								broadcastFocusEvent('artefact-unfocus', {});
+								broadcastFocusEvent(false, {});
 							};
 
 
 							//////////////////// Reacting to Focus Broadcasts //////////////////////////////////////////
 
-							$scope.$on('artefact-focus', function (event, artefact, options) {
-								if (artefact.type === 'protein' || artefact.type === 'proteinInteraction') {
-									artefact = artefact.ancestor('tile');
-								}
-								$scope.tile.highlighted = !!(artefact && artefact.entity &&
-								                             artefact.entity === $scope.entity &&
-								                             !_(options.excludeHighlighting).contains($scope.tile));
-							});
-
-							$scope.$on('artefact-unfocus', function (event, artefact/*, options*/) {
-								if (artefact.entity && artefact.entity === $scope.entity) {
-									$scope.tile.highlighted = false;
-								}
-							});
+							// TODO: make sure this is handled with the new focus system
+//
+//							$scope.$on('artefact-focus', function (event, artefact, options) {
+//								if (artefact.type === 'protein' || artefact.type === 'proteinInteraction') {
+//									artefact = artefact.ancestor('tile');
+//								}
+//								$scope.tile.highlighted = !!(artefact && artefact.entity &&
+//								                             artefact.entity === $scope.entity &&
+//								                             !_(options.excludeHighlighting).contains($scope.tile));
+//							});
+//
+//							$scope.$on('artefact-unfocus', function (event, artefact/*, options*/) {
+//								if (artefact.entity && artefact.entity === $scope.entity) {
+//									$scope.tile.highlighted = false;
+//								}
+//							});
 
 
 							//////////////////// CSS Classes ///////////////////////////////////////////////////////////
@@ -359,7 +361,7 @@ define(['angular',
 								//////////////////// Get group interface from the graph layer //////////////////////////
 
 								var graphGroup = graphLayer.newGraphGroup();
-								$scope.$on('destroy', function () { graphGroup.remove() });
+								$scope.$on('$destroy', function () { graphGroup.remove() });
 
 
 								//////////////////// Keep region up to date ////////////////////////////////////////////

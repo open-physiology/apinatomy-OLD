@@ -1,10 +1,11 @@
-/// <reference path="../../ts-lib/lodash.d.ts" />
 /// <reference path="../../ts-lib/jquery.d.ts" />
 /// <reference path="../../ts-lib/jquery-svg-class.d.ts" />
 /// <reference path="../../ts-lib/jquery-click-vs-drag.d.ts" />
+/// <reference path="../../ts-lib/lodash.d.ts" />
+/// <reference path="../../ts-lib/lodash-call.d.ts" />
 
-import _ = require('lodash');
 import $ = require('jquery');
+import _ = require('lodash');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,16 +45,16 @@ export class Artefact {
 
 	isBeingDestructed: boolean = false;
 	wasDestructed: boolean = false;
-	private _destructCallbacks: Function[] = [];
+	private _destructCallbacks: {():any}[] = [];
 
 	destructor(): void {
 		this.isBeingDestructed = true;
-		_.forEachRight(this._destructCallbacks, function (fn) { fn() });
+		_.forEachRight(this._destructCallbacks, _.call);
 		this.isBeingDestructed = false;
 		this.wasDestructed = true;
 	}
 
-	onDestruct(fn: Function): void {
+	onDestruct(fn: {():any}): void {
 		this._destructCallbacks.push(fn);
 	}
 
@@ -62,7 +63,7 @@ export class Artefact {
 
 	$scope: any;
 
-	constructor_Artefact1(): void {
+	private constructor_Artefact1(): void {
 		if (this.$scope) {
 			var that = this;
 
@@ -81,7 +82,7 @@ export class Artefact {
 	id: string;
 	type: string;
 
-	constructor_Artefact2(): void {
+	private constructor_Artefact2(): void {
 		if (!this.id) { this.id = _.uniqueId(); }
 	}
 
@@ -92,7 +93,7 @@ export class Artefact {
 	root: Artefact;
 	children: Artefact[];
 
-	constructor_Artefact3(): void {
+	private constructor_Artefact3(): void {
 		if (this.parent) {
 			this.root = this.parent.root;
 			this.parent.children.push(this);
@@ -105,6 +106,11 @@ export class Artefact {
 		if (_.isUndefined(this.children)) {
 			this.children = [];
 		}
+	}
+
+	depthFirstTraversal(fn) {
+		fn(this);
+		_.forEach(this.children, function (child: Artefact) { child.depthFirstTraversal(fn) });
 	}
 
 
@@ -133,54 +139,75 @@ export class Artefact {
 
 	//////////////////// Focus /////////////////////////////////////////////////
 
-	focusFixed: boolean;
+	static _focusCallbacks: {(Artefact, boolean):any}[] = [];
+	static _focusFixCallbacks: {(Artefact, boolean):any}[] = [];
 
-	private _focusCallbacks: Function[] = [];
-	private _unfocusCallbacks: Function[] = [];
-	private _focusFixCallbacks: Function[] = [];
-	private _focusUnfixCallbacks: Function[] = [];
+	static onFocus(fn: (Artefact, boolean)=>any) { Artefact._focusCallbacks.push(fn) }
+	static onFocusFix(fn: (Artefact, boolean)=>any) { Artefact._focusFixCallbacks.push(fn) }
 
-	private static _somethingHasFocusFix: boolean = false;
+	private _focusCallbacks: {(boolean):any}[] = [];
+	private _focusFixCallbacks: {(boolean):any}[] = [];
 
-	constructor_Artefact4(): void {
+	static focusIsFixed: boolean = false;
+
+	private _focus: boolean = false;
+	get focus(): boolean { return this._focus }
+	set focus(flag: boolean) {
+		if (this._focus !== flag) {
+			var that = this;
+			that.root.depthFirstTraversal(function (artefact: Artefact) {
+				if (artefact._focus === true && ((artefact === that && flag === false) || (artefact !== that && flag === true))) {
+					artefact._focus = false;
+					_.forEach(artefact._focusCallbacks, function (fn) { fn(false) });
+					_.forEach(Artefact._focusCallbacks, function (fn) { fn(artefact, false) });
+				}
+			});
+			that.root.depthFirstTraversal(function (artefact: Artefact) {
+				if (artefact._focus === false && artefact === that && flag === true) {
+					artefact._focus = true;
+					_.forEach(artefact._focusCallbacks, function (fn) { fn(true) });
+					_.forEach(Artefact._focusCallbacks, function (fn) { fn(artefact, true) });
+				}
+			});
+		}
+	}
+
+	private _focusFixed: boolean = false;
+	get focusFixed(): boolean { return this._focusFixed }
+	set focusFixed(flag: boolean) {
+		if (this._focusFixed !== flag) {
+			var that = this;
+			that.root.depthFirstTraversal(function (artefact: Artefact) {
+				if ((artefact._focusFixed === true && artefact === that && flag === false) ||
+						(artefact._focusFixed === true && artefact !== that && flag === true)) {
+					artefact._focusFixed = false;
+					_.forEach(artefact._focusFixCallbacks, function (fn) { fn(false) });
+					_.forEach(Artefact._focusFixCallbacks, function (fn) { fn(that, false) });
+					if (flag === false) { Artefact.focusIsFixed = false; }
+				}
+			});
+			that.root.depthFirstTraversal(function (artefact: Artefact) {
+				if (artefact._focusFixed === false && artefact === that && flag === true) {
+					artefact._focus = true;
+					artefact._focusFixed = true;
+					Artefact.focusIsFixed = true;
+					_.forEach(artefact._focusFixCallbacks, function (fn) { fn(true) });
+					_.forEach(Artefact._focusFixCallbacks, function (fn) { fn(that, true) });
+				}
+			});
+		}
+	}
+
+	private constructor_Artefact4(): void {
 		var that = this;
-
-		//// release focus fix when destructed
-		//
 		that.onDestruct(function () {
-			if (that.focusFixed) {
-				that.$scope.$root.$broadcast('artefact-focus-fix', null);
-			}
-		});
-
-		//// watch for focus events
-		//
-		that.$scope.$on('artefact-focus', function (event, artefact/*, options*/) {
-			if (!Artefact._somethingHasFocusFix && that === artefact) {
-				_.forEach(that._focusCallbacks, function (fn) { fn() });
-			}
-		});
-		that.$scope.$on('artefact-unfocus', function (event, artefact/*, options*/) {
-			if (!Artefact._somethingHasFocusFix && that === artefact) {
-				_.forEach(that._unfocusCallbacks, function (fn) { fn() });
-			}
-		});
-		that.$scope.$on('artefact-focus-fix', function (event, newFocusFixInstance/*, options*/) {
-			Artefact._somethingHasFocusFix = !!newFocusFixInstance;
-			if (that.focusFixed && newFocusFixInstance !== that) {
-				that.focusFixed = false;
-				_.forEach(that._focusUnfixCallbacks, function (fn) { fn() });
-			} else if (!that.focusFixed && newFocusFixInstance === that) {
-				that.focusFixed = true;
-				_.forEach(that._focusFixCallbacks, function (fn) { fn() });
-			}
+			that.focusFixed = false;
+			that.focus = false;
 		});
 	}
 
-	onFocus(fn: Function): void { this._focusCallbacks.push(fn); }
-	onUnfocus(fn: Function): void { this._unfocusCallbacks.push(fn); }
-	onFocusFix(fn: Function): void { this._focusFixCallbacks.push(fn); }
-	onFocusUnfix(fn: Function): void { this._focusUnfixCallbacks.push(fn); }
+	onFocus(fn: (boolean)=>any): void { this._focusCallbacks.push(fn); }
+	onFocusFix(fn: (boolean)=>any): void { this._focusFixCallbacks.push(fn); }
 
 
 	//////////////////// Detail Panel //////////////////////////////////////////
@@ -191,8 +218,8 @@ export class Artefact {
 	//////////////////// Resources /////////////////////////////////////////////
 	// TODO: make these three more globally available
 
-	$bind: any;
 	ResourceService: any;
+	$bind: any;
 	$q: any;
 
 }
@@ -203,12 +230,21 @@ export class Artefact {
 
 export class WebPage extends Artefact {
 
+	//////////////////// Construction //////////////////////////////////////////
+
 	constructor(properties) {
 		super(_.extend({
 			type: 'webPage',
 			parent: null
 		}, properties));
 	}
+
+
+	//////////////////// Focus /////////////////////////////////////////////////
+
+
+
+
 
 }
 
@@ -275,6 +311,7 @@ export class Tile extends Artefact {
 		}, properties));
 
 		this.constructor_Tile1();
+		this.constructor_Tile2();
 	}
 
 
@@ -286,13 +323,12 @@ export class Tile extends Artefact {
 	//////////////////// Treemap Layer /////////////////////////////////////////
 
 	active: boolean = true;
-	highlighted: boolean = false;
 	open: boolean = false;
 	maximized: boolean = false;
 	visible: boolean = true;
 	position: Position;
 
-	constructor_Tile1(): void {
+	private constructor_Tile1(): void {
 		var that = this;
 		that.onDestruct(function () {
 			var tileMap = that.parentTileMap();
@@ -300,6 +336,25 @@ export class Tile extends Artefact {
 				tileMap.maximizedChild = null;
 			}
 		})
+	}
+
+
+	//////////////////// Focus /////////////////////////////////////////////////
+
+	highlighted: boolean = false;
+
+	private constructor_Tile2(): void {
+		var that = this;
+		Artefact.onFocus(function (artefact, flag) {
+			if (artefact.type !== 'tile') {
+				artefact = artefact.ancestor('tile');
+			}
+			if (flag) {
+				that.highlighted = !!(artefact && artefact.entity && artefact.entity === that.entity);
+			} else {
+				that.highlighted = !artefact && !(artefact.entity && artefact.entity === that.entity);
+			}
+		});
 	}
 
 
@@ -344,11 +399,11 @@ export class SvgArtefact extends Artefact {
 			//
 			var mouseoverCallback = that.$bind(function (event) {
 				event.stopPropagation();
-				that.$scope.$root.$broadcast('artefact-focus', that, {});
+				that.focus = true;
 			});
 			var mouseoutCallback = that.$bind(function (event) {
 				event.stopPropagation();
-				that.$scope.$root.$broadcast('artefact-unfocus', that, {});
+				that.focus = false;
 			});
 			that._svgElement.on('mouseover', mouseoverCallback);
 			that._svgElement.on('mouseout', mouseoutCallback);
@@ -361,8 +416,7 @@ export class SvgArtefact extends Artefact {
 			//// fixed focus on click
 			//
 			that._svgElement.clickNotDrop(that.$bind(function () {
-				that.$scope.$root.$broadcast('artefact-focus-fix',
-						that.focusFixed ? null : that);
+				that.focusFixed = !that.focusFixed;
 			}));
 			that.onDestruct(function () {
 				that._svgElement.offClickNotDrop();
@@ -370,11 +424,9 @@ export class SvgArtefact extends Artefact {
 
 		}
 
-
 		//// how to react when focus is fixed:
 		//
-		that.onFocusFix(function () { that._svgElement.setSvgClass('focus-fixed', true); });
-		that.onFocusUnfix(function () { that._svgElement.setSvgClass('focus-fixed', false); });
+		that.onFocusFix(function (flag) { that._svgElement.setSvgClass('focus-fixed', flag); });
 	}
 
 }
@@ -415,14 +467,14 @@ export class SvgVertexArtefact extends SvgArtefact {
 				previousFocusedArtefact = false;
 			} else {
 				previousFocusedArtefact = true;
-				that.$scope.$root.$broadcast('artefact-focus-fix', that);
+				that.focusFixed = true;
 			}
 		}), that.$bind(function () {
 			that._svgElement.removeSvgClass('dragging');
 			that.parentCircuitBoard().draggingVertex = false;
 			$('svg[amy-graph-layer]').removeSvgClass('dragging');
 			if (previousFocusedArtefact) {
-				that.$scope.$root.$broadcast('artefact-focus-fix', null);
+				that.focusFixed = false;
 			}
 		}));
 		that.onDestruct(function () { that._svgElement.offMouseDragDrop(); });
@@ -446,7 +498,7 @@ export class SvgEdgeArtefact extends SvgArtefact {
 
 	generateSvgElement(): JQuery {
 		return $('<svg><line></line></svg>')
-				.children() // adding and discarding the 'svg' element fixes a bug where the line would not appear
+				.children() // adding and discarding the 'svg' element prevents a bug where the line would not appear
 				.addSvgClass(this.svgClass());
 	}
 
@@ -846,7 +898,7 @@ export class Static3DModel extends Artefact {
 
 	private object3DQ: any;
 
-	constructor_Static3DModel1() {
+	private constructor_Static3DModel1() {
 		var that = this;
 
 		//// set a promise for the 3D object
@@ -939,20 +991,20 @@ export class Static3DModel extends Artefact {
 		});
 	}
 
-	constructor_Static3DModel2() {
+	private constructor_Static3DModel2() {
 		var that = this;
 		that.object3DQ.then(function (/*obj*/) {
 
 			//// translate mouse events to focus events
 			//
 			function onMouseOver() {
-				that.$scope.$root.$broadcast('artefact-focus', that, {});
+				that.focus = true;
 			}
 			function onMouseOut() {
-				that.$scope.$root.$broadcast('artefact-unfocus', that, {});
+				that.focus = false;
 			}
 			function onClick() {
-				that.$scope.$root.$broadcast('artefact-focus-fix', that.focusFixed ? null : that, {});
+				that.focusFixed = !that.focusFixed;
 			}
 			that.threeDGroup.on('mouseover', onMouseOver);
 			that.threeDGroup.on('mouseout', onMouseOut);
@@ -966,17 +1018,17 @@ export class Static3DModel extends Artefact {
 			//// change color based on focus-events
 			//
 			that.forEachMesh(function (thing) { thing.userData.initialColor = thing.material.color; });
-			that.onFocus(function () {
-				that.forEachMesh(function (thing) { thing.material.color = new that.THREE.Color('#ccffff'); });
+			that.onFocus(function (flag) {
+				if (!that.focusFixed) {
+					that.forEachMesh(function (thing) {
+						thing.material.color = (flag ? new that.THREE.Color('#ccffff') : thing.userData.initialColor);
+					});
+				}
 			});
-			that.onUnfocus(function () {
-				that.forEachMesh(function (thing) { thing.material.color = thing.userData.initialColor; });
-			});
-			that.onFocusFix(function () {
-				that.forEachMesh(function (thing) { thing.material.color = new that.THREE.Color('#00cc00'); });
-			});
-			that.onFocusUnfix(function () {
-				that.forEachMesh(function (thing) { thing.material.color = thing.userData.initialColor; });
+			that.onFocusFix(function (flag) {
+				that.forEachMesh(function (thing) {
+					thing.material.color = (flag ? new that.THREE.Color('#00cc00') : thing.userData.initialColor);
+				});
 			});
 
 		});
@@ -989,20 +1041,6 @@ export class Static3DModel extends Artefact {
 	THREE: any;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

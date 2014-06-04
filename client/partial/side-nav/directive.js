@@ -1,7 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'lodash', 'partial/side-nav/details/directive'], function (app, _) {
+define(['app/module', 'lodash', 'partial/amy-circuit-board/artefacts', 'partial/side-nav/details/directive'], function (app, _, artefacts) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -16,6 +16,8 @@ define(['app/module', 'lodash', 'partial/side-nav/details/directive'], function 
 				$scope.mainArtefact = [];
 				$scope.mainArtefactFixed = false;
 
+				$scope.Artefact = artefacts.Artefact;
+
 				function setArtefactFocus(artefact) {
 					$scope.mainArtefact = artefact;
 					_($scope.artefacts).remove();
@@ -27,23 +29,44 @@ define(['app/module', 'lodash', 'partial/side-nav/details/directive'], function 
 					}
 				}
 
-				$scope.$on('artefact-focus', function (e, artefact) {
-					if ($scope.mainArtefact !== artefact && !$scope.mainArtefactFixed) {
+				// TODO: convert to new focus system
+
+				artefacts.Artefact.onFocus(function (artefact, flag) {
+					if (!artefacts.Artefact.focusIsFixed) {
+						if (artefact !== $scope.mainArtefact && flag === true) {
+							setArtefactFocus(artefact);
+						} else if (artefact === $scope.mainArtefact && flag === false) {
+							$scope.mainArtefact = null;
+							$scope.artefacts = [];
+						}
+					}
+				});
+
+				artefacts.Artefact.onFocusFix(function (artefact, flag) {
+					if (flag === true && $scope.mainArtefact !== artefact) {
 						setArtefactFocus(artefact);
+					} else if (flag === false && $scope.mainArtefact === artefact) {
+						setArtefactFocus(null);
 					}
 				});
 
-				$scope.$on('artefact-unfocus', function (e, artefact) {
-					if (artefact === $scope.mainArtefact && !$scope.mainArtefactFixed) {
-						$scope.mainArtefact = null;
-						$scope.artefacts = [];
-					}
-				});
-
-				$scope.$on('artefact-focus-fix', function (e, artefact) {
-					if (artefact) { setArtefactFocus(artefact); }
-					$scope.mainArtefactFixed = !!artefact;
-				});
+//				$scope.$on('artefact-focus', function (e, artefact) {
+//					if ($scope.mainArtefact !== artefact && !$scope.mainArtefactFixed) {
+//						setArtefactFocus(artefact);
+//					}
+//				});
+//
+//				$scope.$on('artefact-unfocus', function (e, artefact) {
+//					if (artefact === $scope.mainArtefact && !$scope.mainArtefactFixed) {
+//						$scope.mainArtefact = null;
+//						$scope.artefacts = [];
+//					}
+//				});
+//
+//				$scope.$on('artefact-focus-fix', function (e, artefact) {
+//					if (artefact) { setArtefactFocus(artefact); }
+//					$scope.mainArtefactFixed = !!artefact;
+//				});
 
 				$scope.relTypeArray = function relTypeArray(artefact) {
 					return _(artefact.relationType).isArray()

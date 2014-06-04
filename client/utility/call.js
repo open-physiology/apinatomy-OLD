@@ -6,7 +6,9 @@ define(['lodash'], function (_) {
 
 
 	_.mixin({
-		call: function (fn) { return fn(); }
+		call: function (fn) { return fn() },
+		callEach: function(A) { _.forEach(A, _.call) },
+		callEachRight: function(A) { _.forEachRight(A, _.call) }
 	}, {chain: false});
 
 

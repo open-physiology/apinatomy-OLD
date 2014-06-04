@@ -2,7 +2,7 @@
 
 <div style="text-align: center">
 
-	<a ng-click="$root.$broadcast('artefact-focus-fix', artefact.source)" style="display: block; padding: 3px; cursor: pointer; text-decoration: none;">
+	<a ng-click="artefact.source.focusFixed = true" style="display: block; padding: 3px; cursor: pointer; text-decoration: none;">
 		<div style="overflow: hidden;
 		            text-overflow: ellipsis;
 		            white-space: nowrap;">{{ artefact.source.prefLabel() }}</div>
@@ -11,7 +11,7 @@
 
 	↕
 
-	<a ng-click="$root.$broadcast('artefact-focus-fix', artefact.target)" style="display: block; padding: 3px; cursor: pointer; text-decoration: none;">
+	<a ng-click="artefact.target.focusFixed = true" style="display: block; padding: 3px; cursor: pointer; text-decoration: none;">
 		<div style="overflow: hidden;
 		            text-overflow: ellipsis;
 		            white-space: nowrap;">{{ artefact.target.prefLabel() }}</div>
