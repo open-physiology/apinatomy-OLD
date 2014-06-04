@@ -147,7 +147,15 @@ app.get('/resources/entities/:ids', function (req, res) {
 					return;
 				}
 
-				res.status(HTTP_OK).json(ents);
+				// TODO: we can think of a faster way than populating all of this server-side regardless of the request
+				db.GeneTranslation.populate(ents, { path: "proteins.translations" }, function (err, popEnts) {
+					if (err) {
+						console.error(err);
+						res.status(HTTP_INTERNAL_SERVER_ERROR).send(null);
+						return;
+					}
+					res.status(HTTP_OK).json(popEnts);
+				});
 			});
 });
 
@@ -167,8 +175,20 @@ app.get('/resources/entities', function (req, res) {
 				if (err) {
 					console.log(err);
 					res.status(HTTP_INTERNAL_SERVER_ERROR).send(null);
+					return;
 				}
+
 				res.status(HTTP_OK).json(ents);
+
+				// TODO: we can think of a faster way than populating all of this server-side regardless of the request
+				db.GeneTranslation.populate(ents, { path: "proteins.translations" }, function (err, popEnts) {
+					if (err) {
+						console.error(err);
+						res.status(HTTP_INTERNAL_SERVER_ERROR).send(null);
+						return;
+					}
+					res.status(HTTP_OK).json(popEnts);
+				});
 			});
 });
 

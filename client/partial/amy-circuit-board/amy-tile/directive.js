@@ -273,26 +273,6 @@ define(['angular',
 							};
 
 
-							//////////////////// Reacting to Focus Broadcasts //////////////////////////////////////////
-
-							// TODO: make sure this is handled with the new focus system
-//
-//							$scope.$on('artefact-focus', function (event, artefact, options) {
-//								if (artefact.type === 'protein' || artefact.type === 'proteinInteraction') {
-//									artefact = artefact.ancestor('tile');
-//								}
-//								$scope.tile.highlighted = !!(artefact && artefact.entity &&
-//								                             artefact.entity === $scope.entity &&
-//								                             !_(options.excludeHighlighting).contains($scope.tile));
-//							});
-//
-//							$scope.$on('artefact-unfocus', function (event, artefact/*, options*/) {
-//								if (artefact.entity && artefact.entity === $scope.entity) {
-//									$scope.tile.highlighted = false;
-//								}
-//							});
-
-
 							//////////////////// CSS Classes ///////////////////////////////////////////////////////////
 
 							// Using ng-class doesn't seem to always work, so we're setting classes manually.
@@ -464,7 +444,8 @@ define(['angular',
 													showVertex:        true,
 													graphZIndex:       200,
 													ResourceService:   ResourceService,
-													$bind:             $bind
+													$bind:             $bind,
+													THREE:             THREE
 												});
 												proteinArtefactMap[protein._id] = proteinArtefact;
 												graphGroup.addVertex(proteinArtefact);
@@ -600,127 +581,9 @@ define(['angular',
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		};
-	}])
-	;
+	}]);
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 });/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-// TODO: protein kebabs
-
-//						///////////////////////// proteins ////////////////////////////////
-//
-//						$scope.proteinKebabData = {};
-//
-//						var COLORS = [
-//							'red',
-//							'blue',
-//							'green',
-//							'purple',
-//							'yellow',
-//							'gray'
-//						];
-//
-//						function generateRandomKebabData() {
-//							var length = _.random(100, 1000);
-//
-//							var domainCount = _.random(2, 7);
-//							var domainBoundaries = [];
-//
-//							for (var i = 0; i < 2 * domainCount; ++i) {
-//								domainBoundaries.push(_.random(1, 1000));
-//							}
-//							domainBoundaries = _.sortBy(domainBoundaries);
-//
-//							var domains = [];
-//							for (var j = 0; j < 2 * domainCount; j += 2) {
-//								var domainLength = domainBoundaries[j + 1] - domainBoundaries[j];
-//								if (10 <= domainLength && domainLength <= 100 && domainBoundaries[j + 1] <= length) {
-//									domains.push({
-//										from : domainBoundaries[j],
-//										to   : domainBoundaries[j + 1],
-//										color: COLORS[_.random(0, 5)]
-//									});
-//								}
-//							}
-//
-//							return {
-//								length : length,
-//								domains: domains
-//							};
-//						}
-//
-//						$scope.proteinKebabObjects = {};
-//
-//						var deregisterProteinWatch;
-//						$scope.$watch('showProteins', function (showProteins) {
-//							if (showProteins) {
-//								deregisterProteinWatch = $scope.$watchCollection('visibleProteins', function (visibleProteins) {
-//									var idsWithObjects = [];
-//									_(visibleProteins).forEach(function (protein, id) {
-//										idsWithObjects.push(id);
-//										if (_($scope.proteinKebabObjects[id]).isUndefined()) {
-//
-//											if (_($scope.proteinKebabData[id]).isUndefined()) {
-//												$scope.proteinKebabData[id] = generateRandomKebabData();
-//											}
-//											var kebabData = $scope.proteinKebabData[id];
-//
-//											var kebab = new THREE.Object3D();
-//
-//											var stickMaterial = new THREE.MeshLambertMaterial({ color: 0xaaaaaa });
-//
-//											var stickGeometry = new THREE.CylinderGeometry(1, 1, kebabData.length, 32);
-//
-//											var domainGeometry = new THREE.CylinderGeometry(6, 6, 1, 32);
-//											_(kebabData.domains).forEach(function (domain) {
-//												var domainMaterial = new THREE.MeshLambertMaterial({color: domain.color});
-//												var domainObj = new THREE.Mesh(domainGeometry, domainMaterial);
-//												domainObj.translateY(.5 * domain.from + .5 * domain.to);
-//												domainObj.scale.y = (domain.to - domain.from);
-//												kebab.add(domainObj);
-//											});
-//
-//											var stick = new THREE.Mesh(stickGeometry, stickMaterial);
-//											stick.translateY(kebabData.length / 2);
-//											kebab.add(stick);
-//
-//											kebab.rotation.x = 90 * DEG_TO_RAD;
-//											kebab.scale.y = .3;
-//
-//											$scope.proteinKebabObjects[id] = kebab;
-//
-//											scene.add(kebab);
-//
-//											var deregisterProteinWatchX = $scope.$watch('visibleProteins["' + id + '"].x', function (x) {
-//												kebab.position.x = baseX + x;
-//											});
-//
-//											var deregisterProteinWatchY = $scope.$watch('visibleProteins["' + id + '"].y', function (y) {
-//												kebab.position.y = baseY - y;
-//											});
-//
-//											$scope.proteinKebabObjects[id].deregisterNgWatch = _.compose(deregisterProteinWatchX, deregisterProteinWatchY);
-//										}
-//									});
-//
-//									_($scope.proteinKebabObjects).keys().difference(idsWithObjects).forEach(function (id) {
-//										$scope.proteinKebabObjects[id].deregisterNgWatch();
-//										scene.remove($scope.proteinKebabObjects[id]);
-//										delete $scope.proteinKebabObjects[id];
-//									});
-//
-//									render();
-//								});
-//							} else if (_(deregisterProteinWatch).isFunction()) {
-//								_($scope.proteinKebabObjects).forEach(function (kebab, id) {
-//									$scope.proteinKebabObjects[id].deregisterNgWatch();
-//									scene.remove($scope.proteinKebabObjects[id]);
-//									delete $scope.proteinKebabObjects[id];
-//								});
-//								deregisterProteinWatch();
-//							}
-//						});

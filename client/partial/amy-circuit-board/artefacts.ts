@@ -143,6 +143,7 @@ export class Artefact {
 	static _focusFixCallbacks: {(Artefact, boolean):any}[] = [];
 
 	static onFocus(fn: (Artefact, boolean)=>any) { Artefact._focusCallbacks.push(fn) }
+
 	static onFocusFix(fn: (Artefact, boolean)=>any) { Artefact._focusFixCallbacks.push(fn) }
 
 	private _focusCallbacks: {(boolean):any}[] = [];
@@ -152,6 +153,7 @@ export class Artefact {
 
 	private _focus: boolean = false;
 	get focus(): boolean { return this._focus }
+
 	set focus(flag: boolean) {
 		if (this._focus !== flag) {
 			var that = this;
@@ -174,6 +176,7 @@ export class Artefact {
 
 	private _focusFixed: boolean = false;
 	get focusFixed(): boolean { return this._focusFixed }
+
 	set focusFixed(flag: boolean) {
 		if (this._focusFixed !== flag) {
 			var that = this;
@@ -207,6 +210,7 @@ export class Artefact {
 	}
 
 	onFocus(fn: (boolean)=>any): void { this._focusCallbacks.push(fn); }
+
 	onFocusFix(fn: (boolean)=>any): void { this._focusFixCallbacks.push(fn); }
 
 
@@ -221,6 +225,8 @@ export class Artefact {
 	ResourceService: any;
 	$bind: any;
 	$q: any;
+	THREE: any;
+	threeDLayer: any;
 
 }
 
@@ -234,16 +240,13 @@ export class WebPage extends Artefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type: 'webPage',
+			type  : 'webPage',
 			parent: null
 		}, properties));
 	}
 
 
 	//////////////////// Focus /////////////////////////////////////////////////
-
-
-
 
 
 }
@@ -345,14 +348,28 @@ export class Tile extends Artefact {
 
 	private constructor_Tile2(): void {
 		var that = this;
+		var descendantFocusFixed = false;
 		Artefact.onFocus(function (artefact, flag) {
+			if (!descendantFocusFixed) {
+				if (artefact.type !== 'tile') {
+					artefact = artefact.ancestor('tile');
+				}
+				if (flag) {
+					that.highlighted = !!(artefact && artefact.entity && artefact.entity === that.entity);
+				} else {
+					that.highlighted = !artefact && !(artefact.entity && artefact.entity === that.entity);
+				}
+			}
+		});
+		Artefact.onFocusFix(function (artefact, flag) {
 			if (artefact.type !== 'tile') {
 				artefact = artefact.ancestor('tile');
 			}
 			if (flag) {
 				that.highlighted = !!(artefact && artefact.entity && artefact.entity === that.entity);
+				descendantFocusFixed = that.highlighted;
 			} else {
-				that.highlighted = !artefact && !(artefact.entity && artefact.entity === that.entity);
+				descendantFocusFixed = false;
 			}
 		});
 	}
@@ -382,6 +399,7 @@ export class SvgArtefact extends Artefact {
 	generateSvgElement(): JQuery { throw new Error('Calling an abstract method!') }
 
 	_svgElement: JQuery;
+
 	get element(): HTMLElement {
 		if (!this._svgElement) {
 			this._svgElement = this.generateSvgElement();
@@ -750,6 +768,8 @@ export class Protein extends SvgVertexArtefact {
 			type        : 'protein',
 			relationType: 'protein expression'
 		}, properties));
+
+		this.constructor_Protein1();
 	}
 
 
@@ -769,9 +789,88 @@ export class Protein extends SvgVertexArtefact {
 	svgClass() { return 'protein' }
 
 
+	//////////////////// Position //////////////////////////////////////////////
+
+	private _newXCallbacks: {(number):any}[] = [];
+	private _newYCallbacks: {(number):any}[] = [];
+
+	onNewX(fn: (number)=>any) { this._newXCallbacks.push(fn) }
+
+	onNewY(fn: (number)=>any) { this._newYCallbacks.push(fn) }
+
+	offNewX(fn: (number)=>any) { _.pull(this._newXCallbacks, fn) }
+
+	offNewY(fn: (number)=>any) { _.pull(this._newYCallbacks, fn) }
+
+
+	private _x: number;
+	private _y: number;
+
+	get x(): number { return this._x }
+
+	set x(x: number) {
+		this._x = x;
+		_.forEach(this._newXCallbacks, function (fn) { fn(x) });
+	}
+
+	get y(): number { return this._y }
+
+	set y(y: number) {
+		this._y = y;
+		_.forEach(this._newYCallbacks, function (fn) { fn(y) });
+	}
+
+
+	//////////////////// 3D Layer //////////////////////////////////////////////
+
+	private constructor_Protein1() {
+		var that = this;
+
+		var threeDLayer: any = null;
+		var threeDModel: Protein3DModel = null;
+
+		function passX(x) { threeDModel.x = x }
+
+		function passY(y) { threeDModel.y = y }
+
+		var deregisterWatch = that.$scope.$watch('$root.threeDEnabled', function (show3dNow, show3dBefore) {
+			if (show3dNow) {
+				threeDLayer = that.$scope.circuitBoard.threeDLayer;
+				threeDModel = new Protein3DModel({
+					id         : that.id + ':3dModel', // TODO: different ID for different translation
+					parent     : that,
+					protein    : that.protein,
+					threeDLayer: threeDLayer,
+					THREE      : that.THREE
+				});
+				that.onNewX(passX);
+				that.onNewY(passY);
+				passX(that.x);
+				passY(that.y);
+			} else if (show3dBefore) {
+				threeDModel.destructor();
+				threeDModel = null;
+				threeDLayer = null;
+				that.offNewX(passX);
+				that.offNewY(passY);
+			}
+		});
+		that.onDestruct(function () {
+			if (threeDModel) {
+				deregisterWatch();
+				threeDModel.destructor();
+			}
+		});
+
+
+	}
+
+
 	//////////////////// Detail Panel //////////////////////////////////////////
 
 	visibleSmallMolecules: any[] = [];
+
+	showSmallMolecules: boolean = false;
 
 	smPagination: {
 		pageSize   : number;
@@ -875,14 +974,37 @@ export class ProteinInteraction extends SvgEdgeArtefact {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export class Static3DModel extends Artefact {
+// abstract
+export class ThreeJSModel extends Artefact {
+
+	//////////////////// Construction //////////////////////////////////////////
+
+	constructor(properties) { super(properties); }
+
+
+	//////////////////// Utility ///////////////////////////////////////////////
+
+	forEachMesh(obj, fn) {
+		var that = this;
+		obj.traverse(function (thing) {
+			if (thing instanceof that.THREE.Mesh) {
+				fn(thing);
+			}
+		});
+	}
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export class Static3DModel extends ThreeJSModel {
 
 	//////////////////// Construction //////////////////////////////////////////
 
 	constructor(properties) {
 		super(_.extend({
-			type          : 'static3DModel',
-			relationType  : '3d model'
+			type        : 'static3DModel',
+			relationType: '3D model'
 		}, properties));
 
 		this.constructor_Static3DModel1();
@@ -980,53 +1102,47 @@ export class Static3DModel extends Artefact {
 
 	//////////////////// Focus /////////////////////////////////////////////////
 
-	private forEachMesh(fn) {
-		var that = this;
-		that.object3DQ.then(function (obj) {
-			obj.traverse(function (thing) {
-				if (thing instanceof that.THREE.Mesh) {
-					fn(thing);
-				}
-			});
-		});
-	}
-
 	private constructor_Static3DModel2() {
 		var that = this;
-		that.object3DQ.then(function (/*obj*/) {
+		that.object3DQ.then(function (obj) {
 
 			//// translate mouse events to focus events
 			//
 			function onMouseOver() {
 				that.focus = true;
 			}
+
 			function onMouseOut() {
 				that.focus = false;
 			}
+
 			function onClick() {
 				that.focusFixed = !that.focusFixed;
 			}
-			that.threeDGroup.on('mouseover', onMouseOver);
-			that.threeDGroup.on('mouseout', onMouseOut);
-			that.threeDGroup.on('click', onClick);
+
+			that.threeDGroup.on(obj, 'mouseover', onMouseOver);
+			that.threeDGroup.on(obj, 'mouseout', onMouseOut);
+			that.threeDGroup.on(obj, 'click', onClick);
 			that.onDestruct(function () {
-				that.threeDGroup.off('mouseover', onMouseOver);
-				that.threeDGroup.off('mouseout', onMouseOut);
-				that.threeDGroup.off('click', onClick);
+				that.threeDGroup.off(obj, 'mouseover', onMouseOver);
+				that.threeDGroup.off(obj, 'mouseout', onMouseOut);
+				that.threeDGroup.off(obj, 'click', onClick);
 			});
 
 			//// change color based on focus-events
 			//
-			that.forEachMesh(function (thing) { thing.userData.initialColor = thing.material.color; });
+			that.forEachMesh(obj, function (thing) {
+				thing.userData.initialColor = thing.material.color;
+			});
 			that.onFocus(function (flag) {
 				if (!that.focusFixed) {
-					that.forEachMesh(function (thing) {
+					that.forEachMesh(obj, function (thing) {
 						thing.material.color = (flag ? new that.THREE.Color('#ccffff') : thing.userData.initialColor);
 					});
 				}
 			});
 			that.onFocusFix(function (flag) {
-				that.forEachMesh(function (thing) {
+				that.forEachMesh(obj, function (thing) {
 					thing.material.color = (flag ? new that.THREE.Color('#00cc00') : thing.userData.initialColor);
 				});
 			});
@@ -1034,15 +1150,380 @@ export class Static3DModel extends Artefact {
 		});
 	}
 
+}
 
-	//////////////////// Resources /////////////////////////////////////////////
-	// TODO: make these three more globally available
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	THREE: any;
+export class Protein3DModel extends ThreeJSModel {
+
+	//////////////////// Construction //////////////////////////////////////////
+
+	constructor(properties) {
+		super(_.extend({
+			type        : 'protein3DModel',
+			relationType: '3D model'
+		}, properties));
+
+		this.constructor_Protein3DModel1();
+		this.constructor_Protein3DModel2();
+	}
+
+
+	//////////////////// Model /////////////////////////////////////////////////
+
+	protein: any;
+
+
+	//////////////////// 3D Layer //////////////////////////////////////////////
+
+	threeDLayer: any;
+	threeDGroup: any;
+	private kebab: any;
+	private kebabStick: any;
+
+	private constructor_Protein3DModel1() {
+		var that = this;
+
+		//// get a 3D group
+		that.threeDGroup = that.threeDLayer.new3dGroup();
+		that.onDestruct(function () { that.threeDGroup.remove() });
+
+		//// set the 'region' to 0 so that x and y from the graph layer
+		//// correspond properly to the x and y we give to the 3D object
+		that.threeDGroup.setRegion({ top: 0, left: 0, width: 0, height: 0 });
+
+
+		var translationLength = 400; // TODO: GET REAL DATA
+
+		//// Get the gene translation to use; i.e., the longest of the gene
+		//
+		var geneTranslation: any = _.max(that.protein.translations, 'length');
+
+		//// utility variable
+		//
+		var DEG_TO_RAD = Math.PI / 180;
+
+
+		////////// Creating the kebab //////////
+
+		that.kebab = new that.THREE.Object3D();
+		that.kebab.rotation.x = 90 * DEG_TO_RAD;
+		that.kebab.scale.y = .15;
+
+
+		////////// Creating the stick //////////
+
+		var stickMaterial = new that.THREE.MeshLambertMaterial({ color: 0xaaaaaa });
+		var stickGeometry = new that.THREE.CylinderGeometry(1, 1, geneTranslation.length, 32);
+		that.kebabStick = new that.THREE.Mesh(stickGeometry, stickMaterial);
+		that.kebabStick.translateY(geneTranslation.length / 2);
+		that.kebab.add(that.kebabStick);
+
+
+		////////// Populating the kebab //////////
+
+		_.forEach(geneTranslation.domains, function (domain: any, index: number) {
+			new ProteinDomain3DModel({
+				id           : that.id + ":domain:" + index,
+				parent       : that,
+				proteinDomain: domain,
+				parentObject : that.kebab,
+				THREE        : that.THREE,
+				threeDGroup  : that.threeDGroup
+			});
+		});
+
+		that.threeDGroup.object.add(that.kebab);
+
+	}
+
+	set x(x: number) { this.kebab.position.x = x }
+
+	set y(y: number) { this.kebab.position.y = -y }
+
+
+	//////////////////// Focus /////////////////////////////////////////////////
+
+	private constructor_Protein3DModel2() {
+		var that = this;
+
+		//// translate mouse events to focus events
+		//
+		function onMouseOver() {
+			that.focus = true;
+		}
+
+		function onMouseOut() {
+			that.focus = false;
+		}
+
+		function onClick() {
+			that.focusFixed = !that.focusFixed;
+		}
+
+		that.threeDGroup.on(that.kebabStick, 'mouseover', onMouseOver);
+		that.threeDGroup.on(that.kebabStick, 'mouseout', onMouseOut);
+		that.threeDGroup.on(that.kebabStick, 'click', onClick);
+		that.onDestruct(function () {
+			that.threeDGroup.off(that.kebabStick, 'mouseover', onMouseOver);
+			that.threeDGroup.off(that.kebabStick, 'mouseout', onMouseOut);
+			that.threeDGroup.off(that.kebabStick, 'click', onClick);
+		});
+
+		//// change color based on focus-events
+		//
+		that.forEachMesh(that.kebabStick, function (thing) {
+			thing.userData.initialColor = thing.material.color;
+		});
+		that.onFocus(function (flag) {
+			if (!that.focusFixed) {
+				that.forEachMesh(that.kebabStick, function (thing) {
+					thing.material.color = (flag ? new that.THREE.Color('#ccffff') : thing.userData.initialColor);
+				});
+			}
+		});
+		that.onFocusFix(function (flag) {
+			that.forEachMesh(that.kebabStick, function (thing) {
+				thing.material.color = (flag ? new that.THREE.Color('#00cc00') : thing.userData.initialColor);
+			});
+		});
+	}
 
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export class ProteinDomain3DModel extends ThreeJSModel {
+
+	//////////////////// Construction //////////////////////////////////////////
+
+	constructor(properties) {
+		super(_.extend({
+			type        : 'proteinDomain3DModel',
+			relationType: 'protein domain',
+			detailTemplateUrl: 'partial/amy-circuit-board/amy-tile/protein-domain-detail-view.html'
+		}, properties));
+
+		this.constructor_ProteinDomain3DModel1();
+		this.constructor_ProteinDomain3DModel2();
+	}
+
+
+	//////////////////// Model /////////////////////////////////////////////////
+
+	proteinDomain: any;
+
+
+	//////////////////// 3D Layer //////////////////////////////////////////////
+
+	threeDGroup: any;
+	parentObject: any;
+	private domainObject: any;
+
+	private constructor_ProteinDomain3DModel1() {
+		var that = this;
+
+		var domainGeometry = new this.THREE.CylinderGeometry(3, 3, 1, 32);
+		var domainMaterial = new that.THREE.MeshLambertMaterial({ color: ProteinDomain3DModel.domainColor(that.proteinDomain) });
+		that.domainObject = new that.THREE.Mesh(domainGeometry, domainMaterial);
+		that.domainObject.translateY(.5 * that.proteinDomain.start + .5 * that.proteinDomain.end);
+		that.domainObject.scale.y = (that.proteinDomain.end - that.proteinDomain.start);
+		that.parentObject.add(that.domainObject);
+	}
+
+
+	//////////////////// Focus /////////////////////////////////////////////////
+
+	private constructor_ProteinDomain3DModel2() {
+		var that = this;
+
+		//// translate mouse events to focus events
+		//
+		function onMouseOver() {
+			that.focus = true;
+		}
+
+		function onMouseOut() {
+			that.focus = false;
+		}
+
+		function onClick() {
+			that.focusFixed = !that.focusFixed;
+		}
+
+		that.threeDGroup.on(that.domainObject, 'mouseover', onMouseOver);
+		that.threeDGroup.on(that.domainObject, 'mouseout', onMouseOut);
+		that.threeDGroup.on(that.domainObject, 'click', onClick);
+		that.onDestruct(function () {
+			that.threeDGroup.off(that.domainObject, 'mouseover', onMouseOver);
+			that.threeDGroup.off(that.domainObject, 'mouseout', onMouseOut);
+			that.threeDGroup.off(that.domainObject, 'click', onClick);
+		});
+
+		//// change color based on focus-events
+		//
+		that.forEachMesh(that.domainObject, function (thing) {
+			thing.userData.initialColor = thing.material.color;
+		});
+		that.onFocus(function (flag) {
+			if (!that.focusFixed) {
+				that.forEachMesh(that.domainObject, function (thing) {
+					thing.material.color = (flag ? new that.THREE.Color('#ccffff') : thing.userData.initialColor);
+				});
+			}
+		});
+		that.onFocusFix(function (flag) {
+			that.forEachMesh(that.domainObject, function (thing) {
+				thing.material.color = (flag ? new that.THREE.Color('#00cc00') : thing.userData.initialColor);
+			});
+		});
+	}
+
+
+	//////////////////// Detail Panel //////////////////////////////////////////
+
+	getTitle() {
+		if (this.proteinDomain.type === 'pfam') {
+			return this.proteinDomain.pfam_name.replace('_', ' ');
+		} else if (this.proteinDomain.type === 'signalp') {
+			return "Signal Peptide";
+		} else { // this.proteinDomain.type === 'tmhmm'
+			return "TMHMM";
+		}
+	}
+
+
+	//////////////////// Colors ////////////////////////////////////////////////
+
+	private static domainColors: any = {};
+	private static uniqueColors: any[];
+	private static colorCounter: number = 0;
+
+	private static domainColor(domain) {
+		if (_.isUndefined(ProteinDomain3DModel.uniqueColors)) {
+			ProteinDomain3DModel.uniqueColors = ProteinDomain3DModel.randomColorRange(100);
+		}
+
+		if (domain.type === 'signalp') {
+			return 'black';
+		} else if (_.isUndefined(domain.pfam_id)) {
+			return 'gray';
+		}
+
+		if (_.isUndefined(ProteinDomain3DModel.domainColors[domain.pfam_id])) {
+			ProteinDomain3DModel.domainColors[domain.pfam_id] = ProteinDomain3DModel.uniqueColors[ProteinDomain3DModel.colorCounter];
+			ProteinDomain3DModel.colorCounter = (ProteinDomain3DModel.colorCounter + 1) % 100;
+		}
+		return ProteinDomain3DModel.domainColors[domain.pfam_id];
+	}
+
+
+	private static randomColorRange(total) {
+		var i = 360 / (total - 1); // distribute the colors evenly on the hue range
+		var r = []; // hold the generated colors
+		for (var x = 0; x < total; x++) {
+			r.push(ProteinDomain3DModel.hsvToRgb(i * x, 100, 100));
+		}
+		return r;
+	}
+
+	private static hsvToRgb(h, s, v) {
+		// TODO: use chroma library instead of this function
+		var r, g, b;
+		var i;
+		var f, p, q, t;
+
+		// Make sure our arguments stay in-range
+		h = Math.max(0, Math.min(360, h));
+		s = Math.max(0, Math.min(100, s));
+		v = Math.max(0, Math.min(100, v));
+
+		// We accept saturation and value arguments from 0 to 100 because that's
+		// how Photoshop represents those values. Internally, however, the
+		// saturation and value are calculated from a range of 0 to 1. We make
+		// That conversion here.
+		s /= 100;
+		v /= 100;
+
+		if (s == 0) {
+			// Achromatic (grey)
+			r = g = b = v;
+			return 'rgb(' + Math.round(r * 255) + ',' + Math.round(g * 255) + ',' + Math.round(b * 255) + ')';
+		}
+
+		h /= 60; // sector 0 to 5
+		i = Math.floor(h);
+		f = h - i; // factorial part of h
+		p = v * (1 - s);
+		q = v * (1 - s * f);
+		t = v * (1 - s * (1 - f));
+
+		switch (i) {
+			case 0:
+				r = v;
+				g = t;
+				b = p;
+				break;
+			case 1:
+				r = q;
+				g = v;
+				b = p;
+				break;
+			case 2:
+				r = p;
+				g = v;
+				b = t;
+				break;
+			case 3:
+				r = p;
+				g = q;
+				b = v;
+				break;
+			case 4:
+				r = t;
+				g = p;
+				b = v;
+				break;
+			default:
+				r = v;
+				g = p;
+				b = q;
+		}
+
+		return 'rgb(' + Math.round(r * 255) + ',' + Math.round(g * 255) + ',' + Math.round(b * 255) + ')';
+	}
+
+
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -19,11 +19,16 @@
 <div ng-init="artefact.initializeSmPagination()"
      ng-if="artefact.protein.smallMoleculeInteractions.length > 0"
      style="margin: 0; padding: 0;">
-	<dl>
-		<dt title="Small Molecule Interactions">S.M. Interactions:</dt>
+	<dl style="font-size: 11px">
+		<dt title="Small Molecule Interactions">
+			<span ng-click="artefact.showSmallMolecules = !artefact.showSmallMolecules" style="cursor: pointer;">
+				<span ng-if="!artefact.showSmallMolecules">▶</span>
+				<span ng-if="artefact.showSmallMolecules">▼</span>
+			</span>&nbsp;S.M. Interactions:
+		</dt>
 		<dd>{{ artefact.protein.smallMoleculeInteractions.length }}</dd>
 	</dl>
-	<ul style="padding-left: 27px; margin-top: -4px;">
+	<ul ng-if="artefact.showSmallMolecules" style="padding-left: 27px; margin-top: -4px;">
 		<li ng-repeat="sm in artefact.visibleSmallMolecules">
 			<div style="display: inline-block; position: relative; top: 5px; width: 144px; overflow: hidden; text-overflow: ellipsis;">
 				<a ng-href="{{ artefact.smURL(sm) }}" style="white-space: nowrap;" title="{{ artefact.smPrefLabel(sm) }}" target="_blank">
@@ -32,7 +37,7 @@
 			</div>
 		</li>
 	</ul>
-	<div class="pagination">
+	<div ng-if="artefact.showSmallMolecules" class="pagination">
 		<a ng-click="artefact.smPagination.page = 1; artefact.fetchSmPage()"
 		   ng-class="{ disabled: artefact.smPagination.page === 1 }">&lt;&lt;</a>
 		&nbsp;

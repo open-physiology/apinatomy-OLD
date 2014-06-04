@@ -236,15 +236,15 @@ define(['jquery',
 										obj3d.position.y = baseY - (region.top  + 0.5 * region.height);
 										render();
 									},
-									on: function on(eventName, fn) {
-										obj3d.traverse(function (thing) {
+									on: function on(obj, eventName, fn) {
+										obj.traverse(function (thing) {
 											if (thing instanceof THREE.Mesh) {
 												domEvents.addEventListener(thing, eventName, $bind(fn));
 											}
 										});
 									},
-									off: function off(eventName, fn) {
-										obj3d.traverse(function (thing) {
+									off: function off(obj, eventName, fn) {
+										obj.traverse(function (thing) {
 											if (thing instanceof THREE.Mesh) {
 												domEvents.removeEventListener(thing, eventName, $bind(fn));
 											}
