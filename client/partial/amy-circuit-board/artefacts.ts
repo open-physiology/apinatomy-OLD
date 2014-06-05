@@ -861,8 +861,6 @@ export class Protein extends SvgVertexArtefact {
 				threeDModel.destructor();
 			}
 		});
-
-
 	}
 
 

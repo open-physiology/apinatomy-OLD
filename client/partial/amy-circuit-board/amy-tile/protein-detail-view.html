@@ -37,7 +37,8 @@
 				</div>
 			</li>
 		</ul>
-		<div class="pagination" style="margin-bottom: 2px;">
+		<div ng-if="artefact.protein.smallMoleculeInteractions.length > artefact.smPagination.pageSize"
+		     class="pagination" style="margin-bottom: 2px;">
 			<a ng-click="artefact.smPagination.page = 1; artefact.fetchSmPage()"
 			   ng-class="{ disabled: artefact.smPagination.page === 1 }">&lt;&lt;</a>
 			&nbsp;
