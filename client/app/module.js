@@ -5,6 +5,7 @@ define(['jquery',
         'lodash',
         'angular',
         'amy-circuit-board/artefacts',
+        'tile-map/module',
         'angular-animate',
         'angular-bootstrap',
         'angular-recursion',
@@ -13,11 +14,9 @@ define(['jquery',
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	var app = ng.module('ApiNATOMY', ['ngAnimate',
-	                                  'ui.bootstrap',
-	                                  'RecursionHelper',
-	                                  'once',
-	                                  'vr.directives.slider']);
+	var app = ng.module('ApiNATOMY', [ 'TileMap'      , 'ngAnimate'            ,
+	                                   'ui.bootstrap' , 'RecursionHelper'      ,
+	                                   'once'         , 'vr.directives.slider' ]);
 
 
 	//// Global configuration:
@@ -46,9 +45,9 @@ define(['jquery',
 		//
 		$scope.webPage =
 		$scope.artefact = new artefacts.WebPage({
-			id:       $scope.$id,
-			entity:   ResourceService.entities(['24tile:60000000'])[0],
-			$scope:   $scope
+			id:     $scope.$id,
+			entity: ResourceService.entities(['24tile:60000000'])[0],
+			$scope: $scope
 		});
 
 
@@ -59,7 +58,7 @@ define(['jquery',
 
 		$scope.circuitBoardMargins = {
 			top:    AMY_SPACING,
-			left:   AMY_SIDE_NAV_WIDTH + AMY_SPACING,
+			left: AMY_SIDE_NAV_WIDTH + AMY_SPACING,
 			bottom: AMY_SPACING,
 			right:  AMY_SPACING
 		};

@@ -130,8 +130,7 @@
 	}
 
 
-	////////// HACK: hiding the header for open+maximized tiles //////////
-	// FIXME: this was requested by Bernard, and includes changes in several places in the code
+	////////// Hiding the header for tiles that are open & maximized //////////
 
 	&.hidden-header {
 		& > header { display: none !important; }

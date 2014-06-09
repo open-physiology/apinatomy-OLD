@@ -1,5 +1,45 @@
 'use strict';
 
+// Here is an overview of the sizing and
+// positioning of a tile and its children:
+//
+//
+//                                    width
+//                 ╭┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄╮
+//                 ┆                                         ┆
+//
+//               ┌─────────────────────────────────────────────┐  ┄┄┄┄╮ border
+//         ╭┄┄┄  │ ╔═════════════════════════════════════════╗ │  ┄┄┄┄╯ width
+//  header ┊     │ ║ header                                  ║ │
+//  height ┊     │ ║                                         ║ │
+//         ┊     │ ╟─────────────────────────────────────────╢ │  ┄┄┄┄╮ border
+//         ├┄┄┄  │ ╠═════════════════════════════════════════╣ │  ┄┄┄┄╯ width
+//         ┊     │ ║ section                                 ║ │
+//         ┊     │ ║                                         ║ │
+//         ┊     │ ║     ┌─────────────┐     ┌─────────┐     ║ │  ┄┄┄┄╮
+//         ┊     │ ║     │ child       │     │ child   │     ║ │      ┊
+//         ┊     │ ║     │             │     │         │     ║ │      ┊ child
+//         ┊     │ ║     │             │     │         │     ║ │      ┊ height
+//         ┊     │ ║     │             │     │         │     ║ │      ┊
+//         ┊     │ ║     └─────────────┘     └─────────┘     ║ │  ┄┄┄┄╯
+//  height ┊     │ ║                                         ║ │
+//         ┊     │ ║                                         ║ │
+//         ┊     │ ║     ┌───────┐     ┌───────────────┐     ║ │
+//         ┊     │ ║     │ child │     │ child         │     ║ │
+//         ┊     │ ║     │       │     │               │     ║ │
+//         ┊     │ ║     │       │     │               │     ║ │
+//         ┊     │ ║     │       │     │               │     ║ │
+//         ┊     │ ║     └───────┘     └───────────────┘     ║ │  ┄┄┄┄╮
+//         ┊     │ ║                                         ║ │      ┊ tile
+//         ┊     │ ║                                         ║ │      ┊ spacing
+//         ╰┄┄┄  │ ╚═════════════════════════════════════════╝ │  ┄┄┄┄╯
+//               └─────────────────────────────────────────────┘
+//
+//                 ┆     ┆             ┆               ┆     ┆ ┆
+//                 ╰┄┄┄┄┄╯             ╰┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄╯     ╰┄╯
+//                  tile                  child width       border
+//                 spacing                                  width
+//
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['angular',
         'app/module',
@@ -107,7 +147,6 @@ define(['angular',
 
 
 							//////////////////// Showing or hiding the header //////////////////////////////////////////
-							// FIXME: this was requested by Bernard, and includes changes in several places in the code
 
 							_($scope.tile).derivedProperty('hiddenHeader', function () {
 								return $scope.tile.maximized && $scope.tile.open;
@@ -289,8 +328,6 @@ define(['angular',
 							tilePropertyToClass('highlighted');
 							tilePropertyToClass('active');
 							tilePropertyToClass('entity._searchResult', 'searchResult');
-
-							// FIXME: this was requested by Bernard, and includes changes in several places in the code
 							tilePropertyToClass('hiddenHeader', 'hidden-header');
 
 
