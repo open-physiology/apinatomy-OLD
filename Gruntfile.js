@@ -1,7 +1,7 @@
 module.exports = function (grunt) {
 
 	//// loading grunt plugins
-
+	//
 	[ 'grunt-contrib-compass',
 	  'grunt-contrib-uglify',
 	  'grunt-contrib-jasmine',
@@ -12,9 +12,8 @@ module.exports = function (grunt) {
 
 
 	//// constants
-
+	//
 	var BANNER = '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n';
-
 	var PROJECT_JS_FILES = ['client/**/*.js', '!client/lib/**/*.*'];
 	var PROJECT_SPEC_JS_FILES = ['spec/**/*-spec.js', 'node_modules/jasmine-expect/dist/jasmine-matchers.js'];
 	var PROJECT_SPEC_HELPER_JS_FILES = ['spec/**/*-helper.js'];
@@ -22,15 +21,16 @@ module.exports = function (grunt) {
 
 
 	//// main configuration block
-
+	//
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 
-		//// transpiling from .scss to .css
 
+		//// transpiling from .scss to .css
+		//
 		compass: {
 			options: {
-				specify:    ['client/index.scss'],
+				specify:    PROJECT_SCSS_FILES,
 				banner:     BANNER,
 				app:        'stand_alone',
 				cssDir:     'client',
@@ -56,8 +56,9 @@ module.exports = function (grunt) {
 			}
 		},
 
-		//// minification
 
+		//// minification
+		//
 		uglify: {
 			dist: {
 				options: {
@@ -69,8 +70,9 @@ module.exports = function (grunt) {
 			}
 		},
 
-		//// running tests
 
+		//// running tests
+		//
 		jasmine: {
 			all: {
 				options: {
@@ -88,37 +90,52 @@ module.exports = function (grunt) {
 			}
 		},
 
-		//// synchronizing the bower.json and package.json files
 
+		//// synchronizing the bower.json and package.json files
+		//
 		sync: {
 			include: ['name', 'version', 'main', 'description', 'author', 'license']
 		},
 
-		//// checking for circular dependencies between RequireJS modules
 
+		//// checking for circular dependencies between RequireJS modules
+		//
 		madge: {
 			options: { format: 'amd' },
 			all:     PROJECT_JS_FILES
 		},
 
-		//// various automatic actions during development
 
+		//// various automatic actions during development
+		//
 		watch: {
 			js:     {
 				files: PROJECT_JS_FILES,
 				tasks: ['madge']
 			},
-			scss:   {
+			compass:   {
 				files: PROJECT_SCSS_FILES,
-				tasks: ['compass:dev']
+				tasks: ['compass:dev'],
+				options: { spawn: false }
 			},
 			config: {
 				files: ['package.json'],
 				tasks: ['sync']
 			}
 		}
+
 	});
 
+
+	//// use compass only on the changed file
+	//
+	grunt.event.on('watch', function (action, filepath) {
+		grunt.config('compass.options.specify', filepath);
+	});
+
+
+	//// exposed tasks
+	//
 	grunt.registerTask('dev', ['sync', 'madge', 'compass:dev', 'jasmine']);
 	grunt.registerTask('dist', ['sync', 'madge', 'compass:dist', 'jasmine', 'uglify:dist']);
 

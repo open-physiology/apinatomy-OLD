@@ -1,0 +1,62 @@
+<nav class="amy-top-nav navbar navbar-default" role="navigation">
+
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand amy-brand" href="/">
+		<span class="glyphicon glyphicon-eye-open"></span><span>ApiNATOMY</span></a>
+	</div>
+
+	<div class="collapse navbar-collapse" id="navbar-collapse">
+		<ul class="nav navbar-nav navbar-left">
+            <li class="navbar-form">
+                <div class="form-control">
+                    <label>
+                        <input type="checkbox" class="checkbox"
+                               ng-model="$root.threeDEnabled">
+                        3D
+                    </label>
+                </div>
+	            <div class="form-control">
+		            <label>
+			            <input type="checkbox" class="checkbox"
+                               ng-model="$root.connectionsEnabled">
+			            Connections
+		            </label>
+	            </div>
+                <!--<div class="form-control">-->
+                    <!--<label>-->
+                        <!--<input type="checkbox" class="checkbox"-->
+                               <!--ng-model="$root.simulationEnabled">-->
+                        <!--Simulation-->
+                    <!--</label>-->
+                <!--</div>-->
+                <div class="form-control">
+                    <label>
+                        <input type="checkbox" class="checkbox"
+                               ng-model="$root.proteinsEnabled">
+                        Proteins
+                    </label>
+                </div>
+            </li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+			<li>
+				<form class="navbar-form">
+					<input type="text" placeholder="Search"
+					       class="form-control amy-search-box" style="width: 250px;"
+					       ng-model="entitySearch"
+					       typeahead="entity as entity.name for entity in getSearchResults($viewValue)"
+					       typeahead-template-url="top-nav/entity-search-result.html"
+					       typeahead-loading="searchInProgress"
+					       ng-class="{ 'search-in-progress': searchInProgress }">
+				</form>
+			</li>
+		</ul>
+	</div>
+
+</nav>

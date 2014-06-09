@@ -1,0 +1,29 @@
+@import "base";
+
+[amy-circuit-board] {
+
+	& .flat-circuit-board {
+
+		& > [amy-tile-map] {
+			@include edge-to-edge;
+			z-index: 1 !important;
+		}
+
+		& > .smokescreen {
+			@include edge-to-edge;
+			z-index: 2 !important;
+			background-color: rgba(255, 255, 255, .3);
+			pointer-events: none;
+		}
+
+		& > [amy-graph-layer] {
+			@include edge-to-edge;
+			z-index: 3 !important;
+		}
+	}
+
+	& [amy-3d-layer] {
+		@include edge-to-edge;
+	}
+
+}

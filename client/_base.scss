@@ -1,3 +1,11 @@
+///////////////////////// Imports /////////////////////////
+
+//noinspection CssUnknownTarget
+@import "compass";
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+
+
 ///////////////////////// Variables /////////////////////////
 
 $amy-spacing : 15px;
@@ -9,6 +17,7 @@ $amy-tile-border-width : 1px;
 // important for position calculation in javascript; don't change
 $amy-tile-status-icon-size : 10px;
 $amy-standard-duration : 600ms;
+
 
 ///////////////////////// Mixins /////////////////////////
 
@@ -22,6 +31,7 @@ $amy-standard-duration : 600ms;
 	margin   : 0;
 }
 
+
 ///////////////////////// Animated move & resize /////////////////////////
 
 @mixin move-transition($duration : $amy-standard-duration, $delay : 0s) {
@@ -30,6 +40,7 @@ $amy-standard-duration : 600ms;
 	@include transition-delay($delay);
 	@include transition-timing-function(ease-in-out);
 }
+
 
 ///////////////////////// Fade-in & Fade-out /////////////////////////
 

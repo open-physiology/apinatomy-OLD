@@ -432,10 +432,10 @@ app.get('/resources/search/:query', function (req, res) {
 ///////////////////////// Special Exceptions ///////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-//// The bootstrap glyphicons need special treatment:
-
-app.get('/bootstrap/glyphicons-halflings-regular.*', function (req, res) {
-	res.redirect('/lib/bootstrap-sass-official/vendor/assets/fonts/' + req.path);
+app.get('**/bootstrap/glyphicons-halflings-regular.*', function (req, res, next) {
+	if (req.path.substr(0, 5) === '/lib/') { next(); return; }
+	var extension = req.path.substr(req.path.lastIndexOf('.'));
+	res.redirect('/lib/bootstrap-sass-official/vendor/assets/fonts/bootstrap/glyphicons-halflings-regular' + extension);
 });
 
 app.get('/require.js', function (req, res) {

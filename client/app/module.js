@@ -4,7 +4,7 @@
 define(['jquery',
         'lodash',
         'angular',
-        'partial/amy-circuit-board/artefacts',
+        'amy-circuit-board/artefacts',
         'angular-animate',
         'angular-bootstrap',
         'angular-recursion',

@@ -2,10 +2,10 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['angular', 'app/module', 'domReady!',
-        'partial/top-nav/directive',
-        'partial/side-nav/directive',
-        'partial/amy-circuit-board/directive',
-        'partial/simulation-panel/directive',
+        'top-nav/directive',
+        'side-nav/directive',
+        'amy-circuit-board/directive',
+        'simulation-panel/directive',
         'amy-once/directive'], function (ng/*, app*/) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
