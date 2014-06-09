@@ -1,0 +1,54 @@
+@import "base";
+
+trace-diagram {
+
+	display: inline-block;
+
+	& > svg {
+
+		& > g {
+
+			.border {
+				fill: white;
+				stroke: black;
+				stroke-width: 1px;
+				shape-rendering: crispEdges;
+			}
+
+			.trace {
+				fill: none;
+				stroke-linejoin: round;
+				stroke-cap: round;
+
+				stroke-width: 1.5px;
+				stroke: red;
+
+				&.shadow {
+					stroke: lightgray;
+					stroke-width: 1.4px;
+				}
+			}
+
+			.caption {
+				dominant-baseline: hanging;
+				font-size: 10pt;
+				fill: gray;
+			}
+
+			.axis {
+				path, line {
+					fill: none;
+					stroke: black;
+					shape-rendering: crispEdges;
+				}
+
+				&.x {}
+
+				&.y {}
+			}
+
+		}
+
+	}
+
+}

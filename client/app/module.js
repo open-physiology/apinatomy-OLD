@@ -6,6 +6,7 @@ define(['jquery',
         'angular',
         'amy-circuit-board/artefacts',
         'tile-map/module',
+        'trace-diagram/module',
         'angular-animate',
         'angular-bootstrap',
         'angular-recursion',
@@ -14,7 +15,7 @@ define(['jquery',
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	var app = ng.module('ApiNATOMY', [ 'TileMap'      , 'ngAnimate'            ,
+	var app = ng.module('ApiNATOMY', [ 'tile-map'     , 'trace-diagram'     , 'ngAnimate'            ,
 	                                   'ui.bootstrap' , 'RecursionHelper'      ,
 	                                   'once'         , 'vr.directives.slider' ]);
 
