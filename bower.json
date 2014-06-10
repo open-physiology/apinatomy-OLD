@@ -1,11 +1,11 @@
 {
   "name": "ApiNATOMY",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "authors": [
     "Michiel Helvensteijn <mhelvens@gmail.com>",
     "Natallia Kokash"
   ],
-  "description": "interactive visualization of multiscale anatomy and biomedical knowledge",
+  "description": "interactive visualization of multi-scale anatomy and biomedical knowledge",
   "main": [
     "index.html"
   ],
@@ -18,26 +18,28 @@
     "spec"
   ],
   "dependencies": {
-    "bootstrap-sass-official": "~3.1.0",
-    "angular": "~1.2.0",
-    "angular-bootstrap": "~0.10.0",
-    "requirejs": "~2.1.10",
-    "requirejs-domready": "~2.0.1",
-    "es5-shim": "~2.3.0",
-    "chroma-js": "~0.5.6",
-    "jquery": "~2.1.0",
-    "lodash": "~2.4.1",
-    "angular-once": "~0.1.6",
-    "angular-recursion": "~1.0.0",
-    "d3": "~3.4.3",
-    "es6-shim": "0.10.1",
-    "angular-animate": "~1.2.0",
-    "require-css": "~0.1.2",
-    "venturocket-angular-slider": "~0.2.5",
+    "es5-shim": "*",
+    "es6-shim": "*",
+    "bootstrap-sass-official": "3.1.x",
+    "requirejs": "2.1.x",
+    "requirejs-domready": "2.0.x",
+    "angular": "1.3.x",
+    "angular-recursion": "*",
+    "angular-animate": "*",
+    "angular-bootstrap": "*",
+    "jquery": "2.1.x",
+    "lodash": "2.4.x",
     "threejs": "*",
-    "threex.domevents": "*"
+    "threex.domevents": "*",
+    "d3": "3.4.x",
+    "require-css": "0.1.x",
+    "venturocket-angular-slider": "0.3.x",
+    "chroma-js": "0.5.x"
   },
   "devDependencies": {
     "stats.js": "*"
+  },
+  "resolutions": {
+    "angular": "~1.3.0"
   }
 }
