@@ -1190,9 +1190,6 @@ export class Protein3DModel extends ThreeJSModel {
 		//// correspond properly to the x and y we give to the 3D object
 		that.threeDGroup.setRegion({ top: 0, left: 0, width: 0, height: 0 });
 
-
-		var translationLength = 400; // TODO: GET REAL DATA
-
 		//// Get the gene translation to use; i.e., the longest of the gene
 		//
 		var geneTranslation: any = _.max(that.protein.translations, 'length');
@@ -1439,7 +1436,7 @@ export class ProteinDomain3DModel extends ThreeJSModel {
 		// We accept saturation and value arguments from 0 to 100 because that's
 		// how Photoshop represents those values. Internally, however, the
 		// saturation and value are calculated from a range of 0 to 1. We make
-		// That conversion here.
+		// that conversion here.
 		s /= 100;
 		v /= 100;
 

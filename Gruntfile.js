@@ -7,7 +7,8 @@ module.exports = function (grunt) {
 	  'grunt-contrib-jasmine',
 	  'grunt-contrib-watch',
 	  'grunt-sync-pkg',
-	  'grunt-madge'
+	  'grunt-madge',
+	  'grunt-typescript'
 	].map(grunt.loadNpmTasks);
 
 
@@ -18,6 +19,7 @@ module.exports = function (grunt) {
 	var PROJECT_SPEC_JS_FILES = ['spec/**/*-spec.js', 'node_modules/jasmine-expect/dist/jasmine-matchers.js'];
 	var PROJECT_SPEC_HELPER_JS_FILES = ['spec/**/*-helper.js'];
 	var PROJECT_SCSS_FILES = ['client/**/*.scss', '!client/lib/**/*.*'];
+	var PROJECT_TS_FILES = ['client/**/*.ts', '!client/lib/**/*.*'];
 
 
 	//// main configuration block
@@ -52,6 +54,31 @@ module.exports = function (grunt) {
 				options: {
 					environment: 'production',
 					outputStyle: 'compressed'
+				}
+			}
+		},
+
+
+		//// transpiling from .ts to .js
+		//
+		typescript: {
+			options: {
+				basePath: 'client',
+				module: 'amd',
+				target: 'es5',
+				sourceMap: true,
+				declaration: true
+			},
+			dev:     {
+				src: PROJECT_TS_FILES,
+				options: {
+					comments: true
+				}
+			},
+			dist:    {
+				src: PROJECT_TS_FILES,
+				options: {
+					comments: false
 				}
 			}
 		},
@@ -109,14 +136,19 @@ module.exports = function (grunt) {
 		//// various automatic actions during development
 		//
 		watch: {
-			js:     {
-				files: PROJECT_JS_FILES,
-				tasks: ['madge']
-			},
 			compass:   {
 				files: PROJECT_SCSS_FILES,
 				tasks: ['compass:dev'],
 				options: { spawn: false }
+			},
+			typescript:   {
+				files: PROJECT_TS_FILES,
+				tasks: ['typescript:dev'],
+				options: { spawn: false }
+			},
+			js:     {
+				files: PROJECT_JS_FILES,
+				tasks: ['madge']
 			},
 			config: {
 				files: ['package.json'],
@@ -127,10 +159,11 @@ module.exports = function (grunt) {
 	});
 
 
-	//// use compass only on the changed file
+	//// for 'watch', use given transpiler only on the changed file
 	//
 	grunt.event.on('watch', function (action, filepath) {
 		grunt.config('compass.options.specify', filepath);
+		grunt.config('typescript.dev.src', filepath);
 	});
 
 

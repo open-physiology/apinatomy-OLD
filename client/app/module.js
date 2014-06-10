@@ -15,9 +15,10 @@ define(['jquery',
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	var app = ng.module('ApiNATOMY', [ 'tile-map'     , 'trace-diagram'     , 'ngAnimate'            ,
-	                                   'ui.bootstrap' , 'RecursionHelper'      ,
-	                                   'once'         , 'vr.directives.slider' ]);
+	var app = ng.module('ApiNATOMY', [ 'tile-map'        , 'trace-diagram' ,
+	                                   'ngAnimate'       , 'ui.bootstrap'  ,
+	                                   'RecursionHelper' , 'once'          ,
+	                                   'vr.directives.slider'              ]);
 
 
 	//// Global configuration:
@@ -65,18 +66,18 @@ define(['jquery',
 		};
 
 
-		//////////////////// Manage bottom sliding panels //////////////////////////////////////////////////////////////
-
-		var AMY_PANEL_HEIGHT = 250;   // $amy-panel-height
-
-		$scope.$root.$watch('simulationEnabled', function (enabled) {
-			if (enabled) {
-				$('main').css('bottom', AMY_PANEL_HEIGHT);
-			} else {
-				$('main').css('bottom', 0);
-			}
-			_($($window)).bindKey('trigger', 'resize').defer();
-		});
+//		//////////////////// Manage bottom sliding panels //////////////////////////////////////////////////////////////
+//
+//		var AMY_PANEL_HEIGHT = 250;   // $amy-panel-height
+//
+//		$scope.$root.$watch('simulationEnabled', function (enabled) {
+//			if (enabled) {
+//				$('main').css('bottom', AMY_PANEL_HEIGHT);
+//			} else {
+//				$('main').css('bottom', 0);
+//			}
+//			_($($window)).bindKey('trigger', 'resize').defer();
+//		});
 
 	}]);
 
