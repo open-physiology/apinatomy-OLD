@@ -8,7 +8,7 @@ define(['app/module',
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	app.directive('amyTimeControl', ['TimerService', function (TimerService) {
+	app.directive('amyTimeControl', ['TimerService', '$bind', function (TimerService, $bind) {
 		return {
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -21,12 +21,11 @@ define(['app/module',
 
 			controller: ['$scope', function ($scope) {
 
-				$scope.timer = {
-					state:        'stopped',
-					currentTime:  0,
-					maxTime:      0,
-					timeInterval: 100
-				};
+				//// setting up the timer
+
+				$scope.TimerService = TimerService;
+
+				$scope.timer = { state: 'stopped' };
 
 
 				//// format the time-strings
@@ -41,31 +40,19 @@ define(['app/module',
 
 				//// control the timer
 
-				TimerService.onInterval(function (t) {
-					$scope.timer.currentTime = t;
-				});
+				TimerService.resetTimer(100);
 
 				$scope.$watch('timer.state', function (state) {
-					if (state === 'stopped') {
-						TimerService.stop();
-						$scope.timer.maxTime = 0;
-					} else if (state === 'paused') {
-						TimerService.pause();
-					} else if (state === 'running') {
-						TimerService.start({
-							beginning: $scope.timer.currentTime,
-							interval: $scope.timer.timeInterval
-						});
-					}
-				});
-
-				$scope.$watch('timer.currentTime', function (currentTime) {
-					$scope.timer.maxTime = Math.max($scope.timer.maxTime, currentTime);
-				});
-
-				$scope.$watch('timer.maxTime', function (maxTime) {
-					if (maxTime > 0 && $scope.timer.state === 'stopped') {
-						$scope.timer.state = 'paused';
+					switch (state) {
+						case 'stopped':
+							TimerService.stop();
+							TimerService.currentTime = 0;
+							_.defer($bind(function () {
+								TimerService.maxTime = 0;
+							}));
+							break;
+						case 'paused' : TimerService.stop(); break;
+						case 'running': TimerService.start(); break;
 					}
 				});
 
@@ -73,20 +60,7 @@ define(['app/module',
 					$scope.timer.state = 'stopped';
 				});
 
-
-			}],
-
-			////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-			compile: function () {
-				return {
-
-					pre: function preLink(/*$scope, iElement, iAttrs, controller*/) {},
-
-					post: function postLink(/*$scope, iElement, iAttrs, controller*/) {}
-
-				};
-			}
+			}]
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		};

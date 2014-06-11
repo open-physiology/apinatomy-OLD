@@ -7,10 +7,10 @@
 	          states ="{ stopped: 'stopped', paused: 'stopped', running: 'stopped'  }"
 	          ng-model="timer.state"></icon-btn>
 	<slider ng-class="{ disabled: timer.state === 'running' }"
-			ng-model="timer.currentTime"
+			ng-model="TimerService.currentTime"
 	        floor="0"
-	        ceiling="{{ timer.maxTime }}"
-	        step="{{ timer.timeInterval }}"
+	        ceiling="{{ TimerService.maxTime }}"
+	        step="{{ TimerService.interval }}"
 	        translate-fn="timeFormat">
 	</slider>
 </div>

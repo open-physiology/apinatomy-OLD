@@ -8,7 +8,9 @@ module.exports = function (grunt) {
 	  'grunt-contrib-watch',
 	  'grunt-sync-pkg',
 	  'grunt-madge',
-	  'grunt-typescript'
+	  'grunt-typescript',
+	  'grunt-shell',
+	  'grunt-tsd'
 	].map(grunt.loadNpmTasks);
 
 
@@ -133,6 +135,31 @@ module.exports = function (grunt) {
 		},
 
 
+		//// shell commands
+		//
+		shell: {
+
+			//// generate AMD versions of the jquery-ui modules
+			//
+			jqueryUiAmd: {
+				command: "./node_modules/.bin/jqueryui-amd client/lib/jquery-ui"
+			}
+		},
+
+
+		//// DefinitelyTyped Typescript definition reinstall
+		//
+		tsd: {
+			reinstall: {
+				options: {
+					command: 'reinstall',
+					latest: true,
+					config: 'tsd.json'
+				}
+			}
+		},
+
+
 		//// various automatic actions during development
 		//
 		watch: {
@@ -169,7 +196,7 @@ module.exports = function (grunt) {
 
 	//// exposed tasks
 	//
-	grunt.registerTask('dev', ['sync', 'madge', 'compass:dev', 'jasmine']);
-	grunt.registerTask('dist', ['sync', 'madge', 'compass:dist', 'jasmine', 'uglify:dist']);
+	grunt.registerTask('dev', ['sync', 'tsd:reinstall', 'shell:jqueryUiAmd', 'madge', 'compass:dev', 'jasmine']);
+	grunt.registerTask('dist', ['sync', 'tsd:reinstall', 'shell:jqueryUiAmd', 'madge', 'compass:dist', 'jasmine', 'uglify:dist']);
 
 };

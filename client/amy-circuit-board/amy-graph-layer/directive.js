@@ -90,7 +90,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3',
 								return (a.graphZIndex < b.graphZIndex) ? -1 : ((a.graphZIndex === b.graphZIndex) ? 0 : 1);
 							});
 
-						}), 200); // TODO: when set too low, x="NaN"-like errors occur (though they don't break anything)
+						}), 200); // TODO: when set too low, x="NaN"-like errors occur (though they don't seem to break anything)
 
 
 						//////////////////// animation tick ////////////////////////////////////////////////////////////

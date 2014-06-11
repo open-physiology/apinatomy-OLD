@@ -4,8 +4,8 @@
         <amy-tile-map ng-model="circuitBoard.entity" position="{{ circuitBoard.position }}"></amy-tile-map>
         <div class="smokescreen" ng-if="
             $root.connectionsEnabled ||
-            $root.simulationEnabled  ||
-            $root.proteinsEnabled"></div>
+            $root.proteinsEnabled    ||
+            $root.simulationEnabled"></div>
         <amy-graph-layer amy-connections></amy-graph-layer>
     </div>
 

@@ -139,37 +139,51 @@
 }
 
 [amy-graph-layer] {
-	svg.protein.vertex {
-		& > circle.core {
+	.vertex {
+		.core {
 			pointer-events: visiblePainted;
-			fill: lighten(purple, 20);
-			stroke: purple;
 			cursor: pointer;
 		}
-		&.dragging > circle.core { @include experimental-value(cursor, grabbing); }
+		&.dragging > .core {
+			@include experimental-value(cursor, grabbing);
+		}
+	}
 
-		& > circle.small-molecule-indicator {
+	.protein.vertex {
+		.core {
+			fill: lighten(purple, 20);
+			stroke: purple;
+		}
+
+		.small-molecule-indicator {
 			stroke-width: 2px;
 			stroke: purple;
 			fill: none;
 		}
 		&.focus-fixed {
-			& > circle.core {
+			.core {
 				fill: lighten(green, 20);
 				stroke: green;
 			}
-			& > circle.small-molecule-indicator {
+			.small-molecule-indicator {
 				stroke: green;
 			}
 		}
 	}
 
-	line.protein-interaction {
+	.protein-interaction.edge {
 		pointer-events: visiblePainted;
 		cursor: pointer;
 		stroke: purple;
 		stroke-width: 2px;
 		stroke-linecap: round;
+	}
+
+	.variable-glyph.vertex {
+		.core {
+			fill:   white;
+			stroke: black;
+		}
 	}
 }
 
@@ -199,3 +213,55 @@
 		background-color: lightgreen;
 	}
 }
+
+//@import "/lib/jquery-ui/themes/base/jquery.ui.core.css";
+//@import "/lib/jquery-ui/themes/base/jquery.ui.base.css";
+//@import "/lib/jquery-ui/themes/base/jquery.ui.resizable.css";
+//@import "/lib/jquery-ui/themes/base/jquery.ui.dialog.css";
+//@import "/lib/jquery-ui/themes/base/jquery.ui.all.css";
+@import "bootstrap/close";
+@import "bootstrap/modals";
+
+.variable-glyph-trace-dialog {
+
+	@extend .modal-content;
+
+	z-index: 9999;
+
+	.ui-dialog-titlebar {
+
+		@extend .modal-header;
+
+		cursor: move;
+
+		.ui-dialog-title {
+			@extend .modal-title;
+			@include text-overflow;
+			font-weight: bold;
+			margin-left: 3px;
+		}
+
+		.ui-dialog-titlebar-close {
+			@extend .close;
+			margin: 0;
+			margin-right: 3px;
+			outline: none;
+		}
+
+	}
+
+	.ui-dialog-content {
+		@extend .modal-body;
+	}
+
+	.ui-dialog-buttonpane {
+
+		@extend .modal-footer;
+
+		.ui-dialog-buttonset {}
+
+	}
+
+}
+
+

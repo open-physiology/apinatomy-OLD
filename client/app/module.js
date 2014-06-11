@@ -66,18 +66,20 @@ define(['jquery',
 		};
 
 
-//		//////////////////// Manage bottom sliding panels //////////////////////////////////////////////////////////////
-//
-//		var AMY_PANEL_HEIGHT = 250;   // $amy-panel-height
-//
-//		$scope.$root.$watch('simulationEnabled', function (enabled) {
-//			if (enabled) {
-//				$('main').css('bottom', AMY_PANEL_HEIGHT);
-//			} else {
-//				$('main').css('bottom', 0);
-//			}
-//			_($($window)).bindKey('trigger', 'resize').defer();
-//		});
+		//////////////////// Manage bottom sliding panels //////////////////////////////////////////////////////////////
+
+		var AMY_FOOTER_HEIGHT = 60;   // $amy-footer-height
+
+		$scope.$root.$watch('simulationEnabled', function (enabled) {
+			if (enabled) {
+				$('main').css('bottom', AMY_FOOTER_HEIGHT);
+				$('footer').show();
+			} else {
+				$('main').css('bottom', 0);
+				$('footer').hide();
+			}
+			_($($window)).bindKey('trigger', 'resize').defer();
+		});
 
 	}]);
 

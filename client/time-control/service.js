@@ -1,7 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module'], function (app) {
+define(['app/module', 'lodash'], function (app, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -11,76 +11,98 @@ define(['app/module'], function (app) {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		var intervalPromise = $q.defer();
+		var timeChangePromise = $q.defer();
 		var endPromise = $q.defer();
 		var timer = null;
 
 		var INITIAL_STATE = {
 			currentTime: 0,
-			endTime:     0,
-			interval:    100
+			maxTime:     0,
+			interval:    100,
+			endTime:     Infinity
 		};
 
-		var state = INITIAL_STATE;
+		var state = _.clone(INITIAL_STATE);
 
-		function startTimer(interval, beginning, end) {
-			state.interval = interval;
-			state.currentTime = beginning;
-			state.endTime = end;
-			timer = $interval(null, interval, Math.floor((end - beginning) / interval));
-			timer.then(function () {
-				endPromise.notify(state.currentTime);
-			}, null, function () {
-				state.currentTime += interval;
-				intervalPromise.notify(state.currentTime);
-			});
-		}
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		function stopTimer() {
+		iface.resetTimer = function resetTimer(interval, startTime, endTime) {
+			iface.stop();
+			state.currentTime = _(startTime).or(INITIAL_STATE.currentTime);
+			state.maxTime = state.currentTime;
+			state.interval = _(interval).or(INITIAL_STATE.interval);
+			state.endTime = _(endTime).or(INITIAL_STATE.endTime);
+		};
+
+		Object.defineProperty(iface, "currentTime", {
+			get: function () { return state.currentTime; },
+			set: function (time) {
+				state.currentTime = time;
+				state.maxTime = Math.max(state.maxTime, state.currentTime);
+				timeChangePromise.notify(state.currentTime);
+			},
+			enumerable: true,
+			configurable: false
+		});
+
+		Object.defineProperty(iface, "interval", {
+			get: function () { return state.interval; },
+			enumerable: true,
+			configurable: false
+		});
+
+		Object.defineProperty(iface, "endTime", {
+			get: function () { return state.endTime; },
+			enumerable: true,
+			configurable: false
+		});
+
+		Object.defineProperty(iface, "maxTime", {
+			get: function () { return state.maxTime; },
+			set: function (time) {
+				state.maxTime = time;
+				if (state.maxTime < state.currentTime) {
+					iface.currentTime = state.maxTime;
+				}
+			},
+			enumerable: true,
+			configurable: false
+		});
+
+		Object.defineProperty(iface, "timePointCount", {
+			get: function () { return state.currentTime / state.interval + 1; },
+			enumerable: false,
+			configurable: false
+		});
+
+		// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+
+		iface.onTimeChange = function onTimeChange(fn) {
+			timeChangePromise.promise.then(null, null, fn);
+		};
+
+		iface.onEndTime = function onEndTime(fn) {
+			endPromise.promise.then(null, null, fn);
+		};
+
+		// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+
+		iface.start = function start() {
+			if (!timer) {
+				timer = $interval(null, state.interval, Math.floor((state.endTime - state.startTime) / state.interval));
+				timer.then(function () {
+					endPromise.notify(state.currentTime);
+				}, null, function () {
+					iface.currentTime = state.currentTime + state.interval;
+				});
+			}
+		};
+
+		iface.stop = function pause() {
 			if (timer) {
 				$interval.cancel(timer);
 				timer = null;
 			}
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		iface.onInterval = function (fn) {
-			intervalPromise.promise.then(null, null, fn);
-		};
-
-		iface.onEnd = function (fn) {
-			endPromise.promise.then(null, null, fn);
-		};
-
-		iface.start = function (options) {
-			startTimer( options.interval || 100,  options.beginning || 0,  options.end || 0 );
-		};
-
-		iface.resume = function () {
-			if (state.currentTime < state.endTime) {
-				startTimer(state.interval, state.currentTime, state.endTime);
-			} else {
-				endPromise.notify(state.currentTime);
-			}
-		};
-
-		iface.pause = function () {
-			stopTimer();
-		};
-
-		iface.togglePause = function () {
-			if (timer) {
-				iface.pause();
-			} else {
-				iface.resume();
-			}
-		};
-
-		iface.stop = function () {
-			stopTimer();
-			intervalPromise.notify(0);
-			state = INITIAL_STATE;
 		};
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -2,7 +2,7 @@
 
 trace-diagram {
 
-	display: inline-block;
+	display: block;
 
 	& > svg {
 
@@ -51,4 +51,8 @@ trace-diagram {
 
 	}
 
+}
+
+#variable-glyph-dialog-container {
+	@include edge-to-edge;
 }

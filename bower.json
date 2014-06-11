@@ -1,6 +1,6 @@
 {
   "name": "ApiNATOMY",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "authors": [
     "Michiel Helvensteijn <mhelvens@gmail.com>",
     "Natallia Kokash"
@@ -34,7 +34,8 @@
     "d3": "3.4.x",
     "require-css": "0.1.x",
     "venturocket-angular-slider": "0.3.x",
-    "chroma-js": "0.5.x"
+    "chroma-js": "0.5.x",
+    "jquery-ui": "~1.10.4"
   },
   "devDependencies": {
     "stats.js": "*"

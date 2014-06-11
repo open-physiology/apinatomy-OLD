@@ -1,8 +1,5 @@
-/// <reference path="../ts-lib/jquery.d.ts" />
-/// <reference path="../ts-lib/jquery-svg-class.d.ts" />
-/// <reference path="../ts-lib/jquery-click-vs-drag.d.ts" />
-/// <reference path="../ts-lib/lodash.d.ts" />
-/// <reference path="../ts-lib/lodash-call.d.ts" />
+/// <reference path="../../typings/tsd.d.ts" />
+/// <reference path="../../typings/own.d.ts" />
 
 import $ = require('jquery');
 import _ = require('lodash');
@@ -219,14 +216,21 @@ export class Artefact {
 	detailTemplateUrl: string;
 
 
+	//////////////////// Detail Popup //////////////////////////////////////////
+
+	popupTemplateUrl: string;
+
+
 	//////////////////// Resources /////////////////////////////////////////////
 	// TODO: make these three more globally available
 
 	ResourceService: any;
+	TimerService: any;
 	$bind: any;
 	$q: any;
 	THREE: any;
 	threeDLayer: any;
+	$compile: any;
 
 }
 
@@ -965,6 +969,119 @@ export class ProteinInteraction extends SvgEdgeArtefact {
 	//////////////////// Graph Layer ///////////////////////////////////////////
 
 	svgClass() { return 'protein-interaction' }
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export class VariableGlyph extends SvgVertexArtefact {
+
+	//////////////////// Construction //////////////////////////////////////////
+
+	constructor(properties) {
+		super(_.extend({
+			type            : 'variableGlyph',
+			popupTemplateUrl: 'amy-circuit-board/amy-tile/variable-trace-popup.html'
+		}, properties));
+
+		this.constructor_VariableGlyph1();
+	}
+
+
+	//////////////////// Meta data /////////////////////////////////////////////
+
+	variable: any;
+
+
+	//////////////////// Data-stream ///////////////////////////////////////////
+	// TODO: use real data
+
+	traceData: number[][];
+
+	private refreshTraceData(): void {
+		var timePointCount = this.TimerService.timePointCount;
+		for (var i = this.traceData.length; i < timePointCount; ++i) {
+			this.traceData.push([ i * this.TimerService.interval, Math.floor(Math.random() * 11 - 5) ]);
+		}
+		for (var j = this.traceData.length; timePointCount < j; --j) {
+			this.traceData.pop();
+		}
+	}
+
+	private initializeTraceData(): void {
+		var that = this;
+		that.traceData = [];
+		that.refreshTraceData();
+		that.TimerService.onTimeChange(function () {
+			that.refreshTraceData();
+		});
+	}
+
+
+	//////////////////// Graph Layer ///////////////////////////////////////////
+
+	svgHtml() { return '<rect class="core" width="15" height="15" x="-7.5" y="-7.5"></rect>' }
+
+	svgClass() { return 'variable-glyph' }
+
+
+	//////////////////// Detail Popup //////////////////////////////////////////
+
+	private constructor_VariableGlyph1() {
+		var that = this;
+
+		var subScope = that.$scope.$new(true);
+		subScope.artefact = that;
+
+		var traceDialogElement = null;
+
+		function generateTraceDialog() {
+
+			that.initializeTraceData();
+
+			traceDialogElement = that.$compile(
+					'<trace-diagram trace="artefact.traceData"></trace-diagram>'
+			)(subScope);
+
+			var dialogContainer = $('<div></div>').appendTo('main'); // bypasses a bug (?) when multiple dialogs are open at the same time
+			traceDialogElement.dialog({
+				appendTo: dialogContainer,
+				autoOpen: false,
+				closeOnEscape: true,
+				closeText: '×',
+				dialogClass: 'variable-glyph-trace-dialog',
+				draggable: true,
+				height: 300,
+				width: 300,
+				modal: false,
+				resizable: false,
+				title: that.variable.name
+			});
+
+			traceDialogElement.dialog('widget').on('mouseenter', function () {
+				// TODO: react with a highlighted glyph
+			});
+			traceDialogElement.dialog('widget').on('mouseleave', function () {
+				// TODO: react with an unhighlighted glyph
+			});
+
+			that.onDestruct(function () {
+				traceDialogElement.dialog('destroy');
+			});
+
+		}
+
+		$(that.element).clickNotDrop(that.$bind(function () {
+			if (traceDialogElement && traceDialogElement.dialog('isOpen')) {
+				traceDialogElement.dialog('close');
+			} else {
+				if (!traceDialogElement) { generateTraceDialog(); }
+				traceDialogElement.dialog('open');
+			}
+		}));
+	}
 
 }
 

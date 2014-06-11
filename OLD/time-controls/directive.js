@@ -51,7 +51,7 @@ define(['app/module',
 						TimerService.stop();
 						$scope.timer.maxTime = 0;
 					} else if (state === 'paused') {
-						TimerService.pause();
+						TimerService.stop();
 					} else if (state === 'running') {
 						TimerService.start({ beginning: $scope.timer.currentTime, interval: $scope.timer.timeInterval });
 					}

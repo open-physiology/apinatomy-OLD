@@ -5,16 +5,32 @@ define(['app/module', 'lodash', 'resource/service'], function (app, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	// TODO: Eventually, we'll want to implement this service to get more sophisticated
-	//     : variable management across the application, where every variable can have
-	//     : not only a URL, but an associated color, range, source model, etc.
+	app.factory('Variable', ['ResourceService', function (ResourceService) {
 
+		function Variable(_name, _uri, _streamSource) {
 
-	app.factory('VariableManager', ['ResourceService', function (ResourceService) {
+			this.name = function name() { return _name };
 
+			this.uri = function uri() { return _uri };
 
+			var tmpDataCache = [];
 
+			this.getDataUpToTime = function getDataUpToTime(endTime, timeInterval) {
+				var timePointCount = endTime / timeInterval + 1;
+				for (var i = tmpDataCache.length; i < timePointCount; ++i) {
+					tmpDataCache.push([ i * timeInterval, Math.random() * 11 - 5 ]); // TODO: use real data
+				}
+				for (var j = tmpDataCache.length; timePointCount < j; --j) {
+					tmpDataCache.pop();
+				}
+				return tmpDataCache;
+			};
 
+			// TODO: color, range, etc.
+
+		}
+
+		return Variable;
 
 	}]);
 

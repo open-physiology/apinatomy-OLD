@@ -52,12 +52,14 @@ define(['angular',
         'font-fit/directive',
         'resource/service',
         '$bind/service',
-        'resource/service'], function (ng, app, color, _, THREE, artefacts) {
+        'resource/service',
+        'jqueryui/dialog' // for VariableGlyph artefact (trace popup)
+], function (ng, app, color, _, THREE, artefacts) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	var TILE_HEADER_HEIGHT = 26;
 
-	app.directive('amyTile', ['$bind', '$q', 'RecursionHelper', 'defaults', 'ResourceService', function ($bind, $q, RecursionHelper, defaults, ResourceService) {
+	app.directive('amyTile', ['$bind', '$q', 'RecursionHelper', 'defaults', 'ResourceService', '$compile', 'TimerService', function ($bind, $q, RecursionHelper, defaults, ResourceService, $compile, TimerService) {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -528,6 +530,66 @@ define(['angular',
 												}
 											});
 										});
+
+									}
+								});
+
+
+								//////////////////// Variable Glyphs ///////////////////////////////////////////////////
+
+								$scope.entity._promise.then(function () {
+									if (!_($scope.entity.externals).isEmpty()) {
+
+										var onVariablesToggle = (function () {
+											var variablesToggleD = $q.defer();
+											$scope.$watch('tile.active && $root.simulationEnabled', function (showVariables) {
+												variablesToggleD.notify(showVariables);
+											});
+											return function onVariablesToggle(fn) {
+												variablesToggleD.promise.then(null, null, fn);
+											}
+										}());
+
+										var variableArtefactMap = {};
+
+										_($scope.entity.externals).forEach(function (external) {
+											var externalModel = external.external;
+
+											if (externalModel.type === 'variable') {
+												var variableArtefact;
+
+												var addVariableGlyph = function addVariableGlyph() {
+													variableArtefact = new artefacts.VariableGlyph({
+														id: $scope.tile.id + ':' + externalModel._id,
+														$scope:            $scope,
+														parent:            $scope.tile,
+														variable:          externalModel,
+														relationType:      '"' + external.type + '"',
+														showVertex:        true,
+														graphZIndex:       200,
+														ResourceService:   ResourceService,
+														TimerService:      TimerService,
+														$bind:             $bind,
+														$compile:          $compile
+													});
+													variableArtefactMap[externalModel._id] = variableArtefact;
+													graphGroup.addVertex(variableArtefact);
+													variableArtefact.onDestruct(function () {
+														delete variableArtefactMap[externalModel._id];
+														graphGroup.removeVertex(variableArtefact);
+													});
+												};
+
+												onVariablesToggle(function (showVariables) {
+													if (showVariables) { addVariableGlyph(); }
+													else if (variableArtefact) {
+														variableArtefact.destructor();
+														variableArtefact = null;
+													}
+												});
+											}
+										});
+
 
 									}
 								});

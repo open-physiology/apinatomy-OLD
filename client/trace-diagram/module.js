@@ -17,14 +17,12 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 		return {
 			restrict:    'E',
 			templateUrl: 'trace-diagram/view.html',
-			scope:       true,
-			link:        function ($scope, iElement, iAttrs) {
-
-				//////////////////// attributes ////////////////////////////////////////////////////////////////////////
-
-				$scope.trace = $scope.$parent.$eval(iAttrs.trace);
-				$scope.shadowTraces = $scope.$parent.$eval(iAttrs.shadowTraces);
-
+			scope:       {
+				trace:        '=',
+				shadowTraces: '=',
+				operations:   '='
+			},
+			link:        function ($scope, iElement/*, iAttrs, controller*/) {
 
 				//////////////////// geometry //////////////////////////////////////////////////////////////////////////
 
