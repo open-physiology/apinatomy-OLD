@@ -6,9 +6,9 @@
 			</clipPath>
 		</defs>
 		<rect class="border"></rect>
-		<text class="caption" x="5px" y="5px">{{ caption }}</text>
+		<text class="caption" x="5px" y="5px" ng-bind="caption"></text>
 		<g class="shadow-traces"></g>
-		<path class="normal trace" clip-path="url(#dataArea)"></path>
+		<path class="normal trace" stroke="{{ traceColor }}" clip-path="url(#dataArea)"></path>
 		<g class="y axis"></g>
 	</g>
 </svg>

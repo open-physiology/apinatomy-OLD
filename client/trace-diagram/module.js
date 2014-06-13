@@ -20,7 +20,8 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 			scope:       {
 				trace:        '=',
 				shadowTraces: '=',
-				operations:   '='
+				maxX:         '=',
+				traceColor:   '@'
 			},
 			link:        function ($scope, iElement/*, iAttrs, controller*/) {
 
@@ -40,7 +41,6 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 				//////////////////// scales and axes ///////////////////////////////////////////////////////////////////
 
 				var minX = 0;
-				var maxX = -Infinity;
 				var minY = Infinity;
 				var maxY = -Infinity;
 
@@ -68,13 +68,11 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 					//// adjust min/max values
 					//
 					_($scope.trace).forEach(function (d) {
-						maxX = Math.max(maxX, d[0]);
 						minY = Math.min(minY, d[1]);
 						maxY = Math.max(maxY, d[1]);
 					});
 					_($scope.shadowTraces).forEach(function (shadow) {
 						_(shadow).forEach(function (d) {
-							maxX = Math.max(maxX, d[0]);
 							minY = Math.min(minY, d[1]);
 							maxY = Math.max(maxY, d[1]);
 						});
@@ -82,7 +80,7 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 
 					//// perform scaling
 					//
-					xScale.domain([minX, maxX]);
+					xScale.domain([minX, $scope.maxX]);
 					yScale.domain([minY, maxY]);
 					yAxis.scale(yScale);
 					svgCanvas.select(".y.axis").call(yAxis);

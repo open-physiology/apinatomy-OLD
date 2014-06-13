@@ -3,6 +3,7 @@
 
 import $ = require('jquery');
 import _ = require('lodash');
+import ColorRange = require('../color/ColorRange');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -987,6 +988,7 @@ export class VariableGlyph extends SvgVertexArtefact {
 		}, properties));
 
 		this.constructor_VariableGlyph1();
+		this.constructor_VariableGlyph2();
 	}
 
 
@@ -995,10 +997,24 @@ export class VariableGlyph extends SvgVertexArtefact {
 	variable: any;
 
 
+	//////////////////// Color /////////////////////////////////////////////////
+
+	private static colorRange = new ColorRange();
+	private static colorMap: { [id: string]: Chroma; } = {};
+
+	private get color() {
+		if (_.isUndefined(VariableGlyph.colorMap[this.variable._id])) {
+			VariableGlyph.colorMap[this.variable._id] = VariableGlyph.colorRange.next();
+		}
+		return VariableGlyph.colorMap[this.variable._id];
+	}
+
+
 	//////////////////// Data-stream ///////////////////////////////////////////
 	// TODO: use real data
 
 	traceData: number[][];
+	shadowTraceData: number[][][];
 
 	private refreshTraceData(): void {
 		var timePointCount = this.TimerService.timePointCount;
@@ -1012,10 +1028,28 @@ export class VariableGlyph extends SvgVertexArtefact {
 
 	private initializeTraceData(): void {
 		var that = this;
+
 		that.traceData = [];
 		that.refreshTraceData();
+		that.shadowTraceData = [_.cloneDeep(that.traceData)]; // first shadow trace
+		var timePointCount = that.TimerService.currentTime / that.TimerService.interval + 1;
 		that.TimerService.onTimeChange(function () {
+			var prevTimerPointCount = timePointCount;
+			timePointCount = that.TimerService.timePointCount;
 			that.refreshTraceData();
+			for (var i = prevTimerPointCount; i < timePointCount; ++i) {
+				if (_.isUndefined(that.shadowTraceData[0][i])) {
+					that.shadowTraceData[0].push(that.traceData[i]);
+				} else if (that.shadowTraceData[0][i] !== that.traceData[i]) {
+					that.shadowTraceData.unshift(_.cloneDeep(that.shadowTraceData[0].slice(0, i)));
+					--i; //// try again on the new shadow trace
+				}
+			}
+		});
+		that.TimerService.onMaxTimeChange(function (newMaxTime) {
+			if (newMaxTime === 0) {
+				that.shadowTraceData = [_.cloneDeep(that.traceData)];
+			}
 		});
 	}
 
@@ -1026,10 +1060,14 @@ export class VariableGlyph extends SvgVertexArtefact {
 
 	svgClass() { return 'variable-glyph' }
 
+	private constructor_VariableGlyph1() {
+
+	}
+
 
 	//////////////////// Detail Popup //////////////////////////////////////////
 
-	private constructor_VariableGlyph1() {
+	private constructor_VariableGlyph2() {
 		var that = this;
 
 		var subScope = that.$scope.$new(true);
@@ -1042,10 +1080,12 @@ export class VariableGlyph extends SvgVertexArtefact {
 			that.initializeTraceData();
 
 			traceDialogElement = that.$compile(
-					'<trace-diagram trace="artefact.traceData"></trace-diagram>'
+					'<trace-diagram trace="artefact.traceData" shadow-traces="artefact.shadowTraceData" max-x="artefact.TimerService.maxTime" trace-color="{{ artefact.color.css() }}"></trace-diagram>'
 			)(subScope);
 
-			var dialogContainer = $('<div></div>').appendTo('main'); // bypasses a bug (?) when multiple dialogs are open at the same time
+			// the extra `div` bypasses a bug (?) that manifested
+			// when switching focus between multiple open dialogs
+			var dialogContainer = $('<div></div>').appendTo('main');
 			traceDialogElement.dialog({
 				appendTo: dialogContainer,
 				autoOpen: false,
@@ -1076,9 +1116,12 @@ export class VariableGlyph extends SvgVertexArtefact {
 		$(that.element).clickNotDrop(that.$bind(function () {
 			if (traceDialogElement && traceDialogElement.dialog('isOpen')) {
 				traceDialogElement.dialog('close');
+				$(that.element).removeSvgClass('highlighted');
 			} else {
 				if (!traceDialogElement) { generateTraceDialog(); }
 				traceDialogElement.dialog('open');
+				$(that.element).addSvgClass('highlighted')
+						.children('.core').attr('fill', that.color.css()).attr('stroke', 'black');
 			}
 		}));
 	}
@@ -1436,7 +1479,7 @@ export class ProteinDomain3DModel extends ThreeJSModel {
 		var that = this;
 
 		var domainGeometry = new this.THREE.CylinderGeometry(3, 3, 1, 32);
-		var domainMaterial = new that.THREE.MeshLambertMaterial({ color: ProteinDomain3DModel.domainColor(that.proteinDomain) });
+		var domainMaterial = new that.THREE.MeshLambertMaterial({ color: ProteinDomain3DModel.domainColor(that.proteinDomain).hex() });
 		that.domainObject = new that.THREE.Mesh(domainGeometry, domainMaterial);
 		that.domainObject.translateY(.5 * that.proteinDomain.start + .5 * that.proteinDomain.end);
 		that.domainObject.scale.y = (that.proteinDomain.end - that.proteinDomain.start);
@@ -1505,137 +1548,28 @@ export class ProteinDomain3DModel extends ThreeJSModel {
 	}
 
 
-	//////////////////// Colors ////////////////////////////////////////////////
 
-	private static domainColors: any = {};
-	private static uniqueColors: any[];
-	private static colorCounter: number = 0;
+	//////////////////// Color /////////////////////////////////////////////////
+	// TODO: test the new color-ranges on the protein domains
 
-	private static domainColor(domain) {
-		if (_.isUndefined(ProteinDomain3DModel.uniqueColors)) {
-			ProteinDomain3DModel.uniqueColors = ProteinDomain3DModel.randomColorRange(100);
-		}
-
+	private static colorRange = new ColorRange();
+	private static colorMap: { [id: string]: Chroma; } = {};
+	private static domainColor(domain): Chroma {
 		if (domain.type === 'signalp') {
-			return 'black';
+			return Chroma.hex('#000');
 		} else if (_.isUndefined(domain.pfam_id)) {
-			return 'gray';
+			return Chroma.hex('#888');
 		}
-
-		if (_.isUndefined(ProteinDomain3DModel.domainColors[domain.pfam_id])) {
-			ProteinDomain3DModel.domainColors[domain.pfam_id] = ProteinDomain3DModel.uniqueColors[ProteinDomain3DModel.colorCounter];
-			ProteinDomain3DModel.colorCounter = (ProteinDomain3DModel.colorCounter + 1) % 100;
+		if (_.isUndefined(ProteinDomain3DModel.colorMap[domain.pfam_id])) {
+			ProteinDomain3DModel.colorMap[domain.pfam_id] = ProteinDomain3DModel.colorRange.next();
 		}
-		return ProteinDomain3DModel.domainColors[domain.pfam_id];
+		return ProteinDomain3DModel.colorMap[domain.pfam_id];
 	}
-
-
-	private static randomColorRange(total) {
-		var i = 360 / (total - 1); // distribute the colors evenly on the hue range
-		var r = []; // hold the generated colors
-		for (var x = 0; x < total; x++) {
-			r.push(ProteinDomain3DModel.hsvToRgb(i * x, 100, 100));
-		}
-		return r;
-	}
-
-	private static hsvToRgb(h, s, v) {
-		// TODO: use chroma library instead of this function
-		var r, g, b;
-		var i;
-		var f, p, q, t;
-
-		// Make sure our arguments stay in-range
-		h = Math.max(0, Math.min(360, h));
-		s = Math.max(0, Math.min(100, s));
-		v = Math.max(0, Math.min(100, v));
-
-		// We accept saturation and value arguments from 0 to 100 because that's
-		// how Photoshop represents those values. Internally, however, the
-		// saturation and value are calculated from a range of 0 to 1. We make
-		// that conversion here.
-		s /= 100;
-		v /= 100;
-
-		if (s == 0) {
-			// Achromatic (grey)
-			r = g = b = v;
-			return 'rgb(' + Math.round(r * 255) + ',' + Math.round(g * 255) + ',' + Math.round(b * 255) + ')';
-		}
-
-		h /= 60; // sector 0 to 5
-		i = Math.floor(h);
-		f = h - i; // factorial part of h
-		p = v * (1 - s);
-		q = v * (1 - s * f);
-		t = v * (1 - s * (1 - f));
-
-		switch (i) {
-			case 0:
-				r = v;
-				g = t;
-				b = p;
-				break;
-			case 1:
-				r = q;
-				g = v;
-				b = p;
-				break;
-			case 2:
-				r = p;
-				g = v;
-				b = t;
-				break;
-			case 3:
-				r = p;
-				g = q;
-				b = v;
-				break;
-			case 4:
-				r = t;
-				g = p;
-				b = v;
-				break;
-			default:
-				r = v;
-				g = p;
-				b = q;
-		}
-
-		return 'rgb(' + Math.round(r * 255) + ',' + Math.round(g * 255) + ',' + Math.round(b * 255) + ')';
-	}
-
 
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

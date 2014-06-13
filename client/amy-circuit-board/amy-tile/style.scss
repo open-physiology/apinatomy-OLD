@@ -179,12 +179,13 @@
 		stroke-linecap: round;
 	}
 
-	.variable-glyph.vertex {
+	.variable-glyph.vertex:not(.highlighted) {
 		.core {
 			fill:   white;
 			stroke: black;
 		}
 	}
+
 }
 
 [amy-entity-details].protein {

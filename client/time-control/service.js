@@ -11,8 +11,6 @@ define(['app/module', 'lodash'], function (app, _) {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		var timeChangePromise = $q.defer();
-		var endPromise = $q.defer();
 		var timer = null;
 
 		var INITIAL_STATE = {
@@ -38,8 +36,23 @@ define(['app/module', 'lodash'], function (app, _) {
 			get: function () { return state.currentTime; },
 			set: function (time) {
 				state.currentTime = time;
-				state.maxTime = Math.max(state.maxTime, state.currentTime);
 				timeChangePromise.notify(state.currentTime);
+				if (iface.maxTime < state.currentTime) {
+					iface.maxTime = state.currentTime;
+				}
+			},
+			enumerable: true,
+			configurable: false
+		});
+
+		Object.defineProperty(iface, "maxTime", {
+			get: function () { return state.maxTime; },
+			set: function (time) {
+				state.maxTime = time;
+				if (state.maxTime < iface.currentTime) {
+					iface.currentTime = state.maxTime;
+				}
+				maxTimeChangePromise.notify(state.maxTime);
 			},
 			enumerable: true,
 			configurable: false
@@ -57,35 +70,31 @@ define(['app/module', 'lodash'], function (app, _) {
 			configurable: false
 		});
 
-		Object.defineProperty(iface, "maxTime", {
-			get: function () { return state.maxTime; },
-			set: function (time) {
-				state.maxTime = time;
-				if (state.maxTime < state.currentTime) {
-					iface.currentTime = state.maxTime;
-				}
-			},
-			enumerable: true,
-			configurable: false
-		});
-
 		Object.defineProperty(iface, "timePointCount", {
 			get: function () { return state.currentTime / state.interval + 1; },
 			enumerable: false,
 			configurable: false
 		});
 
-		// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+		// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // /
+
+		var timeChangePromise = $q.defer();
+		var maxTimeChangePromise = $q.defer();
+		var endPromise = $q.defer();
 
 		iface.onTimeChange = function onTimeChange(fn) {
 			timeChangePromise.promise.then(null, null, fn);
+		};
+
+		iface.onMaxTimeChange = function onMaxTimeChange(fn) {
+			maxTimeChangePromise.promise.then(null, null, fn);
 		};
 
 		iface.onEndTime = function onEndTime(fn) {
 			endPromise.promise.then(null, null, fn);
 		};
 
-		// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+		// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // /
 
 		iface.start = function start() {
 			if (!timer) {

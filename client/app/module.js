@@ -5,13 +5,14 @@ define(['jquery',
         'lodash',
         'angular',
         'amy-circuit-board/artefacts',
+        'color/ColorRange',
         'tile-map/module',
         'trace-diagram/module',
         'angular-animate',
         'angular-bootstrap',
         'angular-recursion',
         'angular-once',
-        'angular-slider'], function ($, _, ng, artefacts) {
+        'angular-slider'], function ($, _, ng, artefacts, ColorRange) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
