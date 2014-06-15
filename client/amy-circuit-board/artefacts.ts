@@ -1537,13 +1537,11 @@ export class ProteinDomain3DModel extends ThreeJSModel {
 
 	//////////////////// Detail Panel //////////////////////////////////////////
 
-	getTitle() {
-		if (this.proteinDomain.type === 'pfam') {
-			return this.proteinDomain.pfam_name.replace('_', ' ');
-		} else if (this.proteinDomain.type === 'signalp') {
-			return "Signal Peptide";
-		} else { // this.proteinDomain.type === 'tmhmm'
-			return "TMHMM";
+	getTitle(): string {
+		switch (this.proteinDomain.type) {
+			case 'pfam':    return this.proteinDomain.pfam_name.replace('_', ' ');
+			case 'signalp': return "Signal Peptide";
+			case 'tmhmm':   return "TMHMM";
 		}
 	}
 
