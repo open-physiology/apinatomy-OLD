@@ -28,7 +28,7 @@ define(['lodash', 'angular', 'app/module', 'amy-circuit-board/artefacts',
 
 		return {
 			restrict:    'E',
-			replace:     true,
+			replace:     false,
 			templateUrl: 'amy-circuit-board/amy-tile-map/view.html',
 			require:     'ngModel',
 			scope:       true,
