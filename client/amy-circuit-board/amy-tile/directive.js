@@ -642,15 +642,16 @@ define(['angular',
 
 										//// create the artefact
 										//
-										var static3DModel = new artefacts.Static3DModel({
+										var modelSource = models[0]; // TODO: options to switch; now getting only the first model
+										var static3DModel = new artefacts[_(modelSource).isArray() ? 'StaticCompound3DModel' : 'Static3DModel']({
 											$scope: $scope,
 											entity: $scope.tile.entity,
 											parent: $scope.tile,
-											filename: models[0], // TODO: options to switch; now getting only the first model
+											file:   modelSource,
 											parent3DObject: threeDGroup.object,
 											detailTemplateUrl: 'amy-circuit-board/amy-tile/static-3d-model-details.html',
 
-											threeDGroup: threeDGroup, // TODO: just pass the 3d layer
+											threeDGroup: threeDGroup,
 
 											THREE:  THREE,
 											$q:     $q

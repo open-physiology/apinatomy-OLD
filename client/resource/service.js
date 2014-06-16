@@ -123,6 +123,7 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 			              '3d-models/FMA_7088_Heart.3.obj'],
 			'fma:7148' : ['3d-models/FMA7148_Stomach.obj'],
 			'fma:7197' : ['3d-models/FMA7197_Liver.obj'],
+			'fma:7201' : [['3d-models/cap_03/cap_03.obj', '3d-models/cap_03/cap_03_conn.obj', '3d-models/cap_03/cap_03_endo.obj', '3d-models/cap_03/cap_03_epi.obj', '3d-models/cap_03/cap_03_field.obj']],
 			'fma:7204' : ['3d-models/FMA7204_Right_Kidney.obj'],
 			'fma:7205' : ['3d-models/FMA7205_Left_Kidney.obj'],
 			'fma:7394' : ['3d-models/FMA7394_Trachea.obj'],
