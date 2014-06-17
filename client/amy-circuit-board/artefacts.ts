@@ -1205,6 +1205,13 @@ export class Static3DModel extends ThreeJSModel {
 			return;
 		}
 
+
+		if (!that.boundingBoxQ) {
+			that.boundingBoxD = that.$q.defer();
+			that.boundingBoxQ = that.boundingBoxD.promise;
+		}
+
+
 		//// load the object
 		//
 		loader.load(that.file, function (obj) {
@@ -1213,8 +1220,24 @@ export class Static3DModel extends ThreeJSModel {
 			that.parent3DObject.add(obj);
 			that.onDestruct(function () { that.parent3DObject.remove(obj) });
 
-			//// resolve object
-			deferred.resolve(obj);
+			if (that.boundingBoxD) {
+				that.boundingBoxD.resolve(that.getCompoundBoundingBox(obj));
+			}
+
+			that.boundingBoxQ.then(function (boundingBox) {
+				var translation = boundingBox.center().negate();
+
+				obj.traverse(function (o) {
+					if (!_.isUndefined(o.geometry)) {
+						console.log(o);
+						o.geometry.applyMatrix(new that.THREE.Matrix4().setPosition(translation));
+					}
+				});
+
+				//// resolve object
+				deferred.resolve(obj);
+
+			});
 
 		});
 	}
@@ -1222,39 +1245,49 @@ export class Static3DModel extends ThreeJSModel {
 
 	//////////////////// Size and Position /////////////////////////////////////
 
-	anchorArtefact: Static3DModel;
 	boundingBoxD: any;
 	boundingBoxQ: any;
 
 	private constructor_Static3DModel2() {
-		var that = this;
+//		var that = this;
 
-		if (!that.boundingBoxQ) {
-			that.boundingBoxD = that.$q.defer();
-			that.boundingBoxQ = that.boundingBoxD.promise;
-		}
+//		if (!that.boundingBoxQ) {
+//			that.boundingBoxD = that.$q.defer();
+//			that.boundingBoxQ = that.boundingBoxD.promise;
+//		}
 
-		that.object3DQ.then(function (obj) {
-			if (that.boundingBoxD) {
-				that.boundingBoxD.resolve(that.getCompoundBoundingBox(obj));
-			}
-			that.boundingBoxQ.then(function (boundingBox) {
-				var translation = boundingBox.center().negate();
-				obj.children[0].geometry.applyMatrix(new that.THREE.Matrix4().setPosition(translation));
-			});
-		});
+//		that.object3DQ.then(function (obj) {
+//			if (that.boundingBoxD) {
+//				that.boundingBoxD.resolve(that.getCompoundBoundingBox(obj));
+//			}
+//			that.boundingBoxQ.then(function (boundingBox) {
+//				var translation = boundingBox.center().negate();
+//
+////				console.log(boundingBox, translation);
+//
+//				obj.traverse(function (o) {
+//					if (!_.isUndefined(o.geometry)) {
+//						console.log(o);
+//						o.geometry.applyMatrix(new that.THREE.Matrix4().setPosition(translation));
+//					}
+//				});
+//
+////				obj.children[0].geometry.applyMatrix(new that.THREE.Matrix4().setPosition(translation));
+//			});
+//		});
 	}
 
 	private getCompoundBoundingBox(object3D) {
 		var box = null;
 		object3D.traverse(function (obj) {
 			var geometry = obj.geometry;
-			if (_.isUndefined(geometry)) { return }
-			geometry.computeBoundingBox();
-			if (_.isNull(box)) {
-				box = geometry.boundingBox;
-			} else {
-				box.union(geometry.boundingBox);
+			if (!_.isUndefined(geometry)) {
+				geometry.computeBoundingBox();
+				if (_.isNull(box)) {
+					box = geometry.boundingBox;
+				} else {
+					box.union(geometry.boundingBox);
+				}
 			}
 		});
 		return box;
@@ -1264,13 +1297,16 @@ export class Static3DModel extends ThreeJSModel {
 		var that = this;
 
 		that.$q.all({obj: that.object3DQ, boundingBox: that.boundingBoxQ}).then(function (q) {
-			//// adjust size
+
 			var ratio = Math.min(size.width / q.boundingBox.size().x, size.height / q.boundingBox.size().y) * .7;
+
+			//// adjust size
 			if (/\.swc/.test(that.file)) { ratio *= 2; } // neurons may take more space
 			q.obj.scale.set(ratio, ratio, ratio);
 
 			//// adjust 'altitude'
 			q.obj.position.z = 0.5 * ratio * q.boundingBox.size().z + 30;
+
 		});
 	}
 
