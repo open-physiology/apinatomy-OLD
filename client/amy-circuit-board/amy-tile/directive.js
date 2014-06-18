@@ -647,7 +647,7 @@ define(['angular',
 											$scope: $scope,
 											entity: $scope.tile.entity,
 											parent: $scope.tile,
-											file:   modelSource,
+											filename:   modelSource,
 											parent3DObject: threeDGroup.object,
 											detailTemplateUrl: 'amy-circuit-board/amy-tile/static-3d-model-details.html',
 

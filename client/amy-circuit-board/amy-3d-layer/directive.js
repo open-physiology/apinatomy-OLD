@@ -93,6 +93,7 @@ define(['jquery',
 						//// setup
 						//
 						var renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+						renderer.sortObjects = false;
 						var cssRenderer = new THREE.CSS3DRenderer();
 						$(cssRenderer.domElement).append(renderer.domElement);
 						iElement.append(cssRenderer.domElement);

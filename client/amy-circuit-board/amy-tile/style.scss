@@ -235,11 +235,14 @@
 
 		cursor: move;
 
+		overflow: hidden;
+
 		.ui-dialog-title {
 			@extend .modal-title;
 			@include text-overflow;
 			font-weight: bold;
 			margin-left: 3px;
+			z-index: -1;
 		}
 
 		.ui-dialog-titlebar-close {
@@ -247,6 +250,11 @@
 			margin: 0;
 			margin-right: 3px;
 			outline: none;
+			position: absolute;
+			top: 4px;
+			right:4px;
+			background-color: white;
+			z-index: 1;
 		}
 
 	}

@@ -47,9 +47,6 @@ export class Artefact {
 
 	destructor(): void {
 		if (!this.wasDestructed) {
-			if (this.isBeingDestructed) {
-				throw new Error('An artefact is being prompted to destruct during its destruction.');
-			}
 			this.isBeingDestructed = true;
 			_.forEachRight(this._destructCallbacks, _.call);
 			this.isBeingDestructed = false;
@@ -75,9 +72,7 @@ export class Artefact {
 			that.parent = that.parent || that.$scope.$parent.artefact || null;
 
 			//// When the $scope is destroyed, destruct this artefact:
-			that.$scope.$on('$destroy', function () {
-				if (!that.wasDestructed) { that.destructor(); }
-			});
+			that.$scope.$on('$destroy', function () { that.destructor(); });
 		}
 	}
 
@@ -366,10 +361,10 @@ export class Tile extends Artefact {
 				if (artefact.type !== 'tile') {
 					artefact = artefact.ancestor('tile');
 				}
-				if (flag) {
-					that.highlighted = !!(artefact && artefact.entity && artefact.entity === that.entity);
-				} else {
-					that.highlighted = !artefact && !(artefact.entity && artefact.entity === that.entity);
+				if (artefact && artefact.entity && artefact.entity === that.entity) {
+					that.highlighted = flag
+				} else if (artefact && (!artefact.entity || artefact.entity !== that.entity) && flag) {
+					that.highlighted = false;
 				}
 			}
 		});
@@ -1094,17 +1089,20 @@ export class VariableGlyph extends SvgVertexArtefact {
 			// when switching focus between multiple open dialogs
 			var dialogContainer = $('<div></div>').appendTo('main');
 			traceDialogElement.dialog({
-				appendTo     : dialogContainer,
-				autoOpen     : false,
+				appendTo: dialogContainer,
+				autoOpen: false,
 				closeOnEscape: true,
-				closeText    : '×',
-				dialogClass  : 'variable-glyph-trace-dialog',
-				draggable    : true,
-				height       : 300,
-				width        : 300,
-				modal        : false,
-				resizable    : false,
-				title        : that.variable.name
+				closeText: '×',
+				dialogClass: 'variable-glyph-trace-dialog',
+				draggable: true,
+				height: 300,
+				width: 300,
+				modal: false,
+				resizable: false,
+				title: that.variable.name,
+				close: function () {
+					$(that.element).removeSvgClass('highlighted');
+				}
 			});
 
 			traceDialogElement.dialog('widget').on('mouseenter', function () {
@@ -1174,15 +1172,13 @@ export class Static3DModel extends ThreeJSModel {
 
 		this.constructor_Static3DModel1();
 		this.constructor_Static3DModel2();
-		this.constructor_Static3DModel3();
 	}
 
 
 	//////////////////// Model /////////////////////////////////////////////////
 
-	entity: any;
 	threeDGroup: any;
-	file: string;
+	filename: string;
 	parent3DObject: any;
 
 	private object3DQ: any;
@@ -1192,52 +1188,36 @@ export class Static3DModel extends ThreeJSModel {
 
 		//// set a promise for the 3D object
 		//
-		var deferred = this.$q.defer();
+		var deferred = that.$q.defer();
 		that.object3DQ = deferred.promise;
 
 		//// determine the proper loader for the 3d model
 		//
 		var loader;
-		if (/\.swc$/.test(that.file)) { loader = new that.THREE.SWCLoader(); }
-		else if (/\.obj$/.test(that.file)) { loader = new that.THREE.OBJLoader(); }
+		if (/\.swc$/.test(that.filename)) { loader = new that.THREE.SWCLoader(); }
+		else if (/\.obj$/.test(that.filename)) { loader = new that.THREE.OBJLoader(); }
 		else {
-			deferred.reject('The file "' + that.file + '" is not supported.');
+			deferred.reject('The file "' + that.filename + '" is not supported.');
 			return;
 		}
 
-
-		if (!that.boundingBoxQ) {
-			that.boundingBoxD = that.$q.defer();
-			that.boundingBoxQ = that.boundingBoxD.promise;
-		}
-
-
 		//// load the object
 		//
-		loader.load(that.file, function (obj) {
+		loader.load(that.filename, function (obj) {
 
 			//// add this object to the parent object
 			that.parent3DObject.add(obj);
 			that.onDestruct(function () { that.parent3DObject.remove(obj) });
 
-			if (that.boundingBoxD) {
-				that.boundingBoxD.resolve(that.getCompoundBoundingBox(obj));
-			}
+			//// calculate bounding box of object; used for several purposes
+			that.object3DBoundingBox = that.getCompoundBoundingBox(obj);
 
-			that.boundingBoxQ.then(function (boundingBox) {
-				var translation = boundingBox.center().negate();
+			//// normalize position
+			var translation = that.object3DBoundingBox.center().negate();
+			obj.children[0].geometry.applyMatrix(new that.THREE.Matrix4().setPosition(translation));
 
-				obj.traverse(function (o) {
-					if (!_.isUndefined(o.geometry)) {
-						console.log(o);
-						o.geometry.applyMatrix(new that.THREE.Matrix4().setPosition(translation));
-					}
-				});
-
-				//// resolve object
-				deferred.resolve(obj);
-
-			});
+			//// resolve the promise for the object
+			deferred.resolve(obj);
 
 		});
 	}
@@ -1245,49 +1225,18 @@ export class Static3DModel extends ThreeJSModel {
 
 	//////////////////// Size and Position /////////////////////////////////////
 
-	boundingBoxD: any;
-	boundingBoxQ: any;
-
-	private constructor_Static3DModel2() {
-//		var that = this;
-
-//		if (!that.boundingBoxQ) {
-//			that.boundingBoxD = that.$q.defer();
-//			that.boundingBoxQ = that.boundingBoxD.promise;
-//		}
-
-//		that.object3DQ.then(function (obj) {
-//			if (that.boundingBoxD) {
-//				that.boundingBoxD.resolve(that.getCompoundBoundingBox(obj));
-//			}
-//			that.boundingBoxQ.then(function (boundingBox) {
-//				var translation = boundingBox.center().negate();
-//
-////				console.log(boundingBox, translation);
-//
-//				obj.traverse(function (o) {
-//					if (!_.isUndefined(o.geometry)) {
-//						console.log(o);
-//						o.geometry.applyMatrix(new that.THREE.Matrix4().setPosition(translation));
-//					}
-//				});
-//
-////				obj.children[0].geometry.applyMatrix(new that.THREE.Matrix4().setPosition(translation));
-//			});
-//		});
-	}
+	private object3DBoundingBox: any;
 
 	private getCompoundBoundingBox(object3D) {
 		var box = null;
 		object3D.traverse(function (obj) {
 			var geometry = obj.geometry;
-			if (!_.isUndefined(geometry)) {
-				geometry.computeBoundingBox();
-				if (_.isNull(box)) {
-					box = geometry.boundingBox;
-				} else {
-					box.union(geometry.boundingBox);
-				}
+			if (_.isUndefined(geometry)) { return }
+			geometry.computeBoundingBox();
+			if (_.isNull(box)) {
+				box = geometry.boundingBox;
+			} else {
+				box.union(geometry.boundingBox);
 			}
 		});
 		return box;
@@ -1296,24 +1245,22 @@ export class Static3DModel extends ThreeJSModel {
 	adjustToSize(size: { width: number; height: number; }) {
 		var that = this;
 
-		that.$q.all({obj: that.object3DQ, boundingBox: that.boundingBoxQ}).then(function (q) {
-
-			var ratio = Math.min(size.width / q.boundingBox.size().x, size.height / q.boundingBox.size().y) * .7;
-
+		that.object3DQ.then(function (obj) {
 			//// adjust size
-			if (/\.swc/.test(that.file)) { ratio *= 2; } // neurons may take more space
-			q.obj.scale.set(ratio, ratio, ratio);
+			var ratio = Math.min(size.width / that.object3DBoundingBox.size().x,
+							size.height / that.object3DBoundingBox.size().y) * .7;
+			if (/\.swc/.test(that.filename)) { ratio *= 2; } // neurons may take more space
+			obj.scale.set(ratio, ratio, ratio);
 
 			//// adjust 'altitude'
-			q.obj.position.z = 0.5 * ratio * q.boundingBox.size().z + 30;
-
+			obj.position.z = 0.5 * ratio * that.object3DBoundingBox.size().z + 30;
 		});
 	}
 
 
 	//////////////////// Focus /////////////////////////////////////////////////
 
-	private constructor_Static3DModel3() {
+	private constructor_Static3DModel2() {
 		var that = this;
 		that.object3DQ.then(function (obj) {
 
@@ -1371,48 +1318,192 @@ export class StaticCompound3DModel extends ThreeJSModel {
 
 	constructor(properties) {
 		super(_.extend({
-			type        : 'staticCompound3DModel',
+			type        : 'static3DModel',
 			relationType: '3D model'
 		}, properties));
 
 		this.constructor_StaticCompound3DModel1();
+//		this.constructor_StaticCompound3DModel2();
 	}
 
 
-	entity: any;
+	//////////////////// Model /////////////////////////////////////////////////
+
 	threeDGroup: any;
-	file: any;
+	filename: string[];
 	parent3DObject: any;
+
+	private object3DQs: any;
 
 	private constructor_StaticCompound3DModel1() {
 		var that = this;
 
-		var boundingBoxQ = null;
-		_.forEach(that.file, function (file) {
-			var newChild = new Static3DModel({
-				relationType     : 'part',
-				$scope           : that.$scope,
-				entity           : that.entity,
-				parent           : that,
-				file             : file,
-				parent3DObject   : that.parent3DObject,
-				boundingBoxQ     : boundingBoxQ,
-				detailTemplateUrl: 'amy-circuit-board/amy-tile/static-3d-model-details.html',
+		that.object3DQs = that.$q.all(_.map(that.filename, function (model: any) {
 
-				threeDGroup: that.threeDGroup,
+			//// normalize input
+			//
+			if (_.isString(model)) {
+				model = { file: model, color: '#000000' };
+			}
 
-				THREE: that.THREE,
-				$q   : that.$q
+			//// set a promise for the 3D object
+			//
+			var deferred = that.$q.defer();
+
+			//// determine the proper loader for the 3d model
+			//
+			var loader;
+			if (/\.swc$/.test(model.file)) { loader = new that.THREE.SWCLoader(); }
+			else if (/\.obj$/.test(model.file)) { loader = new that.THREE.OBJLoader(); }
+			else {
+				deferred.reject('The file "' + model.file + '" is not supported.');
+				return;
+			}
+
+			//// load the object
+			//
+			loader.load(model.file, function (obj) {
+
+				//// add this object to the parent object
+				var parentObj = new that.THREE.Object3D();
+				parentObj.add(obj);
+				that.parent3DObject.add(parentObj);
+				that.onDestruct(function () { that.parent3DObject.remove(obj) });
+
+				//// set proper material properties
+//				obj.children[0].material = new THREE.MeshLambertMaterial({
+//					side: that.THREE.DoubleSide,
+//					color: new that.THREE.Color(model.color),
+//					opacity: ()
+//				});
+				obj.children[0].material.side = that.THREE.DoubleSide;
+				obj.children[0].material.color = new that.THREE.Color(model.color);
+				if (!_.isUndefined(model.opacity) && model.opacity < 1) {
+					obj.children[0].material.opacity = model.opacity;
+					obj.children[0].material.transparent = true;
+				}
+
+				//// resolve the promise for the object
+				deferred.resolve(obj);
+
 			});
-			boundingBoxQ = newChild.boundingBoxQ;
+
+			return deferred.promise;
+
+		})).then(function (objs) {
+
+			//// find communal bounding box
+			that.object3DBoundingBox = null;
+			_.forEach(objs, function (obj) {
+				if (_.isNull(that.object3DBoundingBox)) {
+					that.object3DBoundingBox = that.getCompoundBoundingBox(obj);
+				} else {
+					that.object3DBoundingBox.union(that.getCompoundBoundingBox(obj));
+				}
+			});
+
+			//// normalize positions
+			_.forEach(objs, function (obj: any) {
+				obj.children[0].position.sub(that.object3DBoundingBox.center());
+//				obj.children[0].geometry.applyMatrix(new this.THREE.Matrix4().setPosition(that.object3DBoundingBox.center().negate())); // TODO: why doesn't this work?
+			});
+
+			return objs;
 		});
+	}
+
+
+	//////////////////// Size and Position /////////////////////////////////////
+
+	private object3DBoundingBox: any;
+
+	private getCompoundBoundingBox(object3D) {
+		var box = null;
+		object3D.traverse(function (obj) {
+			var geometry = obj.geometry;
+			if (_.isUndefined(geometry)) { return }
+			geometry.computeBoundingBox();
+			if (_.isNull(box)) {
+				box = geometry.boundingBox;
+			} else {
+				box.union(geometry.boundingBox);
+			}
+		});
+		return box;
 	}
 
 	adjustToSize(size: { width: number; height: number; }) {
-		_.forEach(this.children, function (part: Static3DModel) {
-			part.adjustToSize(size);
+		var that = this;
+
+		that.object3DQs.then(function (objs) {
+
+			var ratio = Math.min(size.width  / that.object3DBoundingBox.size().x, size.height / that.object3DBoundingBox.size().y) * .7;
+
+			_.forEach(objs, function (obj: any) {
+				//// adjust size
+				obj.scale.set(ratio, ratio, ratio);
+
+				//// rotate 180 degrees (ugly hack for one specific FTU model); TODO: generalize
+				var DEG_TO_RAD = Math.PI / 180;
+				obj.rotation.x = 180 * DEG_TO_RAD;
+
+				//// adjust 'altitude'
+				obj.position.z = 0.5 * ratio * that.object3DBoundingBox.size().z;
+			});
+
 		});
 	}
+
+
+	//////////////////// Focus /////////////////////////////////////////////////
+
+//	private constructor_StaticCompound3DModel2() {
+//		var that = this;
+//		that.object3DQ.then(function (obj) {
+//
+//			//// translate mouse events to focus events
+//			//
+//			function onMouseOver() {
+//				that.focus = true;
+//			}
+//
+//			function onMouseOut() {
+//				that.focus = false;
+//			}
+//
+//			function onClick() {
+//				that.focusFixed = !that.focusFixed;
+//			}
+//
+//			that.threeDGroup.on(obj, 'mouseover', onMouseOver);
+//			that.threeDGroup.on(obj, 'mouseout', onMouseOut);
+//			that.threeDGroup.on(obj, 'click', onClick);
+//			that.onDestruct(function () {
+//				that.threeDGroup.off(obj, 'mouseover', onMouseOver);
+//				that.threeDGroup.off(obj, 'mouseout', onMouseOut);
+//				that.threeDGroup.off(obj, 'click', onClick);
+//			});
+//
+//			//// change color based on focus-events
+//			//
+//			that.forEachMesh(obj, function (thing) {
+//				thing.userData.initialColor = thing.material.color;
+//			});
+//			that.onFocus(function (flag) {
+//				if (!that.focusFixed) {
+//					that.forEachMesh(obj, function (thing) {
+//						thing.material.color = (flag ? new that.THREE.Color('#ccffff') : thing.userData.initialColor);
+//					});
+//				}
+//			});
+//			that.onFocusFix(function (flag) {
+//				that.forEachMesh(obj, function (thing) {
+//					thing.material.color = (flag ? new that.THREE.Color('#00cc00') : thing.userData.initialColor);
+//				});
+//			});
+//
+//		});
+//	}
 
 }
 
@@ -1560,8 +1651,8 @@ export class ProteinDomain3DModel extends ThreeJSModel {
 
 	constructor(properties) {
 		super(_.extend({
-			type             : 'proteinDomain3DModel',
-			relationType     : 'protein domain',
+			type        : 'proteinDomain3DModel',
+			relationType: 'protein domain',
 			detailTemplateUrl: 'amy-circuit-board/amy-tile/protein-domain-detail-view.html'
 		}, properties));
 
@@ -1645,14 +1736,12 @@ export class ProteinDomain3DModel extends ThreeJSModel {
 
 	getTitle(): string {
 		switch (this.proteinDomain.type) {
-		case 'pfam':
-			return this.proteinDomain.pfam_name.replace('_', ' ');
-		case 'signalp':
-			return "Signal Peptide";
-		case 'tmhmm':
-			return "TMHMM";
+			case 'pfam':    return this.proteinDomain.pfam_name.replace('_', ' ');
+			case 'signalp': return "Signal Peptide";
+			case 'tmhmm':   return "TMHMM";
 		}
 	}
+
 
 
 	//////////////////// Color /////////////////////////////////////////////////
@@ -1660,7 +1749,6 @@ export class ProteinDomain3DModel extends ThreeJSModel {
 
 	private static colorRange = new ColorRange();
 	private static colorMap: { [id: string]: Chroma; } = {};
-
 	private static domainColor(domain): Chroma {
 		if (domain.type === 'signalp') {
 			return Chroma.hex('#000');
