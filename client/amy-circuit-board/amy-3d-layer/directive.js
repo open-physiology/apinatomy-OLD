@@ -90,28 +90,35 @@ define(['jquery',
 
 						//////////////////// renderer ////////////////////
 
-						//// setup
+						//// render subscriptions
 						//
-						var renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-						renderer.sortObjects = false;
-						var cssRenderer = new THREE.CSS3DRenderer();
-						$(cssRenderer.domElement).append(renderer.domElement);
-						iElement.append(cssRenderer.domElement);
-
+						var onRenderHandlers = [];
+						function callOnRender() { _(onRenderHandlers).forEach(_.call); }
+						function onRender(fn) { onRenderHandlers.push(fn); }
 
 						//// rendering
 						//
-						function innerRender() {
-							renderer.render(scene, camera);
-							cssRenderer.render(scene, camera);
-						}
-						var render = _.throttle(function render() { innerRender() }, 1000 / 30); // max 30 fps
-						$scope.$on('$destroy', function () { innerRender = _.noop; }); // immediately stop rendering at $destroy
-						onResizeAndNow(function () {
-							renderer.setSize(iElement.width(), iElement.height());
-							cssRenderer.setSize(iElement.width(), iElement.height());
-							render();
-						});
+						var render = _.throttle(callOnRender, 1000 / 30); // max 30 fps
+						$scope.$on('$destroy', function () { onRenderHandlers = []; }); // immediately stop rendering at $destroy
+
+						//// WebGL renderer
+						//
+						var renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+						renderer.sortObjects = false;
+						onRender(function () { renderer.render(scene, camera) });
+						onResizeAndNow(function () { renderer.setSize(iElement.width(), iElement.height()); });
+
+						//// CSS renderer
+						//
+						var cssRenderer = new THREE.CSS3DRenderer();
+						$(cssRenderer.domElement).append(renderer.domElement);
+						iElement.append(cssRenderer.domElement);
+						onRender(function () { cssRenderer.render(scene, camera) });
+						onResizeAndNow(function () { cssRenderer.setSize(iElement.width(), iElement.height()); });
+
+						//// render now, and on resize
+						//
+						onResizeAndNow(render);
 
 
 						//////////////////// circuit-board ///////////////////
@@ -222,6 +229,13 @@ define(['jquery',
 						var domEvents = new THREEx.DomEvents(camera, iElement[0]);
 
 
+						//////////////////// clock ////////////////////
+
+						var clock = new THREE.Clock();
+						var delta = 0;
+						onRender(function () { delta = clock.getDelta() });
+
+
 						//////////////////// tile interfaces ////////////////////
 
 						$scope.circuitBoard.threeDLayer = {
@@ -252,6 +266,8 @@ define(['jquery',
 											}
 										});
 									},
+									onRender: onRender,
+									get delta() { return delta },
 									object: obj3d
 								};
 							}

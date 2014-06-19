@@ -1167,7 +1167,8 @@ export class Static3DModel extends ThreeJSModel {
 	constructor(properties) {
 		super(_.extend({
 			type        : 'static3DModel',
-			relationType: '3D model'
+			relationType: '3D model',
+			detailTemplateUrl: 'amy-circuit-board/amy-tile/static-3d-model-details.html'
 		}, properties));
 
 		this.constructor_Static3DModel1();
@@ -1196,6 +1197,10 @@ export class Static3DModel extends ThreeJSModel {
 		var loader;
 		if (/\.swc$/.test(that.filename)) { loader = new that.THREE.SWCLoader(); }
 		else if (/\.obj$/.test(that.filename)) { loader = new that.THREE.OBJLoader(); }
+		else if (/\.json$/.test(that.filename)) {
+			loader = new that.THREE.JSONLoader();
+			that.detailTemplateUrl = 'amy-circuit-board/amy-tile/dynamic-3d-model-details.html';
+		}
 		else {
 			deferred.reject('The file "' + that.filename + '" is not supported.');
 			return;
@@ -1204,6 +1209,20 @@ export class Static3DModel extends ThreeJSModel {
 		//// load the object
 		//
 		loader.load(that.filename, function (obj) {
+
+			//// if a geometry is given (for .json files), give it a mesh of its very own
+			if (obj instanceof that.THREE.Geometry) {
+				(function () {
+					obj.computeMorphNormals();
+					var material = new THREE.MeshLambertMaterial( { color: 0xffaa55, morphTargets: true, morphNormals: true, vertexColors: that.THREE.VertexColors });
+					obj = new THREE.MorphAnimMesh( obj, material );
+					obj.duration = 1600; // TODO: parametrize
+					that.threeDGroup.onRender(function () {
+						obj.time = that.TimerService.accurateTime;
+						obj.updateAnimation(0);
+					});
+				}());
+			}
 
 			//// add this object to the parent object
 			that.parent3DObject.add(obj);
@@ -1214,7 +1233,11 @@ export class Static3DModel extends ThreeJSModel {
 
 			//// normalize position
 			var translation = that.object3DBoundingBox.center().negate();
-			obj.children[0].geometry.applyMatrix(new that.THREE.Matrix4().setPosition(translation));
+			obj.traverse(function (o) {
+				if (o.geometry) {
+					o.geometry.applyMatrix(new that.THREE.Matrix4().setPosition(translation));
+				}
+			});
 
 			//// resolve the promise for the object
 			deferred.resolve(obj);

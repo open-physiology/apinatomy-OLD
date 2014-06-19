@@ -649,12 +649,12 @@ define(['angular',
 											parent: $scope.tile,
 											filename:   modelSource,
 											parent3DObject: threeDGroup.object,
-											detailTemplateUrl: 'amy-circuit-board/amy-tile/static-3d-model-details.html',
 
 											threeDGroup: threeDGroup,
 
 											THREE:  THREE,
-											$q:     $q
+											$q:     $q,
+											TimerService: TimerService
 										});
 										on3d('destruct', function () { static3DModel.destructor() });
 

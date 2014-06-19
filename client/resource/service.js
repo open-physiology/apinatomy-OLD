@@ -119,8 +119,7 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 		//////////////////// 3D Models /////////////////////////////////////////////////////////////////////////////////
 
 		var URI_TO_MODEL = {
-			'fma:7088' : ['3d-models/FMA_7088_Heart.4.obj',
-			              '3d-models/FMA_7088_Heart.3.obj'],
+			'fma:7088' : ['3d-models/contracting-heart-2.json'],
 			'fma:7148' : ['3d-models/FMA7148_Stomach.obj'],
 			'fma:7197' : ['3d-models/FMA7197_Liver.obj'],
 			'fma:7201' : [[

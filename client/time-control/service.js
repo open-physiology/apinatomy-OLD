@@ -5,6 +5,9 @@ define(['app/module', 'lodash'], function (app, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+	var date = new Date();
+
+
 	app.factory('TimerService', ['$interval', '$q', function ($interval, $q) {
 
 		var iface = {};
@@ -22,6 +25,8 @@ define(['app/module', 'lodash'], function (app, _) {
 
 		var state = _.clone(INITIAL_STATE);
 
+		var timeAtLastInterval;
+
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		iface.resetTimer = function resetTimer(interval, startTime, endTime) {
@@ -35,6 +40,7 @@ define(['app/module', 'lodash'], function (app, _) {
 		Object.defineProperty(iface, "currentTime", {
 			get: function () { return state.currentTime; },
 			set: function (time) {
+				timeAtLastInterval = date.getTime();
 				state.currentTime = time;
 				timeChangePromise.notify(state.currentTime);
 				if (iface.maxTime < state.currentTime) {
@@ -43,6 +49,14 @@ define(['app/module', 'lodash'], function (app, _) {
 			},
 			enumerable: true,
 			configurable: false
+		});
+
+		Object.defineProperty(iface, "accurateTime", {
+			get: function () {
+				var timeNow = date.getTime();
+				timeAtLastInterval = timeAtLastInterval || timeNow;
+				return iface.currentTime + (timeNow - timeAtLastInterval);
+			}
 		});
 
 		Object.defineProperty(iface, "maxTime", {
