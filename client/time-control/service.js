@@ -54,9 +54,13 @@ define(['app/module', 'lodash'], function (app, _) {
 		Object.defineProperty(iface, "accurateTime", {
 			get: function () {
 				var timeNow = date.getTime();
-				timeAtLastInterval = timeAtLastInterval || timeNow;
+				if (!timer || !timeAtLastInterval) {
+					timeAtLastInterval = timeNow;
+				}
 				return iface.currentTime + (timeNow - timeAtLastInterval);
-			}
+			},
+			enumerable: true,
+			configurable: false
 		});
 
 		Object.defineProperty(iface, "maxTime", {
