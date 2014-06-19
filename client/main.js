@@ -17,7 +17,7 @@ requirejs.config({
 		'jqueryui'                  : 'lib/jquery-ui/jqueryui',
 		'lodash'                    : 'lib/lodash/dist/lodash',
 		'angular'                   : 'lib/angular/angular',
-		'angular-touch'             : 'lib/angular-touch/angular-touch',
+		'angular-touch'             : 'patched-lib/angular-touch',
 		'angular-animate'           : 'lib/angular-animate/angular-animate',
 		'angular-bootstrap'         : 'lib/angular-bootstrap/ui-bootstrap-tpls',
 		'angular-recursion'         : 'lib/angular-recursion/angular-recursion',
