@@ -240,8 +240,11 @@
 		.ui-dialog-title {
 			@extend .modal-title;
 			@include text-overflow;
+			display: block;
 			font-weight: bold;
+			margin: 0px;
 			margin-left: 3px;
+			margin-right: 16px;
 			z-index: -1;
 		}
 
