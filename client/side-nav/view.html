@@ -11,8 +11,8 @@
 	<div ng-repeat="artefact in artefacts">
 
 		<!-- the relation-type indicator in-between two artefacts -->
-		<div ng-if="!$first" class="amy-relation-types">
-			<div ng-repeat="relType in relTypeArray(artefact)">{{ relType }}</div>
+		<div ng-if="::!$first" class="amy-relation-types">
+			<div ng-repeat="relType in ::relTypeArray(artefact)">{{ ::relType }}</div>
 		</div>
 
 		<!-- the panel with the tile details; -->

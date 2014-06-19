@@ -10,22 +10,22 @@
             ng-left-click="onHeaderClick($event)"
             ng-mouseover="onHeaderMouseOver($event)"
             ng-mouseout="onHeaderMouseOut($event)">
-        <div class="inner-header">{{ tile.entity.name }}</div>
+        <div class="inner-header">{{ ::tile.entity.name }}</div>
     </header>
 
 
 	<icon-btn ng-if="tile.has3DModel"
 	          ng-model="tile.show3DModel"
-	          states=" { true:  false,           false:  true            }"
-	          classes="{ true: 'action-show-3d', false: 'action-hide-3d' }"
+	          states=" ::{ true:  false,           false:  true            }"
+	          classes="::{ true: 'action-show-3d', false: 'action-hide-3d' }"
 	          ng-mouseover="onHeaderMouseOver($event)"
 	          ng-mouseout="onHeaderMouseOut($event)"></icon-btn>
 
 
 	<icon-btn ng-if="tile.parent.children.length > 1"
 			  ng-model="tile.maximized"
-	          states=" { true:  false,              false:  true             }"
-	          classes="{ true: 'action-unmaximize', false: 'action-maximize' }"
+	          states=" ::{ true:  false,              false:  true             }"
+	          classes="::{ true: 'action-unmaximize', false: 'action-maximize' }"
 	          ng-mouseover="onHeaderMouseOver($event)"
 	          ng-mouseout="onHeaderMouseOut($event)"></icon-btn>
 

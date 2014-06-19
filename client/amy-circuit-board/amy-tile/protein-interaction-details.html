@@ -5,8 +5,8 @@
 	<a ng-click="artefact.source.focusFixed = true" style="display: block; padding: 3px; cursor: pointer; text-decoration: none;">
 		<div style="overflow: hidden;
 		            text-overflow: ellipsis;
-		            white-space: nowrap;">{{ artefact.source.prefLabel() }}</div>
-		<div style="margin: 0;">({{ artefact.source.protein.ensembl }})</div>
+		            white-space: nowrap;">{{ ::artefact.source.prefLabel() }}</div>
+		<div style="margin: 0;">({{ ::artefact.source.protein.ensembl }})</div>
 	</a>
 
 	↕
@@ -14,8 +14,8 @@
 	<a ng-click="artefact.target.focusFixed = true" style="display: block; padding: 3px; cursor: pointer; text-decoration: none;">
 		<div style="overflow: hidden;
 		            text-overflow: ellipsis;
-		            white-space: nowrap;">{{ artefact.target.prefLabel() }}</div>
-		<div style="margin: 0;">({{ artefact.target.protein.ensembl }})</div>
+		            white-space: nowrap;">{{ ::artefact.target.prefLabel() }}</div>
+		<div style="margin: 0;">({{ ::artefact.target.protein.ensembl }})</div>
 	</a>
 
 </div>

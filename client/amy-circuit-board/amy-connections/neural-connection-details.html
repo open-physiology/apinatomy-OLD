@@ -3,13 +3,13 @@
 <div style="text-align: center">
 
 	<a ng-click="artefact.source.focusFixed = true" style="display: block; padding: 3px; cursor: pointer; text-decoration: none;">
-		{{ artefact.source.entity ? artefact.source.entity.name + ' (' + artefact.source.entity._id + ')' : artefact.source.id }}
+		{{ ::(artefact.source.entity ? artefact.source.entity.name + ' (' + artefact.source.entity._id + ')' : artefact.source.id) }}
 	</a>
 
 	↕
 
 	<a ng-click="artefact.target.focusFixed = true" style="display: block; padding: 3px; cursor: pointer; text-decoration: none;">
-		{{ artefact.target.entity ? artefact.target.entity.name + ' (' + artefact.target.entity._id + ')' : artefact.target.id }}
+		{{ ::(artefact.target.entity ? artefact.target.entity.name + ' (' + artefact.target.entity._id + ')' : artefact.target.id) }}
 	</a>
 
 </div>

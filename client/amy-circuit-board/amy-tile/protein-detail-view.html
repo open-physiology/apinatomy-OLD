@@ -1,38 +1,38 @@
-<header ng-if="artefact.prefLabel()"><h2>{{ artefact.prefLabel() }}</h2></header>
+<header ng-if="::!!artefact.prefLabel()"><h2>{{ ::artefact.prefLabel() }}</h2></header>
 
-<a ng-if="artefact.protein.ensembl"
+<a ng-if="::!!artefact.protein.ensembl"
    class="importantLink"
-   ng-href="http://www.ensembl.org/id/{{ artefact.protein.ensembl }}"
-   title="{{ artefact.protein.ensembl }}"
+   ng-href="http://www.ensembl.org/id/{{ ::artefact.protein.ensembl }}"
+   title="{{ ::artefact.protein.ensembl }}"
    target="_blank">
 	At Ensembl<span class="glyphicon glyphicon-new-window"></span>
 </a>
 
-<a ng-if="artefact.protein.swissprot"
+<a ng-if="::!!artefact.protein.swissprot"
    class="importantLink"
-   ng-href="http://www.uniprot.org/uniprot/{{ artefact.protein.swissprot }}"
-   title="{{ artefact.protein.swissprot }}"
+   ng-href="http://www.uniprot.org/uniprot/{{ ::artefact.protein.swissprot }}"
+   title="{{ ::artefact.protein.swissprot }}"
    target="_blank">
 	At UniProt<span class="glyphicon glyphicon-new-window"></span>
 </a>
 
 <details ng-init="artefact.initializeSmPagination()"
-         ng-if="artefact.protein.smallMoleculeInteractions.length > 0"
+         ng-if="::(artefact.protein.smallMoleculeInteractions.length > 0)"
          ng-open="artefact.showSmallMolecules"
          style="margin: 0; padding: 0;">
 	<summary style="padding-left: 5px; cursor: pointer;"
 			 ng-click="$event.preventDefault(); artefact.showSmallMolecules = !artefact.showSmallMolecules;"
 	         title="Small Molecule Interactions"
-			><b>SM Interactions:</b> {{ artefact.protein.smallMoleculeInteractions.length }}</summary>
+			><b>SM Interactions:</b> {{ ::artefact.protein.smallMoleculeInteractions.length }}</summary>
 	<div ng-if="artefact.showSmallMolecules">
 		<ul style="padding-left: 27px;">
 			<li ng-repeat="sm in artefact.visibleSmallMolecules">
 				<div style="display: inline-block; position: relative; top: 5px; width: 144px; overflow: hidden; text-overflow: ellipsis;">
-					<a ng-href="{{ artefact.smURL(sm) }}"
+					<a ng-href="{{ ::artefact.smURL(sm) }}"
 					   style="white-space: nowrap;"
-					   title="{{ artefact.smPrefLabel(sm) }}"
+					   title="{{ ::artefact.smPrefLabel(sm) }}"
 					   target="_blank">
-						{{ artefact.smPrefLabel(sm) }}
+						{{ ::artefact.smPrefLabel(sm) }}
 					</a>
 				</div>
 			</li>
@@ -42,7 +42,7 @@
 			<a ng-click="artefact.smPagination.page = 1; artefact.fetchSmPage()"
 			   ng-class="{ disabled: artefact.smPagination.page === 1 }">&lt;&lt;</a>
 			&nbsp;
-			<a ng-click="artefact.smPagination.page = Math.max(1, artefact.smPagination.page - 1); artefact.fetchSmPage()"
+			<a ng-click="artefact.smPagination.page = Math.max(1, artefact.smPagination.page - 1); artefact.fetchSmPage();"
 			   ng-class="{ disabled: artefact.smPagination.page === 1 }">&lt;</a>
 			&nbsp;&nbsp;
 			<span>{{ artefact.smPagination.page }} / {{ artefact.smPagination.lastPage }}</span>

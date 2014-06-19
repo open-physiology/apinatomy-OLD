@@ -1,25 +1,25 @@
-<header><h2>{{ artefact.getTitle() }}</h2></header>
+<header><h2>{{ ::artefact.getTitle() }}</h2></header>
 
-<a ng-if="artefact.proteinDomain.type === 'pfam'"
+<a ng-if="::(artefact.proteinDomain.type === 'pfam')"
    class="importantLink"
-   ng-href="http://www.ebi.ac.uk/interpro/entry/{{ artefact.proteinDomain.pfam_id }}"
-   title="{{ artefact.getTitle() }}"
+   ng-href="http://www.ebi.ac.uk/interpro/entry/{{ ::artefact.proteinDomain.pfam_id }}"
+   title="{{ ::artefact.getTitle() }}"
    target="_blank">
 	At InterPro<span class="glyphicon glyphicon-new-window"></span>
 </a>
 
-<a ng-if="artefact.proteinDomain.type === 'signalp'"
+<a ng-if="::(artefact.proteinDomain.type === 'signalp')"
    class="importantLink"
-   ng-href="http://www.cbs.dtu.dk/services/SignalP/"
-   title="{{ artefact.getTitle() }}"
+   href="http://www.cbs.dtu.dk/services/SignalP/"
+   title="{{ ::artefact.getTitle() }}"
    target="_blank">
 	At CBS<span class="glyphicon glyphicon-new-window"></span>
 </a>
 
-<a ng-if="artefact.proteinDomain.type === 'tmhmm'"
+<a ng-if="::(artefact.proteinDomain.type === 'tmhmm')"
    class="importantLink"
-   ng-href="http://www.cbs.dtu.dk/services/TMHMM-2.0/"
-   title="{{ artefact.getTitle() }}"
+   href="http://www.cbs.dtu.dk/services/TMHMM-2.0/"
+   title="{{ ::artefact.getTitle() }}"
    target="_blank">
 	At CBS<span class="glyphicon glyphicon-new-window"></span>
 </a>

@@ -1,4 +1,4 @@
-<a ng-style="{ marginBottom: ($parent.$last ? 0 : 4) }" style="white-space: normal; cursor: pointer;">
+<a ng-style="::{ marginBottom: ($parent.$last ? 0 : 4) }" style="white-space: normal; cursor: pointer;">
 	<span bind-html-unsafe="match.model.name | typeaheadHighlight:query"></span>
 	(<span bind-html-unsafe="match.model._id | typeaheadHighlight:query"></span>)
 </a>

@@ -1,10 +1,10 @@
 <div amy-time-control>
 	<icon-btn class="run-pause-btn"
-	          states ="{ stopped: 'running', paused: 'running', running: 'paused'   }"
-	          classes="{ stopped: 'action-run',  paused: 'action-run',  running: 'action-pause' }"
+	          states ="::{ stopped: 'running', paused: 'running', running: 'paused'   }"
+	          classes="::{ stopped: 'action-run',  paused: 'action-run',  running: 'action-pause' }"
 	          ng-model="timer.state"></icon-btn>
 	<icon-btn class="stop-btn action-stop"
-	          states ="{ stopped: 'stopped', paused: 'stopped', running: 'stopped'  }"
+	          states ="::{ stopped: 'stopped', paused: 'stopped', running: 'stopped'  }"
 	          ng-model="timer.state"></icon-btn>
 	<slider ng-class="{ disabled: timer.state === 'running' }"
 			ng-model="TimerService.currentTime"

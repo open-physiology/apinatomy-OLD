@@ -6,22 +6,24 @@
 
         <!-- junction id -->
 	    <a ng-if="$first" ng-click="artefact.trueSource.focusFixed = true" style="display: block; padding: 2px; cursor: pointer; text-decoration: none; text-align: center;border-bottom-style: dotted; border-bottom-width: 1px; ">
-		    {{ _(seg.from).isString() ? seg.from : (seg.from.name + ' (' + seg.from._id + ')') }}
+		    {{ ::(_(seg.from).isString() ? seg.from : (seg.from.name + ' (' + seg.from._id + ')')) }}
 	    </a>
-	    <div ng-if="!$first" style="border-bottom-style: dotted; border-bottom-width: 1px; padding: 2px; text-align: center;">{{ _(seg.from).isString() ? seg.from : (seg.from.name + ' (' + seg.from._id + ')') }}</div>
+	    <div ng-if="!$first" style="border-bottom-style: dotted; border-bottom-width: 1px; padding: 2px; text-align: center;">
+		    {{ ::(_(seg.from).isString() ? seg.from : (seg.from.name + ' (' + seg.from._id + ')')) }}
+	    </div>
 
         <!-- segment info -->
         <div style="border-bottom-style: dotted; border-bottom-width: 1px; padding: 2px;">
-            <b>ID:</b>    {{ seg.segmentId }} <br />
-            <b>Name:</b>  {{ seg.name }}      <br />
+            <b>ID:</b>    {{ ::seg.segmentId }} <br />
+            <b>Name:</b>  {{ ::seg.name }}      <br />
             <span ng-if="seg.entity">
-                <b>At:</b>  {{ seg.entity.name }} ({{ seg.entity._id }})
+                <b>At:</b>  {{ ::seg.entity.name }} ({{ ::seg.entity._id }})
             </span>
         </div>
 
         <!-- last junction id -->
 	    <a ng-if="$last" ng-click="artefact.trueTarget.focusFixed = true" style="display: block; padding: 2px; cursor: pointer; text-decoration: none; text-align: center;">
-		    {{ _(seg.to).isString() ? seg.to : (seg.to.name + ' (' + seg.to._id + ')') }}
+		    {{ ::(_(seg.to).isString() ? seg.to : (seg.to.name + ' (' + seg.to._id + ')')) }}
 	    </a>
 
     </div>

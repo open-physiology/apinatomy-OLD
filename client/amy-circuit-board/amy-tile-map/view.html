@@ -1,4 +1,4 @@
-<tile-map tile-layout="{{ styling.layout }}" tile-spacing="{{ styling.spacing }}" tiles="tileInfo">
+<tile-map tile-layout="{{ ::styling.layout }}" tile-spacing="{{ ::styling.spacing }}" tiles="tileInfo">
 
 	<amy-tile ng-if="styling" ng-repeat="(i, sub) in entity.sub" ng-model="sub" position="{{
 	    _.extend({}, tileInfo[i].position, {
