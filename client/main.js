@@ -49,7 +49,7 @@ requirejs.config({
 		'angular-bootstrap'         : ['angular'],
 		'angular-recursion'         : ['angular'],
 		'angular-once'              : ['angular'],
-		'angular-touch'             : ['angular'],
+		'angular-touch'             : ['angular', 'jquery'],
 		'angular-slider'            : ['angular', 'angular-touch'],
 		'stats'                     : { exports: 'Stats' }
 	},
