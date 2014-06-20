@@ -5,9 +5,6 @@ define(['app/module', 'lodash'], function (app, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	var date = new Date();
-
-
 	app.factory('TimerService', ['$interval', '$q', function ($interval, $q) {
 
 		var iface = {};
@@ -40,7 +37,7 @@ define(['app/module', 'lodash'], function (app, _) {
 		Object.defineProperty(iface, "currentTime", {
 			get: function () { return state.currentTime; },
 			set: function (time) {
-				timeAtLastInterval = date.getTime();
+				timeAtLastInterval = new Date().getTime();
 				state.currentTime = time;
 				timeChangePromise.notify(state.currentTime);
 				if (iface.maxTime < state.currentTime) {
@@ -53,10 +50,8 @@ define(['app/module', 'lodash'], function (app, _) {
 
 		Object.defineProperty(iface, "accurateTime", {
 			get: function () {
-				var timeNow = date.getTime();
-				if (!timer || !timeAtLastInterval) {
-					timeAtLastInterval = timeNow;
-				}
+				var timeNow = new Date().getTime();
+				if (!timer) { timeAtLastInterval = timeNow; }
 				return iface.currentTime + (timeNow - timeAtLastInterval);
 			},
 			enumerable: true,

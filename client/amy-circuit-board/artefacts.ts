@@ -1214,9 +1214,15 @@ export class Static3DModel extends ThreeJSModel {
 			if (obj instanceof that.THREE.Geometry) {
 				(function () {
 					obj.computeMorphNormals();
-					var material = new THREE.MeshLambertMaterial( { color: 0xffaa55, morphTargets: true, morphNormals: true, vertexColors: that.THREE.VertexColors });
+					var material = new THREE.MeshLambertMaterial({
+						color: 0xffaa55,
+						morphTargets: true,
+						morphNormals: true,
+						vertexColors: that.THREE.VertexColors,
+						shading: that.THREE.SmoothShading
+					});
 					obj = new THREE.MorphAnimMesh( obj, material );
-					obj.duration = 1600; // TODO: parametrize
+					obj.duration = 1400; // TODO: parametrize
 					that.threeDGroup.onRender(function () {
 						obj.time = that.TimerService.accurateTime;
 						obj.updateAnimation(0);
