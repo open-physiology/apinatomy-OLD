@@ -6,19 +6,19 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "jqueryui/jqueryui.d.ts": {
-      "commit": "4350242d4d66a96fd34aa63c7c61a83d60971e70"
+      "commit": "0e62bbbb8e6bf5c2f9426199bbe8697c548d6108"
     },
     "d3/d3.d.ts": {
-      "commit": "4350242d4d66a96fd34aa63c7c61a83d60971e70"
+      "commit": "0e62bbbb8e6bf5c2f9426199bbe8697c548d6108"
     },
     "jquery/jquery.d.ts": {
-      "commit": "4350242d4d66a96fd34aa63c7c61a83d60971e70"
+      "commit": "0e62bbbb8e6bf5c2f9426199bbe8697c548d6108"
     },
     "lodash/lodash.d.ts": {
-      "commit": "4350242d4d66a96fd34aa63c7c61a83d60971e70"
+      "commit": "0e62bbbb8e6bf5c2f9426199bbe8697c548d6108"
     },
     "threejs/three.d.ts": {
-      "commit": "4350242d4d66a96fd34aa63c7c61a83d60971e70"
+      "commit": "0e62bbbb8e6bf5c2f9426199bbe8697c548d6108"
     }
   }
 }
