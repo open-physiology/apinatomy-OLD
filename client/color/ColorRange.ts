@@ -5,37 +5,21 @@ import $ = require('jquery');
 import _ = require('lodash');
 import Chroma = require('chroma');
 
+var PHI = (1 + Math.sqrt(5)) / 2; // golden ratio
+
 class ColorRange {
 
-	private static _colorByHue(h: number): Chroma {
-		return Chroma.lch(50, 100, h % 360);
+	private _hue:       number = 45; // starting with red
+	private _lightness: number = 50; // (lightness = 50, hue = 45)
+
+	private _cycle(prop, bottom, top, q) {
+		this[prop] = (this[prop] - bottom + (top-bottom) / q) % (top-bottom) + bottom;
 	}
-
-	private _hue: number = 45; // starting with red (hue = 45)
-
-	private _addToHue(v: number): void {
-		this._hue = (this._hue + v) % 360;
-	}
-
-	private _sliceSize: number = 360*2;
-	private _sliceCount: number = 1/2;
-	private _sliceNr: number = 1;
-
-	private _nextHue(): void {
-		if (this._sliceNr >= this._sliceCount) {
-			this._sliceSize /= 2;
-			this._sliceCount *= 2;
-			this._sliceNr = 0;
-			this._addToHue(this._sliceSize / 2);
-		}
-		this._addToHue(this._sliceSize);
-		this._sliceNr += 1;
-	}
-
 
 	next(): Chroma {
-		var result = ColorRange._colorByHue(this._hue);
-		this._nextHue();
+		var result = Chroma.lch(this._lightness, 100, this._hue);
+		this._cycle('_hue', 0, 360, PHI);
+		this._cycle('_lightness', 10, 90, PHI/2.5);
 		return result;
 	}
 
