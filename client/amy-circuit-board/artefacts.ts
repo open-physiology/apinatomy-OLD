@@ -1400,11 +1400,6 @@ export class StaticCompound3DModel extends ThreeJSModel {
 				that.onDestruct(function () { that.parent3DObject.remove(obj) });
 
 				//// set proper material properties
-//				obj.children[0].material = new THREE.MeshLambertMaterial({
-//					side: that.THREE.DoubleSide,
-//					color: new that.THREE.Color(model.color),
-//					opacity: ()
-//				});
 				obj.children[0].material.side = that.THREE.DoubleSide;
 				obj.children[0].material.color = new that.THREE.Color(model.color);
 				if (!_.isUndefined(model.opacity) && model.opacity < 1) {
