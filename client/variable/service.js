@@ -12,9 +12,11 @@ define(['app/module', 'lodash'], function (app, _) {
 			if (_(streamSource).isUndefined()) {
 				streamSource = { // serves random data
 					getDataRange: function (uri, beginTime, endTime, timeInterval) {
+						var result = [];
 						for (var i = beginTime; i <= endTime; i += timeInterval) {
-							tmpDataCache.push([ i * timeInterval, Math.random() * 11 - 5 ]);
+							result.push([ i * timeInterval, Math.random() * 11 - 5 ]);
 						}
+						return result;
 					}
 				};
 			}

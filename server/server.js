@@ -57,7 +57,7 @@ app.use(app.router);
 	//// spawn child process
 	var cellmlProcess = child_process.spawn(
 			(vars.cellmlDir + '/bin/gms'),
-			[vars.cellmlPort, 'GMS', (vars.cellmlDir + '/models')],
+			[vars.cellmlPort, 'GMS', (vars.cellmlDir + '/models/')],
 			{
 				cwd: vars.cellmlDir,
 				stdio: [null, cellmlOut, cellmlErr]
