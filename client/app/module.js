@@ -77,7 +77,8 @@ define(['jquery',
 				$('main').css('bottom', 0);
 				$('footer').hide();
 			}
-			_($($window)).bindKey('trigger', 'resize').defer();
+			$($window).trigger('resize');
+			$($window).trigger('resize'); // TODO: the second call is needed (for some reason) to let the smokescreen div adjust
 		});
 
 	}]);
