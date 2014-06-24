@@ -1,7 +1,7 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'lodash', 'amy-circuit-board/artefacts', 'css!side-nav/style', 'side-nav/details/directive'], function (app, _, artefacts) {
+define(['app/module', 'lodash', 'Artefact', 'css!side-nav/style', 'side-nav/details/directive'], function (app, _, Artefact) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -16,7 +16,7 @@ define(['app/module', 'lodash', 'amy-circuit-board/artefacts', 'css!side-nav/sty
 				$scope.mainArtefact = [];
 				$scope.mainArtefactFixed = false;
 
-				$scope.Artefact = artefacts.Artefact;
+				$scope.Artefact = Artefact;
 
 				function setArtefactFocus(artefact) {
 					$scope.mainArtefact = artefact;
@@ -29,10 +29,8 @@ define(['app/module', 'lodash', 'amy-circuit-board/artefacts', 'css!side-nav/sty
 					}
 				}
 
-				// TODO: convert to new focus system
-
-				artefacts.Artefact.onFocus(function (artefact, flag) {
-					if (!artefacts.Artefact.focusIsFixed) {
+				Artefact.onFocus(function (artefact, flag) {
+					if (!Artefact.focusIsFixed) {
 						if (artefact !== $scope.mainArtefact && flag === true) {
 							setArtefactFocus(artefact);
 						} else if (artefact === $scope.mainArtefact && flag === false) {
@@ -42,31 +40,13 @@ define(['app/module', 'lodash', 'amy-circuit-board/artefacts', 'css!side-nav/sty
 					}
 				});
 
-				artefacts.Artefact.onFocusFix(function (artefact, flag) {
+				Artefact.onFocusFix(function (artefact, flag) {
 					if (flag === true && $scope.mainArtefact !== artefact) {
 						setArtefactFocus(artefact);
 					} else if (flag === false && $scope.mainArtefact === artefact) {
 						setArtefactFocus(null);
 					}
 				});
-
-//				$scope.$on('artefact-focus', function (e, artefact) {
-//					if ($scope.mainArtefact !== artefact && !$scope.mainArtefactFixed) {
-//						setArtefactFocus(artefact);
-//					}
-//				});
-//
-//				$scope.$on('artefact-unfocus', function (e, artefact) {
-//					if (artefact === $scope.mainArtefact && !$scope.mainArtefactFixed) {
-//						$scope.mainArtefact = null;
-//						$scope.artefacts = [];
-//					}
-//				});
-//
-//				$scope.$on('artefact-focus-fix', function (e, artefact) {
-//					if (artefact) { setArtefactFocus(artefact); }
-//					$scope.mainArtefactFixed = !!artefact;
-//				});
 
 				$scope.relTypeArray = function relTypeArray(artefact) {
 					return _(artefact.relationType).isArray()

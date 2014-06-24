@@ -1,392 +1,14 @@
 /// <reference path="../../typings/tsd.d.ts" />
 /// <reference path="../../typings/own.d.ts" />
+/// <reference path="CircuitBoardArtefact.d.ts" />
 
 import $ = require('jquery');
 import _ = require('lodash');
 import ColorRange = require('../color/ColorRange');
+import Artefact = require('../Artefact');
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-export interface Position {
-	top: number;
-	left: number;
-	height: number;
-	width: number;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// abstract
-export class Artefact {
-
-	//////////////////// Construction //////////////////////////////////////////
-
-	constructor(properties) {
-		//// pass in the properties
-		//
-		_(this).assign(properties);
-
-		//// delegate to the other constructor functions
-		//
-		this.constructor_Artefact1();
-		this.constructor_Artefact2();
-		this.constructor_Artefact3();
-		this.constructor_Artefact4();
-	}
-
-
-	//////////////////// Destruction ///////////////////////////////////////////
-
-	isBeingDestructed: boolean = false;
-	wasDestructed: boolean = false;
-	private _destructCallbacks: {():any}[] = [];
-
-	destructor(): void {
-		if (!this.wasDestructed) {
-			this.isBeingDestructed = true;
-			_.forEachRight(this._destructCallbacks, _.call);
-			this.isBeingDestructed = false;
-			this.wasDestructed = true;
-		}
-	}
-
-	onDestruct(fn: {():any}): void {
-		this._destructCallbacks.push(fn);
-	}
-
-
-	//////////////////// AngularJS Scope Binding ///////////////////////////////
-
-	$scope: any;
-
-	private constructor_Artefact1(): void {
-		if (this.$scope) {
-			var that = this;
-
-			//// If no parent has been given, try to find it as
-			//// a property $scope.artefact in the $scope chain:
-			that.parent = that.parent || that.$scope.$parent.artefact || null;
-
-			//// When the $scope is destroyed, destruct this artefact:
-			that.$scope.$on('$destroy', function () { that.destructor(); });
-		}
-	}
-
-
-	//////////////////// Identity //////////////////////////////////////////////
-
-	id: string;
-	type: string;
-
-	private constructor_Artefact2(): void {
-		if (!this.id) { this.id = _.uniqueId(); }
-	}
-
-
-	//////////////////// Hierarchy /////////////////////////////////////////////
-
-	parent: Artefact;
-	root: Artefact;
-	children: Artefact[];
-
-	private constructor_Artefact3(): void {
-		if (this.parent) {
-			this.root = this.parent.root;
-			this.parent.children.push(this);
-			this.onDestruct(function () {
-				_.pull(this.parent.children, this);
-			});
-		} else {
-			this.root = this;
-		}
-		if (_.isUndefined(this.children)) {
-			this.children = [];
-		}
-	}
-
-	depthFirstTraversal(fn) {
-		fn(this);
-		_.forEach(this.children, function (child: Artefact) { child.depthFirstTraversal(fn) });
-	}
-
-
-	//////////////////// Ancestor Access ///////////////////////////////////////
-
-	ancestor(type: string): Artefact {
-		var result = this.parent;
-		while (result && result.type !== type) {
-			result = result.parent;
-		}
-		return result;
-	}
-
-	parentCircuitBoard(): CircuitBoard {
-		return <CircuitBoard> this.ancestor('circuitBoard');
-	}
-
-	parentTileMap(): TileMap {
-		return <TileMap> this.ancestor('tileMap');
-	}
-
-	parentTile(): Tile {
-		return <Tile> this.ancestor('tile');
-	}
-
-
-	//////////////////// Focus /////////////////////////////////////////////////
-
-	static _focusCallbacks: {(Artefact, boolean):any}[] = [];
-	static _focusFixCallbacks: {(Artefact, boolean):any}[] = [];
-
-	static onFocus(fn: (Artefact, boolean)=>any) { Artefact._focusCallbacks.push(fn) }
-
-	static onFocusFix(fn: (Artefact, boolean)=>any) { Artefact._focusFixCallbacks.push(fn) }
-
-	private _focusCallbacks: {(boolean):any}[] = [];
-	private _focusFixCallbacks: {(boolean):any}[] = [];
-
-	static focusIsFixed: boolean = false;
-
-	private _focus: boolean = false;
-	get focus(): boolean { return this._focus }
-
-	set focus(flag: boolean) {
-		if (this._focus !== flag) {
-			var that = this;
-			that.root.depthFirstTraversal(function (artefact: Artefact) {
-				if (artefact._focus === true && ((artefact === that && flag === false) || (artefact !== that && flag === true))) {
-					artefact._focus = false;
-					_.forEach(artefact._focusCallbacks, function (fn) { fn(false) });
-					_.forEach(Artefact._focusCallbacks, function (fn) { fn(artefact, false) });
-				}
-			});
-			that.root.depthFirstTraversal(function (artefact: Artefact) {
-				if (artefact._focus === false && artefact === that && flag === true) {
-					artefact._focus = true;
-					_.forEach(artefact._focusCallbacks, function (fn) { fn(true) });
-					_.forEach(Artefact._focusCallbacks, function (fn) { fn(artefact, true) });
-				}
-			});
-		}
-	}
-
-	private _focusFixed: boolean = false;
-	get focusFixed(): boolean { return this._focusFixed }
-
-	set focusFixed(flag: boolean) {
-		if (this._focusFixed !== flag) {
-			var that = this;
-			that.root.depthFirstTraversal(function (artefact: Artefact) {
-				if ((artefact._focusFixed === true && artefact === that && flag === false) ||
-						(artefact._focusFixed === true && artefact !== that && flag === true)) {
-					artefact._focusFixed = false;
-					_.forEach(artefact._focusFixCallbacks, function (fn) { fn(false) });
-					_.forEach(Artefact._focusFixCallbacks, function (fn) { fn(that, false) });
-					if (flag === false) { Artefact.focusIsFixed = false; }
-				}
-			});
-			that.root.depthFirstTraversal(function (artefact: Artefact) {
-				if (artefact._focusFixed === false && artefact === that && flag === true) {
-					artefact._focus = true;
-					artefact._focusFixed = true;
-					Artefact.focusIsFixed = true;
-					_.forEach(artefact._focusFixCallbacks, function (fn) { fn(true) });
-					_.forEach(Artefact._focusFixCallbacks, function (fn) { fn(that, true) });
-				}
-			});
-		}
-	}
-
-	private constructor_Artefact4(): void {
-		var that = this;
-		that.onDestruct(function () {
-			that.focusFixed = false;
-			that.focus = false;
-		});
-	}
-
-	onFocus(fn: (boolean)=>any): void { this._focusCallbacks.push(fn); }
-
-	onFocusFix(fn: (boolean)=>any): void { this._focusFixCallbacks.push(fn); }
-
-
-	//////////////////// Detail Panel //////////////////////////////////////////
-
-	detailTemplateUrl: string;
-
-
-	//////////////////// Detail Popup //////////////////////////////////////////
-
-	popupTemplateUrl: string;
-
-
-	//////////////////// Resources /////////////////////////////////////////////
-	// TODO: make these three more globally available
-
-	ResourceService: any;
-	TimerService: any;
-	$bind: any;
-	$q: any;
-	THREE: any;
-	threeDLayer: any;
-	$compile: any;
-
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-export class WebPage extends Artefact {
-
-	//////////////////// Construction //////////////////////////////////////////
-
-	constructor(properties) {
-		super(_.extend({
-			type  : 'webPage',
-			parent: null
-		}, properties));
-	}
-
-
-	//////////////////// Focus /////////////////////////////////////////////////
-
-
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-export class CircuitBoard extends Artefact {
-
-	//////////////////// Construction //////////////////////////////////////////
-
-	constructor(properties) {
-		super(_.extend({
-			type: 'circuitBoard'
-		}, properties));
-	}
-
-
-	//////////////////// Model /////////////////////////////////////////////////
-
-	entity: any;
-
-
-	//////////////////// Graph Layer ///////////////////////////////////////////
-
-	draggingVertex: boolean = false;
-
-
-	//////////////////// Treemap Layer /////////////////////////////////////////
-
-	position: Position;
-
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-export class TileMap extends Artefact {
-
-	//////////////////// Construction //////////////////////////////////////////
-
-	constructor(properties) {
-		super(_.extend({
-			type: 'tileMap'
-		}, properties));
-	}
-
-
-	//////////////////// Treemap Layer /////////////////////////////////////////
-
-	maximizedChild: Tile;
-	position: Position;
-
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-export class Tile extends Artefact {
-
-	//////////////////// Construction //////////////////////////////////////////
-
-	constructor(properties) {
-		super(_.extend({
-			type: 'tile'
-		}, properties));
-
-		this.constructor_Tile1();
-		this.constructor_Tile2();
-	}
-
-
-	//////////////////// Model /////////////////////////////////////////////////
-
-	entity: any;
-
-
-	//////////////////// Treemap Layer /////////////////////////////////////////
-
-	active: boolean = true;
-	open: boolean = false;
-	maximized: boolean = false;
-	visible: boolean = true;
-	position: Position;
-
-	private constructor_Tile1(): void {
-		var that = this;
-		that.onDestruct(function () {
-			var tileMap = that.parentTileMap();
-			if (tileMap.maximizedChild === that) {
-				tileMap.maximizedChild = null;
-			}
-		})
-	}
-
-
-	//////////////////// Focus /////////////////////////////////////////////////
-
-	highlighted: boolean = false;
-
-	private constructor_Tile2(): void {
-		var that = this;
-		var descendantFocusFixed = false;
-		Artefact.onFocus(function (artefact, flag) {
-			if (!descendantFocusFixed) {
-				if (artefact.type !== 'tile') {
-					artefact = artefact.ancestor('tile');
-				}
-				if (artefact && artefact.entity && artefact.entity === that.entity) {
-					that.highlighted = flag
-				} else if (artefact && (!artefact.entity || artefact.entity !== that.entity) && flag) {
-					that.highlighted = false;
-				}
-			}
-		});
-		Artefact.onFocusFix(function (artefact, flag) {
-			if (artefact.type !== 'tile') {
-				artefact = artefact.ancestor('tile');
-			}
-			if (flag) {
-				that.highlighted = !!(artefact && artefact.entity && artefact.entity === that.entity);
-				descendantFocusFixed = that.highlighted;
-			} else {
-				descendantFocusFixed = false;
-			}
-		});
-	}
-
-
-	//////////////////// 3D Layer //////////////////////////////////////////////
-
-	has3DModel: boolean = false;
-	show3DModel: boolean = false;
-
+declare class CircuitBoardArtefact extends Artefact {
+	draggingVertex: boolean;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -487,7 +109,7 @@ export class SvgVertexArtefact extends SvgArtefact {
 		var previousFocusedArtefact; // TODO: restore old focus-fix
 		that._svgElement.mouseDragDrop(that.$bind(function () {
 			that._svgElement.addSvgClass('dragging');
-			that.parentCircuitBoard().draggingVertex = true;
+			that.ancestor(CircuitBoardArtefact).draggingVertex = true;
 			if (that.focusFixed) {
 				previousFocusedArtefact = false;
 			} else {
@@ -496,7 +118,7 @@ export class SvgVertexArtefact extends SvgArtefact {
 			}
 		}), that.$bind(function () {
 			that._svgElement.removeSvgClass('dragging');
-			that.parentCircuitBoard().draggingVertex = false;
+			that.ancestor(CircuitBoardArtefact).draggingVertex = false;
 			$('svg[amy-graph-layer]').removeSvgClass('dragging');
 			if (previousFocusedArtefact) {
 				that.focusFixed = false;
@@ -539,8 +161,8 @@ export class VascularTileJunction extends SvgVertexArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type          : 'vascularTileJunction',
-			relationType  : 'vascular junction',
+			type: 'vascularTileJunction',
+			relationType: 'vascular junction',
 			connectionType: 'vascular'
 		}, properties));
 	}
@@ -567,8 +189,8 @@ export class VascularBranchingJunction extends SvgVertexArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type          : 'vascularBranchingJunction',
-			relationType  : 'vascular junction',
+			type: 'vascularBranchingJunction',
+			relationType: 'vascular junction',
 			connectionType: 'vascular'
 		}, properties));
 	}
@@ -596,8 +218,8 @@ export class VascularConnection extends SvgEdgeArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type          : 'vascularConnection',
-			relationType  : 'vascular connection',
+			type: 'vascularConnection',
+			relationType: 'vascular connection',
 			connectionType: 'vascular'
 		}, properties));
 	}
@@ -684,8 +306,8 @@ export class NeuralTileJunction extends SvgVertexArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type          : 'neuralTileJunction',
-			relationType  : 'neural junction',
+			type: 'neuralTileJunction',
+			relationType: 'neural junction',
 			connectionType: 'neural'
 		}, properties));
 	}
@@ -712,8 +334,8 @@ export class NeuralBranchingJunction extends SvgVertexArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type          : 'neuralBranchingJunction',
-			relationType  : 'neural junction',
+			type: 'neuralBranchingJunction',
+			relationType: 'neural junction',
 			connectionType: 'neural'
 		}, properties));
 	}
@@ -741,8 +363,8 @@ export class NeuralConnection extends SvgEdgeArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type          : 'neuralConnection',
-			relationType  : 'neural connection',
+			type: 'neuralConnection',
+			relationType: 'neural connection',
 			connectionType: 'neural'
 		}, properties));
 	}
@@ -772,7 +394,7 @@ export class Protein extends SvgVertexArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type        : 'protein',
+			type: 'protein',
 			relationType: 'protein expression'
 		}, properties));
 
@@ -844,11 +466,11 @@ export class Protein extends SvgVertexArtefact {
 			if (show3dNow) {
 				threeDLayer = that.$scope.circuitBoard.threeDLayer;
 				threeDModel = new Protein3DModel({
-					id         : that.id + ':3dModel', // TODO: different ID for different translation
-					parent     : that,
-					protein    : that.protein,
+					id: that.id + ':3dModel', // TODO: different ID for different translation
+					parent: that,
+					protein: that.protein,
 					threeDLayer: threeDLayer,
-					THREE      : that.THREE
+					THREE: that.THREE
 				});
 				that.onNewX(passX);
 				that.onNewY(passY);
@@ -886,7 +508,7 @@ export class Protein extends SvgVertexArtefact {
 	initializeSmPagination() {
 		this.smPagination = {
 			pageSize: 10,
-			page    : 1,
+			page: 1,
 			lastPage: Math.ceil(this.protein.smallMoleculeInteractions.length / 10)
 		};
 		this.fetchSmPage();
@@ -956,8 +578,8 @@ export class ProteinInteraction extends SvgEdgeArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type          : 'proteinInteraction',
-			relationType  : 'protein interaction',
+			type: 'proteinInteraction',
+			relationType: 'protein interaction',
 			connectionType: 'proteinInteraction'
 		}, properties));
 	}
@@ -985,7 +607,7 @@ export class VariableGlyph extends SvgVertexArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type            : 'variableGlyph',
+			type: 'variableGlyph',
 			popupTemplateUrl: 'amy-circuit-board/amy-tile/variable-trace-popup.html'
 		}, properties));
 
@@ -1166,7 +788,7 @@ export class Static3DModel extends ThreeJSModel {
 
 	constructor(properties) {
 		super(_.extend({
-			type        : 'static3DModel',
+			type: 'static3DModel',
 			relationType: '3D model',
 			detailTemplateUrl: 'amy-circuit-board/amy-tile/static-3d-model-details.html'
 		}, properties));
@@ -1221,7 +843,7 @@ export class Static3DModel extends ThreeJSModel {
 						vertexColors: that.THREE.VertexColors,
 						shading: that.THREE.SmoothShading
 					});
-					obj = new THREE.MorphAnimMesh( obj, material );
+					obj = new THREE.MorphAnimMesh(obj, material);
 					obj.duration = 1400; // TODO: parametrize
 					that.threeDGroup.onRender(function () {
 						obj.time = that.TimerService.accurateTime;
@@ -1347,12 +969,12 @@ export class StaticCompound3DModel extends ThreeJSModel {
 
 	constructor(properties) {
 		super(_.extend({
-			type        : 'static3DModel',
+			type: 'static3DModel',
 			relationType: '3D model'
 		}, properties));
 
 		this.constructor_StaticCompound3DModel1();
-//		this.constructor_StaticCompound3DModel2();
+		//		this.constructor_StaticCompound3DModel2();
 	}
 
 
@@ -1429,7 +1051,7 @@ export class StaticCompound3DModel extends ThreeJSModel {
 			//// normalize positions
 			_.forEach(objs, function (obj: any) {
 				obj.children[0].position.sub(that.object3DBoundingBox.center());
-//				obj.children[0].geometry.applyMatrix(new this.THREE.Matrix4().setPosition(that.object3DBoundingBox.center().negate())); // TODO: why doesn't this work?
+				//				obj.children[0].geometry.applyMatrix(new this.THREE.Matrix4().setPosition(that.object3DBoundingBox.center().negate())); // TODO: why doesn't this work?
 			});
 
 			return objs;
@@ -1461,7 +1083,7 @@ export class StaticCompound3DModel extends ThreeJSModel {
 
 		that.object3DQs.then(function (objs) {
 
-			var ratio = Math.min(size.width  / that.object3DBoundingBox.size().x, size.height / that.object3DBoundingBox.size().y) * .7;
+			var ratio = Math.min(size.width / that.object3DBoundingBox.size().x, size.height / that.object3DBoundingBox.size().y) * .7;
 
 			_.forEach(objs, function (obj: any) {
 				//// adjust size
@@ -1481,53 +1103,53 @@ export class StaticCompound3DModel extends ThreeJSModel {
 
 	//////////////////// Focus /////////////////////////////////////////////////
 
-//	private constructor_StaticCompound3DModel2() {
-//		var that = this;
-//		that.object3DQ.then(function (obj) {
-//
-//			//// translate mouse events to focus events
-//			//
-//			function onMouseOver() {
-//				that.focus = true;
-//			}
-//
-//			function onMouseOut() {
-//				that.focus = false;
-//			}
-//
-//			function onClick() {
-//				that.focusFixed = !that.focusFixed;
-//			}
-//
-//			that.threeDGroup.on(obj, 'mouseover', onMouseOver);
-//			that.threeDGroup.on(obj, 'mouseout', onMouseOut);
-//			that.threeDGroup.on(obj, 'click', onClick);
-//			that.onDestruct(function () {
-//				that.threeDGroup.off(obj, 'mouseover', onMouseOver);
-//				that.threeDGroup.off(obj, 'mouseout', onMouseOut);
-//				that.threeDGroup.off(obj, 'click', onClick);
-//			});
-//
-//			//// change color based on focus-events
-//			//
-//			that.forEachMesh(obj, function (thing) {
-//				thing.userData.initialColor = thing.material.color;
-//			});
-//			that.onFocus(function (flag) {
-//				if (!that.focusFixed) {
-//					that.forEachMesh(obj, function (thing) {
-//						thing.material.color = (flag ? new that.THREE.Color('#ccffff') : thing.userData.initialColor);
-//					});
-//				}
-//			});
-//			that.onFocusFix(function (flag) {
-//				that.forEachMesh(obj, function (thing) {
-//					thing.material.color = (flag ? new that.THREE.Color('#00cc00') : thing.userData.initialColor);
-//				});
-//			});
-//
-//		});
-//	}
+	//	private constructor_StaticCompound3DModel2() {
+	//		var that = this;
+	//		that.object3DQ.then(function (obj) {
+	//
+	//			//// translate mouse events to focus events
+	//			//
+	//			function onMouseOver() {
+	//				that.focus = true;
+	//			}
+	//
+	//			function onMouseOut() {
+	//				that.focus = false;
+	//			}
+	//
+	//			function onClick() {
+	//				that.focusFixed = !that.focusFixed;
+	//			}
+	//
+	//			that.threeDGroup.on(obj, 'mouseover', onMouseOver);
+	//			that.threeDGroup.on(obj, 'mouseout', onMouseOut);
+	//			that.threeDGroup.on(obj, 'click', onClick);
+	//			that.onDestruct(function () {
+	//				that.threeDGroup.off(obj, 'mouseover', onMouseOver);
+	//				that.threeDGroup.off(obj, 'mouseout', onMouseOut);
+	//				that.threeDGroup.off(obj, 'click', onClick);
+	//			});
+	//
+	//			//// change color based on focus-events
+	//			//
+	//			that.forEachMesh(obj, function (thing) {
+	//				thing.userData.initialColor = thing.material.color;
+	//			});
+	//			that.onFocus(function (flag) {
+	//				if (!that.focusFixed) {
+	//					that.forEachMesh(obj, function (thing) {
+	//						thing.material.color = (flag ? new that.THREE.Color('#ccffff') : thing.userData.initialColor);
+	//					});
+	//				}
+	//			});
+	//			that.onFocusFix(function (flag) {
+	//				that.forEachMesh(obj, function (thing) {
+	//					thing.material.color = (flag ? new that.THREE.Color('#00cc00') : thing.userData.initialColor);
+	//				});
+	//			});
+	//
+	//		});
+	//	}
 
 }
 
@@ -1539,7 +1161,7 @@ export class Protein3DModel extends ThreeJSModel {
 
 	constructor(properties) {
 		super(_.extend({
-			type        : 'protein3DModel',
+			type: 'protein3DModel',
 			relationType: '3D model'
 		}, properties));
 
@@ -1600,12 +1222,12 @@ export class Protein3DModel extends ThreeJSModel {
 
 		_.forEach(geneTranslation.domains, function (domain: any, index: number) {
 			new ProteinDomain3DModel({
-				id           : that.id + ":domain:" + index,
-				parent       : that,
+				id: that.id + ":domain:" + index,
+				parent: that,
 				proteinDomain: domain,
-				parentObject : that.kebab,
-				THREE        : that.THREE,
-				threeDGroup  : that.threeDGroup
+				parentObject: that.kebab,
+				THREE: that.THREE,
+				threeDGroup: that.threeDGroup
 			});
 		});
 
@@ -1675,7 +1297,7 @@ export class ProteinDomain3DModel extends ThreeJSModel {
 
 	constructor(properties) {
 		super(_.extend({
-			type        : 'proteinDomain3DModel',
+			type: 'proteinDomain3DModel',
 			relationType: 'protein domain',
 			detailTemplateUrl: 'amy-circuit-board/amy-tile/protein-domain-detail-view.html'
 		}, properties));
@@ -1697,14 +1319,12 @@ export class ProteinDomain3DModel extends ThreeJSModel {
 	private domainObject: any;
 
 	private constructor_ProteinDomain3DModel1() {
-		var that = this;
-
 		var domainGeometry = new this.THREE.CylinderGeometry(3, 3, 1, 32);
-		var domainMaterial = new that.THREE.MeshLambertMaterial({ color: ProteinDomain3DModel.domainColor(that.proteinDomain).hex() });
-		that.domainObject = new that.THREE.Mesh(domainGeometry, domainMaterial);
-		that.domainObject.translateY(.5 * that.proteinDomain.start + .5 * that.proteinDomain.end);
-		that.domainObject.scale.y = (that.proteinDomain.end - that.proteinDomain.start);
-		that.parentObject.add(that.domainObject);
+		var domainMaterial = new this.THREE.MeshLambertMaterial({ color: ProteinDomain3DModel.domainColor(this.proteinDomain).hex() });
+		this.domainObject = new this.THREE.Mesh(domainGeometry, domainMaterial);
+		this.domainObject.translateY(.5 * this.proteinDomain.start + .5 * this.proteinDomain.end);
+		this.domainObject.scale.y = (this.proteinDomain.end - this.proteinDomain.start);
+		this.parentObject.add(this.domainObject);
 	}
 
 
@@ -1760,9 +1380,12 @@ export class ProteinDomain3DModel extends ThreeJSModel {
 
 	getTitle(): string {
 		switch (this.proteinDomain.type) {
-			case 'pfam':    return this.proteinDomain.pfam_name.replace('_', ' ');
-			case 'signalp': return "Signal Peptide";
-			case 'tmhmm':   return "TMHMM";
+		case 'pfam':
+			return this.proteinDomain.pfam_name.replace('_', ' ');
+		case 'signalp':
+			return "Signal Peptide";
+		case 'tmhmm':
+			return "TMHMM";
 		}
 	}
 
@@ -1773,6 +1396,7 @@ export class ProteinDomain3DModel extends ThreeJSModel {
 
 	private static colorRange = new ColorRange();
 	private static colorMap: { [id: string]: Chroma; } = {};
+
 	private static domainColor(domain): Chroma {
 		if (domain.type === 'signalp') {
 			return Chroma.hex('#000');

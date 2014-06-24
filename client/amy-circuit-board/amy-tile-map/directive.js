@@ -1,11 +1,12 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['lodash', 'angular', 'app/module', 'amy-circuit-board/artefacts',
+define(['lodash', 'angular', 'app/module',
+        'amy-circuit-board/CircuitBoardArtefact',
         'css!amy-circuit-board/amy-tile-map/style',
         '$bind/service',
         'defaults/service'
-], function (_, ng, app, artefacts) {
+], function (_, ng, app, CircuitBoardArtefact) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -51,7 +52,7 @@ define(['lodash', 'angular', 'app/module', 'amy-circuit-board/artefacts',
 							//// This artefact:
 							//
 							$scope.tileMap =
-							$scope.artefact = new artefacts.TileMap({
+							$scope.artefact = new CircuitBoardArtefact.TileMapArtefact({
 								id:     $scope.$id,
 								$scope: $scope
 							});

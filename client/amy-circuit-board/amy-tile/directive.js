@@ -47,6 +47,7 @@ define(['angular',
         'lodash',
         'threejs',
         'amy-circuit-board/artefacts',
+        'amy-circuit-board/CircuitBoardArtefact',
         'css!amy-circuit-board/amy-tile/style',
         'icon-btn/directive',
         'font-fit/directive',
@@ -54,7 +55,7 @@ define(['angular',
         '$bind/service',
         'resource/service',
         'jqueryui/dialog' // for VariableGlyph artefact (trace popup)
-], function (ng, app, color, _, THREE, artefacts) {
+], function (ng, app, color, _, THREE, artefacts, CircuitBoardArtefact) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	var TILE_HEADER_HEIGHT = 26;
@@ -130,7 +131,7 @@ define(['angular',
 							//////////////////// Tile / Artefact Interface /////////////////////////////////////////////
 
 							$scope.tile =
-							$scope.artefact = new artefacts.Tile({
+							$scope.artefact = new CircuitBoardArtefact.TileArtefact({
 								id:                $scope.$id,
 								$scope:            $scope,
 								relationType:      $scope.subEntity.type,
@@ -339,8 +340,8 @@ define(['angular',
 
 								//// calculate styling, possibly based on parent tile background
 								//
-								if ($scope.tile.parentTile()) {
-									var parentBgColor = $scope.tile.parentTile().styling.normal.css['&'].backgroundColor;
+								if ($scope.tile.ancestor(CircuitBoardArtefact.TileArtefact)) {
+									var parentBgColor = $scope.tile.ancestor(CircuitBoardArtefact.TileArtefact).styling.normal.css['&'].backgroundColor;
 									$scope.tile.styling = generateTileDefaults($scope.entity.tile, {
 										bgColor: (color(parentBgColor).luminance() < .5 ?
 										          color(parentBgColor).brighten(30).css() :

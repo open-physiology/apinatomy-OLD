@@ -4,22 +4,20 @@
 define(['jquery',
         'lodash',
         'angular',
-        'amy-circuit-board/artefacts',
+        'app/WebPageArtefact',
         'color/ColorRange',
         'tile-map/module',
         'trace-diagram/module',
         'angular-animate',
         'angular-bootstrap',
         'angular-recursion',
-        'angular-once',
-        'angular-slider'], function ($, _, ng, artefacts, ColorRange) {
+        'angular-slider'], function ($, _, ng, WebPageArtefact) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	var app = ng.module('ApiNATOMY', [ 'tile-map'        , 'trace-diagram' ,
-	                                   'ngAnimate'       , 'ui.bootstrap'  ,
-	                                   'RecursionHelper' , 'once'          ,
-	                                   'vr.directives.slider'              ]);
+	var app = ng.module('ApiNATOMY', [ 'tile-map'        , 'trace-diagram'         ,
+	                                   'ngAnimate'       , 'ui.bootstrap'          ,
+	                                   'RecursionHelper' , 'vr.directives.slider'  ]);
 
 
 	//// Global configuration:
@@ -47,7 +45,7 @@ define(['jquery',
 		//// The web-page:
 		//
 		$scope.webPage =
-		$scope.artefact = new artefacts.WebPage({
+		$scope.artefact = new WebPageArtefact({
 			id:     $scope.$id,
 			entity: ResourceService.entities(['24tile:60000000'])[0],
 			$scope: $scope
@@ -61,7 +59,7 @@ define(['jquery',
 
 		$scope.circuitBoardMargins = {
 			top:    AMY_SPACING,
-			left: AMY_SIDE_NAV_WIDTH + AMY_SPACING,
+			left:   AMY_SIDE_NAV_WIDTH + AMY_SPACING,
 			bottom: AMY_SPACING,
 			right:  AMY_SPACING
 		};

@@ -2,14 +2,14 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 define(['app/module', 'lodash',
-        'amy-circuit-board/artefacts',
+        'amy-circuit-board/CircuitBoardArtefact',
         'css!amy-circuit-board/style',
         'resource/service', '$bind/service',
         'amy-circuit-board/amy-tile-map/directive',
         'amy-circuit-board/amy-tile/directive',
         'amy-circuit-board/amy-graph-layer/directive',
         'amy-circuit-board/amy-connections/directive',
-        'amy-circuit-board/amy-3d-layer/directive'], function (app, _, artefacts) {
+        'amy-circuit-board/amy-3d-layer/directive'], function (app, _, CircuitBoardArtefact) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -33,7 +33,7 @@ define(['app/module', 'lodash',
 						//////////////////// Artefact Hierarchy ////////////////////////////////////////////////////
 
 						$scope.circuitBoard =
-						$scope.artefact = new artefacts.CircuitBoard({
+						$scope.artefact = new CircuitBoardArtefact({
 							id:       $scope.$id,
 							entity:   null, // to be set
 							$scope:   $scope,

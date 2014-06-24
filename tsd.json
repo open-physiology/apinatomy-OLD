@@ -19,6 +19,9 @@
     },
     "threejs/three.d.ts": {
       "commit": "d3f6bcccdeb052003c96a7c4adbb002828c2a8ae"
+    },
+    "angularjs/angular.d.ts": {
+      "commit": "d3f6bcccdeb052003c96a7c4adbb002828c2a8ae"
     }
   }
 }
