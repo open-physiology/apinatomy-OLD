@@ -1,25 +1,36 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'lodash', 'resource/service'], function (app, _) {
+define(['app/module', 'lodash'], function (app, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	app.factory('Variable', ['ResourceService', function (ResourceService) {
+	app.factory('Variable', [function () {
 
-		function Variable(_name, _uri, _streamSource) {
+		function Variable(name, uri, streamSource) {
 
-			this.name = function name() { return _name };
+			if (_(streamSource).isUndefined()) {
+				streamSource = { // serves random data
+					getDataRange: function (uri, beginTime, endTime, timeInterval) {
+						for (var i = beginTime; i <= endTime; i += timeInterval) {
+							tmpDataCache.push([ i * timeInterval, Math.random() * 11 - 5 ]);
+						}
+					}
+				};
+			}
 
-			this.uri = function uri() { return _uri };
+			this.name = function nameFn() { return name };
+
+			this.uri = function uriFn() { return uri };
 
 			var tmpDataCache = [];
 
 			this.getDataUpToTime = function getDataUpToTime(endTime, timeInterval) {
+				var newData = streamSource.getDataRange(uri, tmpDataCache.length * timeInterval, endTime, timeInterval);
+				_(newData).forEach(function (dataPoint) {
+					tmpDataCache.push(dataPoint);
+				});
 				var timePointCount = endTime / timeInterval + 1;
-				for (var i = tmpDataCache.length; i < timePointCount; ++i) {
-					tmpDataCache.push([ i * timeInterval, Math.random() * 11 - 5 ]); // TODO: use real data
-				}
 				for (var j = tmpDataCache.length; timePointCount < j; --j) {
 					tmpDataCache.pop();
 				}
