@@ -78,7 +78,7 @@ define(['jquery',
 				$('footer').hide();
 			}
 			$($window).trigger('resize');
-			$($window).trigger('resize'); // TODO: the second call is needed (for some reason) to let the smokescreen div adjust
+			$($window).trigger('resize'); // TODO: the second call is needed (for some reason) to let the circuit-board adjust size
 		});
 
 	}]);
