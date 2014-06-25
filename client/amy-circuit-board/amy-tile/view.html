@@ -22,7 +22,7 @@
 	          ng-mouseout="onHeaderMouseOut($event)"></icon-btn>
 
 
-	<icon-btn ng-if="tile.parent.children.length > 1"
+	<icon-btn ng-if="::(tile.parent.children.length > 1)"
 			  ng-model="tile.maximized"
 	          states=" ::{ true:  false,              false:  true             }"
 	          classes="::{ true: 'action-unmaximize', false: 'action-maximize' }"
@@ -31,7 +31,7 @@
 
 
     <section ng-if="tile.open">
-        <amy-tile-map ng-model="tile.entity" position="{{
+        <amy-tile-map ng-model="::tile.entity" position="{{
             { left:   tile.position.left   + 1,
               width:  tile.position.width  - 2,
               top:    tile.position.top    + 1 + (tile.hiddenHeader ? 0 : 26+1),

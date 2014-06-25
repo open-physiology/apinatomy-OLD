@@ -1,10 +1,10 @@
 <tile-map tile-layout="{{ ::styling.layout }}" tile-spacing="{{ ::styling.spacing }}" tiles="tileInfo">
 
-	<amy-tile ng-if="styling" ng-repeat="(i, sub) in entity.sub" ng-model="sub" position="{{
-	    _.extend({}, tileInfo[i].position, {
-	        left: tileMap.position.left + tileInfo[i].position.left,
-	        top:  tileMap.position.top + tileInfo[i].position.top
-	    })
-	}}"></amy-tile>
+	<amy-tile ng-if="styling" ng-repeat="(i, sub) in entity.sub" ng-model="::sub" position="{{ {
+	    left: tileMap.position.left + tileInfo[i].position.left,
+	    top:  tileMap.position.top + tileInfo[i].position.top,
+	    width: tileInfo[i].position.width,
+	    height: tileInfo[i].position.height
+	} }}"></amy-tile>
 
 </tile-map>
