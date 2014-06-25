@@ -143,9 +143,7 @@ define(['angular',
 							//////////////////// Keeping Track of Tile Position and Size ///////////////////////////////
 
 							iAttrs.$observe('position', function (newPosition) {
-								if (newPosition) {
-									$scope.tile.position = $scope.$eval(newPosition);
-								}
+								$scope.tile.position = $scope.$eval(newPosition);
 							});
 
 
@@ -409,12 +407,7 @@ define(['angular',
 									}
 								}
 
-								$scope.$watch('tile.position', function (newPosition) {
-									if (newPosition) { setRegion(); }
-								});
-								$scope.$watch('tile.open', function (isOpen, wasOpen) {
-									if (wasOpen !== isOpen) { setRegion(); }
-								});
+								$scope.$watchGroup(['tile.position', 'tile.open'], setRegion);
 
 
 								//////////////////// Vascular Junctions ////////////////////////////////////////////////
