@@ -8,16 +8,15 @@ define(['jquery',
         'color/ColorRange',
         'tile-map/module',
         'trace-diagram/module',
-        'angular-animate',
         'angular-bootstrap',
         'angular-recursion',
         'angular-slider'], function ($, _, ng, WebPageArtefact) {
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	var app = ng.module('ApiNATOMY', [ 'tile-map'        , 'trace-diagram'         ,
-	                                   'ngAnimate'       , 'ui.bootstrap'          ,
-	                                   'RecursionHelper' , 'vr.directives.slider'  ]);
+	var app = ng.module('ApiNATOMY', [ 'tile-map'             , 'trace-diagram'   ,
+	                                   'ui.bootstrap'         , 'RecursionHelper' ,
+                                       'vr.directives.slider' ]);
 
 
 	//// Global configuration:
