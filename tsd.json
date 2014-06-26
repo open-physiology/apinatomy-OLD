@@ -6,22 +6,22 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "jqueryui/jqueryui.d.ts": {
-      "commit": "854957830abcd1d5a857c3ff2313108196943881"
+      "commit": "87fba9fea20927ca5c74ec0437b4d627239d2bd8"
     },
     "d3/d3.d.ts": {
-      "commit": "854957830abcd1d5a857c3ff2313108196943881"
+      "commit": "87fba9fea20927ca5c74ec0437b4d627239d2bd8"
     },
     "jquery/jquery.d.ts": {
-      "commit": "854957830abcd1d5a857c3ff2313108196943881"
+      "commit": "87fba9fea20927ca5c74ec0437b4d627239d2bd8"
     },
     "lodash/lodash.d.ts": {
-      "commit": "854957830abcd1d5a857c3ff2313108196943881"
+      "commit": "87fba9fea20927ca5c74ec0437b4d627239d2bd8"
     },
     "threejs/three.d.ts": {
-      "commit": "854957830abcd1d5a857c3ff2313108196943881"
+      "commit": "87fba9fea20927ca5c74ec0437b4d627239d2bd8"
     },
     "angularjs/angular.d.ts": {
-      "commit": "854957830abcd1d5a857c3ff2313108196943881"
+      "commit": "87fba9fea20927ca5c74ec0437b4d627239d2bd8"
     }
   }
 }
