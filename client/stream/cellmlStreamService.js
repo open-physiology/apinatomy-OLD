@@ -25,11 +25,11 @@ define(['lodash', 'app/module', 'cellml/service'], function (_, app) {
 
 		var model = new CellMLService(BEELER_REUTER_1977); // TODO: conditional on which model needs to be loaded and when
 
-		var currentData = {};
+		var dataCache = {}; // varID -> (0-based index for time) -> time+data
 
 		function CellmlStreamSource() {
 
-			this.getDataRange = function getDataRange(uri, beginTime, endTime, timeInterval) {
+			this.getData = function getDataRange(uri, time) {
 				var result = [];
 				for (var time = beginTime; time <= endTime; time += timeInterval) {
 					// TODO: continue
@@ -40,11 +40,11 @@ define(['lodash', 'app/module', 'cellml/service'], function (_, app) {
 
 				model.executeModel(beginTime, endTime, timeInterval).then(function (newData) {
 					_(newData).forEach(function (varData, varName) {
-						if (_(currentData[varName]).isUndefined()) {
-							currentData[varName] = [];
+						if (_(dataCache[varName]).isUndefined()) {
+							dataCache[varName] = [];
 						}
 						_(varData).forEach(function (varTimeData) {
-							currentData[varName].push(varTimeData);
+							dataCache[varName].push(varTimeData);
 						});
 
 					});
@@ -52,7 +52,7 @@ define(['lodash', 'app/module', 'cellml/service'], function (_, app) {
 			};
 
 			this.invalidate = function invalidate() {
-				currentData = {};
+				dataCache = {};
 			}
 
 		}

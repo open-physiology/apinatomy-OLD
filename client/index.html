@@ -11,19 +11,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--maximum-scale=1, user-scalable=no-->
 </head>
-<body ng-controller="MainController">
+<body>
 
-	<amy-top-nav id="top-nav"></amy-top-nav>
+	<!--<trace-diagram trace="[[0,0], [1,2], [2,1], [3,4]]" shadow-traces="[]" max-x="4" trace-color="red"></trace-diagram>-->
 
-	<amy-side-nav id="side-nav"></amy-side-nav>
-
-	<main>
-        <amy-circuit-board ng-model="webPage.entity"></amy-circuit-board>
-    </main>
-
-    <footer ng-cloak>
-	    <amy-time-control></amy-time-control>
-    </footer>
+	<amy-app></amy-app>
 
 </body>
 </html>
