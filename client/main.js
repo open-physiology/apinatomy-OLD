@@ -19,7 +19,6 @@ requirejs.config({
 //		'angular'                   : 'lib/angular/angular',
 		'angular'                   : 'patched-lib/angular',
 		'angular-touch'             : 'patched-lib/angular-touch',
-		'angular-animate'           : 'lib/angular-animate/angular-animate',
 		'angular-bootstrap'         : 'lib/angular-bootstrap/ui-bootstrap-tpls',
 		'angular-recursion'         : 'lib/angular-recursion/angular-recursion',
 		'angular-once'              : 'lib/angular-once/once',
