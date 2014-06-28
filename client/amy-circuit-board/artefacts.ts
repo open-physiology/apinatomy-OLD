@@ -632,7 +632,6 @@ export class VariableGlyph extends SvgVertexArtefact {
 
 
 	//////////////////// Data-stream ///////////////////////////////////////////
-	// TODO: use real data
 
 	traceData: number[][];
 	shadowTraceData: number[][][];
@@ -654,23 +653,23 @@ export class VariableGlyph extends SvgVertexArtefact {
 
 		that.traceData = [];
 		that.refreshTraceData().then(() => {
-//			that.shadowTraceData = [_.cloneDeep(that.traceData)]; // first shadow trace
-//			var timePointCount = that.TimerService.currentTime / that.TimerService.interval + 1;
+			that.shadowTraceData = [_.cloneDeep(that.traceData)]; // first shadow trace
+			var timePointCount = that.TimerService.currentTime / that.TimerService.interval + 1;
 			that.TimerService.onTimeChange(function () {
-//				var prevTimerPointCount = timePointCount;
-//				timePointCount = that.TimerService.timePointCount;
-				that.refreshTraceData();
-//				.then(() => {
-//					for (var i = prevTimerPointCount; i < timePointCount; ++i) {
-//						if (_.isUndefined(that.shadowTraceData[0][i])) {
-//							that.shadowTraceData[0][i] = that.traceData[i];
-//
-//						} else if (that.shadowTraceData[0][i] !== that.traceData[i]) {
-//							that.shadowTraceData.unshift(_.cloneDeep(that.shadowTraceData[0].slice(0, i)));
-//							--i; //// try again on the new shadow trace
-//						}
-//					}
-//				});
+				var prevTimerPointCount = timePointCount;
+				timePointCount = that.TimerService.timePointCount;
+				that.refreshTraceData()
+				.then(() => {
+					for (var i = prevTimerPointCount; i < timePointCount; ++i) {
+						if (_.isUndefined(that.shadowTraceData[0][i])) {
+							that.shadowTraceData[0][i] = that.traceData[i];
+
+						} else if (that.shadowTraceData[0][i] !== that.traceData[i]) {
+							that.shadowTraceData.unshift(_.cloneDeep(that.shadowTraceData[0].slice(0, i)));
+							--i; //// try again on the new shadow trace
+						}
+					}
+				});
 			});
 			that.TimerService.onMaxTimeChange(function (newMaxTime) {
 				if (newMaxTime === 0) {
