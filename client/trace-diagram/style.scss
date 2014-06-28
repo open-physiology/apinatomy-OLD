@@ -19,19 +19,20 @@ trace-diagram {
 				fill: none;
 				stroke-linejoin: round;
 				stroke-cap: round;
-
 				stroke-width: 1.5px;
+				pointer-events: none;
 
 				&.shadow {
 					stroke: lightgray;
 					stroke-width: 1.4px;
 				}
+
 			}
 
-			.caption {
-				dominant-baseline: hanging;
-				font-size: 10pt;
-				fill: gray;
+			.focus-indicator {
+				stroke: gray;
+				stroke-width: 1px;
+				pointer-events: none;
 			}
 
 			.axis {

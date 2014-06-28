@@ -154,7 +154,6 @@ define(['angular',
 							});
 
 
-
 							//////////////////// Managing Tile Visibility //////////////////////////////////////////////
 
 
@@ -391,7 +390,7 @@ define(['angular',
 									if ($scope.tile.hiddenHeader) {
 										// FIXME: this was requested by Bernard, and includes changes in several places in the code
 										graphGroup.setRegion({
-											top: $scope.tile.position.top,
+											top:    $scope.tile.position.top,
 											left: $scope.tile.position.left + widthPadding,
 											height: 1,
 											width: $scope.tile.position.width - 2 * widthPadding
@@ -468,6 +467,7 @@ define(['angular',
 
 										_($scope.entity.proteins).forEach(function (protein) {
 											var proteinArtefact;
+
 											function addProtein() {
 												proteinArtefact = new artefacts.Protein({
 													id: $scope.tile.id + ':' + protein._id,
@@ -488,6 +488,7 @@ define(['angular',
 													graphGroup.removeVertex(proteinArtefact);
 												});
 											}
+
 											onProteinToggle(function (showProteins) {
 												if (showProteins) { addProtein(); }
 												else if (proteinArtefact) {
@@ -499,6 +500,7 @@ define(['angular',
 
 										_($scope.entity.proteinInteractions).forEach(function (interaction) {
 											var proteinInteractionArtefact;
+
 											function addProteinInteraction() {
 												proteinInteractionArtefact = new artefacts.ProteinInteraction({
 													id: 'ppi:(' + interaction.interaction[0] + ',' + interaction.interaction[1] + ')',
@@ -516,6 +518,7 @@ define(['angular',
 													graphGroup.removeEdge(proteinInteractionArtefact);
 												});
 											}
+
 											onProteinToggle(function (showProteins) {
 												if (showProteins) { addProteinInteraction(); }
 												else if (proteinInteractionArtefact) {
@@ -532,60 +535,55 @@ define(['angular',
 								//////////////////// Variable Glyphs ///////////////////////////////////////////////////
 
 								$scope.entity._promise.then(function () {
-									if (!_($scope.entity.externals).isEmpty()) {
 
-										var onVariablesToggle = (function () {
-											var variablesToggleD = $q.defer();
-											$scope.$watch('tile.active && $root.simulationEnabled', function (showVariables) {
-												variablesToggleD.notify(showVariables);
-											});
-											return function onVariablesToggle(fn) {
-												variablesToggleD.promise.then(null, null, fn);
-											}
-										}());
+									var onVariablesToggle = (function () {
+										var variablesToggleD = $q.defer();
+										$scope.$watch('tile.active && $root.simulation', function (simulation) {
+											variablesToggleD.notify(simulation);
+										});
+										function onVariablesToggle(fn) { variablesToggleD.promise.then(null, null, fn); }
 
-										var variableArtefactMap = {};
+										onVariablesToggle.reset = function variableReset() { variablesToggleD.notify(null); };
+										return onVariablesToggle;
+									}());
 
-										_($scope.entity.externals).forEach(function (external) {
-											var externalModel = external.external;
+									ResourceService.fmaIdToVariables($scope.entity._id).then(function (variables) {
+										onVariablesToggle.reset();
 
-											if (externalModel.type === 'variable') {
-												var variableArtefact;
+										_(variables).forEach(function (variableUri) {
+											var variableArtefact;
 
-												var addVariableGlyph = function addVariableGlyph() {
-													variableArtefact = new artefacts.VariableGlyph({
-														id: $scope.tile.id + ':' + externalModel._id,
-														$scope:            $scope,
-														parent:            $scope.tile,
-														variable:          externalModel,
-														relationType:      '"' + external.type + '"',
-														showVertex:        true,
-														graphZIndex:       200,
-														ResourceService:   ResourceService,
-														TimerService:      TimerService,
-														$bind:             $bind,
-														$compile:          $compile
-													});
-													variableArtefactMap[externalModel._id] = variableArtefact;
-													graphGroup.addVertex(variableArtefact);
-													variableArtefact.onDestruct(function () {
-														delete variableArtefactMap[externalModel._id];
-														graphGroup.removeVertex(variableArtefact);
-													});
-												};
+											function addVariableGlyph(variable) {
+												variableArtefact = new artefacts.VariableGlyph({
+													id:          ($scope.tile.id + ':' + variable.uri),
+													$scope:      $scope,
+													parent:      $scope.tile,
+													variable:    variable,
+													showVertex:  true,
+													graphZIndex: 200,
 
-												onVariablesToggle(function (showVariables) {
-													if (showVariables) { addVariableGlyph(); }
-													else if (variableArtefact) {
-														variableArtefact.destructor();
-														variableArtefact = null;
-													}
+													ResourceService:  ResourceService,
+													TimerService:     TimerService,
+													$bind:            $bind,
+													$compile:         $compile
+												});
+												graphGroup.addVertex(variableArtefact);
+												variableArtefact.onDestruct(function () {
+													graphGroup.removeVertex(variableArtefact);
 												});
 											}
+
+											onVariablesToggle(function (simulation) {
+												if (!variableArtefact && simulation && simulation.model.outputVariables[variableUri]) {
+													addVariableGlyph(simulation.variable(variableUri));
+												} else if (variableArtefact) {
+													variableArtefact.destructor();
+													variableArtefact = null;
+												}
+											});
 										});
+									});
 
-
-									}
 								});
 
 							});
@@ -638,16 +636,16 @@ define(['angular',
 										//
 										var modelSource = models[0]; // TODO: options to switch; now getting only the first model
 										var static3DModel = new artefacts[_(modelSource).isArray() ? 'StaticCompound3DModel' : 'Static3DModel']({
-											$scope: $scope,
-											entity: $scope.tile.entity,
-											parent: $scope.tile,
-											filename:   modelSource,
+											$scope:         $scope,
+											entity:         $scope.tile.entity,
+											parent:         $scope.tile,
+											filename:       modelSource,
 											parent3DObject: threeDGroup.object,
 
 											threeDGroup: threeDGroup,
 
-											THREE:  THREE,
-											$q:     $q,
+											THREE:        THREE,
+											$q:           $q,
 											TimerService: TimerService
 										});
 										on3d('destruct', function () { static3DModel.destructor() });

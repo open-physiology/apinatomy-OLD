@@ -75,7 +75,7 @@ app.post('/resources/cellml/load', function (req, res) {
 	var promise = cellml.cellmlGet(cellml.loadURL(req.body.filename)).then(function (data) {
 		id = data.id;
 	});
-	_(req.body.outputVariables).forEach(function (variable, index) {
+	_(req.body.outputVariables).values().forEach(function (variable, index) {
 		promise = promise.then(function () {
 			return cellml.cellmlGet(cellml.flagOutputURL(id, variable.component, variable.name, index + 1)).then(function (data) {
 				if (data.returnCode !== 0) {
@@ -84,7 +84,7 @@ app.post('/resources/cellml/load', function (req, res) {
 			});
 		});
 	});
-	_(req.body.values).forEach(function (variable) {
+	_(req.body.values).values().forEach(function (variable) {
 		promise = promise.then(function () {
 			return cellml.cellmlGet(cellml.setValueURL(id, variable.component, variable.name, variable.value)).then(function (data) {
 				if (data.returnCode !== 0) {
@@ -105,7 +105,7 @@ app.post('/resources/cellml/load', function (req, res) {
 
 app.post('/resources/cellml/set-values/:id', function (req, res) {
 	var promise = Q(null);
-	_(req.body.values).forEach(function (variable) {
+	_(req.body.values).values().forEach(function (variable) {
 		promise = promise.then(function () {
 			return cellml.cellmlGet(cellml.setValueURL(
 					req.params.id,
@@ -126,7 +126,7 @@ app.post('/resources/cellml/set-values/:id', function (req, res) {
 });
 
 
-//// POST: set value on running model
+//// POST: get values from running model
 
 app.post('/resources/cellml/execute/:id', function (req, res) {
 	cellml.cellmlGet(cellml.executeURL(req.params.id, req.body.start, req.body.end, req.body.interval)).then(function (data) {

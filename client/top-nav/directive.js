@@ -1,11 +1,11 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'css!top-nav/style'], function (app) {
+define(['app/module', 'simulation/CellMLSimulation', 'css!top-nav/style'], function (app) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	app.directive('amyTopNav', ['ResourceService', function (ResourceService) {
+	app.directive('amyTopNav', ['ResourceService', 'CellMLSimulation', function (ResourceService, CellMLSimulation) {
 		return {
 			restrict   : 'E',
 			replace    : true,
@@ -48,6 +48,25 @@ define(['app/module', 'css!top-nav/style'], function (app) {
 					}
 				});
 
+
+				//////////////////// Search ////////////////////////////////////////////////////////////////////////////
+
+				ResourceService.simulationModels().then(function (simulationModels) {
+					$scope.simulationModels = simulationModels;
+				});
+
+				var modelUriToSimulation = {};
+
+				$scope.$watch('$root.simulationModel', function onNewSimulationModel(model) {
+					if (model) {
+						if (!modelUriToSimulation[model.uri]) {
+							modelUriToSimulation[model.uri] = new CellMLSimulation(model, 100, 10);
+						}
+						$scope.$root.simulation = modelUriToSimulation[model.uri];
+					} else {
+						$scope.$root.simulation = null;
+					}
+				});
 
 			}
 		};

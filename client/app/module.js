@@ -24,10 +24,11 @@ define(['lodash', 'angular',
 
 	//// Register the variables we want to be available in every $scope everywhere.
 	//
-	app.run(['$rootScope', function ($rootScope) {
+	app.run(['$rootScope', 'ResourceService', function ($rootScope, ResourceService) {
 		$rootScope.constructor.prototype._ = _;
 		$rootScope.constructor.prototype.console = console;
 		$rootScope.constructor.prototype.Math = Math;
+		$rootScope.constructor.prototype.ResourceService = ResourceService;
 	}]);
 
 

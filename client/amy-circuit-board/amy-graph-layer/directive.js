@@ -36,10 +36,10 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3',
 								.size([iElement.width(), iElement.height()])
 								.gravity(0)
 								.charge(function (d) {
-									return -0.00025 * d.group.region.width * d.group.region.height;
+									return -0.025 * d.group.region.width * d.group.region.height / (d.group.vertices.length || 1);
 								})
 								.linkDistance(function (d) {
-									return 0.0001 * d.group.region.width * d.group.region.height * (d.linkDistanceFactor || 1);
+									return 0.01 * d.group.region.width * d.group.region.height * (d.linkDistanceFactor || 1) / (d.group.vertices.length || 1);
 								})
 								.linkStrength(0.8);
 
@@ -189,6 +189,7 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3',
 										_(group.vertices).remove();
 										$scope.updateGraph();
 									},
+									vertexCount: function vertexCount() { return group.vertices.length; },
 									vertices: function vertices() { return _(group.vertices).clone(); },
 									edges: function edges() { return _(group.edges).clone(); }
 								};

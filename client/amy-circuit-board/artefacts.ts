@@ -605,11 +605,11 @@ export class VariableGlyph extends SvgVertexArtefact {
 	constructor(properties) {
 		super(_.extend({
 			type: 'variableGlyph',
+			relationType: 'variable',
 			popupTemplateUrl: 'amy-circuit-board/amy-tile/variable-trace-popup.html'
 		}, properties));
 
 		this.constructor_VariableGlyph1();
-		this.constructor_VariableGlyph2();
 	}
 
 
@@ -621,13 +621,13 @@ export class VariableGlyph extends SvgVertexArtefact {
 	//////////////////// Color /////////////////////////////////////////////////
 
 	private static colorRange = new ColorRange();
-	private static colorMap: { [id: string]: Chroma; } = {};
+	private static colorMap: {[id:string]:Chroma;} = {};
 
 	private get color() {
-		if (_.isUndefined(VariableGlyph.colorMap[this.variable._id])) {
-			VariableGlyph.colorMap[this.variable._id] = VariableGlyph.colorRange.next();
+		if (_.isUndefined(VariableGlyph.colorMap[this.variable.uri])) {
+			VariableGlyph.colorMap[this.variable.uri] = VariableGlyph.colorRange.next();
 		}
-		return VariableGlyph.colorMap[this.variable._id];
+		return VariableGlyph.colorMap[this.variable.uri];
 	}
 
 
@@ -637,40 +637,46 @@ export class VariableGlyph extends SvgVertexArtefact {
 	traceData: number[][];
 	shadowTraceData: number[][][];
 
-	private refreshTraceData(): void {
-		var timePointCount = this.TimerService.timePointCount;
-		for (var i = this.traceData.length; i < timePointCount; ++i) {
-			this.traceData.push([ i * this.TimerService.interval, Math.floor(Math.random() * 11 - 5) ]);
-		}
-		for (var j = this.traceData.length; timePointCount < j; --j) {
-			this.traceData.pop();
-		}
+	private refreshTraceData(): ng.IPromise<number[][]> {
+		var that = this;
+		return that.variable.getVariableDataUpToTime(that.TimerService.currentTime).then((traceData) => {
+			for (var i = that.traceData.length; i < traceData.length; ++i) {
+				that.traceData.push(traceData[i]);
+			}
+			for (var j = that.traceData.length; traceData.length < j; --j) {
+				that.traceData.pop();
+			}
+		});
 	}
 
 	private initializeTraceData(): void {
 		var that = this;
 
 		that.traceData = [];
-		that.refreshTraceData();
-		that.shadowTraceData = [_.cloneDeep(that.traceData)]; // first shadow trace
-		var timePointCount = that.TimerService.currentTime / that.TimerService.interval + 1;
-		that.TimerService.onTimeChange(function () {
-			var prevTimerPointCount = timePointCount;
-			timePointCount = that.TimerService.timePointCount;
-			that.refreshTraceData();
-			for (var i = prevTimerPointCount; i < timePointCount; ++i) {
-				if (_.isUndefined(that.shadowTraceData[0][i])) {
-					that.shadowTraceData[0].push(that.traceData[i]);
-				} else if (that.shadowTraceData[0][i] !== that.traceData[i]) {
-					that.shadowTraceData.unshift(_.cloneDeep(that.shadowTraceData[0].slice(0, i)));
-					--i; //// try again on the new shadow trace
+		that.refreshTraceData().then(() => {
+//			that.shadowTraceData = [_.cloneDeep(that.traceData)]; // first shadow trace
+//			var timePointCount = that.TimerService.currentTime / that.TimerService.interval + 1;
+			that.TimerService.onTimeChange(function () {
+//				var prevTimerPointCount = timePointCount;
+//				timePointCount = that.TimerService.timePointCount;
+				that.refreshTraceData();
+//				.then(() => {
+//					for (var i = prevTimerPointCount; i < timePointCount; ++i) {
+//						if (_.isUndefined(that.shadowTraceData[0][i])) {
+//							that.shadowTraceData[0][i] = that.traceData[i];
+//
+//						} else if (that.shadowTraceData[0][i] !== that.traceData[i]) {
+//							that.shadowTraceData.unshift(_.cloneDeep(that.shadowTraceData[0].slice(0, i)));
+//							--i; //// try again on the new shadow trace
+//						}
+//					}
+//				});
+			});
+			that.TimerService.onMaxTimeChange(function (newMaxTime) {
+				if (newMaxTime === 0) {
+					that.shadowTraceData = [_.cloneDeep(that.traceData)];
 				}
-			}
-		});
-		that.TimerService.onMaxTimeChange(function (newMaxTime) {
-			if (newMaxTime === 0) {
-				that.shadowTraceData = [_.cloneDeep(that.traceData)];
-			}
+			});
 		});
 	}
 
@@ -681,14 +687,10 @@ export class VariableGlyph extends SvgVertexArtefact {
 
 	svgClass() { return 'variable-glyph' }
 
-	private constructor_VariableGlyph1() {
-
-	}
-
 
 	//////////////////// Detail Popup //////////////////////////////////////////
 
-	private constructor_VariableGlyph2() {
+	private constructor_VariableGlyph1() {
 		var that = this;
 
 		var subScope = that.$scope.$new(true);
@@ -701,7 +703,7 @@ export class VariableGlyph extends SvgVertexArtefact {
 			that.initializeTraceData();
 
 			traceDialogElement = that.$compile(
-					'<trace-diagram trace="artefact.traceData" shadow-traces="artefact.shadowTraceData" max-x="artefact.TimerService.maxTime" trace-color="{{ artefact.color.css() }}"></trace-diagram>'
+					'<trace-diagram focus-time="$root.focusTime" trace="artefact.traceData" shadow-traces="artefact.shadowTraceData" max-x="artefact.TimerService.maxTime" trace-color="{{ artefact.color.css() }}"></trace-diagram>'
 			)(subScope);
 
 			// the extra `div` bypasses a bug (?) that manifested

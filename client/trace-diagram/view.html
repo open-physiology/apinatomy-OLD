@@ -1,14 +1,14 @@
 <svg>
 	<g>
 		<defs>
-			<clipPath id="dataArea">
+			<clipPath id="dataArea{{ ::$id }}">
 				<rect></rect>
 			</clipPath>
 		</defs>
-		<rect class="border"></rect>
-		<text class="caption" x="5px" y="5px" ng-bind="caption"></text>
+		<rect class="border" ng-mousemove="onMouseMove($event)" ng-mouseleave="onMouseLeave()"></rect>
+		<line class="focus-indicator" clip-path="url(#dataArea{{ ::$id }})" stroke-dasharray="5, 1"></line>
 		<g class="shadow-traces"></g>
-		<path class="normal trace" stroke="{{ traceColor }}" clip-path="url(#dataArea)"></path>
+		<path class="normal trace" stroke="{{ traceColor }}" clip-path="url(#dataArea{{ ::$id }})"></path>
 		<g class="y axis"></g>
 	</g>
 </svg>

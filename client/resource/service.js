@@ -118,20 +118,22 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 
 		//////////////////// 3D Models /////////////////////////////////////////////////////////////////////////////////
 
-		var URI_TO_MODEL = {
-			'fma:7088' : ['3d-models/contracting-heart-2.json'],
-			'fma:7148' : ['3d-models/FMA7148_Stomach.obj'],
-			'fma:7197' : ['3d-models/FMA7197_Liver.obj'],
-			'fma:7201' : [[
-				              { file: '3d-models/cap_03/cap_03.obj'      , color: '#F37CFD' },
-				              { file: '3d-models/cap_03/cap_03_conn.obj' , color: '#FFF53E' },
-				              { file: '3d-models/cap_03/cap_03_endo.obj' , color: '#E10016' },
-				              { file: '3d-models/cap_03/cap_03_epi.obj'  , color: '#6DFF66' },
-				              { file: '3d-models/cap_03/cap_03_field.obj', color: '#FFFFFF', opacity: 0.25 }
-			              ]],
-			'fma:7204' : ['3d-models/FMA7204_Right_Kidney.obj'],
-			'fma:7205' : ['3d-models/FMA7205_Left_Kidney.obj'],
-			'fma:7394' : ['3d-models/FMA7394_Trachea.obj'],
+		var FMA_ID_TO_3D_MODEL = {
+			'fma:7088':  ['3d-models/contracting-heart-2.json'],
+			'fma:7148':  ['3d-models/FMA7148_Stomach.obj'],
+			'fma:7197':  ['3d-models/FMA7197_Liver.obj'],
+			'fma:7201':  [
+				[
+					{ file: '3d-models/cap_03/cap_03.obj', color: '#F37CFD' },
+					{ file: '3d-models/cap_03/cap_03_conn.obj', color: '#FFF53E' },
+					{ file: '3d-models/cap_03/cap_03_endo.obj', color: '#E10016' },
+					{ file: '3d-models/cap_03/cap_03_epi.obj', color: '#6DFF66' },
+					{ file: '3d-models/cap_03/cap_03_field.obj', color: '#FFFFFF', opacity: 0.25 }
+				]
+			],
+			'fma:7204':  ['3d-models/FMA7204_Right_Kidney.obj'],
+			'fma:7205':  ['3d-models/FMA7205_Left_Kidney.obj'],
+			'fma:7394':  ['3d-models/FMA7394_Trachea.obj'],
 			'fma:12513': ['3d-models/FMA12513_Eyeball.obj'],
 			'fma:13076': ['3d-models/FMA13076_Fifth_Lumbar_Vertebra.obj'],
 			'fma:24498': ['3d-models/FMA24498_Left_Calcaneus.obj'],
@@ -153,13 +155,58 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 		};
 
 		iface.threeDModels = function (id) {
-			return $q.when(URI_TO_MODEL[id]);
+			return $q.when(FMA_ID_TO_3D_MODEL[id]);
 		};
+
+
+		//////////////////// Simulations ///////////////////////////////////////////////////////////////////////////////
+
+		var SIMULATION_MODELS = [
+			{
+				name:            'Beeler & Reuter, 1977',
+				type:            'CellMLSimulation',
+				filename:        'beeler_reuter_1977.cellml',
+				outputVariables: {
+					'membrane/i_Na':  { uri: 'membrane/i_Na',  component: 'membrane', name: 'i_Na'  },
+					'membrane/i_S':   { uri: 'membrane/i_S',   component: 'membrane', name: 'i_S'   },
+					'membrane/i_x1':  { uri: 'membrane/i_x1',  component: 'membrane', name: 'i_x1'  },
+					'membrane/i_K1':  { uri: 'membrane/i_K1',  component: 'membrane', name: 'i_K1'  },
+					'membrane/Istim': { uri: 'membrane/Istim', component: 'membrane', name: 'Istim' },
+					'membrane/V':     { uri: 'membrane/V',     component: 'membrane', name: 'V'     }
+				},
+				values: {
+					'membrane/C': { uri: 'membrane/C', component: 'membrane', name: 'C', value: 0.01 }
+				}
+			}
+		];
+
+		iface.simulationModels = function () {
+			return $q.when(SIMULATION_MODELS);
+		};
+
+
+		//////////////////// Variables /////////////////////////////////////////////////////////////////////////////////
+
+		var FMA_ID_TO_VARIABLES = {
+			'24tile:60000004': [
+				'membrane/i_Na',
+				'membrane/i_S',
+				'membrane/i_x1',
+				'membrane/i_K1',
+				'membrane/Istim',
+				'membrane/V'
+			]
+		};
+
+		iface.fmaIdToVariables = function (id) {
+			return $q.when(FMA_ID_TO_VARIABLES[id] || []);
+		};
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		return iface;
 	}]);
-
-
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

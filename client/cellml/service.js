@@ -25,9 +25,9 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 			this.executeModel = function (start, end, interval) { // times in ms
 				var result = latestPromise.then(function () {
 					return $http.post('/resources/cellml/execute/' + instanceId, {
-						start: start / 1000,
-						end: end / 1000,
-						interval: interval / 1000
+						start:    (start / 1000),
+						end:      (end / 1000),
+						interval: (interval / 1000)
 					}).then
 					(function (data) { return data.data }).then
 					(function (data) {
@@ -37,12 +37,12 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 						//    [1, 9  , 8  , 7  , 65 , 34 , 5  ]   // var 2...
 						// ]
 						var result = {};
-						_(options.outputVariables).forEach(function (variable, i) {
+						_(options.outputVariables).values().forEach(function (variable, i) {
 							_(data[0]).forEach(function (time, ti) {
-								if (_(result[variable.name]).isUndefined()) {
-									result[variable.name] = [];
+								if (_(result[variable.uri]).isUndefined()) {
+									result[variable.uri] = [];
 								}
-								result[variable.name].push([ // TODO: use proper URI for variables; not just their name
+								result[variable.uri].push([ // TODO: use proper URI for variables; not just their name
 									Math.round(time * 1000), /* time in ms */
 									data[i + 1][ti]          /* data */
 								]);

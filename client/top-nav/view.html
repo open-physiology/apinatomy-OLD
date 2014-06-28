@@ -32,11 +32,22 @@
                                ng-model="$root.proteinsEnabled"> Proteins
                     </label>
                 </div>
-	            <div class="form-control">
-		            <label>
-			            <input type="checkbox" class="checkbox"
-			                   ng-model="$root.simulationEnabled"> Simulation
-		            </label>
+	            <div class="input-group">
+		            <div class="input-group-addon" style="background: white">
+			            <label class="sr-only" for="simulation-enabled">Simulation Enabled</label>
+		                <input id="simulation-enabled"
+		                       type="checkbox"
+		                       class="checkbox"
+		                       ng-model="$root.simulationEnabled"
+				               ng-change="$root.simulationEnabled || ($root.simulationModel = null)">
+		            </div>
+		            <label class="sr-only" for="simulation-model"></label>
+		            <select id="simulation-model" class="form-control"
+		                    ng-disabled="!$root.simulationEnabled"
+		                    ng-model="$root.simulationModel"
+		                    ng-options="model.name for model in ($root.simulationEnabled ? simulationModels : [])">
+			            <option value="" style="color: gray">Simulation…</option>
+		            </select>
 	            </div>
             </li>
 		</ul>

@@ -9,6 +9,22 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 
 
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  // Util ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	var getTextWidth = (function () {
+		var canvas = document.createElement("canvas");
+		var context = canvas.getContext("2d");
+		context.font = '14px arial';
+		return function (text) {
+			return context.measureText(text).width;
+		}
+	}());
+
+
+
+
+//  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  // Directive ///////////////////////////////////////////////////////////////////////////////////////////////////////
 //  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -21,34 +37,50 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 				trace:        '=',
 				shadowTraces: '=',
 				maxX:         '=',
-				traceColor:   '@'
+				traceColor:   '@',
+				focusTime:    '='
 			},
 			link:        function ($scope, iElement/*, iAttrs, controller*/) {
 
 				//////////////////// geometry //////////////////////////////////////////////////////////////////////////
 
-				var margin = { top: 10, right: 10, bottom: 10, left: 40 };
+				var margin = { top: 10, right: 10, bottom: 10, left: 30 }; // left is also adjusted dynamically
 				var width, height;
 				var svgCanvas = d3.select(iElement.find('> svg > g')[0]);
 
-				svgCanvas.attr('transform', "translate(" + margin.left + "," + margin.top + ")");
 				svgCanvas.select('rect.border').attr({ top: 0, left: 0 });
-				svgCanvas.select('#dataArea > rect').attr({ top: 0, left: 0 });
+				svgCanvas.select('#dataArea'+$scope.$id+' > rect').attr({ top: 0, left: 0 });
 
 				var shadowCanvas = d3.select(iElement.find('> svg > g > g.shadow-traces')[0]);
 
 
 				//////////////////// scales and axes ///////////////////////////////////////////////////////////////////
 
-				var minX = 0;
-				var minY = Infinity;
-				var maxY = -Infinity;
-
-				var yAxis = d3.svg.axis();
-				yAxis.orient('left');
+				var minY;
+				var maxY;
 
 				var xScale = d3.scale.linear();
 				var yScale = d3.scale.linear();
+				yScale.nice();
+
+				var maxAxisLabelWidth = 0;
+				$scope.$watchCollection(function () { return yScale.ticks(); }, function (ticks) {
+					maxAxisLabelWidth = 0;
+					_(ticks).forEach(function (nr) {
+						nr = parseFloat(nr.toPrecision(12)); // smooth over rounding errors
+						maxAxisLabelWidth = Math.max(maxAxisLabelWidth, getTextWidth(nr.toString()));
+					});
+					if (margin.left !== maxAxisLabelWidth + 20) {
+						margin.left = maxAxisLabelWidth + 20;
+						adjustSize();
+					}
+				});
+
+				var yAxis = d3.svg.axis().scale(yScale).tickFormat(function (nr) {
+					return parseFloat(nr.toPrecision(12)); // smooth over rounding errors
+				});
+				yAxis.orient('left');
+
 
 
 				//////////////////// paths /////////////////////////////////////////////////////////////////////////////
@@ -67,6 +99,8 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 
 					//// adjust min/max values
 					//
+					minY = Infinity;
+					maxY = -Infinity;
 					_($scope.trace).forEach(function (d) {
 						minY = Math.min(minY, d[1]);
 						maxY = Math.max(maxY, d[1]);
@@ -77,12 +111,12 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 							maxY = Math.max(maxY, d[1]);
 						});
 					});
+					if (minY === maxY) { maxY = minY + 1; }
 
 					//// perform scaling
 					//
-					xScale.domain([minX, $scope.maxX]);
+					xScale.domain([0, $scope.maxX]);
 					yScale.domain([minY, maxY]);
-					yAxis.scale(yScale);
 					svgCanvas.select(".y.axis").call(yAxis);
 
 					//// draw the main trace
@@ -111,17 +145,43 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 				$scope.$watch('shadowTraces', drawData, true);
 
 
+				//////////////////// adjusting focus indicator /////////////////////////////////////////////////////////
+
+				function drawFocusIndicator() {
+					if (_.isUndefined($scope.focusTime)) {
+						svgCanvas.select('.focus-indicator').attr({ visibility: 'hidden' });
+					} else {
+						svgCanvas.select('.focus-indicator').attr({ visibility: 'visible', x1: xScale($scope.focusTime), x2: xScale($scope.focusTime) });
+					}
+				}
+
+				$scope.$watchGroup(['focusTime', 'trace.length'], drawFocusIndicator);
+
+
+				//////////////////// adjusting focus indicator /////////////////////////////////////////////////////////
+
+				$scope.onMouseMove = function onMouseMove($event) {
+					$scope.focusTime = xScale.invert($event.offsetX - margin.left);
+				};
+
+				$scope.onMouseLeave = function onMouseLeave() {
+					$scope.focusTime = undefined;
+				};
+
+
 				//////////////////// adjusting for new size ////////////////////////////////////////////////////////////
 
 				function adjustSize() {
 					if (iElement.width() > margin.left + margin.right &&
-					    iElement.height() > margin.top + margin.bottom) {
+					    iElement.height() > margin.top + margin.bottom) { // only if margins don't overlap
 
 						width = iElement.width() - margin.left - margin.right;
 						height = iElement.height() - margin.top - margin.bottom;
 
+						svgCanvas.attr('transform', "translate(" + margin.left + "," + margin.top + ")");
 						svgCanvas.select('rect.border').attr({ width: width, height: height });
-						svgCanvas.select('#dataArea > rect').attr({ width: width, height: height });
+						svgCanvas.select('#dataArea'+$scope.$id+' > rect').attr({ width: width, height: height });
+						svgCanvas.select('.focus-indicator').attr({ y1: 0, y2: height });
 
 						xScale.range([0, width]);
 						yScale.range([height, 0]);
