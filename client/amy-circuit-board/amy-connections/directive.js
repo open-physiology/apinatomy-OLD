@@ -18,6 +18,8 @@ define(['angular', 'app/module', 'amy-circuit-board/artefacts',
 
 					var graphGroup = graphLayer.newGraphGroup();
 					graphGroup.setGravityFactor(0);
+					graphGroup.setChargeFactor(0.003);
+					graphGroup.setLinkDistanceFactor(0.001);
 
 					var registeredTileJunctions = { vascular: {}, neural: {} };
 					var visibleTileJunctions = { vascular: {}, neural: {} };

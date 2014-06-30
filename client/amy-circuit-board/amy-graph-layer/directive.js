@@ -36,10 +36,10 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3',
 								.size([iElement.width(), iElement.height()])
 								.gravity(0)
 								.charge(function (d) {
-									return -0.025 * d.group.region.width * d.group.region.height / (d.group.vertices.length || 1);
+									return -0.025 * d.group.chargeFactor * d.group.region.width * d.group.region.height / (d.group.vertices.length || 1);
 								})
 								.linkDistance(function (d) {
-									return 0.01 * d.group.region.width * d.group.region.height * (d.linkDistanceFactor || 1) / (d.group.vertices.length || 1);
+									return 0.01 * d.group.linkDistanceFactor * d.group.region.width * d.group.region.height * (d.linkDistanceFactor || 1) / (d.group.vertices.length || 1);
 								})
 								.linkStrength(0.8);
 
@@ -131,6 +131,8 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3',
 									vertices: [],
 									edges: [],
 									gravityFactor: 1,
+									chargeFactor: 1,
+									linkDistanceFactor: 1,
 									region: { // by default, the whole canvas with a small padding
 										top: 10,
 										left: 10,
@@ -145,6 +147,12 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3',
 									},
 									setGravityFactor: function (factor) {
 										group.gravityFactor = factor;
+									},
+									setChargeFactor: function (factor) {
+										group.chargeFactor = factor;
+									},
+									setLinkDistanceFactor: function (factor) {
+										group.linkDistanceFactor = factor;
 									},
 									setRegion: function setRegion(region) {
 										group.region = region;
