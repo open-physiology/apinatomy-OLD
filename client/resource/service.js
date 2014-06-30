@@ -188,7 +188,7 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 		//////////////////// Variables /////////////////////////////////////////////////////////////////////////////////
 
 		var FMA_ID_TO_VARIABLES = {
-			'24tile:60000004': [
+			'24tile:60000010': [
 				'membrane/i_Na',
 				'membrane/i_S',
 				'membrane/i_x1',
