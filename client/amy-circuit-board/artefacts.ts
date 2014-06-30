@@ -842,7 +842,7 @@ export class Static3DModel extends ThreeJSModel {
 						shading: that.THREE.SmoothShading
 					});
 					obj = new THREE.MorphAnimMesh(obj, material);
-					obj.duration = 1400; // TODO: parametrize
+					obj.duration = 1000*60/72; // 72 beats per minute; TODO: parametrize
 					that.threeDGroup.onRender(function () {
 						obj.time = that.TimerService.accurateTime;
 						obj.updateAnimation(0);
