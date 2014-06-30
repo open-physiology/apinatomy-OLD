@@ -37,10 +37,11 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 				trace:        '=',
 				shadowTraces: '=',
 				maxX:         '=',
+				intervalX:    '=',
 				traceColor:   '@',
 				focusTime:    '='
 			},
-			link:        function ($scope, iElement/*, iAttrs, controller*/) {
+			link:        function ($scope, iElement, iAttrs/*, controller*/) {
 
 				//////////////////// geometry //////////////////////////////////////////////////////////////////////////
 
@@ -58,6 +59,7 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 
 				var minY;
 				var maxY;
+				var maxXWithData;
 
 				var xScale = d3.scale.linear();
 				var yScale = d3.scale.linear();
@@ -95,20 +97,23 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 
 				//////////////////// drawing the trace /////////////////////////////////////////////////////////////////
 
-				var drawData = _.debounce(function drawData() {
+				var drawData = _.throttle(function drawData() {
 
 					//// adjust min/max values
 					//
 					minY = Infinity;
 					maxY = -Infinity;
+					maxXWithData = 0;
 					_($scope.trace).forEach(function (d) {
 						minY = Math.min(minY, d[1]);
 						maxY = Math.max(maxY, d[1]);
+						maxXWithData = Math.max(maxXWithData, d[0]);
 					});
 					_($scope.shadowTraces).forEach(function (shadow) {
 						_(shadow).forEach(function (d) {
 							minY = Math.min(minY, d[1]);
 							maxY = Math.max(maxY, d[1]);
+							maxXWithData = Math.max(maxXWithData, d[0]);
 						});
 					});
 					if (minY === maxY) { maxY = minY + 1; }
@@ -137,7 +142,11 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 						shadowTracePaths.attr("d", function (d) { return lineGenerator(d); });
 					}
 
-				}, 50);
+					//// adjusting the 'no data' background indication
+					//
+					svgCanvas.select('.no-data').attr('transform', "translate(" + xScale(maxXWithData) + ", 1)").attr('width', xScale($scope.maxX - maxXWithData));
+
+				}, 1000/30);
 
 				//// draw the data when it changes
 				//
@@ -158,10 +167,33 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 				$scope.$watchGroup(['focusTime', 'trace.length'], drawFocusIndicator);
 
 
-				//////////////////// adjusting focus indicator /////////////////////////////////////////////////////////
+				//////////////////// adjusting focus indicator and editing the trace ///////////////////////////////////
+
+				var readonly = !_(iAttrs.readonly).isUndefined();
+
+				var mouseButtonDown = false;
+
+				function timeFromMouseEvent($event) {
+					return Math.round(xScale.invert($event.offsetX - margin.left) / $scope.intervalX) * $scope.intervalX;
+				}
+
+				function setTraceValue($event) {
+					var time = timeFromMouseEvent($event);
+					var valueY = yScale.invert($event.offsetY - margin.top);
+					$scope.trace[time / $scope.intervalX] = [time, valueY];
+				}
+
+				$scope.onMouseDown = function onMouseDown($event) {
+					if (!readonly) {
+						mouseButtonDown = true;
+						setTraceValue($event);
+						$($window).one('mouseup', function onMouseUp() { mouseButtonDown = false; });
+					}
+				};
 
 				$scope.onMouseMove = function onMouseMove($event) {
-					$scope.focusTime = xScale.invert($event.offsetX - margin.left);
+					$scope.focusTime = timeFromMouseEvent($event);
+					if (mouseButtonDown) { setTraceValue($event); }
 				};
 
 				$scope.onMouseLeave = function onMouseLeave() {
@@ -182,6 +214,7 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 						svgCanvas.select('rect.border').attr({ width: width, height: height });
 						svgCanvas.select('#dataArea'+$scope.$id+' > rect').attr({ width: width, height: height });
 						svgCanvas.select('.focus-indicator').attr({ y1: 0, y2: height });
+						svgCanvas.select('.no-data').attr({ height: height-2 });
 
 						xScale.range([0, width]);
 						yScale.range([height, 0]);

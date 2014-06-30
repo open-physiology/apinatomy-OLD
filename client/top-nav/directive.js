@@ -60,7 +60,7 @@ define(['app/module', 'simulation/CellMLSimulation', 'css!top-nav/style'], funct
 				$scope.$watch('$root.simulationModel', function onNewSimulationModel(model) {
 					if (model) {
 						if (!modelUriToSimulation[model.uri]) {
-							modelUriToSimulation[model.uri] = new CellMLSimulation(model, 100, 10);
+							modelUriToSimulation[model.uri] = new CellMLSimulation(model, 100, 20);
 						}
 						$scope.$root.simulation = modelUriToSimulation[model.uri];
 					} else {

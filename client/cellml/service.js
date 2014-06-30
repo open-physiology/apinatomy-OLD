@@ -5,7 +5,10 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	app.factory('CellMLService', ['$http', function ($http) {
+	var delay = 200;
+
+
+	app.factory('CellMLService', ['$http', '$q', '$timeout', function ($http, $q, $timeout) {
 		function CellMLService(modelOptions) {
 
 			var options = modelOptions;
@@ -23,7 +26,7 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 			};
 
 			this.executeModel = function (start, end, interval) { // times in ms
-				var result = latestPromise.then(function () {
+				return latestPromise.then(function () {
 					return $http.post('/resources/cellml/execute/' + instanceId, {
 						start:    (start / 1000),
 						end:      (end / 1000),
@@ -51,8 +54,6 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 						return result;
 					});
 				});
-				latestPromise = result;
-				return result;
 			};
 
 		}

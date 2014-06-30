@@ -660,10 +660,9 @@ export class VariableGlyph extends SvgVertexArtefact {
 				timePointCount = that.TimerService.timePointCount;
 				that.refreshTraceData()
 				.then(() => {
-					for (var i = prevTimerPointCount; i < timePointCount; ++i) {
+					for (var i = prevTimerPointCount; !_.isUndefined(that.traceData[0][i]); ++i) {
 						if (_.isUndefined(that.shadowTraceData[0][i])) {
 							that.shadowTraceData[0][i] = that.traceData[i];
-
 						} else if (that.shadowTraceData[0][i] !== that.traceData[i]) {
 							that.shadowTraceData.unshift(_.cloneDeep(that.shadowTraceData[0].slice(0, i)));
 							--i; //// try again on the new shadow trace
@@ -702,7 +701,7 @@ export class VariableGlyph extends SvgVertexArtefact {
 			that.initializeTraceData();
 
 			traceDialogElement = that.$compile(
-					'<trace-diagram focus-time="$root.focusTime" trace="artefact.traceData" shadow-traces="artefact.shadowTraceData" max-x="artefact.TimerService.maxTime" trace-color="{{ artefact.color.css() }}"></trace-diagram>'
+					'<trace-diagram readonly focus-time="$root.focusTime" trace="artefact.traceData" shadow-traces="artefact.shadowTraceData" interval-x="::artefact.TimerService.interval" max-x="artefact.TimerService.maxTime" trace-color="{{ artefact.color.css() }}"></trace-diagram>'
 			)(subScope);
 
 			// the extra `div` bypasses a bug (?) that manifested

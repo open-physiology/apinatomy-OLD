@@ -47,6 +47,11 @@ trace-diagram {
 				&.y {}
 			}
 
+			.no-data {
+				fill: lighten(lightgray, 10);
+				stroke: none;
+			}
+
 		}
 
 	}
