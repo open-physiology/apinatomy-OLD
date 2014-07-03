@@ -212,6 +212,8 @@ class Artefact {
 	THREE: any;
 	threeDLayer: any;
 	$compile: any;
+	graphGroup: any;
+	graphLayer: any;
 
 }
 

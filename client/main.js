@@ -87,7 +87,8 @@ var UTILITY_MODULES = [
 	'utility/multiBase',
 	'utility/between',
 	'utility/ngRightClick',
-	'utility/clickVsDrag'
+	'utility/clickVsDrag',
+	'utility/isDefined'
 ];
 
 

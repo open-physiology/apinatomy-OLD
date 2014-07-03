@@ -124,6 +124,38 @@ export class SvgVertexArtefact extends SvgArtefact {
 		that.onDestruct(function () { that._svgElement.offMouseDragDrop(); });
 	}
 
+
+	//////////////////// Position //////////////////////////////////////////////
+
+	private _newXCallbacks: {(number):any}[] = [];
+	private _newYCallbacks: {(number):any}[] = [];
+
+	onNewX(fn: (number)=>any) { this._newXCallbacks.push(fn) }
+
+	onNewY(fn: (number)=>any) { this._newYCallbacks.push(fn) }
+
+	offNewX(fn: (number)=>any) { _.pull(this._newXCallbacks, fn) }
+
+	offNewY(fn: (number)=>any) { _.pull(this._newYCallbacks, fn) }
+
+
+	private _x: number;
+	private _y: number;
+
+	get x(): number { return this._x }
+
+	set x(x: number) {
+		this._x = x;
+		_.forEach(this._newXCallbacks, function (fn) { fn(x) });
+	}
+
+	get y(): number { return this._y }
+
+	set y(y: number) {
+		this._y = y;
+		_.forEach(this._newYCallbacks, function (fn) { fn(y) });
+	}
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -219,6 +251,8 @@ export class VascularConnection extends SvgEdgeArtefact {
 			relationType: 'vascular connection',
 			connectionType: 'vascular'
 		}, properties));
+
+		this.constructor_VascularConnection1();
 	}
 
 
@@ -228,12 +262,77 @@ export class VascularConnection extends SvgEdgeArtefact {
 	subtype: string;
 	source: any;
 	target: any;
+	soleSegment: any;
 	hiddenJunctions: any[];
+	linkDistanceFactor: number;
 
 
 	//////////////////// Graph Layer ///////////////////////////////////////////
 
+
 	svgClass() { return 'connection ' + this.connectionType + ' ' + this.subtype }
+
+	private graphSegmentGroup: any;
+
+	private constructor_VascularConnection1() {
+		var that = this;
+		if (that.soleSegment) {
+
+			that.linkDistanceFactor = 4;
+			that.source.chargeFactor = 4;
+			that.target.chargeFactor = 4;
+
+			that.graphSegmentGroup = that.graphLayer.newGraphGroup();
+			that.graphSegmentGroup.setGravityFactor(0);
+			that.graphSegmentGroup.setChargeFactor(0);
+			that.graphSegmentGroup.setRegion(that);
+
+			var onVariablesToggle = (function () {
+				var variablesToggleD = that.$q.defer();
+				that.$scope.$watch('$root.simulation', function (simulation) {
+					variablesToggleD.notify(simulation);
+				});
+				return function onVariablesToggle(fn) { variablesToggleD.promise.then(null, null, fn); }
+			}());
+
+			that.ResourceService.fmaIdToVariables(that.soleSegment.segmentId).then(function (variables) {
+				_(variables).forEach(function (variableUri) {
+					that.linkDistanceFactor += 1;
+
+					var variableArtefact;
+
+					function addVariableGlyph(variable) {
+						variableArtefact = new EdgeVariableGlyph({
+							id:          (that.id + ':variableGlyph:' + variable.uri),
+							$scope:      that.$scope,
+							parent:      that,
+							variable:    variable,
+							showVertex:  true,
+							graphZIndex: 600, // above inner junctions
+
+							ResourceService:  that.ResourceService,
+							TimerService:     that.TimerService,
+							$bind:            that.$bind,
+							$compile:         that.$compile
+						});
+						that.graphSegmentGroup.addVertex(variableArtefact);
+						variableArtefact.onDestruct(function () {
+							that.graphSegmentGroup.removeVertex(variableArtefact);
+						});
+					}
+
+					onVariablesToggle(function (simulation) {
+						if (!variableArtefact && simulation && simulation.model.outputVariables[variableUri]) {
+							addVariableGlyph(simulation.variable(variableUri));
+						} else if (variableArtefact) {
+							variableArtefact.destructor();
+							variableArtefact = null;
+						}
+					});
+				});
+			});
+		}
+	}
 
 
 	//////////////////// Detail Panel //////////////////////////////////////////
@@ -413,38 +512,6 @@ export class Protein extends SvgVertexArtefact {
 	}
 
 	svgClass() { return 'protein' }
-
-
-	//////////////////// Position //////////////////////////////////////////////
-
-	private _newXCallbacks: {(number):any}[] = [];
-	private _newYCallbacks: {(number):any}[] = [];
-
-	onNewX(fn: (number)=>any) { this._newXCallbacks.push(fn) }
-
-	onNewY(fn: (number)=>any) { this._newYCallbacks.push(fn) }
-
-	offNewX(fn: (number)=>any) { _.pull(this._newXCallbacks, fn) }
-
-	offNewY(fn: (number)=>any) { _.pull(this._newYCallbacks, fn) }
-
-
-	private _x: number;
-	private _y: number;
-
-	get x(): number { return this._x }
-
-	set x(x: number) {
-		this._x = x;
-		_.forEach(this._newXCallbacks, function (fn) { fn(x) });
-	}
-
-	get y(): number { return this._y }
-
-	set y(y: number) {
-		this._y = y;
-		_.forEach(this._newYCallbacks, function (fn) { fn(y) });
-	}
 
 
 	//////////////////// 3D Layer //////////////////////////////////////////////
@@ -654,21 +721,21 @@ export class VariableGlyph extends SvgVertexArtefact {
 		that.traceData = [];
 		that.refreshTraceData().then(() => {
 			that.shadowTraceData = [_.cloneDeep(that.traceData)]; // first shadow trace
-			var timePointCount = that.TimerService.currentTime / that.TimerService.interval + 1;
+			var timePointCount = that.TimerService.timePointCount;
 			that.TimerService.onTimeChange(function () {
 				var prevTimerPointCount = timePointCount;
 				timePointCount = that.TimerService.timePointCount;
 				that.refreshTraceData()
-				.then(() => {
-					for (var i = prevTimerPointCount; !_.isUndefined(that.traceData[0][i]); ++i) {
-						if (_.isUndefined(that.shadowTraceData[0][i])) {
-							that.shadowTraceData[0][i] = that.traceData[i];
-						} else if (that.shadowTraceData[0][i] !== that.traceData[i]) {
-							that.shadowTraceData.unshift(_.cloneDeep(that.shadowTraceData[0].slice(0, i)));
-							--i; //// try again on the new shadow trace
-						}
-					}
-				});
+						.then(() => {
+							for (var i = prevTimerPointCount; i < timePointCount; ++i) {
+								if (_.isUndefined(that.shadowTraceData[0][i])) {
+									that.shadowTraceData[0].push(that.traceData[i]);
+								} else if (that.shadowTraceData[0][i] !== that.traceData[i]) {
+									that.shadowTraceData.unshift(_.cloneDeep(that.shadowTraceData[0].slice(0, i)));
+									--i; //// try again on the new shadow trace
+								}
+							}
+						});
 			});
 			that.TimerService.onMaxTimeChange(function (newMaxTime) {
 				if (newMaxTime === 0) {
@@ -701,7 +768,7 @@ export class VariableGlyph extends SvgVertexArtefact {
 			that.initializeTraceData();
 
 			traceDialogElement = that.$compile(
-					'<trace-diagram readonly focus-time="$root.focusTime" trace="artefact.traceData" shadow-traces="artefact.shadowTraceData" interval-x="::artefact.TimerService.interval" max-x="artefact.TimerService.maxTime" trace-color="{{ artefact.color.css() }}"></trace-diagram>'
+					'<trace-diagram readonly focus-time="$root.focusTime" trace="artefact.traceData" shadow-traces="artefact.shadowTraceData" interval-x="::artefact.TimerService.interval" max-x="artefact.TimerService.maxTime" trace-color="{{ ::artefact.color.css() }}"></trace-diagram>'
 			)(subScope);
 
 			// the extra `div` bypasses a bug (?) that manifested
@@ -749,6 +816,23 @@ export class VariableGlyph extends SvgVertexArtefact {
 			}
 		}));
 	}
+
+}
+
+export class EdgeVariableGlyph extends VariableGlyph {
+
+	//////////////////// Construction //////////////////////////////////////////
+
+	constructor(properties) {
+		super(properties);
+	}
+
+
+	//////////////////// Graph Layer ///////////////////////////////////////////
+
+	svgHtml() { return '<circle class="core" r="4.5" stroke="red"></rect>' }
+
+	svgClass() { return 'variable-glyph' }
 
 }
 

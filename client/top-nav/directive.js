@@ -1,11 +1,11 @@
 'use strict';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-define(['app/module', 'simulation/CellMLSimulation', 'css!top-nav/style'], function (app) {
+define(['app/module', 'simulation/CellMLSimulation', 'simulation/NavierStokesSimulation', 'css!top-nav/style'], function (app) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	app.directive('amyTopNav', ['ResourceService', 'CellMLSimulation', function (ResourceService, CellMLSimulation) {
+	app.directive('amyTopNav', ['ResourceService', 'CellMLSimulation', 'NavierStokesSimulation', function (ResourceService, CellMLSimulation, NavierStokesSimulation) {
 		return {
 			restrict   : 'E',
 			replace    : true,
@@ -60,7 +60,11 @@ define(['app/module', 'simulation/CellMLSimulation', 'css!top-nav/style'], funct
 				$scope.$watch('$root.simulationModel', function onNewSimulationModel(model) {
 					if (model) {
 						if (!modelUriToSimulation[model.uri]) {
-							modelUriToSimulation[model.uri] = new CellMLSimulation(model, 100, 20);
+							if (model.type === 'CellMLSimulation') {
+								modelUriToSimulation[model.uri] = new CellMLSimulation(model, 100, 20);
+							} else if (model.type === 'NavierStokesSimulation') {
+								modelUriToSimulation[model.uri] = new NavierStokesSimulation(model, 100, 20);
+							}
 						}
 						$scope.$root.simulation = modelUriToSimulation[model.uri];
 					} else {

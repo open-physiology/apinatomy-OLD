@@ -36,10 +36,10 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3',
 								.size([iElement.width(), iElement.height()])
 								.gravity(0)
 								.charge(function (d) {
-									return -0.025 * d.group.chargeFactor * d.group.region.width * d.group.region.height / (d.group.vertices.length || 1);
+									return -0.025 * d.group.chargeFactor * d.group.region.width * d.group.region.height * (_(d.chargeFactor).or(1)) / (d.group.vertices.length || 1);
 								})
 								.linkDistance(function (d) {
-									return 0.01 * d.group.linkDistanceFactor * d.group.region.width * d.group.region.height * (d.linkDistanceFactor || 1) / (d.group.vertices.length || 1);
+									return 0.01 * d.group.linkDistanceFactor * d.group.region.width * d.group.region.height * (_(d.linkDistanceFactor).or(1)) / (d.group.vertices.length || 1);
 								})
 								.linkStrength(0.8);
 
@@ -99,15 +99,22 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3',
 							var k = .1 * e.alpha;
 
 							_(visibleVertices).forEach(function (d) {
-								//// gravitate towards the center of the region
-								d.x += d.group.gravityFactor * (d.group.region.left + .5 * d.group.region.width - d.x) * k;
-								d.y += d.group.gravityFactor * (d.group.region.top + .5 * d.group.region.height - d.y) * k;
+								if (d.group.regionType === 'rectangular') {
+									//// gravitate towards the center of the region
+									d.x += d.group.gravityFactor * (d.group.region.left + .5 * d.group.region.width - d.x) * k;
+									d.y += d.group.gravityFactor * (d.group.region.top + .5 * d.group.region.height - d.y) * k;
 
-								//// and always stay within the region
-								d.x = Math.max(d.x, d.group.region.left);
-								d.x = Math.min(d.x, d.group.region.left + d.group.region.width);
-								d.y = Math.max(d.y, d.group.region.top);
-								d.y = Math.min(d.y, d.group.region.top + d.group.region.height);
+									//// and always stay within the region
+									d.x = Math.max(d.x, d.group.region.left);
+									d.x = Math.min(d.x, d.group.region.left + d.group.region.width);
+									d.y = Math.max(d.y, d.group.region.top);
+									d.y = Math.min(d.y, d.group.region.top + d.group.region.height);
+								} else { // linear region
+									//// position at the proper place on the line segment
+									var pos = (d.groupVertexIndex+1) / (d.group.vertices.length+1);
+									d.x = pos * d.group.region.source.x + (1-pos) * d.group.region.target.x;
+									d.y = pos * d.group.region.source.y + (1-pos) * d.group.region.target.y;
+								}
 							});
 
 							vertices.attr('x', function (d) { return d.x; })
@@ -138,6 +145,9 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3',
 										left: 10,
 										get width() { return iElement.width() - 20 },
 										get height() { return iElement.height() - 20 }
+									},
+									get regionType() {
+										return (_(group.region.source).isDefined() ? 'linear' : 'rectangular');
 									}
 								};
 								return {
@@ -160,8 +170,10 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3',
 									},
 									addVertex: function addVertex(vertex) {
 										vertex.group = group;
+										vertex.groupVertexIndex = group.vertices.length;
 										group.vertices.push(vertex);
-										vertex.graphId = group.id + ':' + vertex.id;
+//										vertex.graphId = group.id + ':' + vertex.id;
+										vertex.graphId = vertex.id;
 										$scope.vertexArtefacts[vertex.graphId] = vertex;
 										$scope.updateGraph();
 									},
@@ -169,6 +181,9 @@ define(['lodash', 'jquery', 'angular', 'app/module', 'd3',
 										if (vertex) {
 											delete $scope.vertexArtefacts[vertex.graphId];
 											_(group.vertices).pull(vertex);
+											_(group.vertices).forEach(function (vertex, i) {
+												vertex.groupVertexIndex = i;
+											});
 											$scope.updateGraph();
 										}
 									},

@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<model xmlns="http://www.cellml.org/cellml/1.1#" name="Linear2ndOrderODE">
+  <component name="DampedForcedHarmonicOscillator">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+      <apply>
+        <eq/>
+        <apply>
+          <diff/>
+          <bvar>
+            <ci>t
+            </ci>
+          </bvar>
+          <ci>u
+          </ci>
+        </apply>
+        <ci>v
+        </ci>
+      </apply>
+      <apply>
+        <eq/>
+        <apply>
+          <diff/>
+          <bvar>
+            <ci>t
+            </ci>
+          </bvar>
+          <ci>v
+          </ci>
+        </apply>
+        <apply>
+          <minus/>
+          <apply>
+            <minus/>
+            <ci>c
+            </ci>
+            <apply>
+              <times/>
+              <cn xmlns:cellml="http://www.cellml.org/cellml/1.1#" cellml:units="dimensionless">2
+              </cn>
+              <ci>a
+              </ci>
+              <ci>v
+              </ci>
+            </apply>
+          </apply>
+          <apply>
+            <times/>
+            <ci>b
+            </ci>
+            <ci>u
+            </ci>
+          </apply>
+        </apply>
+      </apply>
+      <apply>
+        <eq/>
+        <ci>a
+        </ci>
+        <cn xmlns:cellml="http://www.cellml.org/cellml/1.1#" cellml:units="dimensionless">1
+        </cn>
+      </apply>
+      <apply>
+        <eq/>
+        <ci>b
+        </ci>
+        <cn xmlns:cellml="http://www.cellml.org/cellml/1.1#" cellml:units="dimensionless">1
+        </cn>
+      </apply>
+      <apply>
+        <eq/>
+        <ci>c
+        </ci>
+        <cn xmlns:cellml="http://www.cellml.org/cellml/1.1#" cellml:units="dimensionless">1
+        </cn>
+      </apply>
+    </math>
+    <variable name="t" units="dimensionless"/>
+    <variable initial_value="1" name="u" units="dimensionless"/>
+    <variable initial_value="1" name="v" units="dimensionless"/>
+    <variable name="c" units="dimensionless"/>
+    <variable name="a" units="dimensionless"/>
+    <variable name="b" units="dimensionless"/>
+  </component>
+</model>

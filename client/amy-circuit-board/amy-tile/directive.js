@@ -542,7 +542,6 @@ define(['angular',
 											variablesToggleD.notify(simulation);
 										});
 										function onVariablesToggle(fn) { variablesToggleD.promise.then(null, null, fn); }
-
 										onVariablesToggle.reset = function variableReset() { variablesToggleD.notify(null); };
 										return onVariablesToggle;
 									}());
