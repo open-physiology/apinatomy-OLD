@@ -5,10 +5,7 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	var delay = 200;
-
-
-	app.factory('CellMLService', ['$http', '$q', '$timeout', function ($http, $q, $timeout) {
+	app.factory('CellMLService', ['$http', function ($http) {
 		function CellMLService(modelOptions) {
 
 			var options = modelOptions;

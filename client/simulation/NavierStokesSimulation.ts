@@ -11,6 +11,7 @@ var app: ng.IModule = require("app/module");
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var $q: ng.IQService;
+var CellMLSimulation: any;
 
 var TIME = 0;
 var VALUE = 1;
@@ -21,11 +22,28 @@ class NavierStokesSimulation {
 		this.model = model;
 		this.timeInterval = 100;
 		this.prefetchSize = prefetchSize;
+
+		this.cellMLSimulation = new CellMLSimulation({
+			uri:             'Linear2ndOrderODE',
+			name:            'Linear 2nd Order ODE',
+			type:            'CellMLSimulation',
+			filename:        'Linear2ndOrderODE.cellml',
+			outputVariables: {
+				'DampedForcedHarmonicOscillator/a': { uri: 'DampedForcedHarmonicOscillator/a', component: 'DampedForcedHarmonicOscillator', name: 'a' },
+				'DampedForcedHarmonicOscillator/b': { uri: 'DampedForcedHarmonicOscillator/b', component: 'DampedForcedHarmonicOscillator', name: 'b' },
+				'DampedForcedHarmonicOscillator/c': { uri: 'DampedForcedHarmonicOscillator/c', component: 'DampedForcedHarmonicOscillator', name: 'c' }
+			},
+			values:          {
+				'DampedForcedHarmonicOscillator/u': { uri: 'DampedForcedHarmonicOscillator/u', component: 'DampedForcedHarmonicOscillator', name: 'u', value: 1 },
+				'DampedForcedHarmonicOscillator/v': { uri: 'DampedForcedHarmonicOscillator/v', component: 'DampedForcedHarmonicOscillator', name: 'v', value: 1 }
+			}
+		}, this.timeInterval, this.prefetchSize);
 	}
 
 	model: any;
 	timeInterval: number;
 	prefetchSize: number;
+	cellMLSimulation: any;
 
 	private timeToIndex(time: number): number {
 		return time / this.timeInterval;
@@ -246,16 +264,33 @@ class NavierStokesSimulation {
 			that.pastLastValidTime[variable] = 0;
 		}
 
-		if (time >= that.pastLastValidTime[variable]) {
+		if (_.isUndefined(that.modelValues[variable])) {
 			that.latestPromise = that.latestPromise.then(() => {
-				return that.getValues(variable, that.pastLastValidTime[variable], time + that.prefetchSize * that.timeInterval).then((newValues: number[][]) => {
-					var i = that.timeToIndex(newValues[0][TIME]);
-					_(newValues).forEach((val: number[]) => {
-						that.dataCache[variable][i++] = val;
-					});
-					that.pastLastValidTime[variable] = time + that.prefetchSize * that.timeInterval;
-				});
+//				return that.getVariableDataUpToTime('5866/concentration', time).then(function (values) {
+//					var inputValues = { time: [], value: [] }; // TODO: input values from 5866/concentration into the CellML model
+//					_.forEach(values, function (value) {
+//						inputValues.time.push(value[TIME]);
+//						inputValues.value.push(value[VALUE]);
+//					});
+//					return that.cellMLSimulation.setVariableValues(0, inputValues).then(function () { // TODO; put right values
+						return that.cellMLSimulation.getVariableDataUpToTime(variable, time).then(function (values) {
+							that.dataCache[variable] = values;
+						});
+//					});
+//				});
 			});
+		} else {
+			if (time >= that.pastLastValidTime[variable]) {
+				that.latestPromise = that.latestPromise.then(() => {
+					return that.getValues(variable, that.pastLastValidTime[variable], time + that.prefetchSize * that.timeInterval).then((newValues: number[][]) => {
+						var i = that.timeToIndex(newValues[0][TIME]);
+						_(newValues).forEach((val: number[]) => {
+							that.dataCache[variable][i++] = val;
+						});
+						that.pastLastValidTime[variable] = time + that.prefetchSize * that.timeInterval;
+					});
+				});
+			}
 		}
 
 		return that.latestPromise.then(() => {
@@ -286,8 +321,9 @@ class NavierStokesSimulation {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.factory('NavierStokesSimulation', ['$q', ($q_: ng.IQService) => {
+app.factory('NavierStokesSimulation', ['$q', 'CellMLSimulation', ($q_: ng.IQService, CellMLSimulation_: any) => {
 	$q = $q_;
+	CellMLSimulation = CellMLSimulation_;
 	return NavierStokesSimulation;
 }]);
 

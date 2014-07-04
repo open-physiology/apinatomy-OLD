@@ -729,7 +729,9 @@ export class VariableGlyph extends SvgVertexArtefact {
 						.then(() => {
 							for (var i = prevTimerPointCount; i < timePointCount; ++i) {
 								if (_.isUndefined(that.shadowTraceData[0][i])) {
-									that.shadowTraceData[0].push(that.traceData[i]);
+									if (!_.isUndefined(that.traceData[i])) {
+										that.shadowTraceData[0].push(that.traceData[i]);
+									}
 								} else if (that.shadowTraceData[0][i] !== that.traceData[i]) {
 									that.shadowTraceData.unshift(_.cloneDeep(that.shadowTraceData[0].slice(0, i)));
 									--i; //// try again on the new shadow trace
