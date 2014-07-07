@@ -59,7 +59,7 @@ app.use(app.router);
 			(vars.cellmlDir + '/bin/gms'),
 			[vars.cellmlPort, 'GMS', (vars.cellmlDir + '/models/')],
 			{
-				cwd: vars.cellmlDir,
+				cwd:   vars.cellmlDir,
 				stdio: [null, cellmlOut, cellmlErr]
 			});
 
@@ -84,15 +84,15 @@ app.post('/resources/cellml/load', function (req, res) {
 			});
 		});
 	});
-	_(req.body.values).values().forEach(function (variable) {
-		promise = promise.then(function () {
-			return cellml.cellmlGet(cellml.setValueURL(id, variable.component, variable.name, variable.value)).then(function (data) {
-				if (data.returnCode !== 0) {
-					throw new Error("Something went wrong trying to set the variable '" + variable.name + "' to value '" + variable.value + "'.");
-				}
-			});
-		});
-	});
+//	_(req.body.values).values().forEach(function (variable) {
+//		promise = promise.then(function () {
+//			return cellml.cellmlGet(cellml.setValueURL(id, variable.component, variable.name, variable.value)).then(function (data) {
+//				if (data.returnCode !== 0) {
+//					throw new Error("Something went wrong trying to set the variable '" + variable.name + "' to value '" + variable.value + "'.");
+//				}
+//			});
+//		});
+//	});
 	promise.then(function () {
 		res.status(HTTP_CREATED).json({ id: id });
 	}, function (err) {
@@ -105,18 +105,19 @@ app.post('/resources/cellml/load', function (req, res) {
 
 app.post('/resources/cellml/set-values/:id', function (req, res) {
 	var promise = Q(null);
+
 	_(req.body.values).values().forEach(function (variable) {
-		promise = promise.then(function () {
-			return cellml.cellmlGet(cellml.setValueURL(
-					req.params.id,
-					variable.component,
-					variable.name,
-					variable.value)).then(function (data) {
-				if (data.returnCode !== 0) {
-					throw new Error("Something went wrong trying to set the variable '" + variable.name + "' to value '" + variable.value + "'.");
-				}
+		if (_(variable.value).isObject()) {
+			promise = promise.then(function () {
+				return cellml.cellmlPost('http://localhost:8888/biomaps/', variable.value).then(function (body) {
+					return cellml.cellmlGet(cellml.setValueRangeURL(req.params.id, variable.component, variable.name, body.datasetId));
+				});
 			});
-		});
+		} else { // single value
+			promise = promise.then(function () {
+				return cellml.cellmlGet(cellml.setValueURL(req.params.id, variable.component, variable.name, variable.value));
+			});
+		}
 	});
 	promise.then(function () {
 		res.status(HTTP_CREATED).json({ id: req.params.id });
@@ -461,7 +462,10 @@ app.get('/resources/search/:query', function (req, res) {
 ////////////////////////////////////////////////////////////////////////////////
 
 app.get('**/bootstrap/glyphicons-halflings-regular.*', function (req, res, next) {
-	if (req.path.substr(0, 5) === '/lib/') { next(); return; }
+	if (req.path.substr(0, 5) === '/lib/') {
+		next();
+		return;
+	}
 	var extension = req.path.substr(req.path.lastIndexOf('.'));
 	res.redirect('/lib/bootstrap-sass-official/vendor/assets/fonts/bootstrap/glyphicons-halflings-regular' + extension);
 });

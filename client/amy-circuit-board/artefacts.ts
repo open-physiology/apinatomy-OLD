@@ -190,8 +190,8 @@ export class VascularTileJunction extends SvgVertexArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type: 'vascularTileJunction',
-			relationType: 'vascular junction',
+			type          : 'vascularTileJunction',
+			relationType  : 'vascular junction',
 			connectionType: 'vascular'
 		}, properties));
 	}
@@ -218,8 +218,8 @@ export class VascularBranchingJunction extends SvgVertexArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type: 'vascularBranchingJunction',
-			relationType: 'vascular junction',
+			type          : 'vascularBranchingJunction',
+			relationType  : 'vascular junction',
 			connectionType: 'vascular'
 		}, properties));
 	}
@@ -247,8 +247,8 @@ export class VascularConnection extends SvgEdgeArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type: 'vascularConnection',
-			relationType: 'vascular connection',
+			type          : 'vascularConnection',
+			relationType  : 'vascular connection',
 			connectionType: 'vascular'
 		}, properties));
 
@@ -303,17 +303,17 @@ export class VascularConnection extends SvgEdgeArtefact {
 
 					function addVariableGlyph(variable) {
 						variableArtefact = new EdgeVariableGlyph({
-							id:          (that.id + ':variableGlyph:' + variable.uri),
-							$scope:      that.$scope,
-							parent:      that,
-							variable:    variable,
-							showVertex:  true,
+							id         : (that.id + ':variableGlyph:' + variable.uri),
+							$scope     : that.$scope,
+							parent     : that,
+							variable   : variable,
+							showVertex : true,
 							graphZIndex: 600, // above inner junctions
 
-							ResourceService:  that.ResourceService,
-							TimerService:     that.TimerService,
-							$bind:            that.$bind,
-							$compile:         that.$compile
+							ResourceService: that.ResourceService,
+							TimerService   : that.TimerService,
+							$bind          : that.$bind,
+							$compile       : that.$compile
 						});
 						that.graphSegmentGroup.addVertex(variableArtefact);
 						variableArtefact.onDestruct(function () {
@@ -402,8 +402,8 @@ export class NeuralTileJunction extends SvgVertexArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type: 'neuralTileJunction',
-			relationType: 'neural junction',
+			type          : 'neuralTileJunction',
+			relationType  : 'neural junction',
 			connectionType: 'neural'
 		}, properties));
 	}
@@ -430,8 +430,8 @@ export class NeuralBranchingJunction extends SvgVertexArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type: 'neuralBranchingJunction',
-			relationType: 'neural junction',
+			type          : 'neuralBranchingJunction',
+			relationType  : 'neural junction',
 			connectionType: 'neural'
 		}, properties));
 	}
@@ -459,8 +459,8 @@ export class NeuralConnection extends SvgEdgeArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type: 'neuralConnection',
-			relationType: 'neural connection',
+			type          : 'neuralConnection',
+			relationType  : 'neural connection',
 			connectionType: 'neural'
 		}, properties));
 	}
@@ -490,7 +490,7 @@ export class Protein extends SvgVertexArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type: 'protein',
+			type        : 'protein',
 			relationType: 'protein expression'
 		}, properties));
 
@@ -530,11 +530,11 @@ export class Protein extends SvgVertexArtefact {
 			if (show3dNow) {
 				threeDLayer = that.$scope.circuitBoard.threeDLayer;
 				threeDModel = new Protein3DModel({
-					id: that.id + ':3dModel', // TODO: different ID for different translation
-					parent: that,
-					protein: that.protein,
+					id         : that.id + ':3dModel', // TODO: different ID for different translation
+					parent     : that,
+					protein    : that.protein,
 					threeDLayer: threeDLayer,
-					THREE: that.THREE
+					THREE      : that.THREE
 				});
 				that.onNewX(passX);
 				that.onNewY(passY);
@@ -572,7 +572,7 @@ export class Protein extends SvgVertexArtefact {
 	initializeSmPagination() {
 		this.smPagination = {
 			pageSize: 10,
-			page: 1,
+			page    : 1,
 			lastPage: Math.ceil(this.protein.smallMoleculeInteractions.length / 10)
 		};
 		this.fetchSmPage();
@@ -642,8 +642,8 @@ export class ProteinInteraction extends SvgEdgeArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type: 'proteinInteraction',
-			relationType: 'protein interaction',
+			type          : 'proteinInteraction',
+			relationType  : 'protein interaction',
 			connectionType: 'proteinInteraction'
 		}, properties));
 	}
@@ -671,9 +671,10 @@ export class VariableGlyph extends SvgVertexArtefact {
 
 	constructor(properties) {
 		super(_.extend({
-			type: 'variableGlyph',
-			relationType: 'variable',
-			popupTemplateUrl: 'amy-circuit-board/amy-tile/variable-trace-popup.html'
+			type            : 'variableGlyph',
+			relationType    : 'variable',
+			popupTemplateUrl: 'amy-circuit-board/amy-tile/variable-trace-popup.html',
+			detailTemplateUrl: 'amy-circuit-board/amy-tile/variable-details.html'
 		}, properties));
 
 		this.constructor_VariableGlyph1();
@@ -701,7 +702,7 @@ export class VariableGlyph extends SvgVertexArtefact {
 	//////////////////// Data-stream ///////////////////////////////////////////
 
 	traceData: number[][];
-	shadowTraceData: number[][][];
+	shadowTraceData: number[][][] = [];
 
 	private refreshTraceData(): ng.IPromise<number[][]> {
 		var that = this;
@@ -720,7 +721,7 @@ export class VariableGlyph extends SvgVertexArtefact {
 
 		that.traceData = [];
 		that.refreshTraceData().then(() => {
-			that.shadowTraceData = [_.cloneDeep(that.traceData)]; // first shadow trace
+			that.shadowTraceData.push(_.cloneDeep(that.traceData)); // first shadow trace
 			var timePointCount = that.TimerService.timePointCount;
 			that.TimerService.onTimeChange(function () {
 				var prevTimerPointCount = timePointCount;
@@ -741,7 +742,10 @@ export class VariableGlyph extends SvgVertexArtefact {
 			});
 			that.TimerService.onMaxTimeChange(function (newMaxTime) {
 				if (newMaxTime === 0) {
-					that.shadowTraceData = [_.cloneDeep(that.traceData)];
+					that.refreshTraceData().then(() => {
+						that.shadowTraceData.length = 0;
+						that.shadowTraceData.push(_.cloneDeep(that.traceData));
+					});
 				}
 			});
 		});
@@ -777,18 +781,18 @@ export class VariableGlyph extends SvgVertexArtefact {
 			// when switching focus between multiple open dialogs
 			var dialogContainer = $('<div></div>').appendTo('main');
 			traceDialogElement.dialog({
-				appendTo: dialogContainer,
-				autoOpen: false,
+				appendTo     : dialogContainer,
+				autoOpen     : false,
 				closeOnEscape: true,
-				closeText: '×',
-				dialogClass: 'variable-glyph-trace-dialog',
-				draggable: true,
-				height: 300,
-				width: 300,
-				modal: false,
-				resizable: false,
-				title: that.variable.name,
-				close: function () {
+				closeText    : '×',
+				dialogClass  : 'variable-glyph-trace-dialog',
+				draggable    : true,
+				height       : 300,
+				width        : 300,
+				modal        : false,
+				resizable    : false,
+				title        : that.variable.name,
+				close        : function () {
 					$(that.element).removeSvgClass('highlighted');
 				}
 			});
@@ -816,6 +820,16 @@ export class VariableGlyph extends SvgVertexArtefact {
 				$(that.element).addSvgClass('highlighted')
 						.children('.core').attr('fill', that.color.css()).attr('stroke', 'black');
 			}
+		}));
+
+		$(that.element).on('mouseover', that.$bind(function (event) {
+			event.stopPropagation();
+			that.focus = true;
+		}));
+
+		$(that.element).on('mouseout', that.$bind(function (event) {
+			event.stopPropagation();
+			that.focus = false;
 		}));
 	}
 
@@ -871,8 +885,8 @@ export class Static3DModel extends ThreeJSModel {
 
 	constructor(properties) {
 		super(_.extend({
-			type: 'static3DModel',
-			relationType: '3D model',
+			type             : 'static3DModel',
+			relationType     : '3D model',
 			detailTemplateUrl: 'amy-circuit-board/amy-tile/static-3d-model-details.html'
 		}, properties));
 
@@ -920,14 +934,14 @@ export class Static3DModel extends ThreeJSModel {
 				(function () {
 					obj.computeMorphNormals();
 					var material = new THREE.MeshLambertMaterial({
-						color: 0xffaa55,
+						color       : 0xffaa55,
 						morphTargets: true,
 						morphNormals: true,
 						vertexColors: that.THREE.VertexColors,
-						shading: that.THREE.SmoothShading
+						shading     : that.THREE.SmoothShading
 					});
 					obj = new THREE.MorphAnimMesh(obj, material);
-					obj.duration = 1000*60/72; // 72 beats per minute; TODO: parametrize
+					obj.duration = 1000 * 60 / 72; // 72 beats per minute; TODO: parametrize
 					that.threeDGroup.onRender(function () {
 						obj.time = that.TimerService.accurateTime;
 						obj.updateAnimation(0);
@@ -1052,7 +1066,7 @@ export class StaticCompound3DModel extends ThreeJSModel {
 
 	constructor(properties) {
 		super(_.extend({
-			type: 'static3DModel',
+			type        : 'static3DModel',
 			relationType: '3D model'
 		}, properties));
 
@@ -1244,7 +1258,7 @@ export class Protein3DModel extends ThreeJSModel {
 
 	constructor(properties) {
 		super(_.extend({
-			type: 'protein3DModel',
+			type        : 'protein3DModel',
 			relationType: '3D model'
 		}, properties));
 
@@ -1305,12 +1319,12 @@ export class Protein3DModel extends ThreeJSModel {
 
 		_.forEach(geneTranslation.domains, function (domain: any, index: number) {
 			new ProteinDomain3DModel({
-				id: that.id + ":domain:" + index,
-				parent: that,
+				id           : that.id + ":domain:" + index,
+				parent       : that,
 				proteinDomain: domain,
-				parentObject: that.kebab,
-				THREE: that.THREE,
-				threeDGroup: that.threeDGroup
+				parentObject : that.kebab,
+				THREE        : that.THREE,
+				threeDGroup  : that.threeDGroup
 			});
 		});
 
@@ -1380,8 +1394,8 @@ export class ProteinDomain3DModel extends ThreeJSModel {
 
 	constructor(properties) {
 		super(_.extend({
-			type: 'proteinDomain3DModel',
-			relationType: 'protein domain',
+			type             : 'proteinDomain3DModel',
+			relationType     : 'protein domain',
 			detailTemplateUrl: 'amy-circuit-board/amy-tile/protein-domain-detail-view.html'
 		}, properties));
 
@@ -1471,7 +1485,6 @@ export class ProteinDomain3DModel extends ThreeJSModel {
 			return "TMHMM";
 		}
 	}
-
 
 
 	//////////////////// Color /////////////////////////////////////////////////

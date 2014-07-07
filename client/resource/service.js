@@ -370,13 +370,13 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 					'6310/concentration':               { uri: '6310/concentration', name: 'concentration (segment 6310)' },
 					'6329/concentration':               { uri: '6329/concentration', name: 'concentration (segment 6329)' },
 					'6888/concentration':               { uri: '6888/concentration', name: 'concentration (segment 6888)' },
+					'DampedForcedHarmonicOscillator/u': { uri: 'DampedForcedHarmonicOscillator/u', component: 'DampedForcedHarmonicOscillator', name: 'u' },
+					'DampedForcedHarmonicOscillator/v': { uri: 'DampedForcedHarmonicOscillator/v', component: 'DampedForcedHarmonicOscillator', name: 'v' }
+				},
+				values:          {
 					'DampedForcedHarmonicOscillator/a': { uri: 'DampedForcedHarmonicOscillator/a', component: 'DampedForcedHarmonicOscillator', name: 'a' },
 					'DampedForcedHarmonicOscillator/b': { uri: 'DampedForcedHarmonicOscillator/b', component: 'DampedForcedHarmonicOscillator', name: 'b' },
 					'DampedForcedHarmonicOscillator/c': { uri: 'DampedForcedHarmonicOscillator/c', component: 'DampedForcedHarmonicOscillator', name: 'c' }
-				},
-				values:          {
-					'DampedForcedHarmonicOscillator/u': { uri: 'DampedForcedHarmonicOscillator/u', component: 'DampedForcedHarmonicOscillator', name: 'u', value: 1 },
-					'DampedForcedHarmonicOscillator/v': { uri: 'DampedForcedHarmonicOscillator/v', component: 'DampedForcedHarmonicOscillator', name: 'v', value: 1 }
 				}
 			}
 		];
@@ -454,7 +454,7 @@ define(['app/module', 'lodash', 'defaults/service'], function (app, _) {
 			'6310':            [/*'6310/flow', '6310/pressure',*/ '6310/concentration'],
 			'6329':            [/*'6329/flow', '6329/pressure',*/ '6329/concentration'],
 			'6888':            [/*'6888/flow', '6888/pressure',*/ '6888/concentration'],
-			'fma:7204':        ['DampedForcedHarmonicOscillator/a', 'DampedForcedHarmonicOscillator/b', 'DampedForcedHarmonicOscillator/c']
+			'fma:7204':        ['DampedForcedHarmonicOscillator/u', 'DampedForcedHarmonicOscillator/v']
 		};
 
 

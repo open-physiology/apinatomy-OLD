@@ -29,13 +29,13 @@ class NavierStokesSimulation {
 			type:            'CellMLSimulation',
 			filename:        'Linear2ndOrderODE.cellml',
 			outputVariables: {
+				'DampedForcedHarmonicOscillator/u': { uri: 'DampedForcedHarmonicOscillator/u', component: 'DampedForcedHarmonicOscillator', name: 'u' },
+				'DampedForcedHarmonicOscillator/v': { uri: 'DampedForcedHarmonicOscillator/v', component: 'DampedForcedHarmonicOscillator', name: 'v' }
+			},
+			values:          {
 				'DampedForcedHarmonicOscillator/a': { uri: 'DampedForcedHarmonicOscillator/a', component: 'DampedForcedHarmonicOscillator', name: 'a' },
 				'DampedForcedHarmonicOscillator/b': { uri: 'DampedForcedHarmonicOscillator/b', component: 'DampedForcedHarmonicOscillator', name: 'b' },
 				'DampedForcedHarmonicOscillator/c': { uri: 'DampedForcedHarmonicOscillator/c', component: 'DampedForcedHarmonicOscillator', name: 'c' }
-			},
-			values:          {
-				'DampedForcedHarmonicOscillator/u': { uri: 'DampedForcedHarmonicOscillator/u', component: 'DampedForcedHarmonicOscillator', name: 'u', value: 1 },
-				'DampedForcedHarmonicOscillator/v': { uri: 'DampedForcedHarmonicOscillator/v', component: 'DampedForcedHarmonicOscillator', name: 'v', value: 1 }
 			}
 		}, this.timeInterval, this.prefetchSize);
 	}
@@ -259,29 +259,35 @@ class NavierStokesSimulation {
 	getVariableDataUpToTime(variable, time): ng.IPromise<number[][]> {
 		var that = this;
 
+		var promise = that.latestPromise;
+
 		if (_.isUndefined(that.dataCache[variable])) {
 			that.dataCache[variable] = [];
 			that.pastLastValidTime[variable] = 0;
 		}
 
 		if (_.isUndefined(that.modelValues[variable])) {
-			that.latestPromise = that.latestPromise.then(() => {
-//				return that.getVariableDataUpToTime('5866/concentration', time).then(function (values) {
-//					var inputValues = { time: [], value: [] }; // TODO: input values from 5866/concentration into the CellML model
-//					_.forEach(values, function (value) {
-//						inputValues.time.push(value[TIME]);
-//						inputValues.value.push(value[VALUE]);
-//					});
-//					return that.cellMLSimulation.setVariableValues(0, inputValues).then(function () { // TODO; put right values
+			promise = promise.then(() => {
+				return that.getVariableDataUpToTime('5866/concentration', time).then(function (values) {
+					var inputValues = { time: [], value: [] };
+					_.forEach(values, function (value) {
+						inputValues.time.push(value[TIME]);
+						inputValues.value.push(value[VALUE]);
+					});
+					return that.cellMLSimulation.setVariableValues(0, [{
+						component: 'DampedForcedHarmonicOscillator',
+						name: 'a',
+						value: inputValues
+					}]).then(function () { // finally, get the values of the variable
 						return that.cellMLSimulation.getVariableDataUpToTime(variable, time).then(function (values) {
 							that.dataCache[variable] = values;
 						});
-//					});
-//				});
+					});
+				});
 			});
 		} else {
 			if (time >= that.pastLastValidTime[variable]) {
-				that.latestPromise = that.latestPromise.then(() => {
+				promise = promise.then(() => {
 					return that.getValues(variable, that.pastLastValidTime[variable], time + that.prefetchSize * that.timeInterval).then((newValues: number[][]) => {
 						var i = that.timeToIndex(newValues[0][TIME]);
 						_(newValues).forEach((val: number[]) => {
@@ -293,7 +299,7 @@ class NavierStokesSimulation {
 			}
 		}
 
-		return that.latestPromise.then(() => {
+		return promise.then(() => {
 			return that.dataCache[variable].slice(0, that.timeToIndex(time) + 1);
 		});
 	}

@@ -7,6 +7,7 @@
 var http = require('http');
 var _ = require('lodash');
 var Q = require('q');
+var request = require('request');
 
 var vars = require('./vars');
 
@@ -34,6 +35,16 @@ exports.setValueURL = function setValueURL(modelID, component, variable, value) 
 	                        "/" + component +
 	                        "/" + variable +
 	                        "?value=" + value }, baseURL);
+};
+exports.setValueRangeURL = function setValueRangeURL(modelID, component, variable, dataSetId) {
+	return _.extend({ path: "/biomaps/set-value" +
+	                        "/" + modelID +
+	                        "/" + component +
+	                        "/" + variable +
+	                        "?dataset=" + dataSetId }, baseURL);
+};
+exports.setDataSetURL = function setDataSetURL() {
+	return _.extend({ path: "/biomaps", method: 'POST' }, baseURL);
 };
 exports.executeURL = function executeURL(modelID, start, end, interval) {
 	return _.extend({ path: "/biomaps/execute" +
@@ -67,14 +78,26 @@ exports.cellmlGet = function cellmlGet(url, fn) {
 			result.reject(err);
 		}
 	});
-	req.on('socket', function (socket) {
-		socket.setTimeout(5000); // 5 seconds
-		socket.on('timeout', function () {
-			req.abort();
-			console.log('CellML Network Timeout');
-			cellmlGet(url, fn);
-		});
+	return result.promise;
+};
+
+exports.cellmlPost = function cellmlPost(url, data, fn) {
+	var result = Q.defer();
+
+	request.post({
+		url: url,
+		body: data,
+		json: true
+	}, function (err, data, body) {
+		if (err) {
+			console.error(err);
+			result.reject(err);
+		} else {
+			if (_(fn).isFunction()) { fn(endData); }
+			result.resolve(body);
+		}
 	});
+
 	return result.promise;
 };
 

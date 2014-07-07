@@ -8,7 +8,8 @@
     "lodash": "~2.4.1",
     "mongojs": "~0.10.0",
     "mongoose": "~3.8.8",
-    "q": "^1.0.1"
+    "q": "^1.0.1",
+    "request": "^2.37.0"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
@@ -25,7 +26,7 @@
     "jasmine-expect": "~1.21.0",
     "jqueryui-amd": "0.0.2",
     "madge": "~0.1.8",
-	"typescript": "^1.0.1",
+    "typescript": "^1.0.1",
     "tsd": "^0.5.7"
   },
   "scripts": {
