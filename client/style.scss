@@ -1,66 +1,50 @@
 @import "bootstrap";
 @import "base";
-
-
 //// fast application of initial AngularJS css rules (like ng-cloak)
 //
 @import "lib/angular/angular-csp.css";
-
 
 //// main page styles
 //
 html, body {
 	@include user-select(none);
-	position: absolute;
-	min-height: 100% !important;
-	min-width: 100% !important;
-	padding: 0 !important;
-	margin: 0 !important;
-	border: 0 !important;
-	overflow: hidden;
+	@include edge-to-edge;
+	padding    : 0 !important;
+	overflow   : hidden;
 
 	#top-nav {
-		@include edge-to-edge;
-		height: $amy-top-nav-height;
-		z-index: 999;
+		@include edge-to-edge-hw($height : $amy-top-nav-height);
+		z-index : 999;
 	}
 
 	#side-nav {
-		@include edge-to-edge;
-		padding-right: $amy-spacing;
-		top: $amy-top-nav-height;
-		width: $amy-side-nav-width + $amy-spacing;
-		z-index: 999;
+		@include edge-to-edge-hw($top : $amy-top-nav-height, $width : $amy-side-nav-width + $amy-spacing);
+		padding-right : $amy-spacing;
+		z-index       : 999;
 	}
 
 	main {
-		@include edge-to-edge;
-		top: $amy-top-nav-height;
+		@include edge-to-edge($top : $amy-top-nav-height);
 		[amy-circuit-board] {
 			@include edge-to-edge;
 
 			& .flat-circuit-board {
-				@include edge-to-edge;
-				top: $amy-spacing;
-				bottom: $amy-spacing;
-				left: $amy-spacing + $amy-side-nav-width;
-				right: $amy-spacing;
+				@include edge-to-edge($top : $amy-spacing, $bottom : $amy-spacing, $left : $amy-spacing + $amy-side-nav-width, $right : $amy-spacing);
 			}
 		}
 	}
 
 	footer {
-		position: absolute;
-		left: $amy-spacing + $amy-side-nav-width;
-		right: $amy-spacing;
-		bottom: 0 !important;
-		top: auto;
-		height: $amy-footer-height;
-
+		position     : absolute;
+		left         : $amy-spacing + $amy-side-nav-width;
+		right        : $amy-spacing;
+		bottom       : 0 !important;
+		top          : auto;
+		height       : $amy-footer-height;
 		@include border-top-radius(5px);
-		@include box-shadow(0 5px 15px rgba(0,0,0,.5));
-		border: 1px black;
-		border-style: solid solid none solid;
+		@include box-shadow(0 5px 15px rgba(0, 0, 0, .5));
+		border       : 1px black;
+		border-style : solid solid none solid;
 
 		[amy-time-control] {
 			position : absolute;
@@ -70,16 +54,16 @@ html, body {
 			height   : $amy-footer-height;
 		}
 
-//		&.ng-enter, &.ng-leave {
-//			@include move-transition($amy-standard-duration, 50ms);
-//		}
-//
-//		&.ng-enter, &.ng-leave.ng-leave-active {
-//			bottom: -$amy-footer-height;
-//		}
-//
-//		&.ng-leave, &.ng-enter.ng-enter-active {
-//			bottom: 0;
-//		}
+		//		&.ng-enter, &.ng-leave {
+		//			@include move-transition($amy-standard-duration, 50ms);
+		//		}
+		//
+		//		&.ng-enter, &.ng-leave.ng-leave-active {
+		//			bottom: -$amy-footer-height;
+		//		}
+		//
+		//		&.ng-leave, &.ng-enter.ng-enter-active {
+		//			bottom: 0;
+		//		}
 	}
 }

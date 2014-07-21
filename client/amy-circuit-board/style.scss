@@ -17,7 +17,7 @@
 		}
 
 		& > [amy-graph-layer] {
-			@include edge-to-edge;
+			@include edge-to-edge-hw;
 			z-index: 3 !important;
 		}
 	}

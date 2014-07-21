@@ -1,10 +1,8 @@
 ///////////////////////// Imports /////////////////////////
-
 //noinspection CssUnknownTarget
 @import "compass";
 @import "bootstrap/variables";
 @import "bootstrap/mixins";
-
 
 ///////////////////////// Variables /////////////////////////
 
@@ -18,24 +16,32 @@ $amy-tile-status-icon-size : 10px;
 $amy-standard-duration : 600ms;
 $amy-control-size : 20px;
 $amy-control-spacing : 10px;
-$amy-footer-height: $amy-control-size + 2 * $amy-control-spacing + 20px;
+$amy-footer-height : $amy-control-size + 2 * $amy-control-spacing + 20px;
 
-$modal-title-padding: 5px;
-$modal-inner-padding: 3px;
-
+$modal-title-padding : 5px;
+$modal-inner-padding : 3px;
 
 ///////////////////////// Mixins /////////////////////////
 
-@mixin edge-to-edge {
+@mixin edge-to-edge($top : 0, $right : 0, $bottom : 0, $left : 0) {
 	display  : block;
 	position : absolute;
-	top      : 0;
-	left     : 0;
-	bottom   : 0;
-	right    : 0;
+	top      : $top;
+	left     : $left;
+	right    : $right;
+	bottom   : $bottom;
 	margin   : 0;
 }
 
+@mixin edge-to-edge-hw($top : 0, $left : 0, $height : 100%, $width : 100%) {
+	display  : block;
+	position : absolute;
+	top      : $top;
+	left     : $left;
+	height   : $height;
+	width    : $width;
+	margin   : 0;
+}
 
 ///////////////////////// Animated move & resize /////////////////////////
 
@@ -45,7 +51,6 @@ $modal-inner-padding: 3px;
 	@include transition-delay($delay);
 	@include transition-timing-function(ease-in-out);
 }
-
 
 ///////////////////////// Fade-in & Fade-out /////////////////////////
 
