@@ -6,22 +6,22 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "jqueryui/jqueryui.d.ts": {
-      "commit": "87fba9fea20927ca5c74ec0437b4d627239d2bd8"
+      "commit": "1f169d0c9a69e80d576efd953ce977b844ce565d"
     },
     "d3/d3.d.ts": {
-      "commit": "87fba9fea20927ca5c74ec0437b4d627239d2bd8"
+      "commit": "1f169d0c9a69e80d576efd953ce977b844ce565d"
     },
     "jquery/jquery.d.ts": {
-      "commit": "87fba9fea20927ca5c74ec0437b4d627239d2bd8"
+      "commit": "1f169d0c9a69e80d576efd953ce977b844ce565d"
     },
     "lodash/lodash.d.ts": {
-      "commit": "87fba9fea20927ca5c74ec0437b4d627239d2bd8"
+      "commit": "1f169d0c9a69e80d576efd953ce977b844ce565d"
     },
     "threejs/three.d.ts": {
-      "commit": "87fba9fea20927ca5c74ec0437b4d627239d2bd8"
+      "commit": "1f169d0c9a69e80d576efd953ce977b844ce565d"
     },
     "angularjs/angular.d.ts": {
-      "commit": "87fba9fea20927ca5c74ec0437b4d627239d2bd8"
+      "commit": "1f169d0c9a69e80d576efd953ce977b844ce565d"
     }
   }
 }
