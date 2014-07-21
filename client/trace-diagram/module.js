@@ -121,8 +121,10 @@ define(['angular', 'lodash', 'd3', 'css!trace-diagram/style'], function (ng, _, 
 					//// perform scaling
 					//
 					xScale.domain([0, $scope.maxX]);
-					yScale.domain([minY, maxY]);
-					svgCanvas.select(".y.axis").call(yAxis);
+					if (minY < Infinity && maxY > -Infinity) {
+						yScale.domain([minY, maxY]);
+						svgCanvas.select(".y.axis").call(yAxis);
+					}
 
 					//// draw the main trace
 					//

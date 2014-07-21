@@ -6,6 +6,8 @@ trace-diagram {
 
 	& > svg {
 
+		@include edge-to-edge-hw;
+
 		& > g {
 
 			.border {
@@ -59,5 +61,5 @@ trace-diagram {
 }
 
 #variable-glyph-dialog-container {
-	@include edge-to-edge-hw;
+	@include edge-to-edge;
 }
