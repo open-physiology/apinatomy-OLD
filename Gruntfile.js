@@ -65,7 +65,7 @@ module.exports = function (grunt) {
 		//
 		typescript: {
 			options: {
-				src: PROJECT_TS_FILES,
+                src: PROJECT_TS_FILES,
 				basePath: 'client',
 				module: 'amd',
 				target: 'es5',
@@ -195,7 +195,7 @@ module.exports = function (grunt) {
 
 	//// exposed tasks
 	//
-	grunt.registerTask('dev', ['sync', 'tsd:reinstall', 'shell:jqueryUiAmd', 'madge', 'compass:dev', 'jasmine']);
-	grunt.registerTask('dist', ['sync', 'tsd:reinstall', 'shell:jqueryUiAmd', 'madge', 'compass:dist', 'jasmine', 'uglify:dist']);
+	grunt.registerTask('dev', ['sync', 'tsd:reinstall', 'shell:jqueryUiAmd', 'typescript:dev', 'madge', 'compass:dev', 'jasmine']);
+	grunt.registerTask('dist', ['sync', 'tsd:reinstall', 'shell:jqueryUiAmd', 'typescript:dist', 'madge', 'compass:dist', 'jasmine', 'uglify:dist']);
 
 };
