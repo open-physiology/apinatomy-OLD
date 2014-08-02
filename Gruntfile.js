@@ -65,7 +65,6 @@ module.exports = function (grunt) {
 		//
 		typescript: {
 			options: {
-                src: PROJECT_TS_FILES,
 				basePath: 'client',
 				module: 'amd',
 				target: 'es5',
@@ -73,11 +72,13 @@ module.exports = function (grunt) {
 				declaration: true
 			},
 			dev:     {
+                src: PROJECT_TS_FILES,
 				options: {
 					comments: true
 				}
 			},
 			dist:    {
+                src: PROJECT_TS_FILES,
 				options: {
 					comments: false
 				}
@@ -170,7 +171,7 @@ module.exports = function (grunt) {
 			typescript:   {
 				files: PROJECT_TS_FILES,
 				tasks: ['typescript:dev'],
-				options: { spawn: false }
+                options: { spawn: false }
 			},
 			js:     {
 				files: PROJECT_JS_FILES,
