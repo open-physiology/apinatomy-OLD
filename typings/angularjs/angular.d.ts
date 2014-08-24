@@ -1,4 +1,4 @@
-// Type definitions for Angular JS 1.2+
+// Type definitions for Angular JS 1.3+
 // Project: http://angularjs.org
 // Definitions by: Diego Vilar <http://github.com/diegovilar>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
@@ -42,7 +42,20 @@ declare module ng {
         bootstrap(element: JQuery, modules?: any[]): auto.IInjectorService;
         bootstrap(element: Element, modules?: any[]): auto.IInjectorService;
         bootstrap(element: Document, modules?: any[]): auto.IInjectorService;
-        copy(source: any, destination?: any): any;
+
+        /**
+         * Creates a deep copy of source, which should be an object or an array.
+         * 
+         * - If no destination is supplied, a copy of the object or array is created.
+         * - If a destination is provided, all of its elements (for array) or properties (for objects) are deleted and then all elements/properties from the source are copied to it.
+         * - If source is not an object or array (inc. null and undefined), source is returned.
+         * - If source is identical to 'destination' an exception will be thrown.
+         * 
+         * @param source The source that will be used to make a copy. Can be any type, including primitives, null, and undefined.
+         * @param destination Destination into which the source is copied. If provided, must be of the same type as source.
+         */
+        copy<T>(source: T, destination?: T): T;
+
         element: IAugmentedJQueryStatic;
         equals(value1: any, value2: any): boolean;
         extend(destination: any, ...sources: any[]): any;
@@ -267,12 +280,16 @@ declare module ng {
         $dirty: boolean;
         $valid: boolean;
         $invalid: boolean;
+        $submitted: boolean;
         $error: any;
         $addControl(control: ng.INgModelController): void;
         $removeControl(control: ng.INgModelController): void;
         $setValidity(validationErrorKey: string, isValid: boolean, control: ng.INgModelController): void;
         $setDirty(): void;
         $setPristine(): void;
+        $commitViewValue(): void;
+        $rollbackViewValue(): void;
+        $setSubmitted(): void;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -285,6 +302,13 @@ declare module ng {
         // Documentation states viewValue and modelValue to be a string but other
         // types do work and it's common to use them.
         $setViewValue(value: any): void;
+        $validate(): void;
+        $setTouched(): void;
+        $setUntouched(): void;
+        $rollbackViewValue(): void;
+        $commitViewValue(revalidate?: boolean): void;
+        $isEmpty(value: any): boolean;
+
         $viewValue: any;
 
         $modelValue: any;
@@ -293,10 +317,21 @@ declare module ng {
         $formatters: IModelFormatter[];
         $viewChangeListeners: IModelViewChangeListener[];
         $error: any;
+        $name: string;
+
+        $touched: boolean;
+        $untouched: boolean;
+
+        $validators: IModelValidators;
+
         $pristine: boolean;
         $dirty: boolean;
         $valid: boolean;
         $invalid: boolean;
+    }
+
+    interface IModelValidators {
+        [index: string]: (...args: any[]) => boolean;
     }
 
     interface IModelParser {
@@ -312,10 +347,10 @@ declare module ng {
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    // Scope
-    // see http://docs.angularjs.org/api/ng.$rootScope.Scope
+    // Scope and RootScope
+    // see https://docs.angularjs.org/api/ng/type/$rootScope.Scope and http://docs.angularjs.org/api/ng.$rootScope
     ///////////////////////////////////////////////////////////////////////////
-    interface IScope {
+    interface IRootScopeService {
         $apply(): any;
         $apply(exp: string): any;
         $apply(exp: (scope: IScope) => any): any;
@@ -352,12 +387,17 @@ declare module ng {
         $parent: IScope;
 
         $root: IRootScopeService;
+        this: IRootScopeService;
 
-        $id: string;
+        $id: number;
 
         // Hidden members
         $$isolateBindings: any;
         $$phase: any;
+    }
+
+    interface IScope extends IRootScopeService {
+        [index: string]: any;
     }
 
     interface IAngularEvent {
@@ -963,12 +1003,6 @@ declare module ng {
     interface ITemplateCacheService extends ICacheObject {}
 
     ///////////////////////////////////////////////////////////////////////////
-    // RootScopeService
-    // see http://docs.angularjs.org/api/ng.$rootScope
-    ///////////////////////////////////////////////////////////////////////////
-    interface IRootScopeService extends IScope {}
-
-    ///////////////////////////////////////////////////////////////////////////
     // SCEService
     // see http://docs.angularjs.org/api/ng.$sce
     ///////////////////////////////////////////////////////////////////////////
@@ -1031,22 +1065,34 @@ declare module ng {
         (...args: any[]): IDirective;
     }
 
-
-    interface IDirective{
-        compile?:
-            (templateElement: IAugmentedJQuery,
-            templateAttributes: IAttributes,
-            transclude: ITranscludeFunction
-            ) => any;
-        controller?: any;
-        controllerAs?: string;
-        link?:
-            (scope: IScope,
+    interface IDirectiveLinkFn {
+        (
+            scope: IScope,
             instanceElement: IAugmentedJQuery,
             instanceAttributes: IAttributes,
             controller: any,
             transclude: ITranscludeFunction
-            ) => void;
+        ): void;
+    }
+
+    interface IDirectivePrePost {
+        pre?: IDirectiveLinkFn;
+        post?: IDirectiveLinkFn;
+    }
+
+    interface IDirectiveCompileFn {
+        (
+            templateElement: IAugmentedJQuery,
+            templateAttributes: IAttributes,
+            transclude: ITranscludeFunction
+        ): IDirectivePrePost;
+    }
+
+    interface IDirective {
+        compile?: IDirectiveCompileFn;
+        controller?: any;
+        controllerAs?: string;
+        link?: IDirectiveLinkFn;
         name?: string;
         priority?: number;
         replace?: boolean;
