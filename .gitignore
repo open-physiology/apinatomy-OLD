@@ -1,9 +1,10 @@
 node_modules
 client/lib
-*.css
-*.log
-SpecRunner.html
 .grunt
 .sass-cache
-.idea
 tmp
+gulp-tsc-tmp-*
+.gulp-tsc-tmp-*
+*.js.map
+*.log
+SpecRunner.html
