@@ -1,0 +1,134 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0" is_locked="false">
+    <option name="myName" value="Project Default" />
+    <option name="myLocal" value="false" />
+    <inspection_tool class="CommaExpressionJS" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="CssInvalidHtmlTagReference" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="CssOptimizeSimilarProperties" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="CssUnknownProperty" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myCustomPropertiesEnabled" value="true" />
+      <option name="myIgnoreVendorSpecificProperties" value="false" />
+      <option name="myCustomPropertiesList">
+        <value>
+          <list size="6">
+            <item index="0" class="java.lang.String" itemvalue="perspective" />
+            <item index="1" class="java.lang.String" itemvalue="stroke" />
+            <item index="2" class="java.lang.String" itemvalue="stroke-width" />
+            <item index="3" class="java.lang.String" itemvalue="fill" />
+            <item index="4" class="java.lang.String" itemvalue="pointer-events" />
+            <item index="5" class="java.lang.String" itemvalue="backfacevisibility" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="38">
+            <item index="0" class="java.lang.String" itemvalue="role" />
+            <item index="1" class="java.lang.String" itemvalue="btn-checkbox" />
+            <item index="2" class="java.lang.String" itemvalue="amy-tile" />
+            <item index="3" class="java.lang.String" itemvalue="bindonce" />
+            <item index="4" class="java.lang.String" itemvalue="bo-text" />
+            <item index="5" class="java.lang.String" itemvalue="once-text" />
+            <item index="6" class="java.lang.String" itemvalue="once-if" />
+            <item index="7" class="java.lang.String" itemvalue="amy-once" />
+            <item index="8" class="java.lang.String" itemvalue="ng-repeat-end" />
+            <item index="9" class="java.lang.String" itemvalue="ng-repeat-start" />
+            <item index="10" class="java.lang.String" itemvalue="ng-if" />
+            <item index="11" class="java.lang.String" itemvalue="ng-repeat" />
+            <item index="12" class="java.lang.String" itemvalue="amy-side-nav" />
+            <item index="13" class="java.lang.String" itemvalue="ng-cloak" />
+            <item index="14" class="java.lang.String" itemvalue="ng-controller" />
+            <item index="15" class="java.lang.String" itemvalue="ng-href" />
+            <item index="16" class="java.lang.String" itemvalue="ng-init" />
+            <item index="17" class="java.lang.String" itemvalue="ng-click" />
+            <item index="18" class="java.lang.String" itemvalue="ng-class" />
+            <item index="19" class="java.lang.String" itemvalue="ng-model" />
+            <item index="20" class="java.lang.String" itemvalue="typeahead" />
+            <item index="21" class="java.lang.String" itemvalue="typeahead-template-url" />
+            <item index="22" class="java.lang.String" itemvalue="typeahead-loading" />
+            <item index="23" class="java.lang.String" itemvalue="amy-3d-layer" />
+            <item index="24" class="java.lang.String" itemvalue="amy-graph-layer" />
+            <item index="25" class="java.lang.String" itemvalue="ng-open" />
+            <item index="26" class="java.lang.String" itemvalue="amy-time-control" />
+            <item index="27" class="java.lang.String" itemvalue="ng-left-click" />
+            <item index="28" class="java.lang.String" itemvalue="ng-mouseover" />
+            <item index="29" class="java.lang.String" itemvalue="ng-mouseout" />
+            <item index="30" class="java.lang.String" itemvalue="apinatomy-app" />
+            <item index="31" class="java.lang.String" itemvalue="dropdown" />
+            <item index="32" class="java.lang.String" itemvalue="ng-options" />
+            <item index="33" class="java.lang.String" itemvalue="ng-style" />
+            <item index="34" class="java.lang.String" itemvalue="ng-disabled" />
+            <item index="35" class="java.lang.String" itemvalue="ng-change" />
+            <item index="36" class="java.lang.String" itemvalue="clip-path" />
+            <item index="37" class="java.lang.String" itemvalue="ng-mousemove" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="37">
+            <item index="0" class="java.lang.String" itemvalue="nobr" />
+            <item index="1" class="java.lang.String" itemvalue="noembed" />
+            <item index="2" class="java.lang.String" itemvalue="comment" />
+            <item index="3" class="java.lang.String" itemvalue="noscript" />
+            <item index="4" class="java.lang.String" itemvalue="embed" />
+            <item index="5" class="java.lang.String" itemvalue="script" />
+            <item index="6" class="java.lang.String" itemvalue="apinatomy-top-nav" />
+            <item index="7" class="java.lang.String" itemvalue="apinatomy-side-nav" />
+            <item index="8" class="java.lang.String" itemvalue="ng-view" />
+            <item index="9" class="java.lang.String" itemvalue="apinatomy-treemap" />
+            <item index="10" class="java.lang.String" itemvalue="tile" />
+            <item index="11" class="java.lang.String" itemvalue="apinatomy-entity-details" />
+            <item index="12" class="java.lang.String" itemvalue="amy-rotation" />
+            <item index="13" class="java.lang.String" itemvalue="amy-treemap" />
+            <item index="14" class="java.lang.String" itemvalue="amy-top-nav" />
+            <item index="15" class="java.lang.String" itemvalue="amy-side-nav" />
+            <item index="16" class="java.lang.String" itemvalue="amy-entity-details" />
+            <item index="17" class="java.lang.String" itemvalue="amy-tile" />
+            <item index="18" class="java.lang.String" itemvalue="glyph-btn" />
+            <item index="19" class="java.lang.String" itemvalue="icon-btn" />
+            <item index="20" class="java.lang.String" itemvalue="amy-circuitboard" />
+            <item index="21" class="java.lang.String" itemvalue="amy-circuitboard-tile" />
+            <item index="22" class="java.lang.String" itemvalue="svg" />
+            <item index="23" class="java.lang.String" itemvalue="amy-graph" />
+            <item index="24" class="java.lang.String" itemvalue="amy-simulation-panel" />
+            <item index="25" class="java.lang.String" itemvalue="amy-time-trace" />
+            <item index="26" class="java.lang.String" itemvalue="slider" />
+            <item index="27" class="java.lang.String" itemvalue="amy-circuit-board" />
+            <item index="28" class="java.lang.String" itemvalue="amy-tile-map" />
+            <item index="29" class="java.lang.String" itemvalue="amy-graph-layer" />
+            <item index="30" class="java.lang.String" itemvalue="amy-3d-layer" />
+            <item index="31" class="java.lang.String" itemvalue="amy-time-control" />
+            <item index="32" class="java.lang.String" itemvalue="trace-diagram" />
+            <item index="33" class="java.lang.String" itemvalue="tile-map" />
+            <item index="34" class="java.lang.String" itemvalue="apinatomy" />
+            <item index="35" class="java.lang.String" itemvalue="apinatomy-app" />
+            <item index="36" class="java.lang.String" itemvalue="clippath" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="JSMethodCanBeStatic" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="JSPrimitiveTypeWrapperUsage" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="JSUnusedGlobalSymbols" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="RequiredAttributes" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myAdditionalRequiredHtmlAttributes" value="height,width,d" />
+    </inspection_tool>
+    <inspection_tool class="SassScssUnresolvedMixin" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="TaskInspection" enabled="true" level="INFO" enabled_by_default="true">
+      <option name="suppressedTasks">
+        <set>
+          <option value="SCSS" />
+          <option value="TypeScript" />
+          <option value="compass scss" />
+        </set>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

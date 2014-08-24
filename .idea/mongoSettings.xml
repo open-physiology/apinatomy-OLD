@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MongoConfiguration">
+    <option name="serverConfigurations">
+      <list>
+        <ServerConfiguration>
+          <option name="collectionsToIgnore">
+            <list>
+              <option value="system.indexes" />
+            </list>
+          </option>
+          <option name="label" value="Apinatomy DB" />
+          <option name="shellWorkingDir" value="$PROJECT_DIR$/server/db" />
+          <option name="userDatabase" value="ric" />
+        </ServerConfiguration>
+      </list>
+    </option>
+    <option name="shellPath" value="/usr/local/bin/mongo" />
+  </component>
+</project>
+

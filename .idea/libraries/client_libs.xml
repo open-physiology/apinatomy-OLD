@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="client libs" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/client/patched-lib" />
+        <item url="file://$PROJECT_DIR$/client/lib" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/client/lib" />
+      <root url="file://$PROJECT_DIR$/client/patched-lib" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>

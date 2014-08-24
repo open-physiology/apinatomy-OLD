@@ -1,0 +1,29 @@
+<component name="libraryTable">
+  <library name="Generated files" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/client/simulation/NavierStokesSimulation.js" />
+        <item url="file://$PROJECT_DIR$/client/amy-circuit-board/_CircuitBoardArtefact.js" />
+        <item url="file://$PROJECT_DIR$/client/amy-circuit-board/artefacts.js" />
+        <item url="file://$PROJECT_DIR$/client/simulation/CellMLSimulation.js" />
+        <item url="file://$PROJECT_DIR$/client/app/WebPageArtefact.js" />
+        <item url="file://$PROJECT_DIR$/client/amy-circuit-board/CircuitBoardArtefact.js" />
+        <item url="file://$PROJECT_DIR$/client/color/ColorRange.js" />
+        <item url="file://$PROJECT_DIR$/client/Artefact.js" />
+        <item url="file://$PROJECT_DIR$/client/utility/Position.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/client/simulation/NavierStokesSimulation.js" />
+      <root url="file://$PROJECT_DIR$/client/amy-circuit-board/_CircuitBoardArtefact.js" />
+      <root url="file://$PROJECT_DIR$/client/amy-circuit-board/artefacts.js" />
+      <root url="file://$PROJECT_DIR$/client/simulation/CellMLSimulation.js" />
+      <root url="file://$PROJECT_DIR$/client/amy-circuit-board/CircuitBoardArtefact.js" />
+      <root url="file://$PROJECT_DIR$/client/app/WebPageArtefact.js" />
+      <root url="file://$PROJECT_DIR$/client/color/ColorRange.js" />
+      <root url="file://$PROJECT_DIR$/client/Artefact.js" />
+      <root url="file://$PROJECT_DIR$/client/utility/Position.js" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>

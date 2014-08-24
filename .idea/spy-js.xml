@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SpyJsConfiguration">
+    <event-filters>
+      <event-filter name="Not from library or utility files">
+        <event-filter-conditions>
+          <event-filter-condition type="file" value="http://localhost:8081/lib/*" />
+          <event-filter-condition type="file" value="http://localhost:8081/patched-lib/*" />
+          <event-filter-condition type="file" value="http://localhost:8081/utility/*" />
+          <event-filter-condition value="mouseover" />
+          <event-filter-condition value="external" />
+          <event-filter-condition type="file" value="http://localhost:8081/$bind/service.js" />
+        </event-filter-conditions>
+      </event-filter>
+      <event-filter name="No external">
+        <event-filter-conditions>
+          <event-filter-condition value="external" />
+          <event-filter-condition type="file" value="http://localhost:8081/lib/d3/d3.js" />
+          <event-filter-condition value="mouseout" />
+          <event-filter-condition value="mouseover" />
+          <event-filter-condition value="blur" />
+        </event-filter-conditions>
+      </event-filter>
+    </event-filters>
+  </component>
+</project>
+

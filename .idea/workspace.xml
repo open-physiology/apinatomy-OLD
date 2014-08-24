@@ -1,0 +1,1564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="cb443da2-c5b7-4919-9dda-26632e987897" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+    </list>
+    <ignored path="apinatomy.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <ignored mask="tmp.cellml2code.*" />
+    <ignored mask="*.d.ts" />
+    <ignored mask="*.css" />
+    <ignored path="client/simulation/NavierStokesSimulation.js" />
+    <ignored path="client/amy-circuit-board/_CircuitBoardArtefact.js" />
+    <ignored path="client/amy-circuit-board/artefacts.js" />
+    <ignored path="client/simulation/CellMLSimulation.js" />
+    <ignored path="client/app/WebPageArtefact.js" />
+    <ignored path="client/amy-circuit-board/CircuitBoardArtefact.js" />
+    <ignored path="client/color/ColorRange.js" />
+    <ignored path="client/Artefact.js" />
+    <ignored path="client/utility/Position.js" />
+    <ignored mask="*.js.map" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file leaf-file-name="gulp-util.js" pinned="false" current="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/gulp-util.js">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state vertical-scroll-proportion="0.0" vertical-offset="555" max-vertical-offset="720">
+                    <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
+                    <folding />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file leaf-file-name="Gruntfile.js" pinned="false" current="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/Gruntfile.js">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state vertical-scroll-proportion="0.64052796" vertical-offset="1350" max-vertical-offset="3120">
+                    <caret line="145" column="13" selection-start-line="145" selection-start-column="13" selection-end-line="145" selection-end-column="13" />
+                    <folding />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="apinatomy" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="package.json" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-25.625" vertical-offset="0" max-vertical-offset="705">
+              <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Artefact.ts" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/Artefact.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3390">
+              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_CircuitBoardArtefact.ts" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/_CircuitBoardArtefact.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2175">
+              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="artefacts.ts" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/artefacts.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="22770">
+              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CircuitBoardArtefact.ts" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/CircuitBoardArtefact.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="135">
+              <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WebPageArtefact.ts" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/app/WebPageArtefact.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="405">
+              <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ColorRange.ts" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/color/ColorRange.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="495">
+              <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CellMLSimulation.ts" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/simulation/CellMLSimulation.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1635">
+              <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NavierStokesSimulation.ts" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/simulation/NavierStokesSimulation.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5130">
+              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="directive.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/directive.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1440">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <marker date="1408897475204" expanded="true" signature="143:535" placeholder="[...]" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Position.ts" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/utility/Position.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="210">
+              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="gulpfile.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gulpfile.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="990">
+              <caret line="59" column="34" selection-start-line="59" selection-start-column="34" selection-end-line="59" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.4515707" vertical-offset="0" max-vertical-offset="764">
+              <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Michiel Helvensteijn &lt;mhelvens@gmail.com&gt;" />
+      </list>
+    </option>
+    <option name="UPDATE_CHANGES_POLICY" value="SHELVE" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="0c57be3" />
+      </map>
+    </option>
+  </component>
+  <component name="GitLogSettings">
+    <option name="myDateState">
+      <MyDateState />
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/client/index.html" />
+        <option value="$PROJECT_DIR$/client/app/bootstrap.js" />
+        <option value="$PROJECT_DIR$/client/stream/CellMLSimulation.ts" />
+        <option value="$PROJECT_DIR$/client/variable/Variable.ts" />
+        <option value="$PROJECT_DIR$/client/simulation/cellmlStreamService.js" />
+        <option value="$PROJECT_DIR$/client/app/module.js" />
+        <option value="$PROJECT_DIR$/client/variable/CellMLVariable.ts" />
+        <option value="$PROJECT_DIR$/client/top-nav/view.html" />
+        <option value="$PROJECT_DIR$/client/trace-diagram/view.html" />
+        <option value="$PROJECT_DIR$/client/simulation/navier-stokes-data.json" />
+        <option value="$PROJECT_DIR$/client/top-nav/directive.js" />
+        <option value="$PROJECT_DIR$/client/utility/isDefined.js" />
+        <option value="$PROJECT_DIR$/client/main.js" />
+        <option value="$PROJECT_DIR$/client/amy-circuit-board/amy-connections/directive.js" />
+        <option value="$PROJECT_DIR$/client/amy-circuit-board/amy-graph-layer/directive.js" />
+        <option value="$PROJECT_DIR$/server/cellml/out.log" />
+        <option value="$PROJECT_DIR$/server/cellml/models/Linear2ndOrderODE.xml" />
+        <option value="$PROJECT_DIR$/client/resource/service.js" />
+        <option value="$PROJECT_DIR$/server/server.js" />
+        <option value="$PROJECT_DIR$/client/cellml/service.js" />
+        <option value="$PROJECT_DIR$/server/cellml.js" />
+        <option value="$PROJECT_DIR$/server/cellml/models/Linear2ndOrderODE.cellml" />
+        <option value="$PROJECT_DIR$/client/amy-circuit-board/amy-tile/variable-details.html" />
+        <option value="$PROJECT_DIR$/client/_base.scss" />
+        <option value="$PROJECT_DIR$/client/style.scss" />
+        <option value="$PROJECT_DIR$/client/amy-circuit-board/style.scss" />
+        <option value="$PROJECT_DIR$/client/amy-circuit-board/amy-3d-layer/style.scss" />
+        <option value="$PROJECT_DIR$/client/trace-diagram/style.scss" />
+        <option value="$PROJECT_DIR$/client/trace-diagram/module.js" />
+        <option value="$PROJECT_DIR$/client/amy-circuit-board/amy-tile/style.scss" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/client/utility/Position.ts.js" />
+        <option value="$PROJECT_DIR$/gulp-util.js" />
+        <option value="$PROJECT_DIR$/Gruntfile.js" />
+        <option value="$PROJECT_DIR$/gulpfile.js" />
+        <option value="$PROJECT_DIR$/client/amy-circuit-board/amy-tile/directive.js" />
+        <option value="$PROJECT_DIR$/client/amy-circuit-board/amy-tile-map/directive.js" />
+        <option value="$PROJECT_DIR$/client/app/directive.js" />
+        <option value="$PROJECT_DIR$/client/side-nav/directive.js" />
+        <option value="$PROJECT_DIR$/client/amy-circuit-board/directive.js" />
+        <option value="$PROJECT_DIR$/client/Artefact.ts" />
+        <option value="$PROJECT_DIR$/client/amy-circuit-board/_CircuitBoardArtefact.ts" />
+        <option value="$PROJECT_DIR$/client/amy-circuit-board/artefacts.ts" />
+        <option value="$PROJECT_DIR$/client/amy-circuit-board/CircuitBoardArtefact.ts" />
+        <option value="$PROJECT_DIR$/client/app/WebPageArtefact.ts" />
+        <option value="$PROJECT_DIR$/client/color/ColorRange.ts" />
+        <option value="$PROJECT_DIR$/client/simulation/CellMLSimulation.ts" />
+        <option value="$PROJECT_DIR$/client/simulation/NavierStokesSimulation.ts" />
+        <option value="$PROJECT_DIR$/client/utility/Position.ts" />
+        <option value="$PROJECT_DIR$/client/simulation/CellMLSimulation.ts.js.map" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBowerSettings">
+    <exe-path>/usr/bin/bower</exe-path>
+    <config-path>$PROJECT_DIR$/bower.json</config-path>
+  </component>
+  <component name="JsGruntFileManager">
+    <gruntfiles>
+      <GruntfileState>
+        <alias-tasks>
+          <alias-task value="dev" />
+          <alias-task value="dist" />
+        </alias-tasks>
+        <multi-tasks>
+          <GruntMultiTaskState>
+            <name>compass</name>
+            <targets>
+              <target value="dev" />
+              <target value="dist" />
+            </targets>
+          </GruntMultiTaskState>
+          <GruntMultiTaskState>
+            <name>jasmine</name>
+            <targets>
+              <target value="all" />
+            </targets>
+          </GruntMultiTaskState>
+          <GruntMultiTaskState>
+            <name>madge</name>
+            <targets>
+              <target value="all" />
+            </targets>
+          </GruntMultiTaskState>
+          <GruntMultiTaskState>
+            <name>shell</name>
+            <targets>
+              <target value="jqueryUiAmd" />
+            </targets>
+          </GruntMultiTaskState>
+          <GruntMultiTaskState>
+            <name>sync</name>
+            <targets>
+              <target value="include" />
+            </targets>
+          </GruntMultiTaskState>
+          <GruntMultiTaskState>
+            <name>tsd</name>
+            <targets>
+              <target value="reinstall" />
+            </targets>
+          </GruntMultiTaskState>
+          <GruntMultiTaskState>
+            <name>typescript</name>
+            <targets>
+              <target value="dev" />
+              <target value="dist" />
+            </targets>
+          </GruntMultiTaskState>
+          <GruntMultiTaskState>
+            <name>uglify</name>
+            <targets>
+              <target value="dist" />
+            </targets>
+          </GruntMultiTaskState>
+          <GruntMultiTaskState>
+            <name>watch</name>
+            <targets>
+              <target value="compass" />
+              <target value="typescript" />
+              <target value="js" />
+              <target value="config" />
+            </targets>
+          </GruntMultiTaskState>
+        </multi-tasks>
+        <gruntfile-path>$PROJECT_DIR$/Gruntfile.js</gruntfile-path>
+      </GruntfileState>
+    </gruntfiles>
+    <initial>false</initial>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-1" />
+    <option name="y" value="1107" />
+    <option name="width" value="1282" />
+    <option name="height" value="1414" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Bash</id>
+          </State>
+        </expanded-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="false" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="2" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apinatomy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apinatomy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apinatomy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apinatomy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apinatomy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="options.splitter.main.proportions" value="0.1954103" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="settings" />
+    <property name="SearchEverywhereHistory" value="" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="DefaultHtmlFileTemplate" value="Html5" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="restartRequiresConfirmation" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="FullScreen" value="false" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="SearchEverywhereHistoryKey" value="bookmark&#9;ACTION&#9;EditBookmarksGroup" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/client/amy-circuit-board/amy-tile" />
+      <recent name="$PROJECT_DIR$/server/cellml/models" />
+      <recent name="$PROJECT_DIR$/client/utility" />
+      <recent name="$PROJECT_DIR$/client/simulation" />
+      <recent name="$PROJECT_DIR$/client/app" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tmp" />
+      <recent name="$PROJECT_DIR$/client/patched-lib" />
+      <recent name="$PROJECT_DIR$/client/time-control" />
+      <recent name="$PROJECT_DIR$/client" />
+      <recent name="$PROJECT_DIR$/client/partial/amy-circuit-board" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Node.js.Development Run (8081)">
+    <configuration default="true" type="CucumberJavaScriptRunConfigurationType" factoryName="Cucumber.js">
+      <option name="cucumberJsArguments" />
+      <option name="executablePath" />
+      <option name="filePath" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JSTestDriver:ConfigurationType" factoryName="JsTestDriver">
+      <setting name="configLocationType" value="CONFIG_FILE" />
+      <setting name="settingsFile" value="" />
+      <setting name="serverType" value="INTERNAL" />
+      <setting name="preferredDebugBrowser" value="Chrome" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTraceType" factoryName="Spy-js" node="" config="" has-config="false" system-proxy="true" proxy-port="3546">
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="false" name="Node Server + Angular Client JavaScript" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true" uri="http://localhost:8080/">
+      <RunnerSettings RunnerId="JavascriptDebugRunner" />
+      <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Development Run JavaScript" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true" uri="http://localhost:8081/">
+      <RunnerSettings RunnerId="JavascriptDebugRunner" />
+      <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Demo Run JavaScript" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true" uri="http://localhost:60044/">
+      <RunnerSettings RunnerId="JavascriptDebugRunner" />
+      <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Demo Run (60045) JavaScript" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true" uri="http://localhost:60045/">
+      <RunnerSettings RunnerId="JavascriptDebugRunner" />
+      <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Development Run (8081)" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="/usr/bin/node" path-to-js-file="server/server.js" application-parameters="8081" working-dir="$PROJECT_DIR$">
+      <browser name="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" start="true" with-js-debugger="true" url="http://localhost:8081/" />
+      <RunnerSettings RunnerId="NodeJS.debug" />
+      <RunnerSettings RunnerId="NodeJS.run" />
+      <ConfigurationWrapper RunnerId="NodeJS.debug" />
+      <ConfigurationWrapper RunnerId="NodeJS.run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Demo Run (60044)" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="/usr/bin/node" path-to-js-file="server/server.js" application-parameters="60044" working-dir="$PROJECT_DIR$">
+      <browser name="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" start="true" with-js-debugger="true" url="http://localhost:60044/" />
+      <RunnerSettings RunnerId="NodeJS.debug" />
+      <ConfigurationWrapper RunnerId="NodeJS.debug" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Demo Run (60045)" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="/usr/bin/node" path-to-js-file="server/server.js" application-parameters="60045" working-dir="$PROJECT_DIR$">
+      <browser name="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" start="true" with-js-debugger="true" url="http://localhost:60045/" />
+      <RunnerSettings RunnerId="NodeJS.debug" />
+      <RunnerSettings RunnerId="NodeJS.run" />
+      <ConfigurationWrapper RunnerId="NodeJS.debug" />
+      <ConfigurationWrapper RunnerId="NodeJS.run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Spy Run" type="JavaScriptTraceType" factoryName="Spy-js" node="/usr/bin/node" config="localhost:8081" has-config="false" system-proxy="true" proxy-port="3546">
+      <RunnerSettings RunnerId="JavaScriptTraceRunner" />
+      <ConfigurationWrapper RunnerId="JavaScriptTraceRunner" />
+      <method />
+    </configuration>
+    <list size="8">
+      <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.Node Server + Angular Client JavaScript" />
+      <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.Development Run JavaScript" />
+      <item index="2" class="java.lang.String" itemvalue="JavaScript Debug.Demo Run JavaScript" />
+      <item index="3" class="java.lang.String" itemvalue="JavaScript Debug.Demo Run (60045) JavaScript" />
+      <item index="4" class="java.lang.String" itemvalue="Node.js.Development Run (8081)" />
+      <item index="5" class="java.lang.String" itemvalue="Node.js.Demo Run (60044)" />
+      <item index="6" class="java.lang.String" itemvalue="Node.js.Demo Run (60045)" />
+      <item index="7" class="java.lang.String" itemvalue="Spy-js.Spy Run" />
+    </list>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <recycled_changelist date="1396795617044">
+      <option name="PATH" value="$USER_HOME$/.WebStorm8/config/shelf/Fixed_and_improved_3D_rotation_code_.patch" />
+      <option name="DESCRIPTION" value="Fixed and improved 3D rotation code." />
+    </recycled_changelist>
+    <recycled_changelist date="1397581925986">
+      <option name="PATH" value="$USER_HOME$/.WebStorm8/config/shelf/Uncommitted_changes_before_update_operation_at_15-4-14_19_12_[Default]1.patch" />
+      <option name="DESCRIPTION" value="Uncommitted changes before update operation at 15-4-14 19:12 [Default]" />
+      <binary>
+        <option name="BEFORE_PATH" />
+        <option name="AFTER_PATH" value="client/partial/circuitboard/tile/icons/3d-white.png" />
+        <option name="SHELVED_PATH" value="$USER_HOME$/.WebStorm8/config/shelf/3d-white.png" />
+      </binary>
+      <binary>
+        <option name="BEFORE_PATH" />
+        <option name="AFTER_PATH" value="client/partial/circuitboard/tile/icons/3d-black.png" />
+        <option name="SHELVED_PATH" value="$USER_HOME$/.WebStorm8/config/shelf/3d-black.png" />
+      </binary>
+    </recycled_changelist>
+    <recycled_changelist date="1398718273190">
+      <option name="PATH" value="$USER_HOME$/.WebStorm8/config/shelf/Uncommitted_changes_before_update_operation_at_28-4-14_22_51_[Default].patch" />
+      <option name="DESCRIPTION" value="Uncommitted changes before update operation at 28-4-14 22:51 [Default]" />
+    </recycled_changelist>
+    <recycled_changelist date="1403204074874">
+      <option name="PATH" value="$USER_HOME$/.WebStorm8/config/shelf/Attempt_to_use_AngularJS_one-time_binding_where_possible_.patch" />
+      <option name="DESCRIPTION" value="Attempt to use AngularJS one-time binding where possible." />
+    </recycled_changelist>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="cb443da2-c5b7-4919-9dda-26632e987897" name="Default" comment="" />
+      <created>1392041250232</created>
+      <updated>1392041250232</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Initial commit of working code.">
+      <created>1392384521700</created>
+      <updated>1392384521700</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added some rudimentary 3D rotation to the board.">
+      <created>1392473065655</created>
+      <updated>1392473065655</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Better 3D + modularization of 3D rotation into its own directive.">
+      <created>1392766081251</created>
+      <updated>1392766081251</updated>
+    </task>
+    <task id="LOCAL-00004" summary="General refactoring.">
+      <created>1392986961579</created>
+      <updated>1392986961579</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Removed custom patched versions of jquery and lodash. Too many other libraries depend on the global variables. :-(">
+      <created>1393335534992</created>
+      <updated>1393335534992</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Cleaned up directive dependencies a bit.">
+      <created>1393338476062</created>
+      <updated>1393338476062</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Completely refactored the treemap and treemap-tile code, ready for arbitrary layout algorithms.">
+      <created>1393373671369</created>
+      <updated>1393373671369</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Switched to a 'need-to-know' interface for the layout engine, which now has access only to 'importance' and 'reposition'.">
+      <created>1393415230550</created>
+      <updated>1393415230550</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Made the layout engine independent from tile spacing.">
+      <created>1393486305875</created>
+      <updated>1393486305875</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Cleaned up the module and Angular service architecture; got rid of some potentially confusing conventions.">
+      <created>1393518790384</created>
+      <updated>1393518790384</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Cleaned up the module and Angular service architecture.&#10;Got rid of some potentially confusing conventions.&#10;Now auto-generating log message for each module loaded by RequireJS.">
+      <created>1393518833584</created>
+      <updated>1393518833584</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Arbitrary tiling with nested tiling layouts.&#10;Controls for full-sizing a tile.">
+      <created>1393682397929</created>
+      <updated>1393682397929</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Proper icon buttons for maximizing treemap tiles.">
+      <created>1393760433209</created>
+      <updated>1393760433209</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Now able to populate the treemap with the actual data from the FMA. But the code has become rather messy now. It's time for some refactoring.">
+      <created>1393971166604</created>
+      <updated>1393971166604</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Partway through implementing the connection graph on top of the treemap.">
+      <created>1395427264348</created>
+      <updated>1395427264348</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Tried to make d3 graphs on top of the circuitboard work. No luck so far.">
+      <created>1395683900971</created>
+      <updated>1395683900971</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Fixed inactive-tile glyph.">
+      <created>1395760101029</created>
+      <updated>1395760101029</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Finally fixed the strange bug that kept the inner vascular junctions from showing up properly.">
+      <created>1395940631959</created>
+      <updated>1395940631959</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Updated all npm and bower packages to their latest version.">
+      <created>1396006465303</created>
+      <updated>1396006465303</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Re-enabled tile animation + not loading any connections when connections are not turned on. The previous version used 'ng-show'. This version uses 'ng-if'. This makes the app faster when connections are off.">
+      <created>1396007908469</created>
+      <updated>1396007908469</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Fixed the bug where opening a tile would sometimes show weird behavior.">
+      <created>1396023603070</created>
+      <updated>1396023603070</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Some refactoring: added $.fn.addSvgClass, $.fn.removeSvgClass and $.fn.toggleSvgClass. Also removed useless jquery extension $.fn.equals.">
+      <created>1396040220733</created>
+      <updated>1396040220733</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Rudimentary controls and output for simulation.">
+      <created>1396386243999</created>
+      <updated>1396386243999</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Changed the simulation traces to stretch the entire width of the graph area, as per Bernard's request.">
+      <created>1396389055526</created>
+      <updated>1396389055526</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Minor changes.">
+      <created>1396390401302</created>
+      <updated>1396390401302</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Proper stream support in the simulation-panel. Also, the panel is now properly animated into view.">
+      <created>1396547000514</created>
+      <updated>1396547000514</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Fixed position of slider bubble at maximum.">
+      <created>1396598579208</created>
+      <updated>1396598579208</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Since tiles no longer have overflow: hidden, tile are now being explicitly hidden when they should be invisible.">
+      <created>1396783608785</created>
+      <updated>1396783608785</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Improved $bind service. It now accepts a thisArg and no longer returns a string (an old convention).">
+      <created>1396795581631</created>
+      <updated>1396795581631</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Fixed and improved 3D rotation code.">
+      <created>1396795617377</created>
+      <updated>1396795617377</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Fixed and improved 3D rotation code.">
+      <created>1396956623371</created>
+      <updated>1396956623371</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Set up a catch for an error that sometimes appears.">
+      <created>1396984089239</created>
+      <updated>1396984089240</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Gave 3D model button an icon. Still have to selectively show it only for tiles that have 3D models.">
+      <created>1397594951535</created>
+      <updated>1397594951535</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Variable glyphs on the circuitboard, linked to the simulation panel.">
+      <created>1398186706287</created>
+      <updated>1398186706287</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Renamed app parameter in all modules.">
+      <created>1398284556233</created>
+      <updated>1398284556233</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Showing descendant counters.">
+      <created>1398786210975</created>
+      <updated>1398786210975</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Showing extra information about protein expression, including IDs and small molecule interaction count in the sidebar.">
+      <created>1398814905908</created>
+      <updated>1398814905908</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Showing even more complete protein information, including hyperlinks to external resources.">
+      <created>1398875436222</created>
+      <updated>1398875436222</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Fix to hide (currently irrelevant) inconsistency in the database.">
+      <created>1398875698794</created>
+      <updated>1398875698794</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Removed outdated database dump.">
+      <created>1398875717119</created>
+      <updated>1398875717119</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Fixed stupid error.">
+      <created>1398875782224</created>
+      <updated>1398875782224</updated>
+    </task>
+    <task id="LOCAL-00042" summary="First commit in a big refactoring branch, redoing the circuitboard, focus system, etc.">
+      <created>1399326856433</created>
+      <updated>1399326856433</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Some fixes, such as: weight: Infinity now works with the new version.">
+      <created>1399333565225</created>
+      <updated>1399333565225</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Integrated 8 new static 3D brain models.">
+      <created>1399723395311</created>
+      <updated>1399723395311</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Fixed active / inactive tile management.">
+      <created>1399941010521</created>
+      <updated>1399941010521</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Implemented stand-alone trace-diagram directive, tested it, but have not yet integrated it, nor enabled shadow traces in it.">
+      <created>1400544727371</created>
+      <updated>1400544727371</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Added heart models converted from Zinc. I don't think they work properly. They look like they're only half there.">
+      <created>1400669945596</created>
+      <updated>1400669945596</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Fixed interaction between maximization and (1) tiles with no siblings and (2) highlighting.">
+      <created>1400689762945</created>
+      <updated>1400689762945</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Fixed interaction between maximization and (1) tiles with no siblings and (2) highlighting.">
+      <created>1400691083013</created>
+      <updated>1400691083013</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Adapted the top- and side-bars w.r.t. branding and control information.">
+      <created>1400692054560</created>
+      <updated>1400692054561</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Implemented right-click-to-close.">
+      <created>1400692903577</created>
+      <updated>1400692903577</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Introduced the amy-circuit-board directive.">
+      <created>1400707634708</created>
+      <updated>1400707634708</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Made a start on modular d3.">
+      <created>1400711697691</created>
+      <updated>1400711697691</updated>
+    </task>
+    <task id="LOCAL-00054" summary="The hasty changes made to see vascular segment data in the left side-panel.">
+      <created>1401015690144</created>
+      <updated>1401015690145</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Removed files that belong in the refactoring branch.">
+      <created>1401035101244</created>
+      <updated>1401035101244</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Added Typescript classes for the Artefact concept.">
+      <created>1401048952217</created>
+      <updated>1401048952217</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Removed some old commented code.">
+      <created>1401049415969</created>
+      <updated>1401049415969</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Fixed protein focus event.">
+      <created>1401050728335</created>
+      <updated>1401050728335</updated>
+    </task>
+    <task id="LOCAL-00059" summary="Progress on the protein details panel.">
+      <created>1401056423934</created>
+      <updated>1401056423934</updated>
+    </task>
+    <task id="LOCAL-00060" summary="Just some minor stuff, moving lines around, removing debugging output, etc.">
+      <created>1401145856739</created>
+      <updated>1401145856739</updated>
+    </task>
+    <task id="LOCAL-00061" summary="Properly showing meta-info about vascular junctions and segments in the left side-panel. Hover gives focus; click fixes focus.">
+      <created>1401318376327</created>
+      <updated>1401318376327</updated>
+    </task>
+    <task id="LOCAL-00062" summary="Full meta-data in the left side-panel for both vascular and neural connections and junctions. Also fixed some bugs and improved some aesthetics.">
+      <created>1401376746248</created>
+      <updated>1401376746248</updated>
+    </task>
+    <task id="LOCAL-00063" summary="Fixed a mistake where focus-fixed edges would not be colored green.">
+      <created>1401377145109</created>
+      <updated>1401377145109</updated>
+    </task>
+    <task id="LOCAL-00064" summary="Protein interactions are now an artefact and can have information in the side-panel.">
+      <created>1401446660578</created>
+      <updated>1401446660578</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Implemented search for literal entity IDs in the search box.">
+      <created>1401453166993</created>
+      <updated>1401453166993</updated>
+    </task>
+    <task id="LOCAL-00066" summary="Implemented full text search of the reachable entity database.">
+      <created>1401463806045</created>
+      <updated>1401463806045</updated>
+    </task>
+    <task id="LOCAL-00067" summary="Edge-artifacts now show two links in the side-panel that refix focus to their respective end-points. Also showing more info for protein endpoints of a PPI.">
+      <created>1401465937993</created>
+      <updated>1401465937993</updated>
+    </task>
+    <task id="LOCAL-00068" summary="Added back 3D manipulation of the circuitboard in a more modular way. Actual 3D models cannot yet be displayed.">
+      <created>1401573354867</created>
+      <updated>1401573354867</updated>
+    </task>
+    <task id="LOCAL-00069" summary="Added back the feature to show static 3D models.">
+      <created>1401663186111</created>
+      <updated>1401663186111</updated>
+    </task>
+    <task id="LOCAL-00070" summary="Some small refinements in 3D model toggling.">
+      <created>1401663730704</created>
+      <updated>1401663730704</updated>
+    </task>
+    <task id="LOCAL-00071" summary="Great refactoring of the artefact class hierarchy, and used it to simplify the graph-related code and remove duplicate code.">
+      <created>1401735993415</created>
+      <updated>1401735993415</updated>
+    </task>
+    <task id="LOCAL-00072" summary="Small fix to highlight the tile in which a protein-interaction edge has focus.">
+      <created>1401736650575</created>
+      <updated>1401736650575</updated>
+    </task>
+    <task id="LOCAL-00073" summary="Fixed and simplified some things in the artefact hierarchy.">
+      <created>1401740640260</created>
+      <updated>1401740640261</updated>
+    </task>
+    <task id="LOCAL-00074" summary="Wrote some minimal beginning code for encapsulating static 3D models in an artefact.&#10;This probably breaks the build at this point. To be continued tomorrow.">
+      <created>1401745806304</created>
+      <updated>1401745806304</updated>
+    </task>
+    <task id="LOCAL-00075" summary="Reworked the focus-broadcast system into the Artefact class hierarchy.">
+      <created>1401896176144</created>
+      <updated>1401896176144</updated>
+    </task>
+    <task id="LOCAL-00076" summary="Details and 3D models of protein domains.">
+      <created>1401918771809</created>
+      <updated>1401918771809</updated>
+    </task>
+    <task id="LOCAL-00077" summary="Better small molecule interaction 'revealer'. Now using the HTML5 semantic tags &lt;details&gt; and &lt;summary&gt;.">
+      <created>1401991413639</created>
+      <updated>1401991413639</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Removing pagination from the small molecule interaction view in cases where the number of interactions is smaller than the page-size.">
+      <created>1401991908982</created>
+      <updated>1401991908982</updated>
+    </task>
+    <task id="LOCAL-00079" summary="Refactored the directory structure and the way scss files are compiled.">
+      <created>1402322161121</created>
+      <updated>1402322161121</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Put the 'tile-map' service and directive in their own module. They are relatively self-contained, and could be released as an independent library at some point.">
+      <created>1402331385106</created>
+      <updated>1402331385106</updated>
+    </task>
+    <task id="LOCAL-00081" summary="Added the trace-diagram module to the project, with the new ability to pass shadow traces in from outside.">
+      <created>1402345102206</created>
+      <updated>1402345102206</updated>
+    </task>
+    <task id="LOCAL-00082" summary="A number of changes, including new time controls, and some fixes to scss code.">
+      <created>1402412054993</created>
+      <updated>1402412054993</updated>
+    </task>
+    <task id="LOCAL-00083" summary="Upgraded several libraries and set proper version dependencies in bower.json.">
+      <created>1402414388023</created>
+      <updated>1402414388023</updated>
+    </task>
+    <task id="LOCAL-00084" summary="Fixed a typo in bower.json.">
+      <created>1402414507945</created>
+      <updated>1402414507945</updated>
+    </task>
+    <task id="LOCAL-00085" summary="Updated to latest angular-slider version and re-applied the local patch fixing the 'low bubble' bug:&#10;https://github.com/Venturocket/angular-slider/pull/47">
+      <created>1402417418780</created>
+      <updated>1402417418780</updated>
+    </task>
+    <task id="LOCAL-00086" summary="A great deal of changes here, including a systematic way to manage Typescript header files in tsd, and a modular way to call up floating trace diagrams and couple them with the timing module.">
+      <created>1402525065085</created>
+      <updated>1402525065085</updated>
+    </task>
+    <task id="LOCAL-00087" summary="Created a new way to generate a range of equidistant colors, and used it for the categorization of protein domains and variable glyphs.">
+      <created>1402700382306</created>
+      <updated>1402700382306</updated>
+    </task>
+    <task id="LOCAL-00088" summary="Minor refactoring.">
+      <created>1402818166495</created>
+      <updated>1402818166495</updated>
+    </task>
+    <task id="LOCAL-00089" summary="Updated AngularJS and fixed our own code to compensate with a change.">
+      <created>1402915658210</created>
+      <updated>1402915658210</updated>
+    </task>
+    <task id="LOCAL-00090" summary="Added the five linked 3D FTU models.">
+      <created>1402918330542</created>
+      <updated>1402918330542</updated>
+    </task>
+    <task id="LOCAL-00091" summary="Unfinished additions to static 3D models. Mostly, it's about displaying models consisting of multiple OBJ files.">
+      <created>1402952336895</created>
+      <updated>1402952336895</updated>
+    </task>
+    <task id="LOCAL-00092" summary="Unfinished additions to static 3D models. Mostly, it's about displaying models consisting of multiple OBJ files.">
+      <created>1403013714279</created>
+      <updated>1403013714279</updated>
+    </task>
+    <task id="LOCAL-00093" summary="Working FTU 3D model (also added contracting heart json file).">
+      <created>1403130212921</created>
+      <updated>1403130212921</updated>
+    </task>
+    <task id="LOCAL-00094" summary="Animated 3D heart model.">
+      <created>1403190963104</created>
+      <updated>1403190963104</updated>
+    </task>
+    <task id="LOCAL-00095" summary="Smoother mouse-dragging on the slider bar.">
+      <created>1403191843944</created>
+      <updated>1403191843944</updated>
+    </task>
+    <task id="LOCAL-00096" summary="Added proper jquery dependency.">
+      <created>1403191969617</created>
+      <updated>1403191969617</updated>
+    </task>
+    <task id="LOCAL-00097" summary="Small fix.">
+      <created>1403194516435</created>
+      <updated>1403194516435</updated>
+    </task>
+    <task id="LOCAL-00098" summary="Attempt to use AngularJS one-time binding where possible.">
+      <created>1403204075475</created>
+      <updated>1403204075475</updated>
+    </task>
+    <task id="LOCAL-00099" summary="Trace dialog no longer has a title overlapping with the close button.">
+      <created>1403207758292</created>
+      <updated>1403207758292</updated>
+    </task>
+    <task id="LOCAL-00100" summary="Applied the one-time binding of AngularJS 1.3 where possible, resulting in (minor) overall performance improvement.">
+      <created>1403210466966</created>
+      <updated>1403210466967</updated>
+    </task>
+    <task id="LOCAL-00101" summary="Improved distinct color stream.">
+      <created>1403371775042</created>
+      <updated>1403371775042</updated>
+    </task>
+    <task id="LOCAL-00102" summary="Removed old unused source files.">
+      <created>1403712016258</created>
+      <updated>1403712016258</updated>
+    </task>
+    <task id="LOCAL-00103" summary="Locally fixed one-time binding to not deep-copy objects by patching the angular library, and using it in two places now to improve performance.">
+      <created>1403712106964</created>
+      <updated>1403712106964</updated>
+    </task>
+    <task id="LOCAL-00104" summary="General typing update.">
+      <created>1403712129797</created>
+      <updated>1403712129797</updated>
+    </task>
+    <task id="LOCAL-00105" summary="Some local refactorings to make code simpler.">
+      <created>1403712211391</created>
+      <updated>1403712211391</updated>
+    </task>
+    <task id="LOCAL-00106" summary="Added some more dynamic libraries necessary (sometimes) for running the cellml tool (GMS).">
+      <created>1403712253191</created>
+      <updated>1403712253191</updated>
+    </task>
+    <task id="LOCAL-00107" summary="Built much of the required infrastructure for consuming CellML output.">
+      <created>1403817188223</created>
+      <updated>1403817188224</updated>
+    </task>
+    <task id="LOCAL-00108" summary="Working CellML simulations, including good UI.">
+      <created>1403997402824</created>
+      <updated>1403997402824</updated>
+    </task>
+    <task id="LOCAL-00109" summary="Re-enabled shadow traces.">
+      <created>1403999064179</created>
+      <updated>1403999064179</updated>
+    </task>
+    <task id="LOCAL-00110" summary="Re-added static 3D models that were missing (for some reason).">
+      <created>1403999115407</created>
+      <updated>1403999115407</updated>
+    </task>
+    <task id="LOCAL-00111" summary="Remapped Beeler &amp; Reuter variables to Vascular Thoracic.">
+      <created>1404121006856</created>
+      <updated>1404121006856</updated>
+    </task>
+    <task id="LOCAL-00112" summary="Fixed the excessive repulsive charge for inner connection junctions.">
+      <created>1404142241924</created>
+      <updated>1404142241924</updated>
+    </task>
+    <task id="LOCAL-00113" summary="Set the 3D heart model heart-rate to 72 bpm.">
+      <created>1404143724100</created>
+      <updated>1404143724100</updated>
+    </task>
+    <task id="LOCAL-00114" summary="Fixed the bug that occurred at any cellML data-fetching delay.">
+      <created>1404162908176</created>
+      <updated>1404162908176</updated>
+    </task>
+    <task id="LOCAL-00115" summary="Finished Navier Stokes simulation, including variable glyphs on the relevant edges.">
+      <created>1404423770579</created>
+      <updated>1404423770579</updated>
+    </task>
+    <task id="LOCAL-00116" summary="Almost finished with Navier Stokes + associated CellML model.">
+      <created>1404492654869</created>
+      <updated>1404492654869</updated>
+    </task>
+    <task id="LOCAL-00117" summary="Connected CellML model to Navier Stokes Simulation, and gave variable glyphs focus on hover.">
+      <created>1404770020295</created>
+      <updated>1404770020295</updated>
+    </task>
+    <task id="LOCAL-00118" summary="Typing updates">
+      <created>1405976635289</created>
+      <updated>1405976635289</updated>
+    </task>
+    <task id="LOCAL-00119" summary="Fix w.r.t. svg elements not liking 'right' and 'bottom' properties.">
+      <created>1405976754080</created>
+      <updated>1405976754080</updated>
+    </task>
+    <task id="LOCAL-00120" summary="Fixed the display of trace diagrams.">
+      <created>1405977909127</created>
+      <updated>1405977909127</updated>
+    </task>
+    <task id="LOCAL-00121" summary="Typo.">
+      <created>1408897515855</created>
+      <updated>1408897515855</updated>
+    </task>
+    <task id="LOCAL-00122" summary="Improved .gitignore structure.">
+      <created>1408897563232</created>
+      <updated>1408897563232</updated>
+    </task>
+    <task id="LOCAL-00123" summary="Started on a Gulp file.">
+      <created>1408897611111</created>
+      <updated>1408897611111</updated>
+    </task>
+    <option name="localTasksCounter" value="124" />
+    <servers />
+  </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-1" y="1107" width="1282" height="1414" extended-state="4" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40977147" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29708433" sideWeight="0.7132645" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30969268" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13463067" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.321513" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32781717" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32781717" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2750197" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996893" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32884398" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.249694" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.123670734" sideWeight="0.5585443" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2626016" sideWeight="0.67246836" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4217633" sideWeight="0.5881652" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.10165485" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Mongo Runner" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27984497" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" x="21" y="530" width="3009" height="407" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
+    <MESSAGE value="Trace dialog no longer has a title overlapping with the close button." />
+    <MESSAGE value="Applied the one-time binding of AngularJS 1.3 where possible, resulting in (minor) overall performance improvement." />
+    <MESSAGE value="Improved distinct color stream." />
+    <MESSAGE value="Removed old unused source files." />
+    <MESSAGE value="Locally fixed one-time binding to not deep-copy objects by patching the angular library, and using it in two places now to improve performance." />
+    <MESSAGE value="General typing update." />
+    <MESSAGE value="Some local refactorings to make code simpler." />
+    <MESSAGE value="Added some more dynamic libraries necessary (sometimes) for running the cellml tool (GMS)." />
+    <MESSAGE value="Built much of the required infrastructure for consuming CellML output." />
+    <MESSAGE value="Working CellML simulations, including good UI." />
+    <MESSAGE value="Re-enabled shadow traces." />
+    <MESSAGE value="Re-added static 3D models that were missing (for some reason)." />
+    <MESSAGE value="Remapped Beeler &amp; Reuter variables to Vascular Thoracic." />
+    <MESSAGE value="Fixed the excessive repulsive charge for inner connection junctions." />
+    <MESSAGE value="Set the 3D heart model heart-rate to 72 bpm." />
+    <MESSAGE value="Fixed the bug that occurred at any cellML data-fetching delay." />
+    <MESSAGE value="Finished Navier Stokes simulation, including variable glyphs on the relevant edges." />
+    <MESSAGE value="Almost finished with Navier Stokes + associated CellML model." />
+    <MESSAGE value="Connected CellML model to Navier Stokes Simulation, and gave variable glyphs focus on hover." />
+    <MESSAGE value="Typing updates" />
+    <MESSAGE value="Fix w.r.t. svg elements not liking 'right' and 'bottom' properties." />
+    <MESSAGE value="Fixed the display of trace diagrams." />
+    <MESSAGE value="Typo." />
+    <MESSAGE value="Improved .gitignore structure." />
+    <MESSAGE value="Started on a Gulp file." />
+    <option name="LAST_COMMIT_MESSAGE" value="Started on a Gulp file." />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <option name="time" value="10" />
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <PATH>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="apinatomy" />
+        <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="apinatomy" />
+        <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+      </PATH_ELEMENT>
+    </PATH>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/tsd.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="941">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="26" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="299" max-vertical-offset="663">
+          <caret line="23" column="25" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/utility/isDefined.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.15476191" vertical-offset="0" max-vertical-offset="1260">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/top-nav/directive.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1144">
+          <caret line="23" column="43" selection-start-line="23" selection-start-column="43" selection-end-line="23" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/amy-connections/directive.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="780" max-vertical-offset="3250">
+          <caret line="183" column="0" selection-start-line="183" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/patched-lib/angular.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22557078" vertical-offset="0" max-vertical-offset="297739">
+          <caret line="19" column="79" selection-start-line="19" selection-start-column="79" selection-end-line="19" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/simulation/navier-stokes-data.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13621262" vertical-offset="1461" max-vertical-offset="2665">
+          <caret line="125" column="21" selection-start-line="125" selection-start-column="21" selection-end-line="125" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/vars.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="928">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/cellml/out.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="732498" max-vertical-offset="733330">
+          <caret line="56358" column="15" selection-start-line="56358" selection-start-column="15" selection-end-line="56358" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1627" max-vertical-offset="6591">
+          <caret line="149" column="23" selection-start-line="149" selection-start-column="20" selection-end-line="149" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/cellml.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="754" max-vertical-offset="1625">
+          <caret line="58" column="80" selection-start-line="58" selection-start-column="80" selection-end-line="58" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/cellml/service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="910">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/resource/service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="4742" max-vertical-offset="6279">
+          <caret line="382" column="0" selection-start-line="382" selection-start-column="0" selection-end-line="382" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/cellml/models/Linear2ndOrderODE.cellml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.84" vertical-offset="339" max-vertical-offset="1245">
+          <caret line="34" column="17" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/amy-tile/view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.592789" vertical-offset="0" max-vertical-offset="943">
+          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="222" max-vertical-offset="1495">
+          <caret line="90" column="22" selection-start-line="90" selection-start-column="22" selection-end-line="90" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/amy-graph-layer/directive.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1260" max-vertical-offset="3585">
+          <caret line="84" column="50" selection-start-line="84" selection-start-column="50" selection-end-line="90" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/amy-tile/variable-details.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.047468353" vertical-offset="0" max-vertical-offset="948">
+          <caret line="3" column="64" selection-start-line="3" selection-start-column="64" selection-end-line="3" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/_base.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="121" max-vertical-offset="1395">
+          <caret line="25" column="11" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="283" max-vertical-offset="1125">
+          <caret line="31" column="25" selection-start-line="31" selection-start-column="25" selection-end-line="31" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/amy-3d-layer/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="165" max-vertical-offset="360">
+          <caret line="11" column="33" selection-start-line="11" selection-start-column="33" selection-end-line="11" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/amy-tile-map/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="225">
+          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/trace-diagram/view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="120" max-vertical-offset="315">
+          <caret line="8" column="28" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33273056" vertical-offset="67076" max-vertical-offset="68145">
+          <caret line="4484" column="15" selection-start-line="4484" selection-start-column="4" selection-end-line="4484" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/trace-diagram/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="933">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="150" max-vertical-offset="525">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/trace-diagram/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="120" max-vertical-offset="1065">
+          <caret line="8" column="33" selection-start-line="8" selection-start-column="33" selection-end-line="8" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/trace-diagram/module.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1647" max-vertical-offset="3735">
+          <caret line="141" column="58" selection-start-line="141" selection-start-column="58" selection-end-line="141" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/amy-tile/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6210">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/amy-tile/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.916667" vertical-offset="2495" max-vertical-offset="4200">
+          <caret line="187" column="27" selection-start-line="187" selection-start-column="27" selection-end-line="187" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulp-util.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="720">
+          <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Gruntfile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.64052796" vertical-offset="1350" max-vertical-offset="3120">
+          <caret line="145" column="13" selection-start-line="145" selection-start-column="13" selection-end-line="145" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulpfile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="990">
+          <caret line="59" column="34" selection-start-line="59" selection-start-column="34" selection-end-line="59" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/directive.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1440">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1408897475204" expanded="true" signature="143:535" placeholder="[...]" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-25.625" vertical-offset="0" max-vertical-offset="705">
+          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/Artefact.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3390">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/_CircuitBoardArtefact.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2175">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/artefacts.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="22770">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/amy-circuit-board/CircuitBoardArtefact.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="135">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/app/WebPageArtefact.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="405">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/color/ColorRange.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="495">
+          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/simulation/CellMLSimulation.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1635">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/simulation/NavierStokesSimulation.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5130">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/utility/Position.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="210">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4515707" vertical-offset="0" max-vertical-offset="764">
+          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <last-edited>Root .scss file</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
+
