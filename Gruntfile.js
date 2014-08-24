@@ -16,7 +16,7 @@ module.exports = function (grunt) {
 
 	//// constants
 	//
-	var BANNER = '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n';
+	var BANNER = '/* <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n';
 	var PROJECT_JS_FILES = ['client/**/*.js', '!client/lib/**/*.*'];
 	var PROJECT_SPEC_JS_FILES = ['spec/**/*-spec.js', 'node_modules/jasmine-expect/dist/jasmine-matchers.js'];
 	var PROJECT_SPEC_HELPER_JS_FILES = ['spec/**/*-helper.js'];
