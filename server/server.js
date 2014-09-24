@@ -94,9 +94,9 @@ app.post('/resources/cellml/load', function (req, res) {
 //		});
 //	});
 	promise.then(function () {
-		res.status(HTTP_CREATED).json({ id: id });
+		res.status(HTTP_CREATED).jsonp({ id: id });
 	}, function (err) {
-		res.status(HTTP_INTERNAL_SERVER_ERROR).json(err);
+		res.status(HTTP_INTERNAL_SERVER_ERROR).jsonp(err);
 	});
 });
 
@@ -120,9 +120,9 @@ app.post('/resources/cellml/set-values/:id', function (req, res) {
 		}
 	});
 	promise.then(function () {
-		res.status(HTTP_CREATED).json({ id: req.params.id });
+		res.status(HTTP_CREATED).jsonp({ id: req.params.id });
 	}, function (err) {
-		res.status(HTTP_INTERNAL_SERVER_ERROR).json(err);
+		res.status(HTTP_INTERNAL_SERVER_ERROR).jsonp(err);
 	});
 });
 
@@ -131,9 +131,9 @@ app.post('/resources/cellml/set-values/:id', function (req, res) {
 
 app.post('/resources/cellml/execute/:id', function (req, res) {
 	cellml.cellmlGet(cellml.executeURL(req.params.id, req.body.start, req.body.end, req.body.interval)).then(function (data) {
-		res.status(HTTP_OK).json(data.data);
+		res.status(HTTP_OK).jsonp(data.data);
 	}, function (err) {
-		res.status(HTTP_INTERNAL_SERVER_ERROR).json(err);
+		res.status(HTTP_INTERNAL_SERVER_ERROR).jsonp(err);
 	});
 });
 
@@ -148,10 +148,10 @@ app.get('/resources/entities/count', function (req, res) {
 	db.Entity.count({}, function (err, count) {
 		if (err) {
 			console.log(err);
-			res.status(HTTP_INTERNAL_SERVER_ERROR).json(err);
+			res.status(HTTP_INTERNAL_SERVER_ERROR).jsonp(err);
 			return;
 		}
-		res.status(HTTP_OK).json({ count: count });
+		res.status(HTTP_OK).jsonp({ count: count });
 	});
 });
 
@@ -183,7 +183,7 @@ app.get('/resources/entities/:ids', function (req, res) {
 						res.status(HTTP_INTERNAL_SERVER_ERROR).send(null);
 						return;
 					}
-					res.status(HTTP_OK).json(popEnts);
+					res.status(HTTP_OK).jsonp(popEnts);
 				});
 			});
 });
@@ -207,7 +207,7 @@ app.get('/resources/entities', function (req, res) {
 					return;
 				}
 
-				res.status(HTTP_OK).json(ents);
+				res.status(HTTP_OK).jsonp(ents);
 
 				// TODO: we can think of a faster way than populating all of this server-side regardless of the request
 				db.GeneTranslation.populate(ents, { path: "proteins.translations" }, function (err, popEnts) {
@@ -216,7 +216,7 @@ app.get('/resources/entities', function (req, res) {
 						res.status(HTTP_INTERNAL_SERVER_ERROR).send(null);
 						return;
 					}
-					res.status(HTTP_OK).json(popEnts);
+					res.status(HTTP_OK).jsonp(popEnts);
 				});
 			});
 });
@@ -235,10 +235,10 @@ app.post('/resources/entities', function (req, res) {
 	newEntity.save(function (err, entity) {
 		if (err) {
 			console.log(err);
-			res.status(HTTP_INTERNAL_SERVER_ERROR).json(err);
+			res.status(HTTP_INTERNAL_SERVER_ERROR).jsonp(err);
 			return;
 		}
-		res.status(HTTP_CREATED).json(entity);
+		res.status(HTTP_CREATED).jsonp(entity);
 	});
 });
 
@@ -248,7 +248,7 @@ app.post('/resources/entities', function (req, res) {
 app.put('/resources/entities/:id', function (req, res) {
 	db.Entity.findById(req.params.id, function (err, entity) {
 		if (err) {
-			res.status(HTTP_NOT_FOUND).json(err);
+			res.status(HTTP_NOT_FOUND).jsonp(err);
 			return;
 		}
 
@@ -257,10 +257,10 @@ app.put('/resources/entities/:id', function (req, res) {
 		entity.save(function (err) {
 			if (err) {
 				console.log(err);
-				res.status(HTTP_INTERNAL_SERVER_ERROR).json(err);
+				res.status(HTTP_INTERNAL_SERVER_ERROR).jsonp(err);
 				return;
 			}
-			res.status(HTTP_OK).json(entity);
+			res.status(HTTP_OK).jsonp(entity);
 		});
 
 	});
@@ -278,7 +278,7 @@ app.get('/resources/connections/count', function (req, res) {
 	db.Connection.count({}, function (err, count) {
 		if (err) {
 			console.log(err);
-			res.status(HTTP_INTERNAL_SERVER_ERROR).json(err);
+			res.status(HTTP_INTERNAL_SERVER_ERROR).jsonp(err);
 			return;
 		}
 		res.status(HTTP_OK).send(count);
@@ -305,7 +305,7 @@ app.get('/resources/connections/:ids', function (req, res) {
 					res.status(HTTP_INTERNAL_SERVER_ERROR).send(null);
 					return;
 				}
-				res.status(HTTP_OK).json(conns);
+				res.status(HTTP_OK).jsonp(conns);
 			});
 });
 
@@ -324,7 +324,7 @@ app.get('/resources/connections', function (req, res) {
 					res.status(HTTP_INTERNAL_SERVER_ERROR).send(null);
 					return;
 				}
-				res.status(HTTP_OK).json(conns);
+				res.status(HTTP_OK).jsonp(conns);
 			});
 });
 
@@ -349,7 +349,7 @@ app.get('/resources/paths', function (req, res) {
 					res.status(HTTP_INTERNAL_SERVER_ERROR).send(null);
 					return;
 				}
-				res.status(HTTP_OK).json(paths);
+				res.status(HTTP_OK).jsonp(paths);
 			});
 });
 
@@ -371,7 +371,7 @@ app.get('/resources/paths/:ids', function (req, res) {
 					res.status(HTTP_INTERNAL_SERVER_ERROR).send(null);
 					return;
 				}
-				res.status(HTTP_OK).json(paths);
+				res.status(HTTP_OK).jsonp(paths);
 			});
 });
 
@@ -398,7 +398,7 @@ app.get('/resources/small-molecules/:ids', function (req, res) {
 					return;
 				}
 
-				res.status(HTTP_OK).json(smallMolecules);
+				res.status(HTTP_OK).jsonp(smallMolecules);
 			});
 });
 
@@ -425,7 +425,7 @@ app.get('/resources/ancestors/:id', function (req, res) {
 				});
 	}(req.params.id))
 			.then(function () {
-				res.status(HTTP_OK).json(result);
+				res.status(HTTP_OK).jsonp(result);
 			}).catch(function (err) {
 				console.error(err);
 				res.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
@@ -450,7 +450,7 @@ app.get('/resources/search/:query', function (req, res) {
 			console.error(err);
 			res.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
 		} else {
-			res.status(HTTP_OK).json(result);
+			res.status(HTTP_OK).jsonp(result);
 		}
 	});
 
